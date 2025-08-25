@@ -1,0 +1,1 @@
+export default function About(){return (<div className='py-12 prose'><h1>About</h1><p>Engineer & Designer. Building web products and advising teams.</p></div>)}

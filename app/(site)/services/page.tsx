@@ -1,0 +1,1 @@
+export default function Services(){return (<div className='py-12 prose'><h1>Services</h1><ul><li>Engineering & Product Consulting</li><li>Frontend/Next.js Architecture</li><li>Career Coaching (by request)</li><li>Metaphysics/Tarot (see shuyan.art)</li></ul></div>)}

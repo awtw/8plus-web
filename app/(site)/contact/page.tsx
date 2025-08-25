@@ -1,0 +1,1 @@
+export default function Contact(){return (<div className='py-12 prose'><h1>Contact</h1><p>Email: <a href='mailto:hello@8plus.app'>hello@8plus.app</a></p></div>)}

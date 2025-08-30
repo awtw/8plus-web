@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
+import { useLanguage } from "@/components/language-provider";
 
 export default function BookingPage() {
+  const { t, tn } = useLanguage();
   const [isCalLoaded, setIsCalLoaded] = useState(false);
 
   useEffect(() => {
@@ -24,10 +26,20 @@ export default function BookingPage() {
   return (
     <section className="py-12">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-4">Book a Session</h1>
-        <p className="text-slate-600 text-center mb-8">
-          Pick a time that works for you. This integrates with Google Calendar.
-        </p>
+        <header className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-4">{t('booking.title')}</h1>
+          <p className="text-slate-600 text-lg mb-4">
+            {t('booking.subtitle')}
+          </p>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-2xl mx-auto">
+            <h2 className="font-semibold text-gray-900 mb-2">{t('booking.servicesInclude')}</h2>
+            <ul className="text-sm text-gray-700 space-y-1">
+              {tn('booking.services').map((service: string, index: number) => (
+                <li key={index}>• {service}</li>
+              ))}
+            </ul>
+          </div>
+        </header>
         
         <div className="bg-white rounded-xl shadow-lg p-6">
           {!isCalLoaded && (

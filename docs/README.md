@@ -1,19 +1,11 @@
-# 8plus.app
+# 8plus.app — Docs (Velite-only)
+本文件集為 **Velite-only** 版，完全不使用 Contentlayer。
 
-A modern, low-cost, extensible personal site for engineering/consulting with booking and blogging.
+- 前端：Next.js App Router (15.x)
+- 內容管線：Velite (Zod schema)
+- Blog：MDX → Velite → /blog /blog/[slug]
+- 受保護文章 (Phase 2)：Supabase
+- Booking：Cal.com
+- i18n：next-intl (Phase 2)
 
-- Start with MDX for public content.
-- Add Supabase Auth + protected posts in Phase 2.
-- Booking via Cal.com/Calendly first; self-hosted Google API later.
-
-See:
-- `ARCHITECTURE.md`
-- `PROJECT_STRUCTURE.md`
-- `CONTENT_MODEL.md`
-- `PUBLISHING.md`
-- `CHECKLISTS.md`
-- `BOOKING_INTEGRATION.md`
-- `PROTECTED_CONTENT.md`
-- `CURSOR_TASKS.md`
-- `ENV.example`
-- `DIAGRAM.md`
+更新日期：2025-08-30

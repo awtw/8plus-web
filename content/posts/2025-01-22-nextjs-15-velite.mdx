@@ -1,0 +1,121 @@
+---
+title: "Next.js 15 + Velite: 现代内容管理方案"
+date: "2025-01-22"
+summary: "探索 Next.js 15 与 Velite 结合的内容管理解决方案，以及为什么选择这个技术组合。"
+slug: "nextjs-15-velite"
+published: true
+protected: false
+tags: ["Next.js", "Velite", "技术架构"]
+locale: "zh-Hant"
+---
+
+# Next.js 15 + Velite: 现代内容管理方案
+
+在构建 8plus.app 时，我选择了 Next.js 15 + Velite 的技术组合。这篇文章分享选择这个方案的原因和实践经验。
+
+## 为什么选择 Velite？
+
+### 1. 类型安全
+Velite 基于 Zod schema，提供完整的 TypeScript 类型支持：
+
+```typescript
+const posts = defineCollection({
+  name: 'Post',
+  pattern: 'content/posts/**/*.mdx',
+  schema: s.object({
+    title: s.string(),
+    date: s.isodate(),
+    tags: s.array(s.string()).optional(),
+    summary: s.string(),
+    published: s.boolean().default(true),
+    content: s.mdx()
+  })
+})
+```
+
+### 2. 简单而强大
+相比 Contentlayer，Velite 提供了更简洁的 API 和更好的性能：
+- 更快的构建速度
+- 更少的配置
+- 更好的错误提示
+
+### 3. Next.js 15 兼容性
+Velite 原生支持 Next.js 15，避免了版本兼容性问题。
+
+## 实践经验
+
+### 配置文件结构
+```typescript
+export default defineConfig({
+  root: '.',
+  output: {
+    data: '.velite',
+    assets: 'public/static',
+    base: '/static/',
+    clean: true
+  },
+  collections: { posts, projects },
+  mdx: {
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }]
+    ]
+  }
+})
+```
+
+### 在 React 组件中使用
+```tsx
+import { posts } from '.velite'
+
+export default function BlogPage() {
+  const publishedPosts = posts
+    .filter(post => post.published)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  
+  return (
+    <div>
+      {publishedPosts.map(post => (
+        <article key={post.slug}>
+          <h2>{post.title}</h2>
+          <p>{post.summary}</p>
+        </article>
+      ))}
+    </div>
+  )
+}
+```
+
+## 构建流程
+
+构建流程非常简单：
+```bash
+velite && next build
+```
+
+Velite 会：
+1. 扫描 MDX 文件
+2. 验证 frontmatter
+3. 生成类型定义
+4. 编译内容为 JSON
+
+## 优势总结
+
+1. **开发体验**: 完整的类型支持和智能提示
+2. **性能**: 快速的构建和运行时性能
+3. **简洁**: 最少的配置，最大的功能
+4. **可靠**: 基于 Zod 的数据验证
+
+## 结论
+
+Next.js 15 + Velite 是一个优秀的现代内容管理方案，特别适合：
+- 技术博客
+- 文档网站
+- 项目展示
+- 个人网站
+
+如果你正在寻找一个简单而强大的内容管理解决方案，强烈推荐尝试这个组合。
+
+---
+
+*想了解更多技术细节？欢迎预约咨询时间深入讨论。*

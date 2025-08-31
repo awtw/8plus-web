@@ -28,6 +28,7 @@ const projects = defineCollection({
   schema: s.object({
     title: s.string(),
     slug: s.string(),
+    baseSlug: s.string().optional(), // 基礎 slug，用於關聯同一項目的不同語言版本
     role: s.string().optional(),
     stack: s.array(s.string()).optional(),
     period: s.string().optional(),
@@ -36,6 +37,7 @@ const projects = defineCollection({
     summary: s.string(),
     thumbnail: s.string().optional(),
     published: s.boolean().default(true),
+    locale: s.string().default('zh-TW'),
     html: s.mdx()
   }).transform(data => ({
     ...data,

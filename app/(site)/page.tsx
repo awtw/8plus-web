@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function HomePage() {
-  const { t, tn } = useLanguage();
+  const { t, tn, locale } = useLanguage();
   const recentPosts = posts
-    .filter(post => post.published)
+    .filter(post => post.published && post.locale === locale)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 2);
 
   const featuredProjects = projects
-    .filter(project => project.published)
+    .filter(project => project.published && project.locale === locale)
     .slice(0, 2);
 
   return (

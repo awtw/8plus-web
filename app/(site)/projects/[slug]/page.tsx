@@ -1,38 +1,18 @@
 
+'use client'
+
 import { notFound } from "next/navigation";
 import { projects } from ".velite";
+import { useLanguage } from "@/components/language-provider";
+import { useParams } from "next/navigation";
 
-interface ProjectPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
-
-export async function generateStaticParams() {
-  return projects.map(project => ({
-    slug: project.slug
-  }));
-}
-
-export async function generateMetadata({ params }: ProjectPageProps) {
-  const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+export default function ProjectDetail() {
+  const { t, locale } = useLanguage();
+  const params = useParams();
+  const slug = params.slug as string;
   
-  if (!project) {
-    return {
-      title: "Project not found"
-    };
-  }
-
-  return {
-    title: project.title,
-    description: project.summary
-  };
-}
-
-export default async function ProjectDetail({ params }: ProjectPageProps) {
-  const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+  // 根據當前語言和 slug 找到對應的項目
+  const project = projects.find(p => p.slug === slug && p.locale === locale);
   
   if (!project) {
     notFound();
@@ -46,13 +26,13 @@ export default async function ProjectDetail({ params }: ProjectPageProps) {
         <div className="flex flex-wrap gap-4 text-sm text-slate-600 mb-4">
           {project.role && (
             <div>
-              <span className="font-medium">角色：</span>
+              <span className="font-medium">{t('projects.role')}：</span>
               <span className="text-gray-700 font-medium">{project.role}</span>
             </div>
           )}
           {project.period && (
             <div>
-              <span className="font-medium">時期：</span>
+              <span className="font-medium">{t('projects.period')}：</span>
               {project.period}
             </div>
           )}
@@ -62,7 +42,7 @@ export default async function ProjectDetail({ params }: ProjectPageProps) {
 
         {project.stack && project.stack.length > 0 && (
           <div className="mb-6">
-            <h2 className="font-semibold mb-3">技術棧</h2>
+            <h2 className="font-semibold mb-3">{t('projects.techStack')}</h2>
             <div className="flex flex-wrap gap-2">
               {project.stack.map(tech => (
                 <span 
@@ -78,7 +58,7 @@ export default async function ProjectDetail({ params }: ProjectPageProps) {
 
         {project.highlights && project.highlights.length > 0 && (
           <div className="mb-6">
-            <h2 className="font-semibold mb-3">重點成果</h2>
+            <h2 className="font-semibold mb-3">{t('projects.highlights')}</h2>
             <ul className="space-y-2">
               {project.highlights.map((highlight, index) => (
                 <li key={index} className="flex items-start">
@@ -92,7 +72,7 @@ export default async function ProjectDetail({ params }: ProjectPageProps) {
 
         {project.links && Object.keys(project.links).length > 0 && (
           <div className="mb-8">
-            <h2 className="font-semibold mb-3">相關連結</h2>
+            <h2 className="font-semibold mb-3">{t('projects.links')}</h2>
             <div className="flex flex-wrap gap-3">
               {Object.entries(project.links).map(([key, url]) => (
                 <a

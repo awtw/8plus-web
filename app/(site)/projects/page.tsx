@@ -1,22 +1,26 @@
 
+'use client'
+
 import Link from "next/link";
 import { projects } from ".velite";
+import { useLanguage } from "@/components/language-provider";
 
 export default function ProjectsPage() {
-  const publishedProjects = projects.filter(project => project.published);
+  const { t, locale } = useLanguage();
+  const publishedProjects = projects.filter(project => project.published && project.locale === locale);
 
   return (
     <section className="py-12">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">Projects</h1>
+        <h1 className="text-3xl font-bold mb-4">{t('projects.title')}</h1>
         <p className="text-slate-600 text-lg">
-          精選的技術項目和工程案例，展示在前端開發、系統架構和用戶體驗方面的實踐經驗。
+          {t('projects.description')}
         </p>
       </header>
 
       {publishedProjects.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-slate-600">更多項目案例即將上線...</p>
+          <p className="text-slate-600">{t('projects.noProjects')}</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-8">
@@ -57,7 +61,7 @@ export default function ProjectsPage() {
 
               {project.highlights && project.highlights.length > 0 && (
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium text-slate-700 mb-2">重點成果：</h3>
+                  <h3 className="text-sm font-medium text-slate-700 mb-2">{t('projects.highlights')}：</h3>
                   <ul className="text-sm text-slate-600 space-y-1">
                     {project.highlights.map((highlight, index) => (
                       <li key={index} className="flex items-start">
@@ -70,7 +74,7 @@ export default function ProjectsPage() {
               )}
 
               <div className="text-gray-900 text-sm font-medium group-hover:text-gray-700 transition-colors">
-                查看詳情 →
+                {t('projects.viewDetails')} →
               </div>
             </Link>
           ))}

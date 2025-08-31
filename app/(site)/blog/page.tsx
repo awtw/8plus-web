@@ -1,17 +1,21 @@
+'use client'
+
 import Link from "next/link";
 import { posts } from ".velite";
+import { useLanguage } from "@/components/language-provider";
 
 export default function BlogPage() {
+  const { t, locale } = useLanguage();
   const publishedPosts = posts
-    .filter(post => post.published)
+    .filter(post => post.published && post.locale === locale)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <section className="py-12">
-      <h1 className="text-2xl font-semibold mb-6">Blog</h1>
+      <h1 className="text-2xl font-semibold mb-6">{t('blog.title')}</h1>
       
       {publishedPosts.length === 0 ? (
-        <p className="text-slate-600">No published posts yet.</p>
+        <p className="text-slate-600">{t('blog.noPosts')}</p>
       ) : (
         <div className="space-y-6">
           {publishedPosts.map(post => (

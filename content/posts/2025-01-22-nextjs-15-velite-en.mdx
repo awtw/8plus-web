@@ -1,0 +1,131 @@
+---
+title: "Next.js 15 + Velite: Modern Content Management Solution"
+date: "2025-01-22"
+tags: ["Next.js", "Velite", "Architecture"]
+summary: "Exploring the content management solution combining Next.js 15 with Velite, and why we chose this technology stack."
+thumbnail: ""
+published: true
+protected: false
+slug: "nextjs-15-velite-en"
+locale: "en"
+---
+
+# Next.js 15 + Velite: Modern Content Management Solution
+
+When building 8plus.app, I chose the Next.js 15 + Velite technology combination. This article shares the reasons for choosing this solution and practical experience.
+
+## Why Choose Velite?
+
+### 1. Type Safety
+
+Velite is based on Zod schema, providing complete TypeScript type support:
+
+```typescript
+const posts = defineCollection({
+  name: 'Post',
+  pattern: 'content/posts/**/*.mdx',
+  schema: s.object({
+    title: s.string(),
+    date: s.isodate(),
+    tags: s.array(s.string()).optional(),
+    summary: s.string(),
+    published: s.boolean().default(true),
+    content: s.mdx()
+  })
+})
+```
+
+### 2. Simple Yet Powerful
+
+Compared to Contentlayer, Velite provides a cleaner API and better performance:
+
+- Faster build times
+- Less configuration
+- Better error messages
+
+### 3. Next.js 15 Compatibility
+
+Velite natively supports Next.js 15, avoiding version compatibility issues.
+
+## Practical Experience
+
+### Configuration File Structure
+
+```typescript
+export default defineConfig({
+  root: '.',
+  output: {
+    data: '.velite',
+    assets: 'public/static',
+    base: '/static/',
+    clean: true
+  },
+  collections: { posts, projects },
+  mdx: {
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }]
+    ]
+  }
+})
+```
+
+### Using in React Components
+
+```tsx
+import { posts } from '.velite'
+
+export default function BlogPage() {
+  const publishedPosts = posts
+    .filter(post => post.published)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  
+  return (
+    <div>
+      {publishedPosts.map(post => (
+        <article key={post.slug}>
+          <h2>{post.title}</h2>
+          <p>{post.summary}</p>
+        </article>
+      ))}
+    </div>
+  )
+}
+```
+
+## Build Process
+
+The build process is very simple:
+
+```bash
+velite && next build
+```
+
+Velite will:
+
+1. Scan MDX files
+2. Validate frontmatter
+3. Generate type definitions
+4. Compile content to JSON
+
+## Advantages Summary
+
+1. **Developer Experience**: Complete type support and intelligent hints
+2. **Performance**: Fast build and runtime performance
+3. **Simplicity**: Minimal configuration, maximum functionality
+4. **Reliability**: Data validation based on Zod
+
+## Conclusion
+
+Next.js 15 + Velite is an excellent modern content management solution, especially suitable for:
+
+- Technical blogs
+- Documentation sites
+- Project showcases
+- Personal websites
+
+If you're looking for a simple yet powerful content management solution, I highly recommend trying this combination.
+
+---
+
+*Want to learn more technical details? Feel free to book a consultation time for in-depth discussion.*

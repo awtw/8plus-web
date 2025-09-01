@@ -1,22 +1,22 @@
 ---
-title: "Next.js 15 + Velite: 现代内容管理方案"
+title: "Next.js 15 + Velite: 現代內容管理方案"
 date: "2025-01-22"
-summary: "探索 Next.js 15 与 Velite 结合的内容管理解决方案，以及为什么选择这个技术组合。"
+summary: "探索 Next.js 15 與 Velite 結合的內容管理解決方案，以及為什麼選擇這個技術組合。"
 slug: "nextjs-15-velite"
 published: true
 protected: false
-tags: ["Next.js", "Velite", "技术架构"]
+tags: ["Next.js", "Velite", "技術架構"]
 locale: "zh-TW"
 ---
 
-# Next.js 15 + Velite: 现代内容管理方案
+# Next.js 15 + Velite: 現代內容管理方案
 
-在构建 8plus.app 时，我选择了 Next.js 15 + Velite 的技术组合。这篇文章分享选择这个方案的原因和实践经验。
+在建構 8plus.app 時，我選擇了 Next.js 15 + Velite 的技術組合。這篇文章分享選擇這個方案的原因和實踐經驗。
 
-## 为什么选择 Velite？
+## 為什麼選擇 Velite？
 
-### 1. 类型安全
-Velite 基于 Zod schema，提供完整的 TypeScript 类型支持：
+### 1. 類型安全
+Velite 基於 Zod schema，提供完整的 TypeScript 類型支援：
 
 ```typescript
 const posts = defineCollection({
@@ -33,18 +33,18 @@ const posts = defineCollection({
 })
 ```
 
-### 2. 简单而强大
-相比 Contentlayer，Velite 提供了更简洁的 API 和更好的性能：
-- 更快的构建速度
+### 2. 簡單而強大
+相比 Contentlayer，Velite 提供了更簡潔的 API 和更好的效能：
+- 更快的建構速度
 - 更少的配置
-- 更好的错误提示
+- 更好的錯誤提示
 
-### 3. Next.js 15 兼容性
-Velite 原生支持 Next.js 15，避免了版本兼容性问题。
+### 3. Next.js 15 相容性
+Velite 原生支援 Next.js 15，避免了版本相容性問題。
 
-## 实践经验
+## 實踐經驗
 
-### 配置文件结构
+### 配置檔案結構
 ```typescript
 export default defineConfig({
   root: '.',
@@ -64,7 +64,7 @@ export default defineConfig({
 })
 ```
 
-### 在 React 组件中使用
+### 在 React 元件中使用
 ```tsx
 import { posts } from '.velite'
 
@@ -86,36 +86,36 @@ export default function BlogPage() {
 }
 ```
 
-## 构建流程
+## 建構流程
 
-构建流程非常简单：
+建構流程非常簡單：
 ```bash
 velite && next build
 ```
 
-Velite 会：
-1. 扫描 MDX 文件
-2. 验证 frontmatter
-3. 生成类型定义
-4. 编译内容为 JSON
+Velite 會：
+1. 掃描 MDX 檔案
+2. 驗證 frontmatter
+3. 生成類型定義
+4. 編譯內容為 JSON
 
-## 优势总结
+## 優勢總結
 
-1. **开发体验**: 完整的类型支持和智能提示
-2. **性能**: 快速的构建和运行时性能
-3. **简洁**: 最少的配置，最大的功能
-4. **可靠**: 基于 Zod 的数据验证
+1. **開發體驗**: 完整的類型支援和智慧提示
+2. **效能**: 快速的建構和執行時效能
+3. **簡潔**: 最少的配置，最大的功能
+4. **可靠**: 基於 Zod 的資料驗證
 
-## 结论
+## 結論
 
-Next.js 15 + Velite 是一个优秀的现代内容管理方案，特别适合：
-- 技术博客
-- 文档网站
-- 项目展示
-- 个人网站
+Next.js 15 + Velite 是一個優秀的現代內容管理方案，特別適合：
+- 技術部落格
+- 文件網站
+- 專案展示
+- 個人網站
 
-如果你正在寻找一个简单而强大的内容管理解决方案，强烈推荐尝试这个组合。
+如果你正在尋找一個簡單而強大的內容管理解決方案，強烈推薦嘗試這個組合。
 
 ---
 
-*想了解更多技术细节？欢迎预约咨询时间深入讨论。*
+*想了解更多技術細節？歡迎預約諮詢時間深入討論。*

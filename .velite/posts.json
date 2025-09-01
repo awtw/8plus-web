@@ -16,18 +16,18 @@
     "url": "/blog/hello-8plus-en"
   },
   {
-    "title": "Hello 8plus - 重新启动",
+    "title": "Hello 8plus - 重新啟動",
     "date": "2025-01-22T00:00:00.000Z",
     "tags": [
       "公告",
-      "技术"
+      "技術"
     ],
-    "summary": "8plus.app 重新上线，采用 Next.js 15 + Velite 架构，专注于工程咨询和技术分享。",
+    "summary": "8plus.app 重新上線，採用 Next.js 15 + Velite 架構，專注於工程諮詢和技術分享。",
     "published": true,
     "protected": false,
     "slug": "hello-8plus",
     "locale": "zh-TW",
-    "html": "<h1>Hello 8plus - 重新启动</h1>\n<p>欢迎来到 8plus.app！这是我的工程咨询和技术分享平台的全新开始。</p>\n<h2>新架构</h2>\n<p>这次重建采用了现代化的技术栈：</p>\n<ul>\n<li><strong>Next.js 15</strong> - 最新的 React 框架</li>\n<li><strong>Velite</strong> - 类型安全的内容管理</li>\n<li><strong>Tailwind CSS</strong> - 现代化的样式框架</li>\n<li><strong>TypeScript</strong> - 类型安全的开发体验</li>\n</ul>\n<h2>主要功能</h2>\n<h3>1. 工程咨询</h3>\n<p>提供专业的软件工程咨询服务，包括：</p>\n<ul>\n<li>前端架构设计</li>\n<li>Next.js 应用开发</li>\n<li>技术选型建议</li>\n<li>代码审查和优化</li>\n</ul>\n<h3>2. 技术博客</h3>\n<p>分享技术见解和实践经验：</p>\n<ul>\n<li>前端开发最佳实践</li>\n<li>工程效率提升</li>\n<li>新技术探索</li>\n</ul>\n<h3>3. 项目展示</h3>\n<p>展示过往的技术项目和成果。</p>\n<h3>4. 在线预约</h3>\n<p>通过集成的 Cal.com 系统，可以直接预约咨询时间。</p>\n<h2>设计理念</h2>\n<p>这次重建的核心理念是<strong>简洁而强大</strong>：</p>\n<ul>\n<li>专注于内容和功能</li>\n<li>快速的加载速度</li>\n<li>优秀的用户体验</li>\n<li>易于维护和扩展</li>\n</ul>\n<h2>未来计划</h2>\n<ul>\n<li>Phase 2: 添加用户认证和受保护内容</li>\n<li>多语言支持 (i18n)</li>\n<li>更丰富的交互功能</li>\n</ul>\n<p>感谢关注，期待与你的交流！</p>\n<hr>\n<p><em>如有任何问题或合作意向，欢迎通过预约系统联系我。</em></p>",
+    "html": "<h1>Hello 8plus - 重新啟動</h1>\n<p>歡迎來到 8plus.app！這是我的工程諮詢和技術分享平台的全新開始。</p>\n<h2>新架構</h2>\n<p>這次重建採用了現代化的技術棧：</p>\n<ul>\n<li><strong>Next.js 15</strong> - 最新的 React 框架</li>\n<li><strong>Velite</strong> - 類型安全的內容管理</li>\n<li><strong>Tailwind CSS</strong> - 現代化的樣式框架</li>\n<li><strong>TypeScript</strong> - 類型安全的開發體驗</li>\n</ul>\n<h2>主要功能</h2>\n<h3>1. 工程諮詢</h3>\n<p>提供專業的軟體工程諮詢服務，包括：</p>\n<ul>\n<li>前端架構設計</li>\n<li>Next.js 應用開發</li>\n<li>技術選型建議</li>\n<li>程式碼審查和優化</li>\n</ul>\n<h3>2. 技術部落格</h3>\n<p>分享技術見解和實踐經驗：</p>\n<ul>\n<li>前端開發最佳實踐</li>\n<li>工程效率提升</li>\n<li>新技術探索</li>\n</ul>\n<h3>3. 專案展示</h3>\n<p>展示過往的技術專案和成果。</p>\n<h3>4. 線上預約</h3>\n<p>透過整合的 Cal.com 系統，可以直接預約諮詢時間。</p>\n<h2>設計理念</h2>\n<p>這次重建的核心理念是<strong>簡潔而強大</strong>：</p>\n<ul>\n<li>專注於內容和功能</li>\n<li>快速的載入速度</li>\n<li>優秀的使用者體驗</li>\n<li>易於維護和擴展</li>\n</ul>\n<h2>未來計畫</h2>\n<ul>\n<li>Phase 2: 新增使用者認證和受保護內容</li>\n<li>多語言支援 (i18n)</li>\n<li>更豐富的互動功能</li>\n</ul>\n<p>感謝關注，期待與你的交流！</p>\n<hr>\n<p><em>如有任何問題或合作意向，歡迎透過預約系統聯繫我。</em></p>",
     "url": "/blog/hello-8plus"
   },
   {
@@ -48,19 +48,19 @@
     "url": "/blog/nextjs-15-velite-en"
   },
   {
-    "title": "Next.js 15 + Velite: 现代内容管理方案",
+    "title": "Next.js 15 + Velite: 現代內容管理方案",
     "date": "2025-01-22T00:00:00.000Z",
     "tags": [
       "Next.js",
       "Velite",
-      "技术架构"
+      "技術架構"
     ],
-    "summary": "探索 Next.js 15 与 Velite 结合的内容管理解决方案，以及为什么选择这个技术组合。",
+    "summary": "探索 Next.js 15 與 Velite 結合的內容管理解決方案，以及為什麼選擇這個技術組合。",
     "published": true,
     "protected": false,
     "slug": "nextjs-15-velite",
     "locale": "zh-TW",
-    "html": "<h1>Next.js 15 + Velite: 现代内容管理方案</h1>\n<p>在构建 8plus.app 时，我选择了 Next.js 15 + Velite 的技术组合。这篇文章分享选择这个方案的原因和实践经验。</p>\n<h2>为什么选择 Velite？</h2>\n<h3>1. 类型安全</h3>\n<p>Velite 基于 Zod schema，提供完整的 TypeScript 类型支持：</p>\n<pre><code class=\"language-typescript\">const posts = defineCollection({\n  name: 'Post',\n  pattern: 'content/posts/**/*.mdx',\n  schema: s.object({\n    title: s.string(),\n    date: s.isodate(),\n    tags: s.array(s.string()).optional(),\n    summary: s.string(),\n    published: s.boolean().default(true),\n    content: s.mdx()\n  })\n})\n</code></pre>\n<h3>2. 简单而强大</h3>\n<p>相比 Contentlayer，Velite 提供了更简洁的 API 和更好的性能：</p>\n<ul>\n<li>更快的构建速度</li>\n<li>更少的配置</li>\n<li>更好的错误提示</li>\n</ul>\n<h3>3. Next.js 15 兼容性</h3>\n<p>Velite 原生支持 Next.js 15，避免了版本兼容性问题。</p>\n<h2>实践经验</h2>\n<h3>配置文件结构</h3>\n<pre><code class=\"language-typescript\">export default defineConfig({\n  root: '.',\n  output: {\n    data: '.velite',\n    assets: 'public/static',\n    base: '/static/',\n    clean: true\n  },\n  collections: { posts, projects },\n  mdx: {\n    rehypePlugins: [\n      rehypeSlug,\n      [rehypeAutolinkHeadings, { behavior: 'wrap' }]\n    ]\n  }\n})\n</code></pre>\n<h3>在 React 组件中使用</h3>\n<pre><code class=\"language-tsx\">import { posts } from '.velite'\n\nexport default function BlogPage() {\n  const publishedPosts = posts\n    .filter(post => post.published)\n    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())\n  \n  return (\n    &#x3C;div>\n      {publishedPosts.map(post => (\n        &#x3C;article key={post.slug}>\n          &#x3C;h2>{post.title}&#x3C;/h2>\n          &#x3C;p>{post.summary}&#x3C;/p>\n        &#x3C;/article>\n      ))}\n    &#x3C;/div>\n  )\n}\n</code></pre>\n<h2>构建流程</h2>\n<p>构建流程非常简单：</p>\n<pre><code class=\"language-bash\">velite &#x26;&#x26; next build\n</code></pre>\n<p>Velite 会：</p>\n<ol>\n<li>扫描 MDX 文件</li>\n<li>验证 frontmatter</li>\n<li>生成类型定义</li>\n<li>编译内容为 JSON</li>\n</ol>\n<h2>优势总结</h2>\n<ol>\n<li><strong>开发体验</strong>: 完整的类型支持和智能提示</li>\n<li><strong>性能</strong>: 快速的构建和运行时性能</li>\n<li><strong>简洁</strong>: 最少的配置，最大的功能</li>\n<li><strong>可靠</strong>: 基于 Zod 的数据验证</li>\n</ol>\n<h2>结论</h2>\n<p>Next.js 15 + Velite 是一个优秀的现代内容管理方案，特别适合：</p>\n<ul>\n<li>技术博客</li>\n<li>文档网站</li>\n<li>项目展示</li>\n<li>个人网站</li>\n</ul>\n<p>如果你正在寻找一个简单而强大的内容管理解决方案，强烈推荐尝试这个组合。</p>\n<hr>\n<p><em>想了解更多技术细节？欢迎预约咨询时间深入讨论。</em></p>",
+    "html": "<h1>Next.js 15 + Velite: 現代內容管理方案</h1>\n<p>在建構 8plus.app 時，我選擇了 Next.js 15 + Velite 的技術組合。這篇文章分享選擇這個方案的原因和實踐經驗。</p>\n<h2>為什麼選擇 Velite？</h2>\n<h3>1. 類型安全</h3>\n<p>Velite 基於 Zod schema，提供完整的 TypeScript 類型支援：</p>\n<pre><code class=\"language-typescript\">const posts = defineCollection({\n  name: 'Post',\n  pattern: 'content/posts/**/*.mdx',\n  schema: s.object({\n    title: s.string(),\n    date: s.isodate(),\n    tags: s.array(s.string()).optional(),\n    summary: s.string(),\n    published: s.boolean().default(true),\n    content: s.mdx()\n  })\n})\n</code></pre>\n<h3>2. 簡單而強大</h3>\n<p>相比 Contentlayer，Velite 提供了更簡潔的 API 和更好的效能：</p>\n<ul>\n<li>更快的建構速度</li>\n<li>更少的配置</li>\n<li>更好的錯誤提示</li>\n</ul>\n<h3>3. Next.js 15 相容性</h3>\n<p>Velite 原生支援 Next.js 15，避免了版本相容性問題。</p>\n<h2>實踐經驗</h2>\n<h3>配置檔案結構</h3>\n<pre><code class=\"language-typescript\">export default defineConfig({\n  root: '.',\n  output: {\n    data: '.velite',\n    assets: 'public/static',\n    base: '/static/',\n    clean: true\n  },\n  collections: { posts, projects },\n  mdx: {\n    rehypePlugins: [\n      rehypeSlug,\n      [rehypeAutolinkHeadings, { behavior: 'wrap' }]\n    ]\n  }\n})\n</code></pre>\n<h3>在 React 元件中使用</h3>\n<pre><code class=\"language-tsx\">import { posts } from '.velite'\n\nexport default function BlogPage() {\n  const publishedPosts = posts\n    .filter(post => post.published)\n    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())\n  \n  return (\n    &#x3C;div>\n      {publishedPosts.map(post => (\n        &#x3C;article key={post.slug}>\n          &#x3C;h2>{post.title}&#x3C;/h2>\n          &#x3C;p>{post.summary}&#x3C;/p>\n        &#x3C;/article>\n      ))}\n    &#x3C;/div>\n  )\n}\n</code></pre>\n<h2>建構流程</h2>\n<p>建構流程非常簡單：</p>\n<pre><code class=\"language-bash\">velite &#x26;&#x26; next build\n</code></pre>\n<p>Velite 會：</p>\n<ol>\n<li>掃描 MDX 檔案</li>\n<li>驗證 frontmatter</li>\n<li>生成類型定義</li>\n<li>編譯內容為 JSON</li>\n</ol>\n<h2>優勢總結</h2>\n<ol>\n<li><strong>開發體驗</strong>: 完整的類型支援和智慧提示</li>\n<li><strong>效能</strong>: 快速的建構和執行時效能</li>\n<li><strong>簡潔</strong>: 最少的配置，最大的功能</li>\n<li><strong>可靠</strong>: 基於 Zod 的資料驗證</li>\n</ol>\n<h2>結論</h2>\n<p>Next.js 15 + Velite 是一個優秀的現代內容管理方案，特別適合：</p>\n<ul>\n<li>技術部落格</li>\n<li>文件網站</li>\n<li>專案展示</li>\n<li>個人網站</li>\n</ul>\n<p>如果你正在尋找一個簡單而強大的內容管理解決方案，強烈推薦嘗試這個組合。</p>\n<hr>\n<p><em>想了解更多技術細節？歡迎預約諮詢時間深入討論。</em></p>",
     "url": "/blog/nextjs-15-velite"
   },
   {

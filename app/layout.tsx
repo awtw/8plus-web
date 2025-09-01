@@ -12,7 +12,12 @@ export const metadata: Metadata = {
     template: `%s · ${SITE.name}`
   },
   description: SITE.description,
-  metadataBase: new URL(SITE.url)
+  metadataBase: new URL(SITE.url),
+  icons: {
+    icon: "/og/favicon.ico",
+    shortcut: "/og/favicon.ico",
+    apple: "/og/8plus.svg"
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

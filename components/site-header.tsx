@@ -23,7 +23,7 @@ export default function SiteHeader() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Image 
-              src="/og/8plus_L.svg" 
+              src="/og/8plus.svg" 
               alt="8plus Logo" 
               width={32} 
               height={32}
@@ -48,7 +48,7 @@ export default function SiteHeader() {
         <div className="flex flex-1 items-center justify-between md:justify-end">
           <Link href="/" className="flex items-center space-x-2 md:hidden">
             <Image 
-              src="/og/8plus_L.svg" 
+              src="/og/8plus.svg" 
               alt="8plus Logo" 
               width={28} 
               height={28}

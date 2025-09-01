@@ -38,7 +38,7 @@ const projects = defineCollection({
     thumbnail: s.string().optional(),
     published: s.boolean().default(true),
     locale: s.string().default('zh-TW'),
-    html: s.mdx()
+    html: s.markdown()
   }).transform(data => ({
     ...data,
     url: `/projects/${data.slug}`

@@ -16,11 +16,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PostPageProps) {
   const { slug } = await params;
   const post = posts.find(p => p.slug === slug);
-  
+
   if (!post) {
-    return {
-      title: "Post not found"
-    };
+    return {};
   }
 
   return {

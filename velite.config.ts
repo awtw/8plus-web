@@ -15,7 +15,7 @@ const posts = defineCollection({
     protected: s.boolean().default(false),
     slug: s.string(),
     locale: s.string().default('zh-Hant'),
-    html: s.mdx()
+    html: s.markdown()
   }).transform(data => ({
     ...data,
     url: `/blog/${data.slug}`

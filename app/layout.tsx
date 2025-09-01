@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description: SITE.description,
   metadataBase: new URL(SITE.url),
   icons: {
-    icon: "/og/favicon.ico",
-    shortcut: "/og/favicon.ico",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
     apple: "/og/8plus.svg"
   }
 };

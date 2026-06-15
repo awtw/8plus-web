@@ -70,7 +70,32 @@ body {
   background: var(--brand-gray-500);
 }
 
-/* Prose 样式增强 */
+/* Aurora glow 動畫 */
+@keyframes aurora {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  25% { transform: translate(10%, -10%) scale(1.1); opacity: 0.6; }
+  50% { transform: translate(-5%, 15%) scale(0.9); opacity: 0.4; }
+  75% { transform: translate(15%, 5%) scale(1.05); opacity: 0.7; }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+.animate-aurora { animation: aurora 8s ease-in-out infinite; }
+.animate-tilt { animation: tilt 10s ease-in-out infinite; }
+
+.glass-card {
+  @apply bg-white/60 dark:bg-white/[0.04] backdrop-blur-xl border border-gray-200/60 dark:border-white/[0.06] shadow-sm;
+}
+
+.glass-card-strong {
+  @apply bg-white/80 dark:bg-white/[0.06] backdrop-blur-2xl border border-gray-200/60 dark:border-white/[0.08] shadow-md;
+}
+
+/* Prose 样式增強 */
 .prose img {
   border-radius: 0.75rem;
   border: 1px solid var(--border-primary);

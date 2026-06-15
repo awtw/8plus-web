@@ -3,19 +3,21 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
 import LanguageSwitcher from "./language-switcher";
 
-const navigation = [
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
-
 export default function SiteHeader() {
+  const { t, locale } = useLanguage();
+
+  const navigation = [
+    { key: "projects", href: "/projects" },
+    { key: "blog", href: "/blog" },
+    { key: "about", href: "/about" },
+    { key: "contact", href: "/contact" },
+  ]
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -38,9 +40,15 @@ export default function SiteHeader() {
                 href={item.href}
                 className="text-foreground/60 transition-colors hover:text-foreground/80"
               >
-                {item.name}
+                {t(`nav.${item.key}` as any)}
               </Link>
             ))}
+            <Link
+              href="/path"
+              className="text-foreground/60 transition-colors hover:text-foreground/80"
+            >
+              {locale === "zh-TW" ? "歷程" : "Path"}
+            </Link>
           </nav>
         </div>
 
@@ -64,7 +72,7 @@ export default function SiteHeader() {
             </div>
             <Button asChild className="hidden md:inline-flex">
               <Link href="/booking">
-                Booking
+                {t("booking.title" as any)}
               </Link>
             </Button>
             {/* Mobile Menu - Right Side */}

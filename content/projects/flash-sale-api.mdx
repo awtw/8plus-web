@@ -1,0 +1,40 @@
+---
+title: "flash-sale-api"
+slug: "flash-sale-api"
+summary: "此為預設內容，作為 SideProjects 條目與連結的佔位。"
+published: true
+locale: "zh-TW"
+links:
+  github: "https://github.com/awtw/flash-sale-api"
+---
+
+# Flash Sale API — 高併發限量搶購後端
+
+## 截圖
+![Flash Sale API Web](/og/labs/flash-sale-api/web.png)
+
+**Tags**: NestJS, PostgreSQL, Redis, RabbitMQ, Jest
+
+本專案針對「高併發限量搶購」設計，確保在極端流量情況下不超賣，並維持庫存一致性與系統穩定性。
+
+## 核心設計
+- 以行鎖（`SELECT ... FOR UPDATE`）處理競態條件
+- 以 RabbitMQ 佇列削峰，保護資料庫
+- 以 Redis 快取加速讀取，降低 DB 壓力
+- Rate Limiting 限制惡意或異常流量
+
+## API 範例
+- `POST /purchase`：下單購買（保證不超賣）
+- `GET /products/:id`：查詢商品庫存
+
+## 技術棧
+- 框架：NestJS（模組化架構）
+- 資料庫：PostgreSQL（TypeORM）
+- 佇列：RabbitMQ（amqplib）
+- 快取：Redis
+- 測試：Jest
+
+## 原始碼
+- GitHub：<https://github.com/awtw/flash-sale-api>
+
+ 

@@ -13,17 +13,31 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Menu } from "lucide-react"
 import LanguageSwitcher from "./language-switcher"
-
-const navigation = [
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
+import { useLanguage } from "./language-provider"
 
 export function MobileNav() {
+  const { t, locale } = useLanguage()
   const [open, setOpen] = useState(false)
+
+  const navZh = [
+    { name: "服務", href: "/services" },
+    { name: "項目", href: "/projects" },
+    { name: "歷程", href: "/path" },
+    { name: "博客", href: "/blog" },
+    { name: "關於", href: "/about" },
+    { name: "聯繫", href: "/contact" },
+  ]
+
+  const navEn = [
+    { name: "Services", href: "/services" },
+    { name: "Projects", href: "/projects" },
+    { name: "Path", href: "/path" },
+    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ]
+
+  const navigation = locale === "zh-TW" ? navZh : navEn
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -76,7 +90,7 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="inline-flex w-full h-12 items-center justify-center rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90"
             >
-              Booking
+              {locale === "zh-TW" ? "預約諮詢" : "Booking"}
             </Link>
           </div>
         </div>

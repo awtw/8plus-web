@@ -9,20 +9,19 @@ export const translations = {
     // 導航
     nav: {
       services: '服務',
-      projects: '項目',
+      projects: 'Lab',
       blog: '博客',
       booking: '預約',
       about: '關於',
-      contact: '聯繫',
     },
     // 主頁
     home: {
       title: 'Engineering · UX · Consulting',
       subtitle: '專注於前端工程、用戶體驗設計和技術諮詢。\n使用現代技術棧構建高品質的 Web 應用程序，\n並提供專業的技術指導和架構建議。',
-      viewProjects: '查看項目',
+      viewProjects: '查看 Lab',
       bookConsultation: '預約諮詢',
       coreServices: '核心服務',
-      featuredProjects: '精選項目',
+      featuredProjects: '精選 Archive',
       recentPosts: '最新文章',
       viewAll: '查看全部',
       services: {
@@ -44,15 +43,15 @@ export const translations = {
     },
     // 項目頁面
     projects: {
-      title: '項目作品',
-      description: '精選的技術項目和客戶案例',
+      title: 'Lab',
+      description: '精選的技術 Lab 和客戶案例',
       role: '角色',
       period: '時期',
       highlights: '重點成果',
       techStack: '技術棧',
       links: '相關鏈接',
       viewDetails: '查看詳情',
-      noProjects: '暫無項目',
+      noProjects: '暫無 Lab',
     },
     // 博客頁面
     blog: {
@@ -108,20 +107,19 @@ export const translations = {
     // Navigation
     nav: {
       services: 'Services',
-      projects: 'Projects',
+      projects: 'Lab',
       blog: 'Blog',
       booking: 'Booking',
       about: 'About',
-      contact: 'Contact',
     },
     // Home
     home: {
       title: 'Engineering · UX · Consulting',
       subtitle: 'Focused on frontend engineering, user experience design, and technical consulting.\nBuilding high-quality web applications with modern technology stacks,\nand providing professional technical guidance and architectural advice.',
-      viewProjects: 'View Projects',
+      viewProjects: 'View Lab',
       bookConsultation: 'Book Consultation',
       coreServices: 'Core Services',
-      featuredProjects: 'Featured Projects',
+      featuredProjects: 'Selected Archive',
       recentPosts: 'Recent Posts',
       viewAll: 'View All',
       services: {
@@ -143,15 +141,15 @@ export const translations = {
     },
     // Projects
     projects: {
-      title: 'Projects',
-      description: 'Selected technical projects and client cases',
+      title: 'Lab',
+      description: 'Selected technical Lab and client cases',
       role: 'Role',
       period: 'Period',
       highlights: 'Key Achievements',
       techStack: 'Tech Stack',
       links: 'Related Links',
       viewDetails: 'View Details',
-      noProjects: 'No projects available',
+      noProjects: 'No Lab available',
     },
     // Blog
     blog: {

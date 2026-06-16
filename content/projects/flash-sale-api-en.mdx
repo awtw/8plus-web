@@ -1,0 +1,39 @@
+---
+title: "Flash Sale API"
+slug: "flash-sale-api"
+baseSlug: "flash-sale-api"
+summary: "A backend API designed for high-concurrency flash-sale scenarios, using locking, queues, and caching to prevent overselling and preserve system stability."
+published: true
+locale: "en"
+links:
+  github: "https://github.com/awtw/flash-sale-api"
+---
+
+# Flash Sale API — High-Concurrency Limited Stock Backend
+
+## Screenshot
+![Flash Sale API Web](/og/labs/flash-sale-api/web.png)
+
+**Tags**: NestJS, PostgreSQL, Redis, RabbitMQ, Jest
+
+This Lab focuses on limited-stock flash-sale flows under extreme traffic. The system prevents overselling while keeping inventory consistency and service stability.
+
+## Core Design
+- Row-level locking with `SELECT ... FOR UPDATE` to handle race conditions
+- RabbitMQ queue buffering to protect the database from traffic spikes
+- Redis caching to accelerate reads and reduce DB pressure
+- Rate limiting to control malicious or abnormal traffic
+
+## API Examples
+- `POST /purchase`: place an order while guaranteeing no overselling
+- `GET /products/:id`: query product inventory
+
+## Stack
+- Framework: NestJS modular architecture
+- Database: PostgreSQL with TypeORM
+- Queue: RabbitMQ with amqplib
+- Cache: Redis
+- Testing: Jest
+
+## Source
+- GitHub: <https://github.com/awtw/flash-sale-api>

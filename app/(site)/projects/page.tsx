@@ -2,12 +2,12 @@
 'use client'
 
 import Link from "next/link";
-import { projects } from ".velite";
 import { useLanguage } from "@/components/language-provider";
+import { getLocalizedProjects, isProjectLocaleFallback } from "@/lib/projects";
 
 export default function ProjectsPage() {
   const { t, locale } = useLanguage();
-  const publishedProjects = projects.filter(project => project.published && project.locale === locale);
+  const publishedProjects = getLocalizedProjects(locale);
 
   return (
     <section className="py-12">
@@ -26,14 +26,21 @@ export default function ProjectsPage() {
         <div className="grid md:grid-cols-2 gap-8">
           {publishedProjects.map(project => (
             <Link 
-              key={project.slug} 
+              key={`${project.slug}-${project.locale}`} 
               href={project.url}
               className="group block border rounded-xl p-6 hover:shadow-lg transition-all duration-200"
             >
               <div className="mb-4">
-                <h2 className="text-xl font-semibold group-hover:text-gray-700 transition-colors mb-2">
-                  {project.title}
-                </h2>
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-xl font-semibold group-hover:text-gray-700 transition-colors">
+                    {project.title}
+                  </h2>
+                  {isProjectLocaleFallback(project, locale) && (
+                    <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                      中文
+                    </span>
+                  )}
+                </div>
                 {project.role && (
                   <p className="text-sm text-gray-700 font-medium">{project.role}</p>
                 )}

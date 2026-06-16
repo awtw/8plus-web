@@ -2,26 +2,34 @@
 'use client'
 
 import { notFound } from "next/navigation";
-import { projects } from ".velite";
 import { useLanguage } from "@/components/language-provider";
 import { useParams } from "next/navigation";
+import { findLocalizedProject, isProjectLocaleFallback } from "@/lib/projects";
 
 export default function ProjectDetail() {
   const { t, locale } = useLanguage();
   const params = useParams();
   const slug = params.slug as string;
   
-  // 根據當前語言和 slug 找到對應的項目
-  const project = projects.find(p => p.slug === slug && p.locale === locale);
+  const project = findLocalizedProject(slug, locale);
   
   if (!project) {
     notFound();
   }
 
+  const isFallback = isProjectLocaleFallback(project, locale);
+
   return (
     <article className="py-12">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
+        <div className="flex items-center gap-3 mb-4">
+          <h1 className="text-3xl font-bold">{project.title}</h1>
+          {isFallback && (
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+              {locale === "en" ? "Chinese only" : "中文"}
+            </span>
+          )}
+        </div>
         
         <div className="flex flex-wrap gap-4 text-sm text-slate-600 mb-4">
           {project.role && (

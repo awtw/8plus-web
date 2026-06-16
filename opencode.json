@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-20250514",
+  "small_model": "anthropic/claude-haiku-4-20250514",
+  "permission": {
+    "read": {
+      "*": "allow",
+      ".env*": "deny"
+    },
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "git status": "allow",
+      "git diff": "allow",
+      "git log": "allow",
+      "pnpm build": "allow",
+      "pnpm dev": "allow"
+    }
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      ".velite/**",
+      ".contentlayer/**",
+      "_bmad/**"
+    ]
+  }
+}

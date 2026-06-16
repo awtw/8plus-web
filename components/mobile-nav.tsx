@@ -13,17 +13,31 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Menu } from "lucide-react"
 import LanguageSwitcher from "./language-switcher"
-
-const navigation = [
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
+import { Logo } from "./logo"
+import { useLanguage } from "./language-provider"
+import { ThemeToggle } from "./theme-toggle"
 
 export function MobileNav() {
+  const { t, locale } = useLanguage()
   const [open, setOpen] = useState(false)
+
+  const navZh = [
+    { name: "服務", href: "/services" },
+    { name: "Lab", href: "/projects" },
+    { name: "歷程", href: "/path" },
+    { name: "博客", href: "/blog" },
+    { name: "關於", href: "/about" },
+  ]
+
+  const navEn = [
+    { name: "Services", href: "/services" },
+    { name: "Lab", href: "/projects" },
+    { name: "Path", href: "/path" },
+    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
+  ]
+
+  const navigation = locale === "zh-TW" ? navZh : navEn
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -41,9 +55,10 @@ export function MobileNav() {
           <SheetTitle className="text-left">
             <Link
               href="/"
-              className="flex items-center"
+              className="flex items-center gap-2"
               onClick={() => setOpen(false)}
             >
+              <Logo size={28} className="h-7 w-7" />
               <span className="font-bold text-xl">8plus</span>
             </Link>
           </SheetTitle>
@@ -68,6 +83,10 @@ export function MobileNav() {
           
           {/* Footer */}
           <div className="border-t pt-6 space-y-4 pb-2">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-sm text-muted-foreground">Theme</div>
+              <ThemeToggle />
+            </div>
             <div className="w-full">
               <LanguageSwitcher fullWidth />
             </div>
@@ -76,7 +95,7 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="inline-flex w-full h-12 items-center justify-center rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90"
             >
-              Booking
+              {locale === "zh-TW" ? "預約諮詢" : "Booking"}
             </Link>
           </div>
         </div>

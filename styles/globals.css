@@ -89,10 +89,94 @@ body {
 
 .glass-card {
   @apply bg-white/60 dark:bg-white/[0.04] backdrop-blur-xl border border-gray-200/60 dark:border-white/[0.06] shadow-sm;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.06);
 }
 
 .glass-card-strong {
   @apply bg-white/80 dark:bg-white/[0.06] backdrop-blur-2xl border border-gray-200/60 dark:border-white/[0.08] shadow-md;
+}
+
+/* Gradient border card */
+.gradient-border-card {
+  position: relative;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+.gradient-border-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(168,85,247,0.3), rgba(16,185,129,0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gradient-border-card:hover::before {
+  opacity: 1;
+}
+
+/* Tilt card */
+.tilt-card {
+  perspective: 800px;
+}
+
+.tilt-card-inner {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+/* Noise texture overlay */
+.noise-bg::after {
+  content: '';
+  position: fixed;
+  inset: -200%;
+  width: 400%;
+  height: 400%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* Text reveal */
+.text-reveal {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transform: translateY(0);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Shimmer gradient */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 102, 241, 0.04),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Glow dot */
+.glow-dot {
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 /* Prose 样式增強 */

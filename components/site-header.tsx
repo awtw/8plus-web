@@ -2,11 +2,12 @@
 'use client'
 
 import Link from "next/link";
-import Image from "next/image";
 import { useLanguage } from "@/components/language-provider";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
 import LanguageSwitcher from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function SiteHeader() {
   const { t, locale } = useLanguage();
@@ -15,7 +16,6 @@ export default function SiteHeader() {
     { key: "projects", href: "/projects" },
     { key: "blog", href: "/blog" },
     { key: "about", href: "/about" },
-    { key: "contact", href: "/contact" },
   ]
 
   return (
@@ -24,13 +24,7 @@ export default function SiteHeader() {
         {/* Desktop Navigation */}
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image 
-              src="/og/8plus.svg" 
-              alt="8plus Logo" 
-              width={32} 
-              height={32}
-              className="h-8 w-8"
-            />
+            <Logo size={32} className="h-8 w-8" />
             <span className="font-bold text-xl">8plus</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -55,13 +49,7 @@ export default function SiteHeader() {
         {/* Mobile Logo */}
         <div className="flex flex-1 items-center justify-between md:justify-end">
           <Link href="/" className="flex items-center space-x-2 md:hidden">
-            <Image 
-              src="/og/8plus.svg" 
-              alt="8plus Logo" 
-              width={28} 
-              height={28}
-              className="h-7 w-7"
-            />
+            <Logo size={28} className="h-7 w-7" />
             <span className="font-bold text-lg">8plus</span>
           </Link>
 
@@ -69,6 +57,9 @@ export default function SiteHeader() {
           <nav className="flex items-center space-x-2">
             <div className="hidden md:block">
               <LanguageSwitcher />
+            </div>
+            <div className="hidden md:block">
+              <ThemeToggle />
             </div>
             <Button asChild className="hidden md:inline-flex">
               <Link href="/booking">

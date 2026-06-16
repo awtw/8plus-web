@@ -1,6 +1,7 @@
 
 'use client'
 
+import { Logo } from "./logo";
 import { useLanguage } from "./language-provider";
 
 export default function SiteFooter() {
@@ -11,6 +12,7 @@ export default function SiteFooter() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3">
+              <Logo size={28} className="h-7 w-7" />
               <span className="font-bold text-lg text-gray-900">8plus</span>
               <span className="text-gray-400">·</span>
               <span className="text-sm text-gray-600">Engineering & Consulting</span>

@@ -12,7 +12,7 @@ export function Logo({ className, size = 32, variant = "default" }: LogoProps) {
   const variants = {
     default: {
       background: "transparent",
-      markFill: "#050505",
+      markFill: "var(--logo-mark)",
     },
     mono: {
       background: "transparent",
@@ -20,7 +20,7 @@ export function Logo({ className, size = 32, variant = "default" }: LogoProps) {
     },
     light: {
       background: "transparent",
-      markFill: "#FFFFFF",
+      markFill: "var(--logo-mark-inverse)",
     },
     favicon: {
       background: "#FFFFFF",

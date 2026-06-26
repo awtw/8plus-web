@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { posts } from ".velite";
 import { useLanguage } from "@/components/language-provider";
+import { BookOpen } from "@phosphor-icons/react";
 
 export default function BlogPage() {
   const { t, locale } = useLanguage();
@@ -11,35 +12,48 @@ export default function BlogPage() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <section className="py-12">
-      <h1 className="text-2xl font-semibold mb-6">{t('blog.title')}</h1>
-      
+    <div className="section-shell py-12 sm:py-16 lg:py-20">
+      <header className="max-w-4xl">
+        <span className="eyebrow">
+          <BookOpen className="h-3.5 w-3.5" weight="bold" />
+          Archive
+        </span>
+        <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4.5rem)] tracking-[-0.04em]">
+          {t('blog.title')}
+        </h1>
+        <p className="body-lead mt-4">
+          {t('blog.description')}
+        </p>
+      </header>
+
       {publishedPosts.length === 0 ? (
-        <p className="text-slate-600">{t('blog.noPosts')}</p>
+        <div className="surface-card mt-10 p-6">
+          <p className="text-[color:var(--fg-2)]">{t('blog.noPosts')}</p>
+        </div>
       ) : (
-        <div className="space-y-6">
+        <div className="mt-10 space-y-4">
           {publishedPosts.map(post => (
-            <article key={post.slug} className="border rounded-xl p-6 hover:shadow-sm transition-shadow">
-              <Link href={post.url} className="group">
-                <h2 className="text-xl font-semibold group-hover:text-gray-700 transition-colors">
+            <article key={post.slug} className="gradient-border-card p-6 sm:p-7">
+              <Link href={post.url} className="group block">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em] group-hover:text-[color:var(--accent)]">
                   {post.title}
                 </h2>
-                <time className="text-sm text-slate-500 mt-1 block">
-                  {new Date(post.date).toLocaleDateString('zh-TW', {
+                <time className="mt-2 block text-sm text-[color:var(--muted)]">
+                  {new Date(post.date).toLocaleDateString(locale === "zh-TW" ? "zh-TW" : "en-US", {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                   })}
                 </time>
-                <p className="text-slate-600 mt-3 leading-relaxed">
+                <p className="mt-4 text-sm leading-7 text-[color:var(--fg-2)]">
                   {post.summary}
                 </p>
                 {post.tags && post.tags.length > 0 && (
-                  <div className="flex gap-2 mt-4">
+                  <div className="mt-4 flex flex-wrap gap-2">
                     {post.tags.map(tag => (
-                      <span 
-                        key={tag} 
-                        className="px-2 py-1 text-xs bg-slate-100 text-slate-700 rounded"
+                      <span
+                        key={tag}
+                        className="metric-chip"
                       >
                         {tag}
                       </span>
@@ -51,6 +65,6 @@ export default function BlogPage() {
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 }

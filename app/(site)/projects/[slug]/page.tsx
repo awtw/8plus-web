@@ -1,18 +1,18 @@
-
 'use client'
 
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useLanguage } from "@/components/language-provider";
-import { useParams } from "next/navigation";
 import { findLocalizedProject, isProjectLocaleFallback } from "@/lib/projects";
+import { DetailCta } from "@/components/detail-cta";
+import { ArrowSquareOut, Sparkle } from "@phosphor-icons/react";
 
 export default function ProjectDetail() {
   const { t, locale } = useLanguage();
   const params = useParams();
   const slug = params.slug as string;
-  
+
   const project = findLocalizedProject(slug, locale);
-  
+
   if (!project) {
     notFound();
   }
@@ -20,42 +20,50 @@ export default function ProjectDetail() {
   const isFallback = isProjectLocaleFallback(project, locale);
 
   return (
-    <article className="py-12">
-      <header className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <h1 className="text-3xl font-bold">{project.title}</h1>
+    <article className="section-shell py-12 sm:py-16 lg:py-20">
+      <header className="surface-card p-6 sm:p-8">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="eyebrow">
+            <Sparkle className="h-3.5 w-3.5" weight="fill" />
+            Lab
+          </span>
           {isFallback && (
-            <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-              {locale === "en" ? "Chinese only" : "中文"}
-            </span>
+            <span className="metric-chip">{locale === "en" ? "Chinese only" : "中文"}</span>
           )}
         </div>
-        
-        <div className="flex flex-wrap gap-4 text-sm text-slate-600 mb-4">
+
+        <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4rem)] tracking-[-0.04em]">
+          {project.title}
+        </h1>
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-[color:var(--fg-2)]">
           {project.role && (
             <div>
-              <span className="font-medium">{t('projects.role')}：</span>
-              <span className="text-gray-700 font-medium">{project.role}</span>
+              <span className="font-medium text-[color:var(--fg)]">{t('projects.role')}：</span>
+              <span>{project.role}</span>
             </div>
           )}
           {project.period && (
             <div>
-              <span className="font-medium">{t('projects.period')}：</span>
-              {project.period}
+              <span className="font-medium text-[color:var(--fg)]">{t('projects.period')}：</span>
+              <span>{project.period}</span>
             </div>
           )}
         </div>
 
-        <p className="text-lg text-slate-600 mb-6">{project.summary}</p>
+        <p className="body-lead mt-5 max-w-3xl">
+          {project.summary}
+        </p>
 
         {project.stack && project.stack.length > 0 && (
-          <div className="mb-6">
-            <h2 className="font-semibold mb-3">{t('projects.techStack')}</h2>
-            <div className="flex flex-wrap gap-2">
+          <div className="mt-6">
+            <h2 className="text-sm font-semibold tracking-[0.12em] uppercase text-[color:var(--muted)]">
+              {t('projects.techStack')}
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
               {project.stack.map(tech => (
-                <span 
+                <span
                   key={tech}
-                  className="px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded-full"
+                  className="metric-chip"
                 >
                   {tech}
                 </span>
@@ -63,50 +71,58 @@ export default function ProjectDetail() {
             </div>
           </div>
         )}
+      </header>
 
-        {project.highlights && project.highlights.length > 0 && (
-          <div className="mb-6">
-            <h2 className="font-semibold mb-3">{t('projects.highlights')}</h2>
-            <ul className="space-y-2">
+      <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_0.8fr]">
+        <div className="surface-card p-6 sm:p-7">
+          <h2 className="text-xl font-semibold tracking-[-0.03em]">
+            {t('projects.highlights')}
+          </h2>
+          {project.highlights && project.highlights.length > 0 ? (
+            <ul className="mt-4 space-y-3 text-sm leading-7 text-[color:var(--fg-2)]">
               {project.highlights.map((highlight, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-green-500 mr-3 mt-1">✓</span>
-                  <span className="text-slate-700">{highlight}</span>
+                <li key={index} className="flex items-start gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />
+                  <span>{highlight}</span>
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          ) : (
+            <p className="mt-4 text-sm text-[color:var(--fg-2)]">No highlights listed.</p>
+          )}
+        </div>
 
         {project.links && Object.keys(project.links).length > 0 && (
-          <div className="mb-8">
-            <h2 className="font-semibold mb-3">{t('projects.links')}</h2>
-            <div className="flex flex-wrap gap-3">
+          <div className="surface-card-strong p-6 sm:p-7">
+            <h2 className="text-xl font-semibold tracking-[-0.03em]">
+              {t('projects.links')}
+            </h2>
+            <div className="mt-4 flex flex-wrap gap-3">
               {Object.entries(project.links).map(([key, url]) => (
                 <a
                   key={key}
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+                  className="brand-button-secondary inline-flex items-center gap-2"
                 >
-                  {key === 'github' ? 'GitHub' : 
-                   key === 'demo' ? 'Live Demo' : 
-                   key === 'website' ? 'Website' : 
+                  {key === 'github' ? 'GitHub' :
+                   key === 'demo' ? 'Live Demo' :
+                   key === 'website' ? 'Website' :
                    key.charAt(0).toUpperCase() + key.slice(1)}
-                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
+                  <ArrowSquareOut className="h-4 w-4" weight="bold" />
                 </a>
               ))}
             </div>
           </div>
         )}
-      </header>
-      
-      <div className="prose prose-slate max-w-none">
+      </section>
+
+      <div className="prose prose-slate max-w-none mt-8">
         <div dangerouslySetInnerHTML={{ __html: project.html }} />
       </div>
+
+      <DetailCta />
     </article>
   );
 }

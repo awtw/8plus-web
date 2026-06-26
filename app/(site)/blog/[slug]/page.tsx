@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { posts } from ".velite";
+import { DetailCta } from "@/components/detail-cta";
 
 interface PostPageProps {
   params: Promise<{
@@ -30,29 +31,33 @@ export async function generateMetadata({ params }: PostPageProps) {
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const post = posts.find(p => p.slug === slug);
-  
+
   if (!post) {
     notFound();
   }
 
   return (
-    <article className="py-12">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-        <div className="flex items-center gap-4 text-sm text-slate-600">
+    <article className="section-shell py-12 sm:py-16 lg:py-20">
+      <header className="surface-card p-6 sm:p-8">
+        <span className="eyebrow">Archive</span>
+        <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4rem)] tracking-[-0.04em]">
+          {post.title}
+        </h1>
+
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[color:var(--fg-2)]">
           <time>
-            {new Date(post.date).toLocaleDateString('zh-TW', {
+            {new Date(post.date).toLocaleDateString(post.locale === 'en' ? 'en-US' : 'zh-TW', {
               year: 'numeric',
-              month: 'long', 
+              month: 'long',
               day: 'numeric'
             })}
           </time>
           {post.tags && post.tags.length > 0 && (
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {post.tags.map(tag => (
-                <span 
+                <span
                   key={tag}
-                  className="px-2 py-1 text-xs bg-slate-100 text-slate-700 rounded"
+                  className="metric-chip"
                 >
                   {tag}
                 </span>
@@ -60,20 +65,23 @@ export default async function PostPage({ params }: PostPageProps) {
             </div>
           )}
         </div>
+
         {post.protected && (
-          <div className="p-4 my-6 border rounded-lg bg-yellow-50 border-yellow-200">
-            <strong className="text-yellow-800">Protected Content:</strong>
-            <span className="text-yellow-700 ml-2">
+          <div className="mt-6 rounded-[22px] border border-[color:var(--warn)]/30 bg-[rgba(234,179,8,0.08)] p-4">
+            <strong className="text-[color:var(--fg)]">Protected Content:</strong>
+            <span className="ml-2 text-[color:var(--fg-2)]">
               This article contains protected content. Full content available in Phase 2.
             </span>
           </div>
         )}
       </header>
-      
-      <div 
-        className="prose prose-slate max-w-none"
+
+      <div
+        className="prose prose-slate max-w-none mt-8"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
+
+      <DetailCta />
     </article>
   );
 }

@@ -15,7 +15,7 @@ module.exports = {
         "2xl": "5rem",
       },
       screens: {
-        "2xl": "1200px",
+        "2xl": "1440px",
       },
     },
   	extend: {
@@ -24,6 +24,11 @@ module.exports = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+      fontFamily: {
+        sans: ['"Unica77 Cohere Web"', 'Inter', '-apple-system', 'sans-serif'],
+        serif: ['"CohereText"', 'Georgia', 'serif'],
+        mono: ['"CohereMono"', 'JetBrains Mono', 'Menlo', 'monospace'],
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -55,7 +60,7 @@ module.exports = {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
-  			border: 'hsl(var(--border))',
+  			border: 'hsl(var(--border-hsl) / <alpha-value>)',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			chart: {

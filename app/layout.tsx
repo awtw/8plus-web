@@ -2,6 +2,9 @@
 import "./../styles/globals.css";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import { SkipToMain } from "@/components/skip-to-main";
+import { DesignModeProvider } from "@/components/design-mode-provider";
+import { DesignModeScript } from "@/components/design-mode-script";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
@@ -27,14 +30,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-Hant" className="h-full" suppressHydrationWarning>
-      <body className="h-full flex flex-col bg-background text-foreground">
+    <html lang="zh-Hant" className="h-full" data-design-mode="cohere" suppressHydrationWarning>
+      <head>
+        <DesignModeScript />
+      </head>
+      <body className="h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>
-          <LanguageProvider>
-            <SiteHeader />
-            <main className="flex-1 container">{children}</main>
-            <SiteFooter />
-          </LanguageProvider>
+          <DesignModeProvider>
+            <LanguageProvider>
+              <SkipToMain />
+              <SiteHeader />
+              <main id="main-content" className="flex-1 w-full">{children}</main>
+              <SiteFooter />
+            </LanguageProvider>
+          </DesignModeProvider>
         </ThemeProvider>
       </body>
     </html>

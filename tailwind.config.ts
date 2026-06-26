@@ -7,7 +7,21 @@ const config: Config = {
     "./components/**/*.{ts,tsx}",
     "./content/**/*.{md,mdx}"
   ],
+  darkMode: ["class"],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1.5rem",
+        sm: "2rem",
+        lg: "3rem",
+        xl: "4rem",
+        "2xl": "5rem",
+      },
+      screens: {
+        "2xl": "1440px",
+      },
+    },
     extend: {
       colors: {
         // 8plus 品牌色彩系统 - 灰黑白色调
@@ -40,8 +54,9 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'monospace'],
+        sans: ['"Unica77 Cohere Web"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['"CohereText"', 'Georgia', 'serif'],
+        mono: ['"CohereMono"', 'JetBrains Mono', 'Menlo', 'Monaco', 'monospace'],
       },
       typography: (theme: any) => ({
         DEFAULT: {

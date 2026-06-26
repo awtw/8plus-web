@@ -19,7 +19,7 @@ interface LanguageSwitcherProps {
 }
 
 export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcherProps) {
-  const { locale, setLocale } = useLanguage()
+  const { locale, setLocale, t } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -45,13 +45,14 @@ export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcher
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors rounded-lg ${
+        className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors rounded-full border border-border/70 bg-background/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] ${
           fullWidth 
-            ? 'w-full h-12 justify-center bg-secondary text-secondary-foreground hover:bg-secondary/80' 
-            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+            ? 'w-full h-12 justify-center text-[color:var(--fg)] hover:bg-[color:var(--hover-bg)]' 
+            : 'text-[color:var(--fg-2)] hover:text-[color:var(--hover-fg)] hover:bg-[color:var(--hover-bg)]'
         }`}
         aria-expanded={isOpen}
-        aria-haspopup="true"
+        aria-haspopup="menu"
+        aria-label={t('common.selectLanguage')}
       >
         <span>{languageFlags[locale]}</span>
         <span className={fullWidth ? 'inline' : 'hidden sm:inline'}>{languageNames[locale]}</span>
@@ -66,22 +67,23 @@ export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcher
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 bottom-full mb-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[9999] sm:top-full sm:bottom-auto sm:mt-1 sm:mb-0 ${
+        <div role="menu" className={`absolute right-0 bottom-full mb-1 bg-background border border-border/70 rounded-[22px] shadow-[0_20px_40px_rgba(0,0,0,0.08)] z-[9999] sm:top-full sm:bottom-auto sm:mt-1 sm:mb-0 ${
           fullWidth ? 'w-full left-0' : 'w-40'
         }`}>
           <div className="py-1">
             {locales.map((lng) => (
               <button
                 key={lng}
+                role="menuitem"
                 onClick={() => handleLocaleChange(lng)}
-                className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
-                  locale === lng ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+                className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-[color:var(--hover-bg)] transition-colors ${
+                  locale === lng ? 'bg-[color:var(--hover-bg-strong)] text-[color:var(--fg)]' : 'text-[color:var(--fg-2)]'
                 }`}
               >
                 <span>{languageFlags[lng]}</span>
                 <span>{languageNames[lng]}</span>
                 {locale === lng && (
-                  <svg className="w-4 h-4 ml-auto text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 ml-auto text-[color:var(--fg)]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 )}

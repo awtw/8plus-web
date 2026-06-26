@@ -14,14 +14,20 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale)
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    // 從 localStorage 讀取語言設置
     const savedLocale = localStorage.getItem('locale') as Locale
     if (savedLocale && (savedLocale === 'zh-TW' || savedLocale === 'en')) {
       setLocaleState(savedLocale)
     }
+    setHydrated(true)
   }, [])
+
+  useEffect(() => {
+    if (!hydrated) return
+    document.documentElement.lang = locale === 'zh-TW' ? 'zh-Hant' : 'en'
+  }, [locale, hydrated])
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale)

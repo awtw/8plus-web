@@ -13,17 +13,56 @@ export const translations = {
       blog: '博客',
       booking: '預約',
       about: '關於',
+      path: '歷程',
     },
     // 主頁
     home: {
       title: 'Engineering · UX · Consulting',
       subtitle: '專注於前端工程、用戶體驗設計和技術諮詢。\n使用現代技術棧構建高品質的 Web 應用程序，\n並提供專業的技術指導和架構建議。',
-      viewProjects: '查看 Lab',
+      heroTitle1: '以架構驅動',
+      heroTitle2: 'AI 與體驗落地',
+      heroLead: '8plus 協助團隊把需求拆成可驗證的技術架構，導入 AI 到真實流程，並以優秀的使用者體驗把產品做成能交付、能維護、能被信任的系統。',
+      bookCall: '預約諮詢',
+      viewProjects: '看專案',
       bookConsultation: '預約諮詢',
       coreServices: '核心服務',
-      featuredProjects: '精選 Archive',
+      featuredProjects: '代表專案',
       recentPosts: '最新文章',
+      latestNote: 'Archive / 最新文章',
+      featuredProject: 'Lab / 代表專案',
       viewAll: '查看全部',
+      read: '閱讀',
+      open: '查看',
+      portfolioNote: '持續更新中的作品庫',
+      closingTitle: '如果你要的是能落地的技術夥伴，這裡可以直接開始。',
+      closingLead: '先從一次 30 分鐘的討論開始，我會幫你把需求、限制、風險、AI 可行性與使用者流程整理成可以執行的下一步。',
+      bookNow: '預約',
+      aboutMe: '認識我',
+      available: '可洽詢',
+      role: '工程顧問 / 架構設計',
+      checklist1: '把需求拆成可以執行的路線圖',
+      checklist2: '從架構、AI 到 UX 一起校準',
+      checklist3: '用可驗證交付取代空談',
+      statYears: '實戰年資',
+      statDomains: '專長場景',
+      statBooking: '合作入口',
+      pillars: [
+        {
+          title: '架構先行',
+          description: '先釐清資料流、權限、API、部署與維運邊界，讓需求從第一天就有可以演進的骨架。',
+          icon: 'cloud',
+        },
+        {
+          title: 'AI 導入',
+          description: '把 AI 放進真實工作流，而不是停在 demo：資料準備、提示設計、權限控管與人機協作一起規劃。',
+          icon: 'code',
+        },
+        {
+          title: '體驗落地',
+          description: '從介面、內容、狀態回饋到交付節奏一起校準，讓使用者真的願意用，也讓團隊能持續交付。',
+          icon: 'sparkle',
+        },
+      ],
       services: {
         frontend: {
           title: '前端開發',
@@ -39,7 +78,10 @@ export const translations = {
         }
       },
       learnMore: '了解更多',
-      bookNow: '立即預約',
+    },
+    detail: {
+      bookConsultation: '預約諮詢',
+      bookConsultationLead: '想進一步討論這個主題或類似專案？預約一次 30 分鐘對談。',
     },
     // 項目頁面
     projects: {
@@ -63,14 +105,20 @@ export const translations = {
     // 預約頁面
     booking: {
       title: '預約諮詢',
-      subtitle: '選擇適合你的時間，我們來深入討論你的技術需求。',
-      servicesInclude: '諮詢服務包括：',
+      subtitle: '選擇適合你的時間，我們來深入討論你的技術需求與合作方式。',
+      servicesInclude: '可討論的主題包含：',
+      loading: '載入行事曆中…',
       services: [
-        '前端架構設計與技術選型',
-        'Next.js 應用開發最佳實踐',
-        '代碼審查與性能優化',
-        '工程效率提升方案'
-      ]
+        '需求釐清、問題定義與解法拆解',
+        '前端 / 後端 / API 架構設計與技術選型',
+        'Code Review、效能優化與交付流程',
+        '產品技術策略、團隊協作與顧問陪跑'
+      ],
+      cards: {
+        ready: { title: '可直接預約', desc: '行事曆載入完成後，即可選擇時段。' },
+        topics: { title: '合作主題', desc: '從架構、Code Review 到產品交付流程皆可討論。' },
+        clarify: { title: '先釐清再開始', desc: '我們可以先定義問題，再一起找解法。' },
+      },
     },
     // 關於頁面
     about: {
@@ -85,7 +133,18 @@ export const translations = {
     // 服務頁面
     services: {
       title: '專業服務',
-      description: '提供全方位的前端開發和技術諮詢服務'
+      description: '提供全方位的前端開發和技術諮詢服務',
+      eyebrow: 'Services',
+      headline: '服務不是菜單，而是一起把問題做清楚',
+      lead: '我的協作範圍比頁面上列出的項目更廣。與其把服務寫成固定清單，不如把它理解成不同的合作模式，最後都回到同一件事：幫你把技術問題變得可以執行。',
+      items: [
+        { title: 'Architecture & Delivery', desc: '適合要重新梳理架構、拆解舊系統、定義新平台邊界的合作情境。' },
+        { title: 'Frontend / Full-stack', desc: '從 UI、資料流到 API 與部署，把產品與實作拉成同一條線。' },
+        { title: 'Review & Optimization', desc: 'Code Review、效能優化、可靠性與交付流程上的實務建議。' },
+        { title: 'Consulting Support', desc: '如果需求還在模糊期，也可以先幫你把問題定義與優先順序整理出來。' },
+      ],
+      bookCta: '前往預約',
+      aboutCta: '看更多背景',
     },
     // 通用
     common: {
@@ -93,6 +152,25 @@ export const translations = {
       error: '發生錯誤',
       notFound: '頁面未找到',
       backToHome: '返回首頁',
+      skipToMain: '跳至主要內容',
+      theme: '主題',
+      close: '關閉',
+      selectLanguage: '選擇語言',
+    },
+    path: {
+      ctaTitle: '準備好討論下一步了嗎？',
+      ctaLead: '預約一次對談，一起規劃你的技術路線與合作方式。',
+      ctaButton: '預約諮詢',
+      current: '目前',
+      period: '2012 — 2026',
+      title: '職涯歷程',
+      lead: '從跨領域學術背景到企業 AI 架構 — 每個階段都在累積可交付的系統能力與協作經驗。',
+    },
+    theme: {
+      toggle: '切換亮暗模式',
+      designMenu: '設計模式選單',
+      longPressHint: '長按 Logo 也可開啟',
+      current: '目前',
     },
     // 頁腳
     footer: {
@@ -100,7 +178,8 @@ export const translations = {
       builtWith: '使用 Next.js 15 + Velite 構建',
       metaphysics: 'Metaphysics & UIX longform at',
       madeIn: '台灣製造',
-      poweredBy: '由 Vercel 提供支持'
+      poweredBy: '由 Vercel 提供支持',
+      navLabel: '站內連結',
     }
   },
   'en': {
@@ -111,17 +190,56 @@ export const translations = {
       blog: 'Blog',
       booking: 'Booking',
       about: 'About',
+      path: 'Path',
     },
     // Home
     home: {
       title: 'Engineering · UX · Consulting',
       subtitle: 'Focused on frontend engineering, user experience design, and technical consulting.\nBuilding high-quality web applications with modern technology stacks,\nand providing professional technical guidance and architectural advice.',
-      viewProjects: 'View Lab',
+      heroTitle1: 'Architecture-led',
+      heroTitle2: 'AI and product experience',
+      heroLead: '8plus helps teams turn requirements into verifiable architecture, introduce AI into real workflows, and shape the product experience into systems that can be shipped, maintained, and trusted.',
+      bookCall: 'Book a call',
+      viewProjects: 'View projects',
       bookConsultation: 'Book Consultation',
       coreServices: 'Core Services',
-      featuredProjects: 'Selected Archive',
+      featuredProjects: 'Featured projects',
       recentPosts: 'Recent Posts',
+      latestNote: 'Archive / Latest note',
+      featuredProject: 'Lab / Featured project',
       viewAll: 'View All',
+      read: 'Read',
+      open: 'Open',
+      portfolioNote: 'Continuously updated portfolio',
+      closingTitle: 'If you need a partner who can actually ship, this is a good place to start.',
+      closingLead: 'Start with a 30-minute conversation and we will turn needs, constraints, risks, AI feasibility, and user flows into executable next steps.',
+      bookNow: 'Book now',
+      aboutMe: 'About',
+      available: 'Available',
+      role: 'Engineering consultant / architect',
+      checklist1: 'Break requirements into a plan people can execute',
+      checklist2: 'Align architecture, AI, and UX in one pass',
+      checklist3: 'Replace vague strategy with verified delivery',
+      statYears: 'Years in production',
+      statDomains: 'Core domains',
+      statBooking: 'Booking channel',
+      pillars: [
+        {
+          title: 'Architecture First',
+          description: 'Clarify data flow, permissions, APIs, deployment, and operations so every requirement starts with a structure that can evolve.',
+          icon: 'cloud',
+        },
+        {
+          title: 'AI Integration',
+          description: 'Bring AI into real workflows, not just demos: data readiness, prompt design, access control, and human-in-the-loop operations planned together.',
+          icon: 'code',
+        },
+        {
+          title: 'Experience Delivery',
+          description: 'Align interface, content, feedback states, and delivery rhythm so people want to use the product and teams can keep shipping.',
+          icon: 'sparkle',
+        },
+      ],
       services: {
         frontend: {
           title: 'Frontend Development',
@@ -137,7 +255,10 @@ export const translations = {
         }
       },
       learnMore: 'Learn More',
-      bookNow: 'Book Now',
+    },
+    detail: {
+      bookConsultation: 'Book Consultation',
+      bookConsultationLead: 'Want to discuss this topic or a similar project? Book a 30-minute call.',
     },
     // Projects
     projects: {
@@ -161,14 +282,20 @@ export const translations = {
     // Booking
     booking: {
       title: 'Book Consultation',
-      subtitle: 'Choose a suitable time for you, and let\'s discuss your technical needs in depth.',
-      servicesInclude: 'Consulting services include:',
+      subtitle: 'Choose a suitable time, and let\'s discuss your technical needs and collaboration model in depth.',
+      servicesInclude: 'Topics we can cover:',
+      loading: 'Loading calendar…',
       services: [
-        'Frontend architecture design and technology selection',
-        'Next.js application development best practices',
-        'Code review and performance optimization',
-        'Engineering efficiency improvement solutions'
-      ]
+        'Problem framing, requirement clarification, and solution breakdown',
+        'Frontend / backend / API architecture and technology selection',
+        'Code review, performance optimization, and delivery flow',
+        'Product strategy, team collaboration, and consulting support'
+      ],
+      cards: {
+        ready: { title: 'Ready to book', desc: 'Pick a time slot once the calendar is loaded.' },
+        topics: { title: 'Topics', desc: 'From architecture and code review to product delivery flow.' },
+        clarify: { title: 'Clarify first', desc: 'We can define the problem before we define the solution.' },
+      },
     },
     // About
     about: {
@@ -183,22 +310,51 @@ export const translations = {
     // Services
     services: {
       title: 'Professional Services',
-      description: 'Providing comprehensive frontend development and technical consulting services'
+      description: 'Providing comprehensive frontend development and technical consulting services',
+      eyebrow: 'Services',
+      headline: 'Services are not a menu — they are a way to get the problem right',
+      lead: 'My collaboration scope is broader than any list on this page. Rather than fixed packages, think of these as modes of working that all lead to the same outcome: making your technical problems executable.',
+      items: [
+        { title: 'Architecture & Delivery', desc: 'For teams rethinking architecture, legacy migration, or new platform boundaries.' },
+        { title: 'Frontend / Full-stack', desc: 'From UI and data flow to APIs and deployment — one coherent line from product to implementation.' },
+        { title: 'Review & Optimization', desc: 'Code review, performance, reliability, and delivery process improvements.' },
+        { title: 'Consulting Support', desc: 'When requirements are still fuzzy, we can define the problem and priorities first.' },
+      ],
+      bookCta: 'Book a call',
+      aboutCta: 'More background',
     },
-    // Common
     common: {
       loading: 'Loading...',
       error: 'An error occurred',
       notFound: 'Page not found',
       backToHome: 'Back to Home',
+      skipToMain: 'Skip to main content',
+      theme: 'Theme',
+      close: 'Close',
+      selectLanguage: 'Select language',
     },
-    // Footer
+    path: {
+      ctaTitle: 'Ready to discuss your next step?',
+      ctaLead: 'Book a call and we can plan your technical roadmap and collaboration model.',
+      ctaButton: 'Book Consultation',
+      current: 'Current',
+      period: '2012 — 2026',
+      title: 'Career Archive',
+      lead: 'From cross-disciplinary study to enterprise AI architecture — each stage built more deliverable system capability and collaboration experience.',
+    },
+    theme: {
+      toggle: 'Toggle light/dark mode',
+      designMenu: 'Design mode menu',
+      longPressHint: 'Long press logo also works',
+      current: 'Current',
+    },
     footer: {
       tagline: 'Engineering & Consulting',
       builtWith: 'Built with Next.js 15 + Velite',
       metaphysics: 'Metaphysics & UIX longform at',
       madeIn: 'Made in Taiwan',
-      poweredBy: 'Powered by Vercel'
+      poweredBy: 'Powered by Vercel',
+      navLabel: 'Site links',
     }
   }
 } as const

@@ -12,7 +12,7 @@
     "postinstall": "shx mkdir -p public/og || true"
   },
   "dependencies": {
-    "@8plus/ui": "file:../8plus-ui",
+    "@8plus/ui": "workspace:*",
     "@calcom/embed-react": "^1.5.3",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-dialog": "^1.1.15",

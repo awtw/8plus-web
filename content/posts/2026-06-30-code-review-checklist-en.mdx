@@ -1,0 +1,32 @@
+---
+title: "Code Review Checklist: 12 Checks from a Consulting Lens"
+date: "2026-06-30"
+summary: "Code review is not just style. This checklist focuses on operability, security boundaries, and delivery risk for B2B teams."
+slug: "code-review-checklist-en"
+published: true
+protected: false
+tags: ["code review", "engineering"]
+locale: "en"
+---
+
+# Code Review Checklist
+
+## Architecture & boundaries
+
+- [ ] Single responsibility, sensible dependency direction
+- [ ] Versioned API contracts, consistent error codes
+- [ ] Config and secrets externalized
+
+## Reliability
+
+- [ ] Retries, timeouts, idempotency
+- [ ] Logs traceable by request id
+- [ ] Edge cases and empty states
+
+## Security
+
+- [ ] Input validation and output encoding
+- [ ] Authorization enforced server-side
+- [ ] No sensitive data in logs
+
+Need external review or advisory support? See [process](/process).

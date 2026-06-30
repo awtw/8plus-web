@@ -19,6 +19,7 @@ import {
 import { useDesignMode } from "@/components/design-mode-provider";
 import { useLanguage } from "@/components/language-provider";
 import { getShareContent } from "@/lib/content/share";
+import { getLineAddFriendUrl } from "@/lib/line";
 import { Button } from "@/components/ui/button";
 import { QrDialog } from "@/components/qr-dialog";
 
@@ -194,8 +195,10 @@ function ShareContent() {
     setMounted(true);
   }, []);
 
+  const lineAddFriendUrl = getLineAddFriendUrl();
+
   useEffect(() => {
-    QRCode.toDataURL("https://line.me/ti/p/~blusfish.yu", {
+    QRCode.toDataURL(lineAddFriendUrl, {
       width: 200,
       margin: 2,
       color: { dark: "#1a1a1a", light: "#ffffff" },
@@ -205,7 +208,7 @@ function ShareContent() {
       margin: 2,
       color: { dark: "#1a1a1a", light: "#ffffff" },
     }).then(setIGQRDataURL);
-  }, []);
+  }, [lineAddFriendUrl]);
 
   const system = modeThemes[currentMode];
 
@@ -446,7 +449,7 @@ function ShareContent() {
 
               <div className="flex flex-col gap-2">
                 <a
-                  href="https://line.me/ti/p/~blusfish.yu"
+                  href={lineAddFriendUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="brand-button-primary inline-flex items-center justify-center"

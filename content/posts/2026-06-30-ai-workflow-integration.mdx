@@ -1,0 +1,31 @@
+---
+title: "AI 導入實戰：從 demo 到可維運工作流"
+date: "2026-06-30"
+summary: "RAG 與 Agent 很酷，但上線後的權限、評估、人機協作才是成本中心。分享我協助團隊分階段導入 AI 的框架。"
+slug: "ai-workflow-integration"
+published: true
+protected: false
+tags: ["AI", "RAG", "工作流"]
+locale: "zh-TW"
+---
+
+# AI 導入實戰
+
+PoC 成功不代表能進 production。我見過太多專案卡在：資料品質、幻覺無法追責、prompt 散落各處、沒有 offline eval。
+
+## 分階段導入
+
+| 階段 | 目標 |
+|------|------|
+| 0 | 定義任務與成功指標（準確率、延遲、成本） |
+| 1 | 單一路徑 RAG + 人工審核 |
+| 2 | 工具呼叫 / Agent + 權限閘道 |
+| 3 | 監控、A/B、回饋迴圈 |
+
+## 工程要點
+
+- Context 工程：chunk、metadata、版本化
+- 權限：tenant / role 與向量庫隔離
+- Observability：trace、引用來源、拒答策略
+
+需要協助評估 AI 落地？查看 [服務](/services) 或 [聯絡](/contact)。

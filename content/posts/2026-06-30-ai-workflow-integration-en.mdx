@@ -1,0 +1,31 @@
+---
+title: "AI Integration in Practice: From Demo to Operable Workflows"
+date: "2026-06-30"
+summary: "RAG and agents are exciting — permissions, evaluation, and human-in-the-loop ops are where cost lives. A phased rollout framework from consulting work."
+slug: "ai-workflow-integration-en"
+published: true
+protected: false
+tags: ["AI", "RAG", "workflow"]
+locale: "en"
+---
+
+# AI Integration in Practice
+
+A successful PoC does not mean production readiness. Common blockers: data quality, untraceable hallucinations, scattered prompts, no offline eval.
+
+## Phased rollout
+
+| Phase | Goal |
+|-------|------|
+| 0 | Define task + success metrics (accuracy, latency, cost) |
+| 1 | Single-path RAG + human review |
+| 2 | Tool use / agents + permission gates |
+| 3 | Monitoring, A/B, feedback loops |
+
+## Engineering focus
+
+- Context engineering: chunking, metadata, versioning
+- Permissions: tenant/role isolation for vector stores
+- Observability: traces, citations, refusal policies
+
+Need help scoping AI delivery? See [services](/services) or [contact](/contact).

@@ -1,0 +1,28 @@
+---
+title: "Next.js 15 上線實務：SSG、內容管線與效能"
+date: "2026-06-30"
+summary: "8plus 站本身用 Next.js 15 + Velite。這篇整理內容站/顧問站在 production 的選型與踩坑。"
+slug: "nextjs-production-patterns"
+published: true
+protected: false
+tags: ["Next.js", "Velite", "效能"]
+locale: "zh-TW"
+---
+
+# Next.js 15 上線實務
+
+## 內容管線
+
+Velite 在 build 時產生型別安全的 collections，比 runtime MDX 更適合 marketing + blog 混合站。
+
+## 效能
+
+- 靜態首頁 + 按需 ISR（若需要）
+- 圖片走 `next/image` 或預生成 OG
+- 避免 client bundle 過大 — 首頁動效用 CSS + 節制 Framer Motion
+
+## SEO
+
+RSS、sitemap、JSON-LD 應與 launch 同一天上線，不是「之後再補」。
+
+本 repo 即為參考實作，歡迎 [看 Lab](/projects)。

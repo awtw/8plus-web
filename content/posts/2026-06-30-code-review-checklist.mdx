@@ -1,0 +1,32 @@
+---
+title: "Code Review Checklist：顧問視角的 12 項檢查"
+date: "2026-06-30"
+summary: "Code Review 不只是 style。這份 checklist 聚焦可維運性、安全邊界與交付風險，適合 B2B 團隊內部或外部顧問使用。"
+slug: "code-review-checklist"
+published: true
+protected: false
+tags: ["Code Review", "工程實務"]
+locale: "zh-TW"
+---
+
+# Code Review Checklist
+
+## 架構與邊界
+
+- [ ] 模組職責是否單一、依賴方向是否合理
+- [ ] API 契約是否版本化、錯誤碼是否一致
+- [ ] 設定與 secret 是否外置
+
+## 可靠性
+
+- [ ] 重試、timeout、冪等是否處理
+- [ ] 日誌是否可追蹤 request id
+- [ ] 邊界條件與空狀態
+
+## 安全
+
+- [ ] 輸入驗證與輸出編碼
+- [ ] 授權檢查在 server 端
+- [ ] 敏感資料不落 log
+
+需要外部 Review 或陪跑？見 [合作流程](/process)。

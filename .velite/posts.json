@@ -98,5 +98,162 @@
     "locale": "zh-TW",
     "html": "<h1>響應式設計最佳實踐：從移動優先到桌面適配</h1>\n<p>在現代網頁開發中，響應式設計已經不再是可選項，而是必需品。隨著用戶使用各種設備訪問網站，我們需要確保在所有螢幕尺寸上都能提供優質的用戶體驗。</p>\n<h2>移動優先的設計理念</h2>\n<h3>為什麼選擇移動優先？</h3>\n<p>移動優先（Mobile First）不僅僅是一種技術策略，更是一種設計哲學：</p>\n<ul>\n<li><strong>性能優化</strong>：從小螢幕開始設計，自然會關注核心功能和內容</li>\n<li><strong>漸進增強</strong>：逐步為更大的螢幕添加功能，而不是削減功能</li>\n<li><strong>用戶行為</strong>：超過 60% 的網站流量來自移動設備</li>\n</ul>\n<h3>實踐移動優先</h3>\n<pre><code class=\"language-css\">/* 基礎樣式（移動設備） */\n.container {\n  padding: 1rem;\n  max-width: 100%;\n}\n\n/* 平板設備 */\n@media (min-width: 768px) {\n  .container {\n    padding: 2rem;\n    max-width: 768px;\n    margin: 0 auto;\n  }\n}\n\n/* 桌面設備 */\n@media (min-width: 1024px) {\n  .container {\n    padding: 3rem;\n    max-width: 1200px;\n  }\n}\n</code></pre>\n<h2>關鍵斷點策略</h2>\n<h3>常用斷點設置</h3>\n<p>基於實際設備使用情況，建議使用以下斷點：</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>設備類型</th><th>寬度範圍</th><th>斷點</th></tr></thead><tbody><tr><td>手機</td><td>&#x3C; 768px</td><td>預設</td></tr><tr><td>平板</td><td>768px - 1023px</td><td><code>md:</code></td></tr><tr><td>桌面</td><td>1024px - 1279px</td><td><code>lg:</code></td></tr><tr><td>大螢幕</td><td>≥ 1280px</td><td><code>xl:</code></td></tr></tbody></table>\n<h3>Tailwind CSS 實踐</h3>\n<pre><code class=\"language-jsx\">&#x3C;div className=\"\n  grid grid-cols-1 gap-4 p-4\n  md:grid-cols-2 md:gap-6 md:p-6\n  lg:grid-cols-3 lg:gap-8 lg:p-8\n  xl:grid-cols-4\n\">\n  {/* 內容 */}\n&#x3C;/div>\n</code></pre>\n<h2>圖片響應式處理</h2>\n<h3>Next.js Image 組件</h3>\n<pre><code class=\"language-jsx\">import Image from 'next/image'\n\nfunction ResponsiveImage() {\n  return (\n    &#x3C;Image\n      src=\"/hero-image.jpg\"\n      alt=\"Hero Image\"\n      width={1200}\n      height={600}\n      className=\"w-full h-auto\"\n      sizes=\"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw\"\n      priority\n    />\n  )\n}\n</code></pre>\n<h3>關鍵優化點</h3>\n<ol>\n<li><strong>適當的 sizes 屬性</strong>：告訴瀏覽器在不同螢幕尺寸下圖片的顯示寬度</li>\n<li><strong>優先載入</strong>：重要圖片使用 <code>priority</code> 屬性</li>\n<li><strong>格式優化</strong>：自動選擇 WebP 或 AVIF 格式</li>\n</ol>\n<h2>字體與排版響應式</h2>\n<h3>流體字體大小</h3>\n<pre><code class=\"language-css\">.heading {\n  font-size: clamp(1.5rem, 4vw, 3rem);\n  line-height: 1.2;\n}\n\n.body-text {\n  font-size: clamp(1rem, 2.5vw, 1.125rem);\n  line-height: 1.6;\n}\n</code></pre>\n<h3>可讀性優化</h3>\n<ul>\n<li><strong>行長控制</strong>：每行 45-75 個字符為最佳閱讀體驗</li>\n<li><strong>行高調整</strong>：移動設備使用較大的行高（1.6-1.8）</li>\n<li><strong>對比度</strong>：確保文字與背景有足夠的對比度</li>\n</ul>\n<h2>交互元素適配</h2>\n<h3>觸控友好設計</h3>\n<pre><code class=\"language-css\">.button {\n  min-height: 44px; /* Apple 建議的最小觸控目標 */\n  min-width: 44px;\n  padding: 12px 24px;\n  margin: 8px; /* 足夠的間距避免誤觸 */\n}\n\n.nav-item {\n  padding: 16px; /* 導航項目需要更大的觸控區域 */\n}\n</code></pre>\n<h3>懸停狀態處理</h3>\n<pre><code class=\"language-css\">/* 只在支持懸停的設備上顯示懸停效果 */\n@media (hover: hover) {\n  .button:hover {\n    background-color: #0056b3;\n    transform: translateY(-2px);\n  }\n}\n</code></pre>\n<h2>性能優化策略</h2>\n<h3>關鍵渲染路徑</h3>\n<ol>\n<li><strong>內聯關鍵 CSS</strong>：首屏渲染所需的樣式</li>\n<li><strong>延遲載入非關鍵資源</strong>：使用 <code>loading=\"lazy\"</code></li>\n<li><strong>預載入重要資源</strong>：<code>&#x3C;link rel=\"preload\"></code></li>\n</ol>\n<h3>代碼分割</h3>\n<pre><code class=\"language-jsx\">// 動態導入組件\nconst HeavyComponent = dynamic(() => import('./HeavyComponent'), {\n  loading: () => &#x3C;div>載入中...&#x3C;/div>,\n  ssr: false // 如果不需要服務端渲染\n})\n</code></pre>\n<h2>測試與調試</h2>\n<h3>開發工具</h3>\n<ol>\n<li><strong>Chrome DevTools</strong>：設備模擬和網路節流</li>\n<li><strong>Lighthouse</strong>：性能和可用性評估</li>\n<li><strong>Real Device Testing</strong>：實際設備測試不可替代</li>\n</ol>\n<h3>關鍵指標</h3>\n<ul>\n<li><strong>First Contentful Paint (FCP)</strong>：&#x3C; 1.8s</li>\n<li><strong>Largest Contentful Paint (LCP)</strong>：&#x3C; 2.5s</li>\n<li><strong>Cumulative Layout Shift (CLS)</strong>：&#x3C; 0.1</li>\n</ul>\n<h2>實戰案例：8plus 網站</h2>\n<p>在 8plus 網站的開發中，我們採用了以下響應式策略：</p>\n<h3>導航設計</h3>\n<pre><code class=\"language-jsx\">// 桌面版導航\n&#x3C;nav className=\"hidden md:flex items-center space-x-6\">\n  {navigation.map((item) => (\n    &#x3C;Link key={item.href} href={item.href}>\n      {item.name}\n    &#x3C;/Link>\n  ))}\n&#x3C;/nav>\n\n// 移動版導航\n&#x3C;Sheet>\n  &#x3C;SheetTrigger className=\"md:hidden\">\n    &#x3C;Menu className=\"h-6 w-6\" />\n  &#x3C;/SheetTrigger>\n  &#x3C;SheetContent side=\"right\">\n    {/* 移動導航內容 */}\n  &#x3C;/SheetContent>\n&#x3C;/Sheet>\n</code></pre>\n<h3>內容佈局</h3>\n<pre><code class=\"language-jsx\">&#x3C;div className=\"\n  container py-8 \n  md:py-16\n\">\n  &#x3C;div className=\"\n    grid gap-8 \n    lg:gap-12 \n    md:grid-cols-2\n  \">\n    {/* 響應式網格佈局 */}\n  &#x3C;/div>\n&#x3C;/div>\n</code></pre>\n<h2>未來趨勢</h2>\n<h3>Container Queries</h3>\n<pre><code class=\"language-css\">@container (min-width: 400px) {\n  .card {\n    display: flex;\n    flex-direction: row;\n  }\n}\n</code></pre>\n<h3>新的視口單位</h3>\n<pre><code class=\"language-css\">.hero {\n  height: 100dvh; /* Dynamic Viewport Height */\n  min-height: 100svh; /* Small Viewport Height */\n}\n</code></pre>\n<h2>總結</h2>\n<p>響應式設計的成功關鍵在於：</p>\n<ol>\n<li><strong>以用戶為中心</strong>：理解不同設備上的用戶行為</li>\n<li><strong>性能優先</strong>：確保在所有設備上都有良好的載入速度</li>\n<li><strong>漸進增強</strong>：從基礎功能開始，逐步增加複雜性</li>\n<li><strong>持續測試</strong>：在真實設備上驗證設計效果</li>\n</ol>\n<p>響應式設計不是一次性的工作，而是需要在整個開發過程中持續關注和優化的重要環節。</p>\n<hr>\n<p><em>想了解更多響應式設計的實踐技巧？歡迎預約技術諮詢，我們可以針對你的具體項目進行深入討論。</em></p>",
     "url": "/blog/responsive-design-best-practices"
+  },
+  {
+    "title": "AI Integration in Practice: From Demo to Operable Workflows",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "AI",
+      "RAG",
+      "workflow"
+    ],
+    "summary": "RAG and agents are exciting — permissions, evaluation, and human-in-the-loop ops are where cost lives. A phased rollout framework from consulting work.",
+    "published": true,
+    "protected": false,
+    "slug": "ai-workflow-integration-en",
+    "locale": "en",
+    "html": "<h1>AI Integration in Practice</h1>\n<p>A successful PoC does not mean production readiness. Common blockers: data quality, untraceable hallucinations, scattered prompts, no offline eval.</p>\n<h2>Phased rollout</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Phase</th><th>Goal</th></tr></thead><tbody><tr><td>0</td><td>Define task + success metrics (accuracy, latency, cost)</td></tr><tr><td>1</td><td>Single-path RAG + human review</td></tr><tr><td>2</td><td>Tool use / agents + permission gates</td></tr><tr><td>3</td><td>Monitoring, A/B, feedback loops</td></tr></tbody></table>\n<h2>Engineering focus</h2>\n<ul>\n<li>Context engineering: chunking, metadata, versioning</li>\n<li>Permissions: tenant/role isolation for vector stores</li>\n<li>Observability: traces, citations, refusal policies</li>\n</ul>\n<p>Need help scoping AI delivery? See <a href=\"/services\">services</a> or <a href=\"/contact\">contact</a>.</p>",
+    "url": "/blog/ai-workflow-integration-en"
+  },
+  {
+    "title": "AI 導入實戰：從 demo 到可維運工作流",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "AI",
+      "RAG",
+      "工作流"
+    ],
+    "summary": "RAG 與 Agent 很酷，但上線後的權限、評估、人機協作才是成本中心。分享我協助團隊分階段導入 AI 的框架。",
+    "published": true,
+    "protected": false,
+    "slug": "ai-workflow-integration",
+    "locale": "zh-TW",
+    "html": "<h1>AI 導入實戰</h1>\n<p>PoC 成功不代表能進 production。我見過太多專案卡在：資料品質、幻覺無法追責、prompt 散落各處、沒有 offline eval。</p>\n<h2>分階段導入</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>階段</th><th>目標</th></tr></thead><tbody><tr><td>0</td><td>定義任務與成功指標（準確率、延遲、成本）</td></tr><tr><td>1</td><td>單一路徑 RAG + 人工審核</td></tr><tr><td>2</td><td>工具呼叫 / Agent + 權限閘道</td></tr><tr><td>3</td><td>監控、A/B、回饋迴圈</td></tr></tbody></table>\n<h2>工程要點</h2>\n<ul>\n<li>Context 工程：chunk、metadata、版本化</li>\n<li>權限：tenant / role 與向量庫隔離</li>\n<li>Observability：trace、引用來源、拒答策略</li>\n</ul>\n<p>需要協助評估 AI 落地？查看 <a href=\"/services\">服務</a> 或 <a href=\"/contact\">聯絡</a>。</p>",
+    "url": "/blog/ai-workflow-integration"
+  },
+  {
+    "title": "Architecture First: Why B2B Projects Need Boundaries Before Code",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "architecture",
+      "consulting",
+      "delivery"
+    ],
+    "summary": "In consulting engagements, the most common failure is not picking the wrong stack — it is sprinting without defined boundaries. A practical architecture-first checklist.",
+    "published": true,
+    "protected": false,
+    "slug": "architecture-first-delivery-en",
+    "locale": "en",
+    "html": "<h1>Architecture First</h1>\n<p>Under pressure, teams often skip architecture and jump into sprints. It looks like progress — until API coupling, permission gaps, deployment drift, and UX state chaos show up mid-flight.</p>\n<h2>Four questions I ask first</h2>\n<ol>\n<li><strong>Where data originates and lands</strong> — single source of truth</li>\n<li><strong>Who can do what in which state</strong> — permission and audit boundaries</li>\n<li><strong>How the system degrades on failure</strong> — not just happy-path demos</li>\n<li><strong>How we verify done</strong> — measurable completion criteria</li>\n</ol>\n<h2>Practical outputs</h2>\n<p>Within about a week you can have: system context, core API contracts, milestones, and a risk register. The goal is one shared map for product, design, and engineering.</p>\n<p>Evaluating a rewrite or new platform? <a href=\"/booking\">Book</a> a 30-minute call.</p>",
+    "url": "/blog/architecture-first-delivery-en"
+  },
+  {
+    "title": "架構先行：為什麼 B2B 專案要先畫邊界再寫 code",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "架構",
+      "顧問",
+      "交付"
+    ],
+    "summary": "在接案與顧問現場，最常見的失敗不是技術選錯，而是邊界沒定就開始衝刺。這篇整理我用的架構先行 checklist。",
+    "published": true,
+    "protected": false,
+    "slug": "architecture-first-delivery",
+    "locale": "zh-TW",
+    "html": "<h1>架構先行</h1>\n<p>很多團隊在壓力下會跳過架構討論，直接進 sprint。短期看起來有進度，中期通常會遇到：API 耦合、權限漏洞、部署環境不一致、UX 狀態無法收斂。</p>\n<h2>我會先問的四件事</h2>\n<ol>\n<li><strong>資料從哪來、到哪去</strong> — 單一真相來源在哪？</li>\n<li><strong>誰能在什麼狀態做什麼</strong> — 權限與審計邊界</li>\n<li><strong>失敗時怎麼退化</strong> — 不是 happy path demo</li>\n<li><strong>怎麼驗證交付完成</strong> — 可量測的 done 定義</li>\n</ol>\n<h2>實務產出</h2>\n<p>通常一週內可以產出：系統上下文圖、核心 API 契約、里程碑與風險清單。這些文件不是為了好看，而是讓 PO、設計、工程在同一張地圖上對話。</p>\n<p>若你正在評估重構或新平台，歡迎 <a href=\"/booking\">預約</a> 30 分鐘對談。</p>",
+    "url": "/blog/architecture-first-delivery"
+  },
+  {
+    "title": "Code Review Checklist: 12 Checks from a Consulting Lens",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "code review",
+      "engineering"
+    ],
+    "summary": "Code review is not just style. This checklist focuses on operability, security boundaries, and delivery risk for B2B teams.",
+    "published": true,
+    "protected": false,
+    "slug": "code-review-checklist-en",
+    "locale": "en",
+    "html": "<h1>Code Review Checklist</h1>\n<h2>Architecture &#x26; boundaries</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Single responsibility, sensible dependency direction</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Versioned API contracts, consistent error codes</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Config and secrets externalized</li>\n</ul>\n<h2>Reliability</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Retries, timeouts, idempotency</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Logs traceable by request id</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Edge cases and empty states</li>\n</ul>\n<h2>Security</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Input validation and output encoding</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> Authorization enforced server-side</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> No sensitive data in logs</li>\n</ul>\n<p>Need external review or advisory support? See <a href=\"/process\">process</a>.</p>",
+    "url": "/blog/code-review-checklist-en"
+  },
+  {
+    "title": "Code Review Checklist：顧問視角的 12 項檢查",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "Code Review",
+      "工程實務"
+    ],
+    "summary": "Code Review 不只是 style。這份 checklist 聚焦可維運性、安全邊界與交付風險，適合 B2B 團隊內部或外部顧問使用。",
+    "published": true,
+    "protected": false,
+    "slug": "code-review-checklist",
+    "locale": "zh-TW",
+    "html": "<h1>Code Review Checklist</h1>\n<h2>架構與邊界</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 模組職責是否單一、依賴方向是否合理</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> API 契約是否版本化、錯誤碼是否一致</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 設定與 secret 是否外置</li>\n</ul>\n<h2>可靠性</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 重試、timeout、冪等是否處理</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 日誌是否可追蹤 request id</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 邊界條件與空狀態</li>\n</ul>\n<h2>安全</h2>\n<ul class=\"contains-task-list\">\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 輸入驗證與輸出編碼</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 授權檢查在 server 端</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled> 敏感資料不落 log</li>\n</ul>\n<p>需要外部 Review 或陪跑？見 <a href=\"/process\">合作流程</a>。</p>",
+    "url": "/blog/code-review-checklist"
+  },
+  {
+    "title": "Consulting Models: Retainer vs Project vs Workshop",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "consulting",
+      "pricing"
+    ],
+    "summary": "There is no single correct pricing model. When each engagement type fits — and the risks to watch.",
+    "published": true,
+    "protected": false,
+    "slug": "consulting-engagement-models-en",
+    "locale": "en",
+    "html": "<h1>Consulting Models</h1>\n<h2>Advisory Retainer</h2>\n<p>Best when you have engineers but need senior architecture and ongoing review. Lower risk, steady cadence.</p>\n<h2>Project Delivery</h2>\n<p>Best for new products or rewrites needing end-to-end ownership. Scope milestones and acceptance criteria matter.</p>\n<h2>Workshop</h2>\n<p>Best for AI alignment, architecture workshops, skill building. Deliver action items, not one-way training.</p>\n<p>See <a href=\"/pricing\">pricing</a> for ranges or <a href=\"/booking\">book</a> directly.</p>",
+    "url": "/blog/consulting-engagement-models-en"
+  },
+  {
+    "title": "接案合作模式：Retainer、專案制與工作坊怎麼選",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "顧問",
+      "接案",
+      "定價"
+    ],
+    "summary": "沒有唯一正確的報價方式。這篇說明三種常見合作模式各自適合的團隊狀態與風險。",
+    "published": true,
+    "protected": false,
+    "slug": "consulting-engagement-models",
+    "locale": "zh-TW",
+    "html": "<h1>接案合作模式</h1>\n<h2>Advisory Retainer</h2>\n<p>適合已有工程團隊、需要資深架構視角與持續 Review。風險低、節奏穩。</p>\n<h2>Project Delivery</h2>\n<p>適合新產品或重構，需要端到端 ownership。範圍需寫清 milestone 與驗收標準。</p>\n<h2>Workshop</h2>\n<p>適合 AI 導入對齊、架構工作坊、技能提升。產出 action items，不是單向培訓。</p>\n<p>詳細區間見 <a href=\"/pricing\">合作模式</a>，或直接 <a href=\"/booking\">預約</a>。</p>",
+    "url": "/blog/consulting-engagement-models"
+  },
+  {
+    "title": "Next.js 15 in Production: SSG, Content Pipeline, Performance",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "Next.js",
+      "Velite",
+      "performance"
+    ],
+    "summary": "8plus runs on Next.js 15 + Velite. Patterns for shipping consulting and content sites to production.",
+    "published": true,
+    "protected": false,
+    "slug": "nextjs-production-patterns-en",
+    "locale": "en",
+    "html": "<h1>Next.js 15 in Production</h1>\n<h2>Content pipeline</h2>\n<p>Velite generates type-safe collections at build time — a good fit for marketing + blog hybrids.</p>\n<h2>Performance</h2>\n<ul>\n<li>Static homepage + ISR where needed</li>\n<li>Images via <code>next/image</code> or prebuilt OG assets</li>\n<li>Keep client bundles lean — prefer CSS and restrained motion</li>\n</ul>\n<h2>SEO</h2>\n<p>Ship RSS, sitemap, and JSON-LD on launch day, not as a later patch.</p>\n<p>This repo is the reference — browse the <a href=\"/projects\">Lab</a>.</p>",
+    "url": "/blog/nextjs-production-patterns-en"
+  },
+  {
+    "title": "Next.js 15 上線實務：SSG、內容管線與效能",
+    "date": "2026-06-30T00:00:00.000Z",
+    "tags": [
+      "Next.js",
+      "Velite",
+      "效能"
+    ],
+    "summary": "8plus 站本身用 Next.js 15 + Velite。這篇整理內容站/顧問站在 production 的選型與踩坑。",
+    "published": true,
+    "protected": false,
+    "slug": "nextjs-production-patterns",
+    "locale": "zh-TW",
+    "html": "<h1>Next.js 15 上線實務</h1>\n<h2>內容管線</h2>\n<p>Velite 在 build 時產生型別安全的 collections，比 runtime MDX 更適合 marketing + blog 混合站。</p>\n<h2>效能</h2>\n<ul>\n<li>靜態首頁 + 按需 ISR（若需要）</li>\n<li>圖片走 <code>next/image</code> 或預生成 OG</li>\n<li>避免 client bundle 過大 — 首頁動效用 CSS + 節制 Framer Motion</li>\n</ul>\n<h2>SEO</h2>\n<p>RSS、sitemap、JSON-LD 應與 launch 同一天上線，不是「之後再補」。</p>\n<p>本 repo 即為參考實作，歡迎 <a href=\"/projects\">看 Lab</a>。</p>",
+    "url": "/blog/nextjs-production-patterns"
   }
 ]

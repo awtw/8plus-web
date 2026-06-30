@@ -14,6 +14,9 @@ export const translations = {
       booking: '預約',
       about: '關於',
       path: '歷程',
+      process: '流程',
+      pricing: '合作模式',
+      contact: '聯絡',
     },
     // 主頁
     home: {
@@ -46,6 +49,9 @@ export const translations = {
       statYears: '實戰年資',
       statDomains: '專長場景',
       statBooking: '合作入口',
+      viewPricing: '看合作模式',
+      viewProcess: '完整流程',
+      contactCta: '聯絡我',
       pillars: [
         {
           title: '架構先行',
@@ -87,6 +93,11 @@ export const translations = {
     projects: {
       title: 'Lab',
       description: '精選的技術 Lab 和客戶案例',
+      caseStudy: '案例研究',
+      challenge: '挑戰',
+      solution: '解法',
+      results: '成果指標',
+      client: '客戶',
       role: '角色',
       period: '時期',
       highlights: '重點成果',
@@ -127,8 +138,31 @@ export const translations = {
     },
     // 聯繫頁面
     contact: {
-      title: '聯繫我們',
-      content: '有任何問題或合作需求，歡迎聯繫我們。'
+      title: '聯絡我們',
+      lead: '描述你的情境，我會在 1–2 個工作天內回覆。急件可直接預約 Cal.com。',
+      name: '姓名',
+      emailLabel: 'Email',
+      company: '公司（選填）',
+      budget: '預算 / 合作模式',
+      budgetUnset: '尚未確定',
+      budgetAdvisory: '顧問陪跑',
+      budgetProject: '專案交付',
+      budgetWorkshop: '工作坊',
+      message: '訊息',
+      submit: '送出訊息',
+      sending: '送出中…',
+      success: '已收到你的訊息，我會盡快回覆。',
+      errorMissing: '請填寫姓名、Email 與訊息。',
+      errorEmail: 'Email 格式不正確。',
+      errorGeneric: '送出失敗，請稍後再試或直接 Email 聯絡。',
+      quickBook: '急件？',
+      quickBookTitle: '直接預約 30 分鐘',
+      quickBookLead: '若已有明確議題，Cal.com 通常是最快的開始方式。',
+      bookCta: '前往預約',
+      lineEyebrow: 'LINE 官方帳號',
+      lineTitle: '加入 8plus Chatbot',
+      lineLead: '掃描 QR 或點擊按鈕加好友，直接在 LINE 與我討論需求。',
+      lineOpen: '加入 LINE 好友',
     },
     // 服務頁面
     services: {
@@ -191,6 +225,9 @@ export const translations = {
       booking: 'Booking',
       about: 'About',
       path: 'Path',
+      process: 'Process',
+      pricing: 'Pricing',
+      contact: 'Contact',
     },
     // Home
     home: {
@@ -223,6 +260,9 @@ export const translations = {
       statYears: 'Years in production',
       statDomains: 'Core domains',
       statBooking: 'Booking channel',
+      viewPricing: 'View models',
+      viewProcess: 'Full process',
+      contactCta: 'Contact',
       pillars: [
         {
           title: 'Architecture First',
@@ -264,6 +304,11 @@ export const translations = {
     projects: {
       title: 'Lab',
       description: 'Selected technical Lab and client cases',
+      caseStudy: 'Case Study',
+      challenge: 'Challenge',
+      solution: 'Solution',
+      results: 'Results',
+      client: 'Client',
       role: 'Role',
       period: 'Period',
       highlights: 'Key Achievements',
@@ -304,8 +349,31 @@ export const translations = {
     },
     // Contact
     contact: {
-      title: 'Contact Us',
-      content: 'For any questions or collaboration needs, feel free to contact us.'
+      title: 'Contact',
+      lead: 'Describe your context and I will reply within 1–2 business days. For urgent topics, book Cal.com directly.',
+      name: 'Name',
+      emailLabel: 'Email',
+      company: 'Company (optional)',
+      budget: 'Budget / engagement model',
+      budgetUnset: 'Not sure yet',
+      budgetAdvisory: 'Advisory retainer',
+      budgetProject: 'Project delivery',
+      budgetWorkshop: 'Workshop',
+      message: 'Message',
+      submit: 'Send message',
+      sending: 'Sending…',
+      success: 'Message received — I will get back to you soon.',
+      errorMissing: 'Please fill in name, email, and message.',
+      errorEmail: 'Invalid email address.',
+      errorGeneric: 'Something went wrong. Please try again or email directly.',
+      quickBook: 'In a hurry?',
+      quickBookTitle: 'Book 30 minutes directly',
+      quickBookLead: 'If the topic is already clear, Cal.com is usually the fastest path.',
+      bookCta: 'Book now',
+      lineEyebrow: 'LINE Official Account',
+      lineTitle: 'Add 8plus on LINE',
+      lineLead: 'Scan the QR code or tap below to add the bot and message me directly.',
+      lineOpen: 'Add LINE friend',
     },
     // Services
     services: {

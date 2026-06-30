@@ -7,8 +7,9 @@ import { DesignModeProvider } from "@/components/design-mode-provider";
 import { DesignModeScript } from "@/components/design-mode-script";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/json-ld";
 import { SITE } from "@/lib/seo";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="zh-Hant" className="h-full" data-design-mode="cohere" suppressHydrationWarning>
       <head>
         <DesignModeScript />
+        <JsonLd />
       </head>
       <body className="h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>
@@ -40,7 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <LanguageProvider>
               <SkipToMain />
               <SiteHeader />
-              <main id="main-content" className="flex-1 w-full">{children}</main>
+              <main id="main-content" className="flex-1 w-full min-w-0 overflow-x-clip">{children}</main>
               <SiteFooter />
             </LanguageProvider>
           </DesignModeProvider>

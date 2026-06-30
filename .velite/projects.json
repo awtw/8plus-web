@@ -6,6 +6,8 @@
     "links": {
       "website": "https://1914.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "An essential oil brand website and customer automation Lab combining brand design, fragrance formulation, and LINE/Messenger chatbot flows.",
     "published": true,
     "locale": "en",
@@ -18,6 +20,8 @@
     "links": {
       "website": "https://1914.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "自創精油品牌官網與客服自動化 Lab，整合品牌設計、香氛配方與 LINE/Messenger Chatbot。",
     "published": true,
     "locale": "zh-TW",
@@ -31,6 +35,8 @@
     "links": {
       "website": "https://8plus.app/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A career and technical consulting booking platform integrating Google Calendar and a conversion-focused consultation flow.",
     "published": true,
     "locale": "en",
@@ -43,6 +49,8 @@
     "links": {
       "website": "https://8plus.app/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "結合職涯與技術諮詢的預約平台，整合 Google Calendar 並聚焦高轉換的諮詢流程。",
     "published": true,
     "locale": "zh-TW",
@@ -56,6 +64,25 @@
     "links": {
       "website": "https://b18.8plus.app/"
     },
+    "type": "case-study",
+    "challenge": "A new brand needed visual identity, product narrative, and Instagram conversion on a tight timeline and budget.",
+    "solution": "Lightweight Next.js site with brand story, lookbook, and social CTAs optimized for mobile-first conversion.",
+    "client": "b18 fashion brand",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "Launch",
+        "value": "Within 2 weeks"
+      },
+      {
+        "label": "Stack",
+        "value": "Next.js + Vercel"
+      },
+      {
+        "label": "Social",
+        "value": "IG integration"
+      }
+    ],
     "summary": "A brand website for an emerging fashion designer, integrating visual language, brand storytelling, and social conversion paths.",
     "published": true,
     "locale": "en",
@@ -68,6 +95,25 @@
     "links": {
       "website": "https://b18.8plus.app/"
     },
+    "type": "case-study",
+    "challenge": "新品牌需在同時建立視覺識別、產品敘事與 Instagram 導流，且預算與時程有限。",
+    "solution": "以 Next.js 建置輕量官網，整合品牌故事、Lookbook 與社群 CTA，並優化行動端首屏轉換。",
+    "client": "b18 新創服飾品牌",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "上線",
+        "value": "2 週內"
+      },
+      {
+        "label": "技術",
+        "value": "Next.js + Vercel"
+      },
+      {
+        "label": "導流",
+        "value": "IG 整合"
+      }
+    ],
     "summary": "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。",
     "published": true,
     "locale": "zh-TW",
@@ -84,6 +130,25 @@
       "docs1": "https://awtw.github.io/resume/#/project/project-manage/main",
       "docs2": "https://awtw.github.io/resume/#/project/menu/center/centent"
     },
+    "type": "case-study",
+    "challenge": "Multiple CRM scenarios needed consistent IA while iterating quickly across login, permissions, lists, and forms.",
+    "solution": "Componentized IA with task-oriented flows, reusable list/form scaffolds, and deployable interactive prototypes for stakeholder validation.",
+    "client": "SaaS / internal tools (public prototypes)",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "Modules",
+        "value": "4+"
+      },
+      {
+        "label": "Deploy",
+        "value": "Vercel previews"
+      },
+      {
+        "label": "Focus",
+        "value": "IA + UX flow"
+      }
+    ],
     "summary": "A series of CRM prototypes covering login, permissions, list search, form editing, and guided workflows, with a focus on information architecture and interaction flow.",
     "published": true,
     "locale": "en",
@@ -99,6 +164,25 @@
       "docs1": "https://awtw.github.io/resume/#/project/project-manage/main",
       "docs2": "https://awtw.github.io/resume/#/project/menu/center/centent"
     },
+    "type": "case-study",
+    "challenge": "多版本 CRM 需求並存，登入/權限/清單/表單模組需一致語言卻又能快速迭代不同情境。",
+    "solution": "建立元件化 IA 與任務導向流程，以可重用列表/表單骨架支援權限與狀態變化，並部署可互動原型供利害關係人驗證。",
+    "client": "SaaS / 企業內部工具（可公開原型）",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "原型版本",
+        "value": "4+ 模組"
+      },
+      {
+        "label": "部署",
+        "value": "Vercel 即時預覽"
+      },
+      {
+        "label": "聚焦",
+        "value": "IA + UX 動線"
+      }
+    ],
     "summary": "針對登入、權限、清單、表單與流程引導設計的 CRM 原型系列，聚焦資訊架構與操作動線。",
     "published": true,
     "locale": "zh-TW",
@@ -112,6 +196,8 @@
     "links": {
       "website": "https://www.hopenet-gf.com"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A disaster-response collaboration platform for Hualien Guangfu, focused on information integration, resource matching, and rapid community coordination.",
     "published": true,
     "locale": "en",
@@ -124,6 +210,8 @@
     "links": {
       "website": "https://www.hopenet-gf.com"
     },
+    "type": "project",
+    "featured": false,
     "summary": "為花蓮光復災害協作打造的資訊整合與資源媒合平台，聚焦快速上線與社群協作。",
     "published": true,
     "locale": "zh-TW",
@@ -154,6 +242,8 @@
       "demo": "https://demo.ecommerce-dashboard.com",
       "github": "https://github.com/example/ecommerce-dashboard"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A modern management dashboard for small and medium e-commerce businesses, integrating order management, inventory control, and data analytics.",
     "thumbnail": "/og/ecommerce-dashboard.png",
     "published": true,
@@ -185,6 +275,8 @@
       "demo": "https://demo.ecommerce-dashboard.com",
       "github": "https://github.com/example/ecommerce-dashboard"
     },
+    "type": "project",
+    "featured": false,
     "summary": "為中小型電商企業打造的現代化管理後台，整合訂單管理、庫存控制與數據分析。",
     "thumbnail": "/og/ecommerce-dashboard.png",
     "published": true,
@@ -199,6 +291,8 @@
     "links": {
       "website": "https://experimentlab.online/#/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A medical research prototype platform that helps physicians build early prediction models, visualize indicators, and export research reports.",
     "published": true,
     "locale": "en",
@@ -211,6 +305,8 @@
     "links": {
       "website": "https://experimentlab.online/#/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "協助醫師建立研究原型與基礎預測模型的醫學分析平台，支援指標視覺化與研究報表匯出。",
     "published": true,
     "locale": "zh-TW",
@@ -224,6 +320,8 @@
     "links": {
       "github": "https://github.com/awtw/flash-sale-api"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A backend API designed for high-concurrency flash-sale scenarios, using locking, queues, and caching to prevent overselling and preserve system stability.",
     "published": true,
     "locale": "en",
@@ -236,6 +334,8 @@
     "links": {
       "github": "https://github.com/awtw/flash-sale-api"
     },
+    "type": "project",
+    "featured": false,
     "summary": "面向高併發限量搶購場景的後端 API，透過鎖、佇列與快取避免超賣並維持系統穩定。",
     "published": true,
     "locale": "zh-TW",
@@ -246,6 +346,8 @@
     "title": "Power BI Market & Disease Analysis",
     "slug": "power-bi",
     "baseSlug": "power-bi",
+    "type": "project",
+    "featured": false,
     "summary": "A Python and Power BI analysis Lab exploring possible relationships between market, employment, and disease data through interactive dashboards.",
     "published": true,
     "locale": "en",
@@ -255,6 +357,8 @@
   {
     "title": "Power BI",
     "slug": "power-bi",
+    "type": "project",
+    "featured": false,
     "summary": "以 Python 與 Power BI 探索市場、就業與疾病資料的潛在關聯，建立互動式分析儀表板。",
     "published": true,
     "locale": "zh-TW",
@@ -268,6 +372,8 @@
     "links": {
       "website": "https://awtw.github.io/R_page/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "An R-based analysis Lab exploring how shopping cart button design influences purchase conversion, with interactive VanillaJS visualization.",
     "published": true,
     "locale": "en",
@@ -280,6 +386,8 @@
     "links": {
       "website": "https://awtw.github.io/R_page/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "以 R 建立購物車按鍵影響因素分析模型，搭配 VanillaJS 呈現互動式洞察。",
     "published": true,
     "locale": "zh-TW",
@@ -293,6 +401,8 @@
     "links": {
       "website": "https://resume.2019.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "An early motion-focused portfolio built with VanillaJS and CSS animations, exploring interaction details and dynamic presentation.",
     "published": true,
     "locale": "en",
@@ -305,6 +415,8 @@
     "links": {
       "website": "https://resume.2019.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "以 VanillaJS 與 CSS 動效打造的早期作品集，聚焦互動細節與動態資訊呈現。",
     "published": true,
     "locale": "zh-TW",
@@ -318,6 +430,8 @@
     "links": {
       "website": "https://resume.2021.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "An Angular skill-focused portfolio documenting modular frontend design, PayPal integration, and Sass styling practices.",
     "published": true,
     "locale": "en",
@@ -330,6 +444,8 @@
     "links": {
       "website": "https://resume.2021.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "Angular 技能導向作品集，整理前端模組化、PayPal 串接與 Sass 樣式工程化經驗。",
     "published": true,
     "locale": "zh-TW",
@@ -343,6 +459,8 @@
     "links": {
       "website": "https://www.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A Vue 3 business-style portfolio focused on brand cohesion, project value presentation, information hierarchy, and conversion flow.",
     "published": true,
     "locale": "en",
@@ -355,6 +473,8 @@
     "links": {
       "website": "https://www.augustwang.com/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "Vue 3 商業風格作品集，強調品牌凝聚力、專案價值呈現與轉換動線。",
     "published": true,
     "locale": "zh-TW",
@@ -368,6 +488,8 @@
     "links": {
       "website": "https://resume.2025.8plus.app/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A Next.js 15 personal portfolio and consulting entry point, integrating Google Calendar booking and modern UIX direction.",
     "published": true,
     "locale": "en",
@@ -380,6 +502,8 @@
     "links": {
       "website": "https://resume.2025.8plus.app/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "Next.js 15 個人作品集與諮詢入口，整合 Google Calendar 預約流程與現代 UIX。",
     "published": true,
     "locale": "zh-TW",
@@ -393,6 +517,8 @@
     "links": {
       "website": "https://www.shuyan.art/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "A portfolio and commission entry point for a design freelance brand, focused on visual polish, service presentation, and conversion flow.",
     "published": true,
     "locale": "en",
@@ -405,6 +531,8 @@
     "links": {
       "website": "https://www.shuyan.art/"
     },
+    "type": "project",
+    "featured": false,
     "summary": "為設計接案品牌打造的作品展示與接案入口，聚焦視覺質感、服務呈現與轉換動線。",
     "published": true,
     "locale": "zh-TW",
@@ -418,6 +546,25 @@
     "links": {
       "github": "https://github.com/awtw/SmartCommunityBackEnd"
     },
+    "type": "case-study",
+    "challenge": "Community scenarios span residents, devices, events, and notifications — requiring scalable backend boundaries and clear APIs.",
+    "solution": ".NET layered architecture with PostgreSQL, Redis, message queue, and Docker-based deployment.",
+    "client": "Smart community platform (open source)",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "Domains",
+        "value": "4 core"
+      },
+      {
+        "label": "Stack",
+        "value": ".NET + PG + Redis"
+      },
+      {
+        "label": "Deploy",
+        "value": "Docker"
+      }
+    ],
     "summary": "A .NET backend service for smart community applications, covering residents, devices, incident reporting, workflows, and notification modules.",
     "published": true,
     "locale": "en",
@@ -430,6 +577,25 @@
     "links": {
       "github": "https://github.com/awtw/SmartCommunityBackEnd"
     },
+    "type": "case-study",
+    "challenge": "社區場景涉及住戶、設備、事件與通知等多模組，需可擴展的後端架構與清晰 API 邊界。",
+    "solution": "以 .NET 分層架構建置核心服務，整合 PostgreSQL、Redis 與訊息佇列，並以 Docker 標準化部署。",
+    "client": "智慧社區平台（開源專案）",
+    "featured": true,
+    "resultMetrics": [
+      {
+        "label": "模組",
+        "value": "4 核心域"
+      },
+      {
+        "label": "堆疊",
+        "value": ".NET + PG + Redis"
+      },
+      {
+        "label": "部署",
+        "value": "Docker"
+      }
+    ],
     "summary": "面向智慧社區應用的 .NET 後端服務，涵蓋住戶、設備、事件通報與通知中心。",
     "published": true,
     "locale": "zh-TW",

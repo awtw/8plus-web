@@ -5,19 +5,22 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 2.2 — Cohere Design System 導入與首頁重構（進行中）
+**Current focus:** Phase 2.4 — 文案調整 + 首頁排版/動效現代化（研究已完成）
 
 ## Current Position
 
-Phase: 2.2 of 3 (Design System Refactor)
-Plan: 1 of 4 in current phase
-Status: Phase 2.2 in progress — 已確認執行
-Last activity: 2026-06-26 17:35 CST — Share i18n 收斂 + Path 文案企業化
+Phase: 2.3 of 3 (Rebrand + Growth)
+Plan: Complete
+Status: Phase 2.3 完成；Phase 2.4 研究完成，待實作
+Last activity: 2026-06-30 CST — Domain Research：文案/首頁排版/AI 感動效方針
 
-Progress: [████████░░] 81%
+Progress: [██████████] 100% (Phase 2.3 scope)
 
 ## What Was Done
 
+- ✅ **2026-06-30 CST — Domain Research（文案/排版/動效）**: `bmad-domain-research` 產出 `.planning/research/domain-8plus-web-copy-motion-modernization-research-2026-06-30.md`；涵蓋 2026 AI 品牌趨勢、現站文案盤點、Bento+ 首頁排版、Share 對齊、Framer Motion 動效方針、Phase 2.4 四 wave 路線圖；核心原則：**克制型 AI 感**（結構性動效 + 具體文案，避開紫青粒子 cliché）。
+- ✅ **2026-06-30 CST — Phase 2.3 Rebrand 實作**: 方案 B（Cohere + Bento）；移除首頁 aurora；`/path` 節點收斂；`/contact` 表單 + Server Action（`CONTACT_WEBHOOK_URL`）；新增 `/process`、`/pricing`；TrustBar、Testimonial、ProcessSteps、BentoGrid；Velite case-study schema；3 專案升級 case study；5 篇新 blog（中英）；RSS `/feed.xml`、sitemap、robots、JSON-LD；Services FAQ；決策見 `.planning/phases/2.3-RESEARCH.md`；`pnpm typecheck`、`pnpm build` 通過。
+- ✅ **2026-06-30 CST — Design System 合規掃描**: Winston 完成全站元件/頁面對照 `design_system/cohere` 審查；報告 `docs/DESIGN_SYSTEM_COMPLIANCE_REPORT.md`；整體約 78% 合規；P0：`/` aurora、`/contact` 未收斂。
 - ✅ **2026-06-26 17:35 CST — Share i18n + Path 語氣收斂**: Share 全文案抽至 `lib/content/share.ts`，移除頁面 inline `isZh`；Path 中英文 milestone 移除 Resume/遊戲化語氣，改企業化標題與描述；`path.title`/`path.lead` 更新。
 - ✅ **2026-06-26 17:25 CST — 內容模組化第二輪**: About 文案抽至 `lib/content/about.ts`；Path milestones 抽至 `lib/content/path-milestones.tsx`；首頁 pillars 改 `i18n`；Path header 企業化 + `t()`；Share QR 改用 `QrDialog`（Escape、Tab 循環、focus 還原）；`pnpm build` 通過。
 - ✅ **2026-06-26 17:05 CST — UX 優化建議實作**: 依 `.planning/UX-OPTIMIZATION-REVIEW.md` 完成 P0–P2：共用 `lib/navigation.ts`、i18n 擴充與 `document.lang` 同步、桌面加入 Services、Footer 站內連結、首頁 blog/projects「查看全部」+ 2 則預覽、詳情頁 `DetailCta`、Services/Booking 雙語、Share 隱藏 header、skip-to-main、active nav、`aria-current`、design mode Palette 按鈕、theme 三態、Path `section-shell` 收斂、QR dialog 語意；`pnpm typecheck`、`pnpm build` 通過。

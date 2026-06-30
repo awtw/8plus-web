@@ -49,3 +49,17 @@ export function findLocalizedProject(slug: string, locale: Locale): Project | un
 export function isProjectLocaleFallback(project: Project, locale: Locale) {
   return locale === "en" && project.locale !== "en";
 }
+
+export function isCaseStudy(project: Project): boolean {
+  return project.type === "case-study";
+}
+
+export function getFeaturedCaseStudies(locale: Locale): Project[] {
+  return getLocalizedProjects(locale).filter(
+    (project) => project.featured && isCaseStudy(project),
+  );
+}
+
+export function getFeaturedCaseStudy(locale: Locale): Project | undefined {
+  return getFeaturedCaseStudies(locale)[0];
+}

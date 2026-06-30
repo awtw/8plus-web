@@ -10,6 +10,9 @@ export const footerNavigation = [
   { key: "about", href: "/about" },
   { key: "blog", href: "/blog" },
   { key: "projects", href: "/projects" },
+  { key: "process", href: "/process", labelKey: "nav.process" },
+  { key: "pricing", href: "/pricing", labelKey: "nav.pricing" },
+  { key: "contact", href: "/contact", labelKey: "nav.contact" },
   { key: "booking", href: "/booking", labelKey: "nav.booking" },
 ] as const
 

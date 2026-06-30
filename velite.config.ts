@@ -34,6 +34,19 @@ const projects = defineCollection({
     period: s.string().optional(),
     highlights: s.array(s.string()).optional(),
     links: s.record(s.string()).optional(),
+    type: s.enum(['project', 'case-study']).default('project'),
+    challenge: s.string().optional(),
+    solution: s.string().optional(),
+    client: s.string().optional(),
+    featured: s.boolean().default(false),
+    resultMetrics: s
+      .array(
+        s.object({
+          label: s.string(),
+          value: s.string(),
+        }),
+      )
+      .optional(),
     summary: s.string(),
     thumbnail: s.string().optional(),
     published: s.boolean().default(true),

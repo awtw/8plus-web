@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
+import { getProcessPricingContent } from "@/lib/content/process-pricing";
+import { FaqSection } from "@/components/faq-section";
 
 export default function ServicesPage() {
-  const { t, tn } = useLanguage();
+  const { locale, t, tn } = useLanguage();
   const items = tn("services.items") as Array<{ title: string; desc: string }>;
+  const { faq } = getProcessPricingContent(locale);
 
   return (
     <div className="section-shell py-12 sm:py-16 lg:py-20">
@@ -35,7 +38,12 @@ export default function ServicesPage() {
         <Link href="/about" className="brand-button-secondary inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)]">
           {t("services.aboutCta")}
         </Link>
+        <Link href="/pricing" className="ghost-action inline-flex items-center gap-2 px-4 py-2 text-sm">
+          {t("nav.pricing")}
+        </Link>
       </section>
+
+      <FaqSection items={faq} title={locale === "zh-TW" ? "常見問題" : "FAQ"} className="mt-14 max-w-3xl" />
     </div>
   );
 }

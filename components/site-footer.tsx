@@ -20,11 +20,11 @@ export default function SiteFooter() {
       <div className="section-shell py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:py-12 sm:pb-[max(3rem,env(safe-area-inset-bottom))]">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <Logo size={28} className="h-7 w-7" />
+            <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <Logo size={28} className="h-7 w-7 shrink-0" />
               <span className="text-lg font-semibold tracking-[-0.02em] text-[color:var(--fg)]">8plus</span>
               <span className="text-[color:var(--muted)]">·</span>
-              <span className="text-sm text-[color:var(--fg-2)]">{t("footer.tagline")}</span>
+              <span className="min-w-0 text-sm text-[color:var(--fg-2)]">{t("footer.tagline")}</span>
             </div>
             <p className="text-sm text-[color:var(--muted)]">
               © {new Date().getFullYear()} 8plus. {t("footer.builtWith")}

@@ -58,7 +58,7 @@ export const shareContent: Record<Locale, ShareContent> = {
         badge: "100+ repos",
       },
       line: {
-        description: "透過 LINE 直接聯繫",
+        description: "加入 8plus 官方帳號",
       },
       instagram: {
         description: "作品更新與工作日常",
@@ -66,10 +66,10 @@ export const shareContent: Record<Locale, ShareContent> = {
     },
     qr: {
       line: {
-        title: "加入 LINE",
-        lead: "掃描 QR Code 或直接開啟 LINE",
-        idLabel: "LINE ID：blusfish.yu",
-        open: "開啟 LINE",
+        title: "加入 LINE 官方帳號",
+        lead: "掃描 QR Code 或開啟 8plus Chatbot",
+        idLabel: "官方帳號 @482ykgdg",
+        open: "加入好友",
       },
       instagram: {
         title: "追蹤 Instagram",
@@ -101,7 +101,7 @@ export const shareContent: Record<Locale, ShareContent> = {
         badge: "100+ repos",
       },
       line: {
-        description: "Reach me directly on LINE",
+        description: "Add the 8plus official account",
       },
       instagram: {
         description: "Work updates and day-to-day notes",
@@ -110,9 +110,9 @@ export const shareContent: Record<Locale, ShareContent> = {
     qr: {
       line: {
         title: "Add on LINE",
-        lead: "Scan the QR code or open LINE directly",
-        idLabel: "LINE ID: blusfish.yu",
-        open: "Open LINE",
+        lead: "Scan the QR code or open the 8plus chatbot",
+        idLabel: "Official account @482ykgdg",
+        open: "Add friend",
       },
       instagram: {
         title: "Follow on Instagram",

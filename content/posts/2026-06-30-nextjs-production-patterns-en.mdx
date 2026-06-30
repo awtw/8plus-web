@@ -1,0 +1,28 @@
+---
+title: "Next.js 15 in Production: SSG, Content Pipeline, Performance"
+date: "2026-06-30"
+summary: "8plus runs on Next.js 15 + Velite. Patterns for shipping consulting and content sites to production."
+slug: "nextjs-production-patterns-en"
+published: true
+protected: false
+tags: ["Next.js", "Velite", "performance"]
+locale: "en"
+---
+
+# Next.js 15 in Production
+
+## Content pipeline
+
+Velite generates type-safe collections at build time — a good fit for marketing + blog hybrids.
+
+## Performance
+
+- Static homepage + ISR where needed
+- Images via `next/image` or prebuilt OG assets
+- Keep client bundles lean — prefer CSS and restrained motion
+
+## SEO
+
+Ship RSS, sitemap, and JSON-LD on launch day, not as a later patch.
+
+This repo is the reference — browse the [Lab](/projects).

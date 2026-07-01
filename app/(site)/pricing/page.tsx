@@ -45,7 +45,7 @@ export default function PricingPage() {
       <div className="mt-10 flex flex-col gap-4 p-6 surface-card-strong sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <p className="min-w-0 text-sm text-[color:var(--fg-2)]">{pricing.note}</p>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
-          <Link href="/contact" className="brand-button-secondary inline-flex w-full items-center justify-center gap-2 sm:w-auto">
+          <Link href="/booking#contact" className="brand-button-secondary inline-flex w-full items-center justify-center gap-2 sm:w-auto">
             {pricing.cta}
           </Link>
           <Link href="/booking" className="brand-button-primary inline-flex w-full items-center justify-center gap-2 sm:w-auto">

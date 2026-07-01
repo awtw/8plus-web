@@ -67,8 +67,8 @@ export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcher
       </button>
 
       {isOpen && (
-        <div role="menu" className={`absolute right-0 bottom-full mb-1 bg-background border border-border/70 rounded-[22px] shadow-[0_20px_40px_rgba(0,0,0,0.08)] z-[9999] sm:top-full sm:bottom-auto sm:mt-1 sm:mb-0 ${
-          fullWidth ? 'w-full left-0' : 'w-40'
+        <div role="menu" className={`absolute right-0 top-full z-[9999] mt-1.5 rounded-[22px] border border-border/70 bg-background shadow-[0_20px_40px_rgba(0,0,0,0.12)] ${
+          fullWidth ? 'left-0 w-full' : 'w-44'
         }`}>
           <div className="py-1">
             {locales.map((lng) => (

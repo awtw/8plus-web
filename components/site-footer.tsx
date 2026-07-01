@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./logo";
 import { useLanguage } from "./language-provider";
 import { footerNavigation } from "@/lib/navigation";
+import { isShareHubPath } from "@/lib/site-paths";
 
 export default function SiteFooter() {
   const pathname = usePathname();
   const { t } = useLanguage();
-  const isSharePage = pathname === "/share";
+  const isSharePage = isShareHubPath(pathname);
 
   if (isSharePage) {
     return null;
@@ -33,14 +34,18 @@ export default function SiteFooter() {
 
           <nav aria-label={t("footer.navLabel")} className="flex flex-wrap gap-x-5 gap-y-2">
             {footerNavigation.map((item) => {
-              const labelKey = "labelKey" in item ? item.labelKey : `nav.${item.key}`;
+              const className =
+                "text-sm text-[color:var(--fg-2)] hover:text-[color:var(--fg)] hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] rounded-sm";
+              if ("external" in item && item.external) {
+                return (
+                  <a key={item.href} href={item.href} className={className}>
+                    {t(item.labelKey)}
+                  </a>
+                );
+              }
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-[color:var(--fg-2)] hover:text-[color:var(--fg)] hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] rounded-sm"
-                >
-                  {t(labelKey)}
+                <Link key={item.href} href={item.href} className={className}>
+                  {t(item.labelKey)}
                 </Link>
               );
             })}

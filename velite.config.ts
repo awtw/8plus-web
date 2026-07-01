@@ -54,7 +54,7 @@ const projects = defineCollection({
     html: s.markdown()
   }).transform(data => ({
     ...data,
-    url: `/projects/${data.slug}`
+    url: `/lab/${data.slug}`
   }))
 })
 

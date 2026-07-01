@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate:content": "node ./scripts/validate-content.mjs",
+    "generate:avatar-layers": "node ./scripts/generate-avatar-layers.mjs",
     "postinstall": "shx mkdir -p public/og || true"
   },
   "dependencies": {
@@ -49,6 +50,7 @@
     "eslint": "9.8.0",
     "eslint-config-next": "16.2.9",
     "postcss": "8.4.41",
+    "sharp": "^0.34.5",
     "shx": "0.3.4",
     "tailwindcss": "3.4.7",
     "typescript": "5.4.5"

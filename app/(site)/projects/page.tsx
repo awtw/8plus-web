@@ -33,7 +33,7 @@ export default function ProjectsPage() {
           {publishedProjects.map(project => (
             <Link
               key={`${project.slug}-${project.locale}`}
-              href={project.url}
+              href={`/lab/${project.slug}`}
               className="gradient-border-card p-6 sm:p-7"
             >
               <div className="flex items-start justify-between gap-4">

@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -58,17 +57,8 @@ export function MobileNav() {
             </nav>
           </div>
 
-          <div className="border-t border-border/70 pt-6 space-y-4 pb-2">
-            <div className="w-full">
-              <LanguageSwitcher fullWidth />
-            </div>
-            <Link
-              href="/booking"
-              onClick={() => setOpen(false)}
-              className="inline-flex w-full h-12 items-center justify-center rounded-full bg-[color:var(--fg)] text-[color:var(--bg)] font-medium transition-colors hover:bg-[color:var(--primary-action-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)]"
-            >
-              {t("nav.booking")}
-            </Link>
+          <div className="border-t border-border/70 pt-6">
+            <LanguageSwitcher fullWidth />
           </div>
         </div>
       </SheetContent>

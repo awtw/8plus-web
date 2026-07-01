@@ -1,15 +1,14 @@
 'use client'
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
-import { Button } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
 import { LogoThemeLauncher } from "./logo-theme-launcher";
 import LanguageSwitcher from "./language-switcher";
 import { NavLink } from "./nav-link";
 import { siteNavigation } from "@/lib/navigation";
+import { isShareHubPath } from "@/lib/site-paths";
 
 const navLinkClass =
   "text-[color:var(--fg-2)] opacity-70 transition-opacity hover:opacity-100 hover:underline underline-offset-8 decoration-[color:var(--border)]";
@@ -24,7 +23,7 @@ const navLinkHeroActiveClass = "opacity-100 font-medium text-white";
 export default function SiteHeader() {
   const { t } = useLanguage();
   const pathname = usePathname();
-  const isSharePage = pathname === "/share";
+  const isSharePage = isShareHubPath(pathname);
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
 
@@ -49,10 +48,6 @@ export default function SiteHeader() {
   const headerClass = isHeroOverlay
     ? "site-header site-header--hero sticky top-0 z-50 w-full border-b border-transparent bg-transparent"
     : "sticky top-0 z-50 w-full border-b border-border/80 bg-background/88 backdrop-blur supports-[backdrop-filter]:bg-background/72";
-
-  const bookingButtonClass = isHeroOverlay
-    ? "site-header__booking-ghost hidden md:inline-flex"
-    : "hidden md:inline-flex rounded-full bg-[var(--fg)] text-[var(--bg)] hover:bg-[color:var(--primary-action-hover)]";
 
   return (
     <header className={headerClass}>
@@ -85,11 +80,6 @@ export default function SiteHeader() {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <Button asChild className={bookingButtonClass}>
-              <Link href="/booking">
-                {t("nav.booking")}
-              </Link>
-            </Button>
             <MobileNav />
           </nav>
         </div>

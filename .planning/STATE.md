@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 4.0 規劃 LOCKED — 待 W0 實作（見 `4.0-IMPLEMENT-PLAN.md`）
+**Current focus:** Phase 4.0 W1 — 首頁 Ch0–Ch1 Logo + 線框手 mesh
 
 ## Current Position
 
 Phase: **4.0** ICON 級全站重構
 Plan: LOCKED（規劃文件完整）
-Status: 規劃已 commit，待 W0
-Last activity: 2026-07-01 CST — 完整規劃：OVERVIEW + IMPLEMENT-PLAN + PAGE-BRIEFS + DS DRAFT
+Status: Phase 4.0 W0 完成
+Last activity: 2026-07-01 CST — W0：IA、redirects、`/lab` `/sb` `/sc`、booking+contact
 
-Progress: [██░░░░░░░░] 規劃完成，實作未開始
+Progress: [███░░░░░░░] W0 完成，W1 待開始
 
 ## What Was Done
 
-- ✅ **2026-07-01 CST — Phase 4.0 規劃 LOCKED**: Round 1+2 決策；IA 7 項 + `/sb` `/sc`；`BRAND_EXPERIENCE_SPEC`、`DESIGN_SYSTEM_SPEC` DRAFT、`4.0-IMPLEMENT-PLAN` W0–W6、`CONTENT_INVENTORY`、`4.0-PHASE-OVERVIEW`；checkpoint `28fffff`。
-- ✅ **2026-07-01 CST — Phase 4.0 討論 Round 1+2**: AI 線框手+握手；Logo 8+plus；blog 入主 nav；contact→booking；Three.js/R3F。
+- ✅ **2026-07-01 CST — Phase 4.0 W0 IA + 路由**: nav 6 項（lab/about/services/path/blog/booking）；`/lab`；`/sb` `/sc` Share 殼；redirects；booking 併 contact；`pnpm build` 通過。
+- ✅ **2026-07-01 CST — Phase 4.0 規劃 LOCKED**: Round 1+2；`BRAND_EXPERIENCE_SPEC`、`4.0-IMPLEMENT-PLAN` 等；commit `6c054ca`。
 - ✅ **2026-07-01 CST — Rebranding 路線**: 重構現有 repo，保留 Velite/i18n/SEO；見 Discussion Log。
 - ✅ **2026-06-30 CST — Phase 3.0 W1 首頁 scroll prototype**: `components/home/scroll-story/`；Logo 組裝 + Story pin scrub；替換首頁 Hero；`pnpm build` 通過。
 - ✅ **2026-06-30 CST — Phase 3.0 W0 基礎設施**: `gsap`；dark `:root`；`forcedTheme=dark`；ThemeToggle 移除；motion 骨架 + `home-scroll.ts`。

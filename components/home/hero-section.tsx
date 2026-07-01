@@ -46,7 +46,7 @@ export function HeroSection({ stats }: HeroSectionProps) {
                 <CalendarCheck className="h-4 w-4" weight="bold" />
                 {t('home.bookCall')}
               </Link>
-              <Link href="/projects" className="cinema-hero-btn-ghost">
+              <Link href="/lab" className="cinema-hero-btn-ghost">
                 {t('home.viewProjects')}
                 <ArrowRight className="h-4 w-4" weight="bold" />
               </Link>

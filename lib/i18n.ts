@@ -8,8 +8,9 @@ export const translations = {
   'zh-TW': {
     // 導航
     nav: {
+      lab: 'LAB',
       services: '服務',
-      projects: 'Lab',
+      projects: 'LAB',
       blog: '博客',
       booking: '預約',
       about: '關於',
@@ -142,6 +143,8 @@ export const translations = {
         topics: { title: '合作主題', desc: '從架構、Code Review 到產品交付流程皆可討論。' },
         clarify: { title: '先釐清再開始', desc: '我們可以先定義問題，再一起找解法。' },
       },
+      contactSection: '或填寫表單',
+      contactLead: '不方便選時段？留下訊息，我會在 1–2 個工作天內回覆。',
     },
     // 關於頁面
     about: {
@@ -226,11 +229,28 @@ export const translations = {
       madeIn: '台灣製造',
       poweredBy: '由 Vercel 提供支持',
       navLabel: '站內連結',
-    }
+      rss: 'RSS',
+    },
+    shareHub: {
+      businessName: 'August Wang',
+      businessLead: '架構驅動的技術夥伴。預約對談，或看看我如何把系統從想法做到上線。',
+      socialName: 'August',
+      socialLead: '生活裡的片段、正在做的事。',
+      copyEmail: '複製',
+      copied: '已複製',
+      openLine: '開啟 LINE',
+      personalLine: '私人 LINE',
+      personalLineLead: '掃描加入私人帳號',
+      pathButton: '專業經歷',
+      pathButtonDesc: '點開查看完整職涯',
+      avatarSwap: '切換照片',
+      avatarHint: '點我換一張',
+    },
   },
   'en': {
     // Navigation
     nav: {
+      lab: 'LAB',
       services: 'Services',
       projects: 'Lab',
       blog: 'Blog',
@@ -365,6 +385,8 @@ export const translations = {
         topics: { title: 'Topics', desc: 'From architecture and code review to product delivery flow.' },
         clarify: { title: 'Clarify first', desc: 'We can define the problem before we define the solution.' },
       },
+      contactSection: 'Or send a message',
+      contactLead: 'Prefer async? Leave a note and I will reply within 1–2 business days.',
     },
     // About
     about: {
@@ -447,7 +469,23 @@ export const translations = {
       madeIn: 'Made in Taiwan',
       poweredBy: 'Powered by Vercel',
       navLabel: 'Site links',
-    }
+      rss: 'RSS',
+    },
+    shareHub: {
+      businessName: 'August Wang',
+      businessLead: 'Architecture-led partner. Book a call, or see how ideas become shipped systems.',
+      socialName: 'August',
+      socialLead: 'Life snippets and work in progress.',
+      copyEmail: 'Copy',
+      copied: 'Copied',
+      openLine: 'Open LINE',
+      personalLine: 'Personal LINE',
+      personalLineLead: 'Scan to add personal account',
+      pathButton: 'Career',
+      pathButtonDesc: 'Tap to expand full timeline',
+      avatarSwap: 'Switch photo',
+      avatarHint: 'Tap to switch',
+    },
   }
 } as const
 

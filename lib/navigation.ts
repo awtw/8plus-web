@@ -1,19 +1,14 @@
 export const siteNavigation = [
+  { key: "lab", href: "/lab", labelKey: "nav.lab" },
+  { key: "about", href: "/about" },
   { key: "services", href: "/services" },
-  { key: "projects", href: "/projects" },
   { key: "path", href: "/path", labelKey: "nav.path" },
   { key: "blog", href: "/blog" },
-  { key: "about", href: "/about" },
+  { key: "booking", href: "/booking" },
 ] as const
 
 export const footerNavigation = [
-  { key: "about", href: "/about" },
-  { key: "blog", href: "/blog" },
-  { key: "projects", href: "/projects" },
-  { key: "process", href: "/process", labelKey: "nav.process" },
-  { key: "pricing", href: "/pricing", labelKey: "nav.pricing" },
-  { key: "contact", href: "/contact", labelKey: "nav.contact" },
-  { key: "booking", href: "/booking", labelKey: "nav.booking" },
+  { href: "/feed.xml", labelKey: "footer.rss" as const, external: true },
 ] as const
 
 export type NavItem = (typeof siteNavigation)[number]

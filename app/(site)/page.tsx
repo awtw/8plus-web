@@ -215,7 +215,7 @@ export default function HomePage() {
             <div>
               <div className="ci-section-head">
                 <h2 className="text-h2 ci-section-title">{t("home.featuredProjects")}</h2>
-                <Link href="/projects" className="ci-link">
+                <Link href="/lab" className="ci-link">
                   {t("home.viewAll")}
                   <ArrowRight className="h-3.5 w-3.5" weight="bold" />
                 </Link>
@@ -257,7 +257,7 @@ export default function HomePage() {
                 <CalendarCheck className="h-4 w-4" weight="bold" />
                 {t("home.bookNow")}
               </Link>
-              <Link href="/contact" className="brand-button-secondary inline-flex items-center gap-2">
+              <Link href="/booking#contact" className="brand-button-secondary inline-flex items-center gap-2">
                 {t("home.contactCta")}
                 <ArrowRight className="h-4 w-4" weight="bold" />
               </Link>

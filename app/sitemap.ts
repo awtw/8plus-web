@@ -3,15 +3,12 @@ import { SITE } from "@/lib/seo";
 
 const staticRoutes = [
   "",
-  "/services",
-  "/projects",
-  "/blog",
+  "/lab",
   "/about",
-  "/booking",
+  "/services",
   "/path",
-  "/contact",
-  "/process",
-  "/pricing",
+  "/blog",
+  "/booking",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

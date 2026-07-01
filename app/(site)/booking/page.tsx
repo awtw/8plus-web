@@ -21,7 +21,7 @@ export default function BookingPage() {
         });
         setIsCalLoaded(true);
       } catch (error) {
-        console.error("Failed to load Cal.com:", error);
+        console.error("Failed to load booking calendar:", error);
       }
     })();
   }, []);

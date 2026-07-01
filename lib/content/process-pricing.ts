@@ -113,7 +113,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
       },
       {
         question: "如何開始？",
-        answer: "預約 30 分鐘 Cal.com 時段，或透過聯絡表單描述你的情境，我會在 1–2 個工作天回覆。",
+        answer: "預約 30 分鐘諮詢時段，或透過聯絡表單描述你的情境，我會在 1–2 個工作天回覆。",
       },
     ],
   },
@@ -195,7 +195,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
       },
       {
         question: "How do we start?",
-        answer: "Book a 30-minute Cal.com slot or use the contact form. I typically reply within 1–2 business days.",
+        answer: "Book a 30-minute consultation slot or use the contact form. I typically reply within 1–2 business days.",
       },
     ],
   },

@@ -51,7 +51,7 @@ const milestones = {
       color: "from-[color:var(--accent)] to-[color:var(--fg-2)]",
       descriptions: [
         "以 Next.js 15 + Velite 建置工程諮詢品牌站",
-        "整合 Cal.com 預約與雙語內容管線",
+        "整合線上預約與雙語內容管線",
         "統一企業級設計語言與轉換動線",
         "建立可持續更新的技術內容與專案展示",
       ],
@@ -240,7 +240,7 @@ const milestones = {
       color: "from-[color:var(--accent)] to-[color:var(--fg-2)]",
       descriptions: [
         "Built engineering consulting brand site with Next.js 15 + Velite",
-        "Integrated Cal.com booking and bilingual content pipeline",
+        "Integrated online booking and bilingual content pipeline",
         "Unified enterprise design language and conversion flow",
         "Established sustainable technical content and project showcase",
       ],

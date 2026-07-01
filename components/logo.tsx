@@ -16,15 +16,15 @@ export function Logo({ className, size = 32, variant = "default" }: LogoProps) {
     },
     mono: {
       background: "transparent",
-      markFill: "#050505",
+      markFill: "var(--logo-mark)",
     },
     light: {
       background: "transparent",
-      markFill: "var(--logo-mark-inverse)",
+      markFill: "var(--logo-mark)",
     },
     favicon: {
-      background: "#FFFFFF",
-      markFill: "#050505",
+      background: "var(--bg)",
+      markFill: "var(--logo-mark)",
     },
   };
 

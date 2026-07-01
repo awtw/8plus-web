@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-Hant" className="h-full" data-design-mode="cohere" suppressHydrationWarning>
+    <html lang="zh-Hant" className="h-full dark" data-design-mode="cohere" style={{ colorScheme: "dark" }} suppressHydrationWarning>
       <head>
         <DesignModeScript />
         <JsonLd />

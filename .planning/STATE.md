@@ -5,20 +5,25 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 2.4 — 文案調整 + 首頁排版/動效現代化（研究已完成）
+**Current focus:** Phase 3.0 — W1 完成；待 W2 Ch2–Ch5
 
 ## Current Position
 
 Phase: 2.3 of 3 (Rebrand + Growth)
 Plan: Complete
-Status: Phase 2.3 完成；Phase 2.4 研究完成，待實作
-Last activity: 2026-06-30 CST — Domain Research：文案/首頁排版/AI 感動效方針
+Status: Phase 3.0 W1 完成
+Last activity: 2026-06-30 CST — W1：scroll-story Ch0 Logo 組裝 + Ch1 Story pin scrub
 
 Progress: [██████████] 100% (Phase 2.3 scope)
 
 ## What Was Done
 
-- ✅ **2026-06-30 CST — Domain Research（文案/排版/動效）**: `bmad-domain-research` 產出 `.planning/research/domain-8plus-web-copy-motion-modernization-research-2026-06-30.md`；涵蓋 2026 AI 品牌趨勢、現站文案盤點、Bento+ 首頁排版、Share 對齊、Framer Motion 動效方針、Phase 2.4 四 wave 路線圖；核心原則：**克制型 AI 感**（結構性動效 + 具體文案，避開紫青粒子 cliché）。
+- ✅ **2026-06-30 CST — Phase 3.0 W1 首頁 scroll prototype**: `components/home/scroll-story/`；Logo 組裝 + Story pin scrub；替換首頁 Hero；`pnpm build` 通過。
+- ✅ **2026-06-30 CST — Phase 3.0 W0 基礎設施**: `gsap`；dark `:root`；`forcedTheme=dark`；ThemeToggle 移除；motion 骨架 + `home-scroll.ts`。
+- ✅ **2026-06-30 CST — Phase 3.0 Round 3 LOCKED**: GSAP+ScrollTrigger；職涯 timeline 僅 `/path`；i18n 中英；全站 dark 關 ThemeToggle；`MOTION_DESIGN_SPEC.md` LOCKED。
+- ✅ **2026-06-30 CST — Phase 3.0 Round 2 設計契約草案**: 參考 [WRK ACF-01](https://www.wrk-timepieces.com/products/acf-01)；首頁 6 章敘事（Logo→Story→Lab→Projects→Services→Connect）；`docs/StoryAboutMe.md` 潤飾四段；動效可自由發揮但錨定 logo 幾何；產出 `docs/MOTION_DESIGN_SPEC.md` DRAFT。
+- ✅ **2026-06-30 CST — Phase 3.0 重置與討論啟動**: 使用者要求清除現行視覺迭代；暫停 Phase 2.5；建立 `.planning/phases/3.0-RESET-AND-DISCUSS.md`；更新 `CI_CHECKPOINT.md`、`STATE.md`；未 revert 程式碼。
+- ✅ **2026-06-30 CST — Domain Research（文案/排版/動效）**: `bmad-domain-research` 產出 `.planning/research/domain-8plus-web-copy-motion-modernization-research-2026-06-30.md`；核心原則：克制型 AI 感。
 - ✅ **2026-06-30 CST — Phase 2.3 Rebrand 實作**: 方案 B（Cohere + Bento）；移除首頁 aurora；`/path` 節點收斂；`/contact` 表單 + Server Action（`CONTACT_WEBHOOK_URL`）；新增 `/process`、`/pricing`；TrustBar、Testimonial、ProcessSteps、BentoGrid；Velite case-study schema；3 專案升級 case study；5 篇新 blog（中英）；RSS `/feed.xml`、sitemap、robots、JSON-LD；Services FAQ；決策見 `.planning/phases/2.3-RESEARCH.md`；`pnpm typecheck`、`pnpm build` 通過。
 - ✅ **2026-06-30 CST — Design System 合規掃描**: Winston 完成全站元件/頁面對照 `design_system/cohere` 審查；報告 `docs/DESIGN_SYSTEM_COMPLIANCE_REPORT.md`；整體約 78% 合規；P0：`/` aurora、`/contact` 未收斂。
 - ✅ **2026-06-26 17:35 CST — Share i18n + Path 語氣收斂**: Share 全文案抽至 `lib/content/share.ts`，移除頁面 inline `isZh`；Path 中英文 milestone 移除 Resume/遊戲化語氣，改企業化標題與描述；`path.title`/`path.lead` 更新。
@@ -65,6 +70,14 @@ Stopped at: Logo 已改為極簡現代版，建置與截圖驗證完成
 Resume file: None
 
 ## Discussion Log
+
+### 2026-07-01 10:10 CST — Rebranding 路線判斷：重構現有 repo 優先
+
+- 使用者詢問 rebranding 應該重頭開始寫，還是重構現在的 repo。
+- 判斷：以現有 repo 做有邊界的 rebranding refactor 較合適；不要從零重寫。
+- 理由：現有專案已具備 Next.js 15、Velite 內容管線、雙語 i18n、SEO、booking/contact、case studies、blog、Phase 3.0 motion 契約與首頁 scroll prototype，這些屬於可保留的成熟資產。
+- 建議邊界：保留內容模型、資料流、路由、SEO 與轉換功能；重構品牌敘事、首頁/內頁視覺語言、Design System token、motion layer、共用 layout shell。
+- 重寫僅適合在品牌定位、技術棧、內容模型或目標受眾全部改變時採用；目前不符合。
 
 ### 2026-06-26 17:05 CST — UX 優化建議實作完成
 

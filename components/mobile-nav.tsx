@@ -14,7 +14,6 @@ import { Menu } from "lucide-react"
 import LanguageSwitcher from "./language-switcher"
 import { useLanguage } from "./language-provider"
 import { LogoThemeLauncher } from "./logo-theme-launcher"
-import { ThemeToggle } from "./theme-toggle"
 import { NavLink } from "./nav-link"
 import { siteNavigation } from "@/lib/navigation"
 
@@ -60,10 +59,6 @@ export function MobileNav() {
           </div>
 
           <div className="border-t border-border/70 pt-6 space-y-4 pb-2">
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-sm text-[color:var(--fg-2)]">{t("common.theme")}</div>
-              <ThemeToggle />
-            </div>
             <div className="w-full">
               <LanguageSwitcher fullWidth />
             </div>

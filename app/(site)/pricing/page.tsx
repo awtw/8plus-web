@@ -7,7 +7,7 @@ import { getProcessPricingContent } from "@/lib/content/process-pricing";
 import { FaqSection } from "@/components/faq-section";
 
 export default function PricingPage() {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const { pricing, faq } = getProcessPricingContent(locale);
 
   return (
@@ -50,7 +50,7 @@ export default function PricingPage() {
           </Link>
           <Link href="/booking" className="brand-button-primary inline-flex w-full items-center justify-center gap-2 sm:w-auto">
             <CalendarCheck className="h-4 w-4" weight="bold" />
-            Cal.com
+            {t("home.bookNow")}
           </Link>
         </div>
       </div>

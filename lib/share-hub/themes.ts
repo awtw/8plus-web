@@ -22,28 +22,27 @@ export type ShareHubTheme = {
   meshOpacity: number
 }
 
-/** Business — high-sat cyan / violet AI future */
+/** Business — Pantone Orange 021 C family, solid field */
 export const shareBusinessTheme: ShareHubTheme = {
   id: "sb",
-  pageBg:
-    "linear-gradient(155deg, #010012 0%, #0c0068 28%, #1a0a5e 52%, #002848 78%, #000814 100%)",
-  glowA: "rgba(0, 255, 255, 0.72)",
-  glowB: "rgba(168, 85, 247, 0.58)",
-  glowC: "rgba(59, 130, 246, 0.45)",
-  gridLine: "rgba(0, 255, 255, 0.14)",
-  fg: "#f8fbff",
-  fgMuted: "rgba(248, 251, 255, 0.72)",
-  logoMark: "#ffffff",
-  accent: "#00f5ff",
-  accentSoft: "rgba(0, 245, 255, 0.2)",
-  cardBg: "rgba(255, 255, 255, 0.07)",
-  cardBorder: "rgba(0, 245, 255, 0.35)",
-  cardHoverBorder: "rgba(192, 132, 252, 0.75)",
-  pillBg: "rgba(139, 92, 246, 0.35)",
-  pillText: "#e9d5ff",
-  ctaBg: "linear-gradient(135deg, #00f5ff 0%, #8b5cf6 50%, #3b82f6 100%)",
-  ctaText: "#020617",
-  meshOpacity: 0.82,
+  pageBg: "#FE5000",
+  glowA: "rgba(255, 220, 130, 0.34)",
+  glowB: "rgba(255, 160, 70, 0.28)",
+  glowC: "rgba(255, 240, 170, 0.18)",
+  gridLine: "rgba(255, 255, 255, 0.11)",
+  fg: "#FFFFFF",
+  fgMuted: "rgba(255, 255, 255, 0.84)",
+  logoMark: "#FFFFFF",
+  accent: "#FFFFFF",
+  accentSoft: "rgba(255, 255, 255, 0.2)",
+  cardBg: "rgba(255, 255, 255, 0.17)",
+  cardBorder: "rgba(255, 255, 255, 0.38)",
+  cardHoverBorder: "rgba(255, 255, 255, 0.75)",
+  pillBg: "rgba(255, 230, 160, 0.3)",
+  pillText: "#FFFFFF",
+  ctaBg: "#FFFFFF",
+  ctaText: "#E04600",
+  meshOpacity: 0.28,
 }
 
 /** Social — International Klein Blue, solid field */

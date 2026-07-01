@@ -5,29 +5,49 @@ import type { CSSProperties } from 'react'
 import { CaretDown, Briefcase } from '@phosphor-icons/react'
 import { useLanguage } from '@/components/language-provider'
 import { getPathMilestones } from '@/lib/content/path-milestones'
+import { cn } from '@/lib/utils'
 import type { ShareHubTheme } from '@/lib/share-hub/themes'
 
 type SharePathExpandableProps = {
   theme: ShareHubTheme
   cardStyle: CSSProperties
+  onOpenChange?: (open: boolean) => void
+  fillViewport?: boolean
 }
 
-export function SharePathExpandable({ theme, cardStyle }: SharePathExpandableProps) {
+export function SharePathExpandable({
+  theme,
+  cardStyle,
+  onOpenChange,
+  fillViewport = false,
+}: SharePathExpandableProps) {
   const { locale, t } = useLanguage()
   const [open, setOpen] = useState(false)
   const milestones = getPathMilestones(locale)
 
+  const toggle = () => {
+    const next = !open
+    setOpen(next)
+    onOpenChange?.(next)
+  }
+
   return (
-    <div className="space-y-2.5">
+    <div className={cn(fillViewport && open && 'flex min-h-0 flex-col items-stretch')}>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggle}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 rounded-[1.2rem] border px-4 py-3.5 text-left transition-colors hover:border-[color:var(--share-card-hover)]"
+        className={cn(
+          'flex w-full items-center gap-3 rounded-[1.2rem] border px-4 text-left transition-colors hover:border-[color:var(--share-card-hover)]',
+          fillViewport && open ? 'shrink-0 py-2' : 'py-2.5 sm:py-3',
+        )}
         style={cardStyle}
       >
         <span
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+          className={cn(
+            'flex shrink-0 items-center justify-center rounded-xl border',
+            fillViewport && open ? 'h-9 w-9' : 'h-11 w-11',
+          )}
           style={{ borderColor: theme.cardBorder, color: theme.accent }}
         >
           <Briefcase className="h-5 w-5" weight="bold" />
@@ -35,11 +55,11 @@ export function SharePathExpandable({ theme, cardStyle }: SharePathExpandablePro
         <span className="min-w-0 flex-1">
           <span className="block text-sm font-semibold">{t('shareHub.pathButton')}</span>
           <span className="block text-xs" style={{ color: theme.fgMuted }}>
-            {t('shareHub.pathButtonDesc')}
+            {open ? t('shareHub.pathButtonCollapse') : t('shareHub.pathButtonDesc')}
           </span>
         </span>
         <CaretDown
-          className="h-5 w-5 shrink-0 transition-transform duration-300"
+          className="h-5 w-5 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
           style={{
             color: theme.accent,
             transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -49,17 +69,32 @@ export function SharePathExpandable({ theme, cardStyle }: SharePathExpandablePro
       </button>
 
       <div
-        className="grid transition-[grid-template-rows] duration-400 ease-out"
+        className={cn(
+          'grid min-h-0 transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+        )}
         style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
       >
         <div className="overflow-hidden">
-          <div className="relative pl-4 pt-1">
+          <div
+            className={cn(
+              'relative pl-4 pt-1 transition-opacity duration-500',
+              open ? 'opacity-100' : 'opacity-0',
+              fillViewport && open && 'flex h-full min-h-0 flex-col',
+            )}
+          >
             <div
               className="absolute bottom-2 left-[7px] top-2 w-px"
               style={{ background: `linear-gradient(180deg, ${theme.accent}, transparent)` }}
               aria-hidden
             />
-            <ul className="max-h-[min(32vh,280px)] space-y-3 overflow-y-auto pr-1 sm:max-h-[min(40vh,360px)]">
+            <ul
+              className={cn(
+                'share-path-scroll space-y-3 overflow-y-auto overscroll-contain pr-1.5',
+                fillViewport && open
+                  ? 'h-[min(70dvh,calc(100dvh-7.5rem-env(safe-area-inset-top)-env(safe-area-inset-bottom)))] max-h-[min(70dvh,calc(100dvh-7.5rem-env(safe-area-inset-top)-env(safe-area-inset-bottom)))] min-h-0'
+                  : 'max-h-[min(32vh,280px)] sm:max-h-[min(40vh,360px)]',
+              )}
+            >
               {milestones.map((node) => (
                 <li key={`${node.year}-${node.title}`} className="relative pl-5">
                   <span

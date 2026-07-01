@@ -4,6 +4,7 @@ export type ShareHubLink =
   | { kind: "external"; id: string; name: string; description?: string; href: string; badge?: string }
   | { kind: "email"; id: string; name: string; description?: string; email: string }
   | { kind: "line-qr"; id: string; name: string; description?: string; lineTarget: "official" | "personal" }
+  | { kind: "booking"; id: string; name: string; description?: string }
   | { kind: "ig-qr"; id: string; name: string; description?: string };
 
 const EMAIL = "alec.wang.tpe@gmail.com";
@@ -19,11 +20,10 @@ export function getShareBusinessLinks(locale: Locale): ShareHubLink[] {
       email: EMAIL,
     },
     {
-      kind: "external",
+      kind: "booking",
       id: "booking",
       name: isZh ? "預約諮詢" : "Book a call",
       description: isZh ? "選時段，30 分鐘線上對談" : "Pick a 30-min slot",
-      href: "/booking",
     },
     {
       kind: "external",

@@ -489,6 +489,116 @@ body > * {
   background: var(--hover-border);
 }
 
+.share-path-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.1);
+}
+
+.share-path-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.share-path-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.share-path-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+}
+
+.share-path-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* Share Hub（/sb、/sc）：覆寫全站 dark color-scheme 造成的黑色捲軸 */
+.share-hub-shell {
+  color-scheme: light;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.1);
+}
+
+.share-hub-shell::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.share-hub-shell::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.share-hub-shell::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+}
+
+.share-hub-shell::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.share-hub-shell .share-path-scroll {
+  color-scheme: light;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.1);
+}
+
+.share-hub-shell .share-path-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.share-hub-shell .share-path-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.share-hub-shell .share-path-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+}
+
+.share-hub-shell .share-path-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.share-hub-shell .share-booking-cal {
+  color-scheme: light;
+  scrollbar-width: thin;
+  scrollbar-color: var(--share-cal-scroll-thumb) var(--share-cal-scroll-track);
+}
+
+.share-hub-shell .share-booking-cal::-webkit-scrollbar,
+.share-hub-shell .share-booking-cal *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.share-hub-shell .share-booking-cal::-webkit-scrollbar-track,
+.share-hub-shell .share-booking-cal *::-webkit-scrollbar-track {
+  background: var(--share-cal-scroll-track);
+  border-radius: 9999px;
+}
+
+.share-hub-shell .share-booking-cal::-webkit-scrollbar-thumb,
+.share-hub-shell .share-booking-cal *::-webkit-scrollbar-thumb {
+  background: var(--share-cal-scroll-thumb);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.share-hub-shell .share-booking-cal::-webkit-scrollbar-thumb:hover,
+.share-hub-shell .share-booking-cal *::-webkit-scrollbar-thumb:hover {
+  background: var(--share-cal-scroll-thumb-hover);
+  background-clip: padding-box;
+}
+
+.share-hub-logo-orbit {
+  color: rgba(255, 255, 255, 0.34);
+  pointer-events: none;
+}
+
 h1,
 h2,
 h3,

@@ -1,17 +1,18 @@
 'use client'
 
-import { useEffect, useState, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 import Link from "next/link"
 import QRCode from "qrcode"
 import {
   ArrowSquareOut,
+  CaretLeft,
   ChatCircle,
   Copy,
   Check,
   InstagramLogo,
 } from "@phosphor-icons/react"
 import { useLanguage } from "@/components/language-provider"
-import { Logo } from "@/components/logo"
+import { ShareHubLogo } from "@/components/share/share-hub-logo"
 import type { ShareHubLink } from "@/lib/content/share-links"
 import {
   getLineAddFriendUrl,
@@ -21,8 +22,10 @@ import {
 import { QrDialog } from "@/components/qr-dialog"
 import LanguageSwitcher from "@/components/language-switcher"
 import { SharePathExpandable } from "@/components/share/share-path-expandable"
+import { ShareBookingExpandable } from "@/components/share/share-booking-expandable"
 import { ShareSocialAvatar } from "@/components/share/share-social-avatar"
 import { ShareHavenbirdStage } from "@/components/share/share-havenbird-stage"
+import { cn } from "@/lib/utils"
 import type { ShareHubTheme, ShareHubVariant } from "@/lib/share-hub/themes"
 
 type ShareLinkHubProps = {
@@ -107,6 +110,9 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
 
   const displayName = variant === "sb" ? t("shareHub.businessName") : t("shareHub.socialName")
   const displayLead = variant === "sb" ? t("shareHub.businessLead") : t("shareHub.socialLead")
+  const bookingLink = links.find((link) => link.kind === "booking")
+  const emailLink = links.find((link) => link.kind === "email")
+  const tailLinks = links.filter((link) => link.kind !== "booking" && link.kind !== "email")
 
   useEffect(() => {
     QRCode.toDataURL(officialLineUrl, {
@@ -135,6 +141,12 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
     "--share-card-bg": theme.cardBg,
     "--share-card-border": theme.cardBorder,
     "--share-card-hover": theme.cardHoverBorder,
+    "--share-cal-scroll-thumb":
+      variant === "sb" ? "rgba(224, 70, 0, 0.42)" : "rgba(0, 82, 200, 0.42)",
+    "--share-cal-scroll-thumb-hover":
+      variant === "sb" ? "rgba(224, 70, 0, 0.58)" : "rgba(0, 82, 200, 0.58)",
+    "--share-cal-scroll-track":
+      variant === "sb" ? "rgba(254, 80, 0, 0.12)" : "rgba(0, 47, 167, 0.12)",
   } as CSSProperties
 
   const cardStyle: CSSProperties = {
@@ -143,12 +155,70 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
     color: theme.fg,
   }
 
+  const [pathOpen, setPathOpen] = useState(false)
+  const [bookingOpen, setBookingOpen] = useState(false)
+  const panelHistoryRef = useRef(false)
+
+  const syncPanelHistoryOnClose = () => {
+    if (panelHistoryRef.current) {
+      panelHistoryRef.current = false
+      window.history.back()
+    }
+  }
+
+  const handlePathOpenChange = (open: boolean) => {
+    if (open) {
+      setPathOpen(true)
+      setBookingOpen(false)
+      if (!panelHistoryRef.current) {
+        panelHistoryRef.current = true
+        window.history.pushState({ shareHubPanel: 'path' }, '')
+      }
+      return
+    }
+    setPathOpen(false)
+    syncPanelHistoryOnClose()
+  }
+
+  const handleBookingOpenChange = (open: boolean) => {
+    if (open) {
+      setBookingOpen(true)
+      setPathOpen(false)
+      if (!panelHistoryRef.current) {
+        panelHistoryRef.current = true
+        window.history.pushState({ shareHubPanel: 'booking' }, '')
+      }
+      return
+    }
+    setBookingOpen(false)
+    syncPanelHistoryOnClose()
+  }
+
+  const closeAllPanels = () => {
+    if (pathOpen || bookingOpen) {
+      setPathOpen(false)
+      setBookingOpen(false)
+      syncPanelHistoryOnClose()
+    }
+  }
+
+  const compressForPanel = variant === "sb" && (pathOpen || bookingOpen)
+
+  const linkStackClass = cn(
+    "shrink-0 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+    compressForPanel
+      ? "max-h-0 space-y-0 opacity-0 pointer-events-none"
+      : "max-h-[28rem] space-y-2 opacity-100 [@media(max-height:700px)]:space-y-1.5",
+  )
+
   const closeQr = () => setQrKind(null)
 
-  const meshScale = variant === "sc" ? 0.22 : 1
-  const gridOpacity = variant === "sc" ? 0.22 : 0.5
+  const meshScale = variant === "sc" || variant === "sb" ? 0.22 : 1
+  const gridOpacity = variant === "sc" || variant === "sb" ? 0.22 : 0.5
 
   useEffect(() => {
+    if (!compressForPanel) return
+
     const html = document.documentElement
     const body = document.body
     const prevHtmlOverflow = html.style.overflow
@@ -161,11 +231,31 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
       html.style.overflow = prevHtmlOverflow
       body.style.overflow = prevBodyOverflow
     }
+  }, [compressForPanel])
+
+  useEffect(() => {
+    const onPopState = () => {
+      panelHistoryRef.current = false
+      setPathOpen(false)
+      setBookingOpen(false)
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
   }, [])
+
+  useEffect(() => {
+    if (!compressForPanel) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeAllPanels()
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [compressForPanel, pathOpen, bookingOpen])
 
   return (
     <div
-      className="fixed inset-0 z-0 overflow-hidden"
+      className="share-hub-shell fixed inset-0 z-0 overflow-hidden"
+      data-share-variant={variant}
       style={{ ...shellStyle, background: theme.pageBg, color: theme.fg }}
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -196,61 +286,146 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
       </div>
 
       <div className="relative z-10 flex h-dvh max-h-dvh flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
-        <div className="mb-2 flex shrink-0 justify-end sm:mb-3">
-          <div className="share-hub-lang">
-            <LanguageSwitcher />
+        <div
+          className={cn(
+            "mb-2 flex shrink-0 items-center gap-2 sm:mb-3",
+            compressForPanel && "mb-1 sm:mb-2",
+          )}
+        >
+          {compressForPanel ? (
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm font-medium transition-colors hover:border-[color:var(--share-card-hover)]"
+              style={{ ...cardStyle, borderColor: theme.cardBorder }}
+            >
+              <CaretLeft className="h-4 w-4" weight="bold" />
+              {t("shareHub.backToHome")}
+            </Link>
+          ) : null}
+          <div className="ml-auto flex items-center gap-2">
+            {compressForPanel ? (
+              <button
+                type="button"
+                onClick={closeAllPanels}
+                className="inline-flex items-center rounded-full border px-3 py-2 text-sm font-semibold transition-colors hover:border-[color:var(--share-card-hover)]"
+                style={{ background: theme.ctaBg, color: theme.ctaText, borderColor: theme.cardBorder }}
+              >
+                {t("shareHub.closePanel")}
+              </button>
+            ) : null}
+            <div className="share-hub-lang">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
 
-        <div className="mx-auto flex w-full min-h-0 max-w-lg flex-1 flex-col justify-center">
-          <header className="mb-3 shrink-0 text-center sm:mb-4 [@media(max-height:700px)]:mb-2">
+        <div
+          className={cn(
+            "mx-auto flex w-full min-h-0 max-w-lg flex-1 flex-col transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            compressForPanel ? "justify-start" : "justify-center",
+          )}
+        >
+          <header
+            className={cn(
+              "mb-3 shrink-0 text-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] sm:mb-4 [@media(max-height:700px)]:mb-2",
+              compressForPanel && "mb-1",
+            )}
+          >
           {variant === "sb" ? (
-            <div className="relative mx-auto mb-3 flex h-[clamp(4rem,12vh,5.25rem)] w-[clamp(4rem,12vh,5.25rem)] items-center justify-center sm:mb-4 sm:h-[5.25rem] sm:w-[5.25rem]">
+            <div
+              className={cn(
+                "relative mx-auto mb-3 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] sm:mb-4",
+                compressForPanel
+                  ? "mb-0 max-h-0 w-0 overflow-hidden opacity-0"
+                  : "h-[clamp(4rem,12vh,5.25rem)] w-[clamp(4rem,12vh,5.25rem)] sm:h-[5.25rem] sm:w-[5.25rem]",
+              )}
+            >
               <div
                 className="absolute -inset-4 rounded-full blur-2xl"
                 style={{ background: theme.glowA, opacity: 0.55 }}
                 aria-hidden
               />
-              <Logo size={80} className="relative sm:h-[5.5rem] sm:w-[5.5rem]" />
+              <ShareHubLogo className="h-full w-full" />
             </div>
           ) : (
             <ShareSocialAvatar />
           )}
-          <h1 className="text-[clamp(1.65rem,5.5vw,2.15rem)] font-semibold tracking-[-0.04em]">{displayName}</h1>
-          <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed sm:mt-2 [@media(max-height:700px)]:text-xs [@media(max-height:700px)]:leading-snug" style={{ color: theme.fgMuted }}>
+          <h1
+            className={cn(
+              "font-semibold tracking-[-0.04em] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+              compressForPanel
+                ? "text-base"
+                : "text-[clamp(1.65rem,5.5vw,2.15rem)]",
+            )}
+          >
+            {displayName}
+          </h1>
+          <p
+            className={cn(
+              "mx-auto mt-1.5 max-w-sm text-sm leading-relaxed transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] sm:mt-2 [@media(max-height:700px)]:text-xs [@media(max-height:700px)]:leading-snug",
+              compressForPanel && "mt-0 max-h-0 overflow-hidden opacity-0",
+            )}
+            style={{ color: theme.fgMuted }}
+          >
             {displayLead}
           </p>
           </header>
 
-          <div className="shrink-0 space-y-2 [@media(max-height:700px)]:space-y-1.5">
-          {links.map((link) => {
-            if (link.kind === "email") {
-              return (
-                <button
-                  key={link.id}
-                  type="button"
-                  onClick={() => copyEmail(link.email)}
-                  className="flex w-full items-center gap-3 rounded-[1.2rem] border px-4 py-2.5 text-left transition-colors hover:border-[color:var(--share-card-hover)] sm:py-3"
-                  style={cardStyle}
-                >
-                  <span
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
-                    style={{ borderColor: theme.cardBorder, color: theme.accent }}
-                  >
-                    {copied ? <Check className="h-5 w-5" weight="bold" /> : <Copy className="h-5 w-5" weight="bold" />}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">{link.name}</span>
-                    <span className="block truncate text-xs" style={{ color: theme.fgMuted }}>
-                      {link.description ?? link.email}
-                    </span>
-                  </span>
-                  <span className="text-xs" style={{ color: theme.fgMuted }}>
-                    {copied ? t("shareHub.copied") : t("shareHub.copyEmail")}
-                  </span>
-                </button>
-              )
-            }
+          <div
+            className={cn(
+              "flex min-h-0 flex-col transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+              compressForPanel ? "min-h-0 flex-1 gap-1" : "gap-2",
+            )}
+          >
+          <div className={linkStackClass}>
+          {emailLink && emailLink.kind === "email" ? (
+            <button
+              key={emailLink.id}
+              type="button"
+              onClick={() => copyEmail(emailLink.email)}
+              className="flex w-full items-center gap-3 rounded-[1.2rem] border px-4 py-2.5 text-left transition-colors hover:border-[color:var(--share-card-hover)] sm:py-3"
+              style={cardStyle}
+            >
+              <span
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+                style={{ borderColor: theme.cardBorder, color: theme.accent }}
+              >
+                {copied ? <Check className="h-5 w-5" weight="bold" /> : <Copy className="h-5 w-5" weight="bold" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold">{emailLink.name}</span>
+                <span className="block truncate text-xs" style={{ color: theme.fgMuted }}>
+                  {emailLink.description ?? emailLink.email}
+                </span>
+              </span>
+              <span className="text-xs" style={{ color: theme.fgMuted }}>
+                {copied ? t("shareHub.copied") : t("shareHub.copyEmail")}
+              </span>
+            </button>
+          ) : null}
+          </div>
+
+          {bookingLink && bookingLink.kind === "booking" ? (
+            <div
+              className={cn(
+                compressForPanel && bookingOpen && "flex min-h-0 flex-1 flex-col",
+              )}
+            >
+            <ShareBookingExpandable
+              theme={theme}
+              cardStyle={cardStyle}
+              name={bookingLink.name}
+              description={bookingLink.description}
+              fillViewport={compressForPanel}
+              calBrandColor={variant === "sb" ? "#FE5000" : "#002FA7"}
+              onOpenChange={handleBookingOpenChange}
+            />
+            </div>
+          ) : null}
+
+          <div className={linkStackClass}>
+          {tailLinks.map((link) => {
+            if (link.kind === "email") return null
 
             if (link.kind === "line-qr") {
               const target = link.lineTarget === "personal" ? "line-personal" : "line-official"
@@ -307,6 +482,8 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
               )
             }
 
+            if (link.kind !== "external") return null
+
             const external = link.href.startsWith("http")
             const inner = (
               <>
@@ -360,7 +537,16 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
             )
           })}
 
-          {showPath ? <SharePathExpandable theme={theme} cardStyle={cardStyle} /> : null}
+          </div>
+
+          {showPath && !bookingOpen ? (
+            <SharePathExpandable
+              theme={theme}
+              cardStyle={cardStyle}
+              fillViewport={compressForPanel}
+              onOpenChange={handlePathOpenChange}
+            />
+          ) : null}
           </div>
         </div>
       </div>

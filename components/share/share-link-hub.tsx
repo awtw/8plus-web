@@ -25,6 +25,7 @@ import { SharePathExpandable } from "@/components/share/share-path-expandable"
 import { ShareBookingExpandable } from "@/components/share/share-booking-expandable"
 import { ShareSocialAvatar } from "@/components/share/share-social-avatar"
 import { ShareHavenbirdStage } from "@/components/share/share-havenbird-stage"
+import { ShareBusinessStage } from "@/components/share/share-business-stage"
 import { cn } from "@/lib/utils"
 import type { ShareHubTheme, ShareHubVariant } from "@/lib/share-hub/themes"
 
@@ -283,6 +284,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
           }}
         />
         {variant === "sc" ? <ShareHavenbirdStage /> : null}
+        {variant === "sb" ? <ShareBusinessStage subdued={compressForPanel} /> : null}
       </div>
 
       <div className="relative z-10 flex h-dvh max-h-dvh flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
@@ -405,7 +407,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
           ) : null}
           </div>
 
-          {bookingLink && bookingLink.kind === "booking" ? (
+          {bookingLink && bookingLink.kind === "booking" && !pathOpen ? (
             <div
               className={cn(
                 compressForPanel && bookingOpen && "flex min-h-0 flex-1 flex-col",
@@ -540,12 +542,18 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
           </div>
 
           {showPath && !bookingOpen ? (
+            <div
+              className={cn(
+                compressForPanel && pathOpen && "flex min-h-0 flex-1 flex-col",
+              )}
+            >
             <SharePathExpandable
               theme={theme}
               cardStyle={cardStyle}
               fillViewport={compressForPanel}
               onOpenChange={handlePathOpenChange}
             />
+            </div>
           ) : null}
           </div>
         </div>

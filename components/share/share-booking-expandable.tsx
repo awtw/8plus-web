@@ -8,8 +8,8 @@ import { useLanguage } from '@/components/language-provider'
 import { cn } from '@/lib/utils'
 import type { ShareHubTheme } from '@/lib/share-hub/themes'
 
-const CAL_NAMESPACE = '60min'
-const CAL_LINK = 'august-wang-113/60min'
+const CAL_NAMESPACE = '30min'
+const CAL_LINK = 'august-wang-113/30min'
 
 const PANEL_HEIGHT =
   'min(70dvh,calc(100dvh-7.5rem-env(safe-area-inset-top)-env(safe-area-inset-bottom)))'

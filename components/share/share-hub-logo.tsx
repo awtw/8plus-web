@@ -13,8 +13,9 @@ type ShareHubLogoProps = {
 
 export function ShareHubLogo({ className, size }: ShareHubLogoProps) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const orbitOuterRef = useRef<SVGGElement>(null)
-  const orbitInnerRef = useRef<SVGGElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
+  const orbitRef = useRef<SVGGElement>(null)
+  const markGroupRef = useRef<SVGGElement>(null)
   const circleTopRef = useRef<SVGCircleElement>(null)
   const circleBottomRef = useRef<SVGCircleElement>(null)
   const slashRef = useRef<SVGPathElement>(null)
@@ -22,18 +23,19 @@ export function ShareHubLogo({ className, size }: ShareHubLogoProps) {
 
   useEffect(() => {
     const root = rootRef.current
-    const orbitOuter = orbitOuterRef.current
-    const orbitInner = orbitInnerRef.current
+    const glow = glowRef.current
+    const orbit = orbitRef.current
+    const markGroup = markGroupRef.current
     const circleTop = circleTopRef.current
     const circleBottom = circleBottomRef.current
     const slash = slashRef.current
 
-    if (!root || !orbitOuter || !orbitInner || !circleTop || !circleBottom || !slash) return
+    if (!root || !glow || !orbit || !markGroup || !circleTop || !circleBottom || !slash) return
 
     ensureGsapPlugins()
 
     if (reduced) {
-      gsap.set([orbitOuter, orbitInner, circleTop, circleBottom, slash], {
+      gsap.set([glow, orbit, markGroup, circleTop, circleBottom, slash], {
         opacity: 1,
         clearProps: 'transform',
       })
@@ -41,36 +43,34 @@ export function ShareHubLogo({ className, size }: ShareHubLogoProps) {
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(orbitOuter, { opacity: 0, rotation: -24, transformOrigin: '50px 50px' })
-      gsap.set(orbitInner, { opacity: 0, rotation: 18, transformOrigin: '50px 50px' })
-      gsap.set(circleTop, { opacity: 0, x: -16, y: -14, scale: 0.78, transformOrigin: '32px 29px' })
-      gsap.set(circleBottom, { opacity: 0, x: 18, y: 16, scale: 0.76, transformOrigin: '70px 64px' })
-      gsap.set(slash, { opacity: 0, scale: 0.12, rotation: -14, transformOrigin: '50px 50px' })
+      gsap.set(glow, { opacity: 0, scale: 0.88 })
+      gsap.set(orbit, { opacity: 0, rotation: -16, transformOrigin: '50px 50px' })
+      gsap.set(markGroup, { scale: 1, transformOrigin: '50px 50px' })
+      gsap.set(circleTop, { opacity: 0, x: -11, y: -10, scale: 0.84, transformOrigin: '32px 29px' })
+      gsap.set(circleBottom, { opacity: 0, x: 12, y: 11, scale: 0.84, transformOrigin: '70px 64px' })
+      gsap.set(slash, { opacity: 0, scale: 0.2, rotation: -10, transformOrigin: '50px 50px' })
 
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } })
       intro
-        .to(orbitOuter, { opacity: 1, rotation: 0, duration: 0.85 }, 0.1)
-        .to(orbitInner, { opacity: 1, rotation: 0, duration: 0.85 }, 0.18)
-        .to(circleTop, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.8 }, 0.12)
-        .to(circleBottom, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.8 }, 0.28)
-        .to(slash, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'power2.inOut' }, 0.5)
+        .to(glow, { opacity: 0.5, scale: 1, duration: 1.05 }, 0.08)
+        .to(orbit, { opacity: 0.55, rotation: 22, duration: 1.05 }, 0.1)
+        .to(circleTop, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.95 }, 0.18)
+        .to(circleBottom, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.95 }, 0.34)
+        .to(slash, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: 'power2.inOut' }, 0.58)
+        .to(
+          markGroup,
+          { scale: 1.035, duration: 0.11, ease: 'power2.out', yoyo: true, repeat: 1 },
+          1.02,
+        )
+        .to(orbit, { rotation: 0, opacity: 0.16, duration: 0.55, ease: 'power2.out' }, 1.05)
 
-      gsap.to(orbitOuter, {
-        rotation: 360,
-        duration: 22,
-        ease: 'none',
+      gsap.to(glow, {
+        opacity: 0.62,
+        duration: 3.6,
+        yoyo: true,
         repeat: -1,
-        transformOrigin: '50px 50px',
-        delay: 0.9,
-      })
-
-      gsap.to(orbitInner, {
-        rotation: -360,
-        duration: 15,
-        ease: 'none',
-        repeat: -1,
-        transformOrigin: '50px 50px',
-        delay: 0.9,
+        ease: 'sine.inOut',
+        delay: 1.2,
       })
     }, root)
 
@@ -85,44 +85,29 @@ export function ShareHubLogo({ className, size }: ShareHubLogoProps) {
       className={cn('share-hub-logo relative inline-flex h-full w-full items-center justify-center', className)}
       style={size ? { width: size, height: size } : undefined}
     >
+      <div ref={glowRef} className="share-hub-logo-glow" aria-hidden />
+
       <svg
         viewBox="0 0 100 100"
-        className="share-hub-logo-stage relative h-[88%] w-[88%]"
+        className="share-hub-logo-stage relative z-[1] h-[88%] w-[88%]"
         style={markStyle ? { width: '88%', height: '88%' } : undefined}
         role="img"
         aria-label="8plus"
       >
-        <g ref={orbitOuterRef} className="share-hub-logo-orbit share-hub-logo-orbit--outer">
+        <g ref={orbitRef} className="share-hub-logo-orbit">
           <circle
             cx="50"
             cy="50"
-            r="46"
+            r="42"
             fill="none"
             stroke="currentColor"
-            strokeWidth="0.55"
-            strokeDasharray="3.5 7.5"
+            strokeWidth="0.5"
+            strokeDasharray="5 14"
             strokeLinecap="round"
           />
         </g>
 
-        <g ref={orbitInnerRef} className="share-hub-logo-orbit share-hub-logo-orbit--inner">
-          <circle
-            cx="50"
-            cy="50"
-            r="38"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.4"
-            strokeDasharray="1.5 10"
-            strokeLinecap="round"
-          />
-          <line x1="50" y1="12" x2="50" y2="17" stroke="currentColor" strokeWidth="0.55" strokeLinecap="round" />
-          <line x1="88" y1="50" x2="83" y2="50" stroke="currentColor" strokeWidth="0.55" strokeLinecap="round" />
-          <line x1="50" y1="88" x2="50" y2="83" stroke="currentColor" strokeWidth="0.55" strokeLinecap="round" />
-          <line x1="12" y1="50" x2="17" y2="50" stroke="currentColor" strokeWidth="0.55" strokeLinecap="round" />
-        </g>
-
-        <g className="share-hub-logo-mark" fill="var(--logo-mark)">
+        <g ref={markGroupRef} className="share-hub-logo-mark" fill="var(--logo-mark)">
           <circle ref={circleTopRef} cx="32" cy="29" r="18" />
           <path ref={slashRef} d="M53 9H68L36 91H21L53 9Z" />
           <circle ref={circleBottomRef} cx="70" cy="64" r="28" />

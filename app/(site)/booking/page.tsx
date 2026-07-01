@@ -15,7 +15,7 @@ export default function BookingPage() {
   useEffect(() => {
     (async function () {
       try {
-        const cal = await getCalApi({ namespace: "60min" });
+        const cal = await getCalApi({ namespace: "30min" });
         cal("ui", {
           hideEventTypeDetails: false,
           layout: "month_view",
@@ -74,8 +74,8 @@ export default function BookingPage() {
 
           <div className="overflow-hidden rounded-[22px] border border-border-soft bg-[color:var(--bg)]">
             <Cal
-              namespace="60min"
-              calLink="august-wang-113/60min"
+              namespace="30min"
+              calLink="august-wang-113/30min"
               style={{
                 width: "100%",
                 height: "clamp(520px, 70vh, 720px)",

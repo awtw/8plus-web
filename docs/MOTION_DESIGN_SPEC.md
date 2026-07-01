@@ -2,6 +2,8 @@
 
 *建立：2026-06-30 CST*  
 *LOCKED：2026-06-30 CST — Round 3 確認*  
+*Superseded（首頁章節）：Phase 4.0 — 見 `docs/BRAND_EXPERIENCE_SPEC.md`（Void→Mesh→Reach→Handshake→Manifesto→Portal）*  
+*仍適用：dark-only、GSAP、內頁輕量 motion、`/path` timeline*  
 *依據：`.planning/phases/3.0-RESET-AND-DISCUSS.md`、`docs/StoryAboutMe.md`、`docs/CI_IDENTITY_SPEC.md`*
 
 ---

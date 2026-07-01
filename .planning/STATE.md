@@ -5,19 +5,22 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 3.0 — W1 完成；待 W2 Ch2–Ch5
+**Current focus:** Phase 4.0 規劃 LOCKED — 待 W0 實作（見 `4.0-IMPLEMENT-PLAN.md`）
 
 ## Current Position
 
-Phase: 2.3 of 3 (Rebrand + Growth)
-Plan: Complete
-Status: Phase 3.0 W1 完成
-Last activity: 2026-06-30 CST — W1：scroll-story Ch0 Logo 組裝 + Ch1 Story pin scrub
+Phase: **4.0** ICON 級全站重構
+Plan: LOCKED（規劃文件完整）
+Status: 規劃已 commit，待 W0
+Last activity: 2026-07-01 CST — 完整規劃：OVERVIEW + IMPLEMENT-PLAN + PAGE-BRIEFS + DS DRAFT
 
-Progress: [██████████] 100% (Phase 2.3 scope)
+Progress: [██░░░░░░░░] 規劃完成，實作未開始
 
 ## What Was Done
 
+- ✅ **2026-07-01 CST — Phase 4.0 規劃 LOCKED**: Round 1+2 決策；IA 7 項 + `/sb` `/sc`；`BRAND_EXPERIENCE_SPEC`、`DESIGN_SYSTEM_SPEC` DRAFT、`4.0-IMPLEMENT-PLAN` W0–W6、`CONTENT_INVENTORY`、`4.0-PHASE-OVERVIEW`；checkpoint `28fffff`。
+- ✅ **2026-07-01 CST — Phase 4.0 討論 Round 1+2**: AI 線框手+握手；Logo 8+plus；blog 入主 nav；contact→booking；Three.js/R3F。
+- ✅ **2026-07-01 CST — Rebranding 路線**: 重構現有 repo，保留 Velite/i18n/SEO；見 Discussion Log。
 - ✅ **2026-06-30 CST — Phase 3.0 W1 首頁 scroll prototype**: `components/home/scroll-story/`；Logo 組裝 + Story pin scrub；替換首頁 Hero；`pnpm build` 通過。
 - ✅ **2026-06-30 CST — Phase 3.0 W0 基礎設施**: `gsap`；dark `:root`；`forcedTheme=dark`；ThemeToggle 移除；motion 骨架 + `home-scroll.ts`。
 - ✅ **2026-06-30 CST — Phase 3.0 Round 3 LOCKED**: GSAP+ScrollTrigger；職涯 timeline 僅 `/path`；i18n 中英；全站 dark 關 ThemeToggle；`MOTION_DESIGN_SPEC.md` LOCKED。
@@ -70,6 +73,13 @@ Stopped at: Logo 已改為極簡現代版，建置與截圖驗證完成
 Resume file: None
 
 ## Discussion Log
+
+### 2026-07-01 CST — Phase 4.0 Round 1+2 LOCKED + 規劃完整版
+
+- Round 1：現代 AI、scroll 驚喜、Logo 8+plus、線框手+握手、IA 草案。
+- Round 2：`/sb` `/sc`、blog 主 nav、contact→booking、Three.js/R3F。
+- 產出：`4.0-PHASE-OVERVIEW`、`4.0-IMPLEMENT-PLAN` W0–W6、`CONTENT_INVENTORY`、`4.0-PAGE-BRIEFS`、`BRAND_EXPERIENCE_SPEC`、`DESIGN_SYSTEM_SPEC` DRAFT。
+- 實作入口：W0（IA + redirect + `/sb` `/sc` 殼）。
 
 ### 2026-07-01 10:10 CST — Rebranding 路線判斷：重構現有 repo 優先
 

@@ -37,7 +37,7 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   return (
-    <article className="section-shell py-12 sm:py-16 lg:py-20">
+    <article className="section-shell section-pad-y">
       <header className="surface-card p-6 sm:p-8">
         <span className="eyebrow">Archive</span>
         <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4rem)] tracking-[-0.04em]">

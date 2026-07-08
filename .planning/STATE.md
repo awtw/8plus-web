@@ -5,16 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 4.0 W1 — 首頁 Ch0–Ch1 Logo + 線框手 mesh
+**Current focus:** Phase 5.0 — **首頁六 Section Scroll**；Hero = Editorial Print 白底編輯誌（DRAFT，排除所有 design-lab 方向）
 
 ## Current Position
 
-Phase: **4.0** ICON 級全站重構
-Plan: LOCKED（規劃文件完整）
-Status: Phase 4.0 W0 完成
-Last activity: 2026-07-01 CST — W0：IA、redirects、`/lab` `/sb` `/sc`、booking+contact
+Phase: **5.0** 首頁 Scroll 敘事重規劃（承接 Phase 4.0 資產）
+Plan: PLANNING — `5.0-HOMEPAGE-SCROLL-PLAN.md`
+Status: W1 **DRAFT 上線** — `section-hero` = 白底雜誌封面 → 圖框擴張滿版 → 三柱定格；design-lab 全數排除不沿用
+Last activity: 2026-07-06 12:27 CST — Hero Editorial Print 實作（`HERO-HOME-EDITORIAL-SPEC.md`）
+Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實作
 
-Progress: [███░░░░░░░] W0 完成，W1 待開始
+作業記錄：`.planning/HERO-DESIGN-LAB-LOG.md`
 
 ## What Was Done
 
@@ -73,6 +74,161 @@ Stopped at: Logo 已改為極簡現代版，建置與截圖驗證完成
 Resume file: None
 
 ## Discussion Log
+
+### 2026-07-06 13:33 CST — UX Round 2：外框間距統一 + 移除 Logo 旁 theme picker（Sally）
+
+- 使用者要求：①外框 padding/margin 全站一致（對齊 `docs-2026-07-06-design-spec.md` container token）；②移除 header/mobile Logo 旁 Palette 設計模式選擇器；③Logo 改白標於 IKB 藍底、走 `--logo-mark`。
+- 實作：`.section-shell` 改為 `--container-gutter-*` 響應式 token；新增 `LogoHomeLink` 取代 `LogoThemeLauncher`；`Logo` 新增 `brand` variant（`#002FA7` 底 + 白 mark）；footer 同步 `brand` variant。
+- `/share` 自有 view switcher 未動；`logo-theme-launcher.tsx` 檔案保留（待後續清理 DesignModeProvider）。
+
+### 2026-07-06 12:55 CST — DS Round 1：全站藍為主、橘作點綴；首頁套用（Sally）
+
+- 使用者決策：①藍 = 全站主視覺色，橘僅交替/按鈕；②逐輪替換。
+- Editorial Hero 紙白 → IKB 藍場：白底 handshake 印刷稿「裱在藍牆上」，scroll 擴張不滿版（保留藍 mat + 底帶給三柱）；文字全白。
+- 首頁 Booking section 掛 `.bg-orange`（轉換區橘色點綴）；其餘 section 繼承藍底。
+- `brand-button-primary:hover` 改 accent 底 + `--accent-on` 文字（藍/橘場皆成立）。
+- Round 2 候選：內頁（about/services/blog/booking 頁）逐頁收斂 + header/footer 微調。
+
+### 2026-07-06 12:43 CST — 新 Design System：CI 雙色單一版本（Sally）
+
+- 使用者要求：新 design system；主色 = `/sb`（`#FE5000` Pantone Orange）與 `/sc`（`#002FA7` IKB 藍）背景；**只做一版**（不分 light/dark）。
+- 基礎依據：`docs-2026-07-06-design-spec.md`（使用者提供的設計規格）。
+- `globals.css`：`:root` 重寫為 CI 雙色 token；刪除 apple/elevenlabs/cohere-dark/`.dark` 全部覆寫區塊（原 L109–426）；`--page-bg` 改實色；`body::before` 噪點單一版。
+- 新增 `.bg-blue` / `.bg-orange` / `.bg-dark` 區塊變體（交替律動，accent 對調）。
+- 字體改 Outfit + JetBrains Mono（`next/font/google`，`--font-outfit` / `--font-jbmono`）。
+- 文件：`docs/DESIGN_SYSTEM_SPEC.md` 改版 v2 ACTIVE。
+- 待辦：DesignModeProvider 清理（`LogoThemeLauncher` 已自 header/mobile 移除）；全站頁面逐步收斂到新 token；Editorial Hero 是否併入藍橘律動待決策。
+
+### 2026-07-06 12:27 CST — Hero 重設計：排除所有 design-lab 方向 → Editorial Print（Sally）
+
+- 使用者要求：重新設計，**撇除 design-lab 內所有任一項**。
+- 12:17 的 CI 三幕合成（源自 R5 Lab）隨之否決；`hero-home-ci.tsx`、`home-ci-motion.ts` 已刪除，`HERO-HOME-CI-SPEC.md` 標記 ❌。
+- 新方向：**白底編輯誌**（所有 Lab 皆黑底動畫，反向切入）；`handshake.png` 原生白底印刷質感 + 大字標語 H1 + FIG.01 圖框。
+- Scroll：雜誌封面 → 圖框 clip-path 擴張滿版 → 三柱 stagger 定格；pin 150%。
+- 規格：`.planning/HERO-HOME-EDITORIAL-SPEC.md`
+- 新檔：`lib/hero/home-editorial-motion.ts`、`components/motion/use-scroll-pin-progress.ts`（共用 hook，首頁不再 import design-lab）。
+- `home-sections.ts` hero 新增 `headline`／`issueMark`／`figureCaption`（中英）。
+
+### 2026-07-06 12:17 CST — Hero 首頁 CI 三幕合成（Sally）
+
+- 使用者要求：用 `public/` 資源 + 現有文件建立主視覺頁設計。
+- Sally 判斷：不三選一，把 R5-01/05/06 接成單一 scroll 弧上首頁。
+- 規格：`.planning/HERO-HOME-CI-SPEC.md`
+- 實作：`lib/hero/home-ci-motion.ts`、`components/home/hero-home-ci.tsx`；`section-hero.tsx` 移除 R3F Co-Hero 改接 CI stage。
+- 三支 R5 Lab 原樣保留；R3F scene 檔案保留未掛載。
+- 降級：`prefers-reduced-motion` = Act 3 靜態定格。
+
+### 2026-07-06 14:38 CST — 首頁 section 留白對齊內頁
+
+- Sally UX：`--section-y-*` 升至 48/64/80px（= py-12 / sm:py-16 / lg:py-20）
+- 新增 `.section-pad-y`；`.home-section-inner` 共用同一 token 鏈
+- 內頁 `section-shell py-*` → `section-shell section-pad-y`
+- `pnpm build` ✅
+
+### 2026-07-06 12:10 CST — R5 選型三支 Lab（R5-01 + R5-05 + R5-06）
+
+- 使用者選定：R5-06 Halftone Trust、R5-01 Blueprint Grid Scroll、R5-05 Portal Split。
+- 選型牆：`/design-lab/r5`
+- R5-01：`/design-lab/grid-scroll`（既有，HUD 改 R5-01）
+- R5-05：`/design-lab/portal-split` — scroll 門扇裂開 + handshake；`/design-lab/grid-assemble` → redirect
+- R5-06：`/design-lab/halftone-trust` — 黑底 handshake，scroll 微曝光/vignette
+- 共用：`use-scroll-pin-progress.ts`、`portal-split-motion.ts`、`halftone-trust-motion.ts`
+- `pnpm build` ✅
+
+### 2026-07-06 12:00 CST — AI 主視覺領域研究 + R5 測試方針
+
+- 領域研究：`.planning/research/domain-ai-tech-hero-visual-research-2026-07-06.md`
+- Sally 提取 10 條 R5 測試方針：`.planning/HERO-R5-VISUAL-TEST-BRIEF.md`
+- 原則：Anti-Slop、scroll 敘事、禁 autoplay 循環 hero
+
+### 2026-07-06 11:56 CST — Hero Grid Scroll W0（從頭：靜態底 + scroll 驅動）
+
+- 使用者要求重來：方格底靜態，**僅 scrolling 才有 effect**。
+- 規格：`.planning/HERO-GRID-SCROLL-SPEC.md`
+- Lab：`/design-lab/grid-scroll` — GSAP pin + scrub 180%
+
+### 2026-07-06 11:39 CST — Hero Line Compose R4（線條組構 10 demo）
+
+- 使用者要求：用現有圖檔 + **線條動畫湊成主視覺**。
+- Sally 規格：`.planning/HERO-LINE-COMPOSE-SPEC.md`
+- Lab：`/design-lab/line-compose` — L01–L10 procedural 線條 + CI 顯影。
+
+### 2026-07-06 11:23 CST — Hero Direction R3（15 動畫 demo 選型牆）
+
+- 使用者對既有 Lab 方向皆不滿意 → Sally 產出 15 卡動畫預覽 D01–D15。
+- 路由：`/design-lab/directions`（`/design-lab` 同內容）。
+- 規格：`.planning/HERO-DIRECTION-R3-SPEC.md`
+
+### 2026-07-06 11:18 CST — V05 半調×線框拆解（取代 Blue Meridian Lab）
+
+- 使用者不滿意藍線經緯 → 改 V05：`handshake.png` 左右拆解匯合 + `whitelinehand` 線框 overlay。
+- 滑鼠／陀螺儀**微視差**（幅度刻意收小）。
+- Lab 路由仍 `/design-lab/blue-hand`；20 款牆 V05 → 全螢幕。
+
+### 2026-07-06 11:14 CST — Hero Blue Meridian 互動主視覺
+
+- 新方向：`blue_line_hand.svg` 滿版 + 滑鼠／陀螺儀 3D 視差 + 經緯場 SVG。
+- Sally 規格：`.planning/HERO-BLUE-HAND-MERIDIAN-SPEC.md`
+- Lab：`/design-lab/blue-hand` — `hero-blue-hand-meridian.tsx`
+
+### 2026-07-06 10:57 CST — Hero Square Bridge 規格 + Lab
+
+- 使用者新方向：黑底 + `square_line.png` 無限旋轉/放大 + 紅黑雙手破版上下匯合；100vh/vw + RWD。
+- Sally 產出 `.planning/HERO-SQUARE-BRIDGE-SPEC.md`。
+- Lab：`/design-lab/square-bridge` — `hero-square-bridge.tsx`。
+
+### 2026-07-06 08:56 CST — Hero Design Lab 作業記錄成文
+
+- 使用者要求將目前作業記錄成文件。
+- Sally 產出 `.planning/HERO-DESIGN-LAB-LOG.md`：探索歷程、CI 資產、技術發現、20 款提案、檔案索引、待決策 D1–D5。
+- 現行 Lab：`/design-lab/mesh-snap` = `humanface` 電流漸層 only；雙手/blueline/流線已移除。
+- W1 狀態更正為 **未定稿**（非 W1 完成）。
+
+### 2026-07-02 CST — CI 原圖 20 款 SVG 動效選型牆
+
+- 使用者提供 `public/ci/` 無背景參考圖（10 張）；要求原圖改 SVG + 動效、20 款選型。
+- 10 原圖 × 2 動效 = 20 variants（`lib/content/ci-hero-variants.ts`）。
+- 產出 `public/ci/svg/v01–v20.svg`（`scripts/generate-ci-svg.mjs`）。
+- `/design-lab` = 20 卡預覽牆（原圖 embed + CSS 動畫）。
+- `pnpm build` 通過。
+
+### 2026-07-02 CST — Hero 20 動效方向預覽（UX 探索）
+
+- 使用者：對 W1 效果不滿意，要求先出 20 種動畫方向供挑選。
+- 新增 `components/design-lab/hero-20-gallery.tsx`：20 張動態 preview 卡（V01–V20）。
+- `/design-lab` 改為 20 選 1 預覽頁；保留 `/design-lab/phase4` 舊版入口。
+- 風格語彙：黑底、線框、波紋、穿隧、掃描、握手干涉、星塵、脈衝等。
+- `pnpm build` 通過。
+
+### 2026-07-02 CST — Phase 5.0 W1 Hero CI 實作
+
+- `section-hero.tsx`：滿版 R3F `hero-co-hero-scene`、3.2s 進場同掃、GSAP pin + 三柱 stagger。
+- `prefers-reduced-motion`：靜態 Logo fallback。
+- `pnpm build` 通過。
+
+### 2026-07-02 CST — Phase 5.0 W0 實作完成
+
+- `HomeScrollRoot` 取代 `ScrollStoryRoot` + 舊 Cohere 區塊。
+- 新增：`lib/content/home-sections.ts`、`home-story-chapters.ts`。
+- 新增：`components/home/sections/*`（六 section 骨架）。
+- Hero / Booking 為 W1/W4 placeholder；`pnpm build` 待驗證。
+
+### 2026-07-02 CST — Phase 5.0 首頁六 Section 重規劃
+
+- 使用者：新開始；重頭規劃首頁；每 scroll 時尚過場；Hero = CI 重點。
+- IA 確立：Hero → About Me（StoryAboutMe 章節化）→ Lab → Service → Blog → Booking（Cal.com 30min）。
+- Winston：診斷雙軌首頁（scroll-story + 舊 Cohere 區塊）；建議 `HomeScrollRoot` 單根、R3F 限 Hero、W0–W5 波次。
+- Sally：六 section 過場語言、About 六章、Hero Co-Hero 托舉顯影、右側 section dot、待決策 D1–D5。
+- 產出：`.planning/phases/5.0-HOMEPAGE-SCROLL-PLAN.md`。
+- 與 Phase 4.0 差異：內容區塊上首頁；Portal/Manifesto 併入 Hero + 各 section。
+
+### 2026-07-01 CST — Hero 全畫面重設計 + 滿版硬性需求
+
+- 使用者：**現有方案皆不喜歡**（Co-Hero A、三欄手 Lab、Canvas 2D）。
+- 保留意圖：手×Logo 同框互動、#05 同掃、#13 握手、`hand_line.png` 線框美學。
+- 硬性需求：**整個畫面重新設計**；版面 **必須滿版**（無右側白邊）。
+- 產出：`.planning/HERO_CHECKPOINT.md`；`isDesignLabFullscreenPath` 擴至 `/design-lab/*`；滿版 CSS（`#main-content` fixed、`co-hero-stage` absolute inset、關 `body::before`）。
+- 實作原型 **凍結**，下一輪 workshop 再開。
 
 ### 2026-07-01 CST — Phase 4.0 Round 1+2 LOCKED + 規劃完整版
 

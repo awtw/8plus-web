@@ -12,7 +12,7 @@ import {
 import { Menu } from "lucide-react"
 import LanguageSwitcher from "./language-switcher"
 import { useLanguage } from "./language-provider"
-import { LogoThemeLauncher } from "./logo-theme-launcher"
+import { LogoHomeLink } from "./logo-home-link"
 import { NavLink } from "./nav-link"
 import { siteNavigation } from "@/lib/navigation"
 
@@ -34,7 +34,7 @@ export function MobileNav() {
       <SheetContent side="right" className="w-[300px] border-l border-border/70 bg-background sm:w-[350px]">
         <SheetHeader>
           <SheetTitle className="text-left">
-            <LogoThemeLauncher compact onNavigateHome={() => setOpen(false)} />
+            <LogoHomeLink compact onNavigateHome={() => setOpen(false)} />
           </SheetTitle>
         </SheetHeader>
         <div className="flex flex-col h-full pt-4 pb-6">

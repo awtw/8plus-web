@@ -28,7 +28,7 @@ export default function BookingPage() {
   }, []);
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="surface-card p-6 sm:p-8">
           <span className="eyebrow">

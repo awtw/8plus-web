@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
-import DesignLabClient from './design-lab-client'
+import { HeroDirectionGallery } from '@/components/design-lab/hero-direction-gallery'
 
 export default function DesignLabPage() {
   return (
-    <Suspense fallback={<div className="aw-lab-loading section-shell">Loading design lab…</div>}>
-      <DesignLabClient />
+    <Suspense fallback={<div className="aw-lab-loading">Loading design lab…</div>}>
+      <HeroDirectionGallery />
     </Suspense>
   )
 }

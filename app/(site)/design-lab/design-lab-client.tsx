@@ -43,19 +43,27 @@ export default function DesignLabClient() {
           <p className="aw-lab-eyebrow">8plus Design Lab</p>
           <h1 className="aw-lab-title">Hero 主視覺風格測試</h1>
           <p className="aw-lab-lead">
-            已實作 5 種可互動預覽。完整 20 種風格規格見 repo 內{' '}
-            <code className="aw-lab-code">docs/HERO_DESIGN_STYLES.md</code>。
+            Canvas 2D 粒子風格（5 種）。Phase 4 線框手三方向請至{' '}
+            <Link href="/design-lab" className="aw-lab-code">
+              /design-lab
+            </Link>
+            。
           </p>
-          <Link href="/" className="aw-lab-back">
-            ← 返回首頁
-          </Link>
+          <div className="aw-lab-phase4-actions">
+            <Link href="/" className="aw-lab-back">
+              ← 返回首頁
+            </Link>
+            <Link href="/design-lab" className="aw-lab-back aw-lab-back-accent">
+              Phase 4 三方向滿版 Lab →
+            </Link>
+          </div>
         </div>
 
-        <div className="aw-lab-preview">
+        <div className="aw-lab-preview aw-lab-preview--bleed">
           {activeMode === 'logo-cinema' ? (
-            <HeroLogoCinema />
+            <HeroLogoCinema key="logo-cinema" />
           ) : (
-            <HeroCanvasStage mode={activeMode} showFallbackLogo={false} />
+            <HeroCanvasStage key={activeMode} mode={activeMode} showFallbackLogo={false} />
           )}
           <div className="aw-lab-preview-label">
             {activeMeta?.nameZh} · {activeMeta?.name}

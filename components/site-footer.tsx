@@ -5,14 +5,15 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./logo";
 import { useLanguage } from "./language-provider";
 import { footerNavigation } from "@/lib/navigation";
-import { isShareHubPath } from "@/lib/site-paths";
+import { isDesignLabFullscreenPath, isShareHubPath } from "@/lib/site-paths";
 
 export default function SiteFooter() {
   const pathname = usePathname();
   const { t } = useLanguage();
   const isSharePage = isShareHubPath(pathname);
+  const isLabFullscreen = isDesignLabFullscreenPath(pathname);
 
-  if (isSharePage) {
+  if (isSharePage || isLabFullscreen) {
     return null;
   }
 
@@ -22,7 +23,7 @@ export default function SiteFooter() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <Logo size={28} className="h-7 w-7 shrink-0" />
+              <Logo size={28} variant="brand" className="h-7 w-7 shrink-0" />
               <span className="text-lg font-semibold tracking-[-0.02em] text-[color:var(--fg)]">8plus</span>
               <span className="text-[color:var(--muted)]">·</span>
               <span className="min-w-0 text-sm text-[color:var(--fg-2)]">{t("footer.tagline")}</span>

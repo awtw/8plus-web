@@ -11,7 +11,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <div className="surface-card mx-auto max-w-xl p-6 sm:p-8">
         <span className="eyebrow">Admin</span>
         <h1 className="display-title mt-5 text-[clamp(2.25rem,5vw,3.5rem)] tracking-[-0.04em]">

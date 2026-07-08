@@ -7,9 +7,11 @@ import { useReducedMotion } from '@/components/motion/use-reduced-motion'
 type LogoAssemblyProps = {
   className?: string
   size?: number
+  /** When false, skip scroll-linked fade (used inside pinned void chapter). */
+  scrollDriven?: boolean
 }
 
-export function LogoAssembly({ className, size = 320 }: LogoAssemblyProps) {
+export function LogoAssembly({ className, size = 320, scrollDriven = true }: LogoAssemblyProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const circleTopRef = useRef<SVGCircleElement>(null)
   const circleBottomRef = useRef<SVGCircleElement>(null)
@@ -45,21 +47,23 @@ export function LogoAssembly({ className, size = 320 }: LogoAssemblyProps) {
         .to(circleBottom, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.95 }, 0.35)
         .to(slash, { opacity: 1, scale: 1, rotation: 0, duration: 0.65, ease: 'power2.inOut' }, 0.72)
 
-      gsap.to(wrap, {
-        y: -24,
-        opacity: 0.55,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrap,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
-      })
+      if (scrollDriven) {
+        gsap.to(wrap, {
+          y: -24,
+          opacity: 0.55,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrap,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        })
+      }
     }, wrap)
 
     return () => ctx.revert()
-  }, [reduced])
+  }, [reduced, scrollDriven])
 
   return (
     <div ref={wrapRef} className={className}>

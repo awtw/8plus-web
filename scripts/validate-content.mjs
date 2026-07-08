@@ -28,8 +28,8 @@ const forbidden = [
 ]
 
 const required = [
-  { name: 'archive label', file: 'app/(site)/page.tsx', re: /Archive/ },
-  { name: 'lab label', file: 'app/(site)/page.tsx', re: /\bLab\b/ },
+  { name: 'journal label', file: 'components/home/sections/section-blog.tsx', re: /Journal/ },
+  { name: 'lab label', file: 'components/home/sections/section-lab.tsx', re: /\bLab\b/ },
   { name: 'theme toggle provider', file: 'app/layout.tsx', re: /ThemeProvider/ },
 ]
 

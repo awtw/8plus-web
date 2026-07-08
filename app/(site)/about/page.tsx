@@ -39,7 +39,7 @@ export default function AboutPage() {
   const content = getAboutContent(locale);
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

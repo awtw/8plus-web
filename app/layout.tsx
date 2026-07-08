@@ -10,7 +10,22 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { JsonLd } from "@/components/json-ld";
 import { SITE } from "@/lib/seo";
 import type { Metadata } from "next";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import type { ReactNode } from "react";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jbmono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +46,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-Hant" className="h-full dark" data-design-mode="cohere" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+    <html
+      lang="zh-Hant"
+      className={`h-full dark ${outfit.variable} ${jetbrainsMono.variable}`}
+      data-design-mode="cohere"
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+    >
       <head>
         <DesignModeScript />
         <JsonLd />

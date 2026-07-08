@@ -4,11 +4,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { MobileNav } from "./mobile-nav";
-import { LogoThemeLauncher } from "./logo-theme-launcher";
+import { LogoHomeLink } from "./logo-home-link";
 import LanguageSwitcher from "./language-switcher";
 import { NavLink } from "./nav-link";
 import { siteNavigation } from "@/lib/navigation";
-import { isShareHubPath } from "@/lib/site-paths";
+import { isDesignLabFullscreenPath, isShareHubPath } from "@/lib/site-paths";
 
 const navLinkClass =
   "text-[color:var(--fg-2)] opacity-70 transition-opacity hover:opacity-100 hover:underline underline-offset-8 decoration-[color:var(--border)]";
@@ -24,6 +24,7 @@ export default function SiteHeader() {
   const { t } = useLanguage();
   const pathname = usePathname();
   const isSharePage = isShareHubPath(pathname);
+  const isLabFullscreen = isDesignLabFullscreenPath(pathname);
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
 
@@ -39,7 +40,7 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHomePage]);
 
-  if (isSharePage) {
+  if (isSharePage || isLabFullscreen) {
     return null;
   }
 
@@ -53,7 +54,7 @@ export default function SiteHeader() {
     <header className={headerClass}>
       <div className="section-shell flex min-h-[4.5rem] items-center justify-between gap-4 py-3">
         <div className="hidden md:flex items-center gap-8">
-          <LogoThemeLauncher />
+          <LogoHomeLink />
           <nav className="flex items-center gap-6 text-sm" aria-label="Main">
             {siteNavigation.map((item) => {
               const labelKey = "labelKey" in item ? item.labelKey : `nav.${item.key}`;
@@ -73,7 +74,7 @@ export default function SiteHeader() {
 
         <div className="flex flex-1 items-center justify-between gap-3 md:justify-end">
           <div className="md:hidden">
-            <LogoThemeLauncher compact />
+            <LogoHomeLink compact />
           </div>
 
           <nav className="flex items-center gap-2" aria-label="Utilities">

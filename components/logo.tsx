@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type LogoVariant = "default" | "mono" | "light" | "favicon";
+type LogoVariant = "default" | "brand" | "mono" | "light" | "favicon";
 
 type LogoProps = {
   className?: string;
@@ -12,6 +12,10 @@ export function Logo({ className, size = 32, variant = "default" }: LogoProps) {
   const variants = {
     default: {
       background: "transparent",
+      markFill: "var(--logo-mark)",
+    },
+    brand: {
+      background: "var(--color-blue)",
       markFill: "var(--logo-mark)",
     },
     mono: {

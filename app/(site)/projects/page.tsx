@@ -10,7 +10,7 @@ export default function ProjectsPage() {
   const publishedProjects = getLocalizedProjects(locale);
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <header className="max-w-4xl">
         <span className="eyebrow">
           <Sparkle className="h-3.5 w-3.5" weight="fill" />

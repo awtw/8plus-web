@@ -11,7 +11,7 @@ export default function ProcessPage() {
   const { process } = getProcessPricingContent(locale);
 
   return (
-    <div className="section-shell py-10 sm:py-14 lg:py-16">
+    <div className="section-shell section-pad-y">
       <header className="mb-8 max-w-2xl">
         <p className="eyebrow">{process.eyebrow}</p>
         <h1 className="display-title mt-4 text-[clamp(2rem,5vw,3.5rem)] tracking-[-0.04em]">

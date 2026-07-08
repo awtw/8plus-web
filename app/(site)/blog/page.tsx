@@ -12,7 +12,7 @@ export default function BlogPage() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <header className="max-w-4xl">
         <span className="eyebrow">
           <BookOpen className="h-3.5 w-3.5" weight="bold" />

@@ -11,7 +11,7 @@ export default function ServicesPage() {
   const { faq } = getProcessPricingContent(locale);
 
   return (
-    <div className="section-shell py-12 sm:py-16 lg:py-20">
+    <div className="section-shell section-pad-y">
       <section className="max-w-5xl">
         <span className="eyebrow">{t("services.eyebrow")}</span>
         <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4.5rem)] tracking-[-0.04em]">

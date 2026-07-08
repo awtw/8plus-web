@@ -21,7 +21,7 @@ export default function ProjectDetail() {
   const caseStudy = isCaseStudy(project);
 
   return (
-    <article className="section-shell py-12 sm:py-16 lg:py-20">
+    <article className="section-shell section-pad-y">
       <header className="surface-card p-6 sm:p-8">
         <div className="flex flex-wrap items-center gap-3">
           <span className="eyebrow">

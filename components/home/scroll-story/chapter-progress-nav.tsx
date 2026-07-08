@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import { ensureGsapPlugins, ScrollTrigger } from '@/lib/motion/gsap-client'
-import { HOME_SCROLL_CHAPTER_IDS } from '@/lib/content/home-scroll'
+import { HERO_NARRATIVE_CHAPTER_IDS } from '@/lib/content/hero-narrative'
 
-const W1_CHAPTERS = HOME_SCROLL_CHAPTER_IDS.slice(0, 2)
+const DEFAULT_CHAPTERS = HERO_NARRATIVE_CHAPTER_IDS
 
 type ChapterProgressNavProps = {
   /** W1: logo + story only */
   chapterIds?: readonly string[]
 }
 
-export function ChapterProgressNav({ chapterIds = W1_CHAPTERS }: ChapterProgressNavProps) {
+export function ChapterProgressNav({ chapterIds = DEFAULT_CHAPTERS }: ChapterProgressNavProps) {
   const [active, setActive] = useState(0)
 
   useEffect(() => {

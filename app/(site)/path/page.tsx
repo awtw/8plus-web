@@ -24,7 +24,7 @@ export default function PathPage() {
   const data = getPathMilestones(locale);
 
   return (
-    <div className="section-shell py-8 sm:py-12 lg:py-16">
+    <div className="section-shell section-pad-y">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

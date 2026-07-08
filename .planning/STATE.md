@@ -75,6 +75,15 @@ Resume file: None
 
 ## Discussion Log
 
+### 2026-07-08 12:05 CST — 改版方向定案 + 設計師交手 Brief（Claude / Cowork）
+
+- 使用者要求：重新設計 design system / logo / animation / 內容並重新部署；先讀完 `.planning/` 與 `docs/` 全部文件再給綜合建議。
+- **診斷**：真正問題是設計決策 churn（反覆重啟），非設計品質；三套 DS（Cohere / 藍橘 CI v2 / Cinema 線框握手）並存無單一 SSOT；Hero 已迭代 15+ 版全數推翻。策略/內容/技術已成熟穩定。
+- **LOCKED 決策**：①Design System SSOT = **CI 雙色藍橘**（DESIGN_SYSTEM_SPEC v2，IKB藍 #002FA7 + Pantone橘 #FE5000，單一版本）；其餘兩套與 `design-lab/*` 一併 SUPERSEDED/清除。②動效 = **單一克制 signature**（僅首頁 Hero 一個重動效，內頁輕量 reveal，禁止再開選型牆）。
+- **執行藍圖**：階段0 鎖 SSOT+清衝突源 → 1 Logo 定案 → 2 Hero 收斂為一 → 3 全站頁面收斂藍橘 token → 4 內容潤飾 → 5 build+合併 main+Vercel 部署。
+- **產出**：`docs/DESIGN_HANDOFF_BRIEF.md`（設計師交手 Brief + IA 完整包，Markdown）；`.planning/SESSION-2026-07-08-REDESIGN-HANDOFF.md`（本 session 完整紀錄）。
+- **待決策**：是否執行階段0 清 codebase；Hero 主視覺方向（握手/線框手 vs 純字體幾何）；藍橘交替比例；Hero 底色純藍 vs 暗底；/sb /sc 是否沿用藍橘。
+
 ### 2026-07-06 13:33 CST — UX Round 2：外框間距統一 + 移除 Logo 旁 theme picker（Sally）
 
 - 使用者要求：①外框 padding/margin 全站一致（對齊 `docs-2026-07-06-design-spec.md` container token）；②移除 header/mobile Logo 旁 Palette 設計模式選擇器；③Logo 改白標於 IKB 藍底、走 `--logo-mark`。

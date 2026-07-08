@@ -16,7 +16,6 @@ import {
   QrCode,
   Translate,
 } from "@phosphor-icons/react";
-import { useDesignMode } from "@/components/design-mode-provider";
 import { useLanguage } from "@/components/language-provider";
 import { getShareContent } from "@/lib/content/share";
 import { getLineAddFriendUrl } from "@/lib/line";
@@ -182,7 +181,7 @@ function ContactTrailing({
 
 function ShareContent() {
   const { locale, setLocale, t } = useLanguage();
-  const { mode: currentMode } = useDesignMode();
+  const currentMode = "cohere" as "cohere" | "apple" | "elevenlabs";
   const content = getShareContent(locale);
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);

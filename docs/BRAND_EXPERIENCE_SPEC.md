@@ -1,7 +1,9 @@
 # 8plus Brand Experience Spec
 
+> ⚠️ **SUPERSEDED（2026-07-08）**：本份 Cinema 暗底 / 線框握手方向已被取代。全站設計唯一真相來源（SSOT）為 **`docs/DESIGN_SYSTEM_SPEC.md`（CI 雙色藍橘 v2）**。本文件僅保留為歷史脈絡，請勿據此開發或設計。
+
 *建立：2026-07-01 CST*  
-*狀態：LOCKED — Phase 4.0 Round 2*  
+*狀態：SUPERSEDED — 由 DESIGN_SYSTEM_SPEC v2（藍橘）取代（原 LOCKED — Phase 4.0 Round 2）*  
 *依據：`4.0-ROUND1-LOCKED.md`、`4.0-ROUND2-LOCKED.md`*  
 *Supersedes：`docs/MOTION_DESIGN_SPEC.md` 首頁敘事章節（其餘 dark-only / GSAP 原則仍適用）*
 

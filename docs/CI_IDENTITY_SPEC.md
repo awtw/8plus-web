@@ -1,5 +1,7 @@
 # 8plus.app CI 識別設計規格書
 
+> ⚠️ **部分 SUPERSEDED（2026-07-08）**：本份的 Cohere 白底冷灰 / 單一藍 accent **視覺方向**已被取代，全站設計唯一真相來源（SSOT）為 **`docs/DESIGN_SYSTEM_SPEC.md`（CI 雙色藍橘 v2）**。惟本文件的**品牌定位、TA、價值支柱、CI 元素對應**等策略內容仍然有效，可續用。視覺色彩 / 字體 / Hero 方向請一律以 DESIGN_SYSTEM_SPEC v2 為準。
+
 *研究日期：2026-06-30*  
 *類型：Domain / Brand CI Research*  
 *範圍：品牌定位、TA、CI 需求、Logo / Type / Color、視覺原子系統*  

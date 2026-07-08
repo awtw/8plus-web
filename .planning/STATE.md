@@ -75,6 +75,17 @@ Resume file: None
 
 ## Discussion Log
 
+### 2026-07-08 12:40 CST — 階段 0 執行：藍橘單一基底收斂（Claude / Cowork）
+
+- 承接 12:05 定案，使用者選擇「執行階段 0 清理 codebase」。
+- **已移除（整團）**：`app/(site)/design-lab/*`（19 路由）、`components/design-lab/*`（21 元件）、`components/home/hero-canvas-stage.tsx`、`lib/hero/visual-modes.ts`、`lib/hero/logo-sampler.ts`、`lib/content/hero-direction-demos.ts`、`components/design-mode-provider.tsx`、`components/design-mode-script.tsx`、`components/logo-theme-launcher.tsx`。確認 design-lab 叢集自成一體，現行首頁走 `HomeScrollRoot → section-hero.tsx`，不受影響。
+- **已改**：`app/layout.tsx` 移除 DesignModeProvider/DesignModeScript 與 `data-design-mode="cohere"`；`app/(site)/share/page.tsx` 解除 `useDesignMode` 依賴（`currentMode` 固定 cohere）。
+- **Config**：刪除舊 `tailwind.config.ts`（灰黑白殘留），保留 `tailwind.config.js`（shadcn HSL + animate，`components.json` 指向它）。
+- **globals.css**：確認 `data-design-mode` 覆寫已為 0（07-06 已清）；`.bg-blue/.bg-orange/.bg-dark` 三變體在位。aurora/lumina/glass legacy 與頁面耦合，留待階段 3 逐頁收斂。
+- **規範**：`docs/BRAND_EXPERIENCE_SPEC.md`（Cinema）標 SUPERSEDED；`docs/CI_IDENTITY_SPEC.md`（Cohere）視覺方向標 SUPERSEDED、策略內容續用。
+- **驗證**：`tsc --noEmit` 通過（清 `.next/types` 舊快取後）；`scripts/validate-content.mjs` 通過。⚠️ `velite` / `next build` 因沙盒 `node_modules` 為 macOS 安裝、esbuild 平台不符無法在此執行 — 需在本機 Mac 或 Vercel 乾淨安裝驗證。
+- **未決 / 下一步**：階段 1 Logo 藍橘定案；階段 2 Hero 二選一；`site-paths.ts` 仍留 `isDesignLab` 死檢查（無害，可日後清）；aurora/lumina 全站收斂（階段 3）。
+
 ### 2026-07-08 12:05 CST — 改版方向定案 + 設計師交手 Brief（Claude / Cowork）
 
 - 使用者要求：重新設計 design system / logo / animation / 內容並重新部署；先讀完 `.planning/` 與 `docs/` 全部文件再給綜合建議。

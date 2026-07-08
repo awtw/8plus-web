@@ -3,8 +3,6 @@ import "./../styles/globals.css";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { SkipToMain } from "@/components/skip-to-main";
-import { DesignModeProvider } from "@/components/design-mode-provider";
-import { DesignModeScript } from "@/components/design-mode-script";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { JsonLd } from "@/components/json-ld";
@@ -49,24 +47,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="zh-Hant"
       className={`h-full dark ${outfit.variable} ${jetbrainsMono.variable}`}
-      data-design-mode="cohere"
       style={{ colorScheme: "dark" }}
       suppressHydrationWarning
     >
       <head>
-        <DesignModeScript />
         <JsonLd />
       </head>
       <body className="h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>
-          <DesignModeProvider>
-            <LanguageProvider>
-              <SkipToMain />
-              <SiteHeader />
-              <main id="main-content" className="flex-1 w-full min-w-0 overflow-x-clip">{children}</main>
-              <SiteFooter />
-            </LanguageProvider>
-          </DesignModeProvider>
+          <LanguageProvider>
+            <SkipToMain />
+            <SiteHeader />
+            <main id="main-content" className="flex-1 w-full min-w-0 overflow-x-clip">{children}</main>
+            <SiteFooter />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

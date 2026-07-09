@@ -1,7 +1,8 @@
 # 8plus 重新設計 — Phase D：Logo / 主視覺 / 首頁動畫
 
 *建立：2026-07-09 CST*
-*狀態：DRAFT — 待 August 確認*
+*鎖定：2026-07-09 CST — Logo C2、純藍 Hero、網格+組裝合一、逐行 reveal*
+*狀態：LOCKED*
 *依據：`02-DESIGN-SYSTEM.md`（藍橘四場景）*
 
 ---
@@ -44,35 +45,38 @@
 
 **紀律**：全站只有首頁 Hero 一個重動效；內頁只做輕量 reveal。禁 autoplay 循環、禁選型牆。`prefers-reduced-motion` 直接顯示終態靜圖。
 
-### 概念：「Logo 組裝 → 標語顯影」scroll pin
+### 概念（LOCKED）：「網格建構 → Logo 組裝 → 標語逐行顯現」
 
-呼應 Logo 的「兩圓 + 斜線」與品牌「把分散的需求，組裝成一個系統」。
+在**純藍場景**（`.bg-blue`）上，把兩個隱喻合成一個主視覺：先由細線／網格「建構」出結構（= 架構先行），結構收斂出兩個圓與橘斜槓「組裝」成 Logo（= 把需求組裝成系統），再交棒給標語逐行進場。
 
-### Storyboard（scroll 進度 0 → 1，GSAP pin + scrub）
+### Storyboard（scroll 進度 0 → 1，GSAP pin + scrub，藍底）
 
 | 進度 | 畫面 | 動作 |
 |------|------|------|
-| 0.00 | 藍場景，散落的細線與兩個未對位的圓（白），mono eyebrow 淡入 | 進場 |
-| 0.15 | 兩圓向定位滑動、對齊到 Logo 位置 | 位移 + 縮放 |
-| 0.35 | 橘色斜槓從左上「畫」出（stroke-dashoffset），連接兩圓 → Logo 成形 | 線條描繪 |
-| 0.55 | Logo 縮到左上角定位，H1 標語逐字/逐行 reveal | 交棒到文字 |
-| 0.80 | 副標 + 主 CTA（橘）＋ 低承諾輔句淡入上移 | CTA 進場 |
-| 1.00 | 定格為首頁首屏靜態（Logo 左上、標語、CTA、右下橘半圓） | 收束 |
+| 0.00 | 純藍場景，淡白細線網格由稀疏漸密（低透明度），mono eyebrow 淡入 | 網格建構 |
+| 0.18 | 網格節點收斂，浮現兩個未對位的白圓（左上小 / 右下大） | 節點→圓 |
+| 0.38 | 兩圓滑向定位；橘色斜槓沿 `M48 12→L16 52` 描繪（stroke-dashoffset）連接成 Logo | Logo 組裝 |
+| 0.55 | 網格淡出留低調底紋；Logo 縮定左上角 | 交棒 |
+| 0.55–0.80 | H1 標語**逐行**上滑顯現（每行 stagger ~120ms） | 標語 reveal |
+| 0.82 | 副標 + 主 CTA（橘底墨字）+ 低承諾輔句淡入上移 | CTA 進場 |
+| 1.00 | 定格首屏靜態：Logo 左上、標語、雙 CTA、右下橘半圓 | 收束 |
 
-- 底色：Hero 用 `.bg-dark` 深色島開場（§設計系統允許），或純 `.bg-blue`——**二選一待你定**。
+- **底色**：純藍 `.bg-blue`（LOCKED，不用深色島）。
+- **隱喻**：網格建構 + Logo 組裝合一（LOCKED）。
+- **標語**：逐行顯現，每行 stagger ~120ms（LOCKED）。
 - 技術：既有 `gsap` + `components/motion/use-scroll-pin-progress.ts`（Phase 0 保留的共用 hook）。
-- 效能：只用 transform / opacity / stroke-dashoffset（不觸發 layout）；行動版縮短 pin 距離。
-- 降級：`prefers-reduced-motion` → 直接顯示 1.00 終態，無 pin。
+- 效能：只用 transform / opacity / stroke-dashoffset（不觸發 layout）；行動版縮短 pin 距離、網格節點數減半。
+- 降級：`prefers-reduced-motion` → 直接顯示 1.00 終態（Logo + 標語 + CTA 靜圖），無 pin、無網格動畫。
 
 ### 內頁輕量 reveal（統一）
 - 進場：opacity 0→1 + translateY 12px→0，250ms，`--ease`，一次性、不循環。
 - 卡片/區塊 stagger ≤ 80ms。
 
-### 待確認
-1. Hero 底色：深色島開場 vs 純藍？
-2. 動畫隱喻：「Logo 組裝」是否合你意，還是想要別的（例如線框手／網格建構）？
-3. 標語 reveal 要逐字、逐行、還是整段淡入？
+### 已確認（2026-07-09）
+1. Hero 底色：**純藍場景**。
+2. 動畫隱喻：**網格建構 + Logo 組裝合一**。
+3. 標語 reveal：**逐行顯現**。
 
 ---
 
-*確認後鎖定，進入 Phase E（逐頁重建呈現層，從首頁 Hero 開始）。*
+*本文件已鎖定。進入 Phase E（逐頁重建呈現層，從首頁 Hero 開始）。*

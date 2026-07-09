@@ -9262,8 +9262,9 @@ html[data-hero-theme="lumina"] {
     inset: 0;
     z-index: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+    padding-bottom: clamp(2vh, 5%, 7vh);
     overflow: hidden;
     background: #fdfdfb;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -9272,11 +9273,11 @@ html[data-hero-theme="lumina"] {
 
   .home-hero-ed-figure img {
     display: block;
-    width: min(78vw, 680px);
+    width: min(62vw, 540px);
     height: auto;
-    max-height: 72%;
+    max-height: 62%;
     object-fit: contain;
-    object-position: center center;
+    object-position: center 62%;
     will-change: transform;
   }
 
@@ -9405,6 +9406,18 @@ html[data-hero-theme="lumina"] {
 
   .home-hero-ed-cue-icon {
     animation: home-hero-ed-cue-bob 2.2s ease-in-out infinite;
+  }
+
+  @media (max-width: 768px) {
+    .home-hero-ed-figure {
+      padding-bottom: clamp(9vh, 13%, 16vh);
+    }
+
+    .home-hero-ed-figure img {
+      width: min(74vw, 520px);
+      max-height: 64%;
+      object-position: center 56%;
+    }
   }
 
   @keyframes home-hero-ed-cue-bob {

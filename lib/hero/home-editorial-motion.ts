@@ -35,7 +35,7 @@ function segment(progress: number, start: number, end: number) {
   return (progress - start) / (end - start)
 }
 
-const COVER_CLIP = { top: 44, right: 11, bottom: 16, left: 11 }
+const COVER_CLIP = { top: 44, right: 6, bottom: 12, left: 6 }
 
 export function getHomeEditorialMotion(progress: number): HomeEditorialMotion {
   const p = clamp01(progress)
@@ -47,7 +47,7 @@ export function getHomeEditorialMotion(progress: number): HomeEditorialMotion {
     clipRight: COVER_CLIP.right * (1 - expand),
     clipBottom: COVER_CLIP.bottom * (1 - expand),
     clipLeft: COVER_CLIP.left * (1 - expand),
-    imageScale: 1.12 - easeOut(segment(p, 0, 0.7)) * 0.12,
+    imageScale: 1.04 - easeOut(segment(p, 0, 0.7)) * 0.08,
     headlineScale: 1 - expand * 0.38,
     headlineY: -expand * 10,
     captionOpacity: 1 - segment(p, 0.4, 0.6) * 0.55,

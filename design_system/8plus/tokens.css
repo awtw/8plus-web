@@ -1,0 +1,133 @@
+/* =====================================================================
+   8plus Design System — Canonical Tokens  (v1, 2026-07-09)
+   基底：藍色滿版場景 (#1F4FFF) + 橘色強調 (#FF7A18)。
+   SSOT：.planning/redesign/02-DESIGN-SYSTEM.md
+   用法：section 加 .bg-blue / .bg-orange / .bg-dark / .bg-paper 切換場景，
+        區塊內元件一律吃 token 變數，不硬編色值。
+   ===================================================================== */
+
+:root {
+  /* ---- 品牌主色 ---- */
+  --blue:        #1F4FFF;  /* 主場景 / 品牌 */
+  --blue-deep:   #163BCC;  /* 藍的加深（hover / 分層） */
+  --orange:      #FF7A18;  /* 強調 / 主要 CTA */
+  --orange-hover:#FF8F3D;
+  --dark:        #0B0E14;  /* 沉浸章節 / Hero 深色島 */
+  --paper:       #FBFAF6;  /* 長文閱讀底（blog / 案例內文） */
+  --ink:         #14181F;  /* paper 上的主文字 */
+
+  /* ---- 場景預設：藍色滿版、白字 ---- */
+  --bg:      var(--blue);
+  --fg:      #FFFFFF;
+  --fg-2:    rgba(255,255,255,.88);
+  --muted:   rgba(255,255,255,.72);
+  --meta:    rgba(255,255,255,.60);
+  --accent:  var(--orange);
+  --accent-contrast: var(--ink);      /* 橘底/橘按鈕上的文字用深墨 */
+
+  --surface:      rgba(255,255,255,.08);   /* 磨砂卡片底 */
+  --surface-2:    rgba(255,255,255,.12);   /* hover */
+  --border:       rgba(255,255,255,.22);
+  --border-soft:  rgba(255,255,255,.12);
+  --hover-border: rgba(255,255,255,.50);
+  --focus-ring:   var(--orange);
+
+  /* ---- 字體 ---- */
+  --font-display: var(--font-outfit,"Outfit"),-apple-system,system-ui,sans-serif;
+  --font-body:    var(--font-outfit,"Outfit"),-apple-system,system-ui,sans-serif;
+  --font-mono:    var(--font-jbmono,"JetBrains Mono"),ui-monospace,Menlo,monospace;
+
+  /* type scale */
+  --h1: clamp(40px, 5.5vw, 72px);
+  --h2: clamp(30px, 4vw, 48px);
+  --h3: clamp(22px, 2.4vw, 28px);
+  --body: 17px;
+  --small: 14px;
+  --label: 13px;               /* mono eyebrow */
+
+  /* ---- 間距（4px 基準）---- */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-6:24px;
+  --sp-8:32px; --sp-12:48px; --sp-16:64px; --sp-24:96px; --sp-32:128px;
+  --section-y: clamp(64px, 9vw, 128px);
+  --container: 1200px;
+  --measure: 65ch;             /* 內文最大行寬 */
+
+  /* ---- 圓角 / 線 ---- */
+  --radius-md: 20px;           /* signature：主卡片 / 容器 / 圖框 */
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  --hairline: 1px;
+
+  /* ---- 陰影（藍/深底用線框，不用陰影；paper 才用）---- */
+  --shadow-paper: 0 1px 2px rgba(20,24,31,.06), 0 8px 24px rgba(20,24,31,.08);
+
+  /* ---- 動效 ---- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 400ms;
+  --transition-base: all var(--motion-base) var(--ease);
+}
+
+/* =====================  場景變體（覆寫式）  ===================== */
+.bg-blue   { --bg: var(--blue);   --accent: var(--orange); --fg:#FFFFFF; }
+.bg-orange { --bg: var(--orange); --accent: #FFFFFF;       --fg:#FFFFFF; --accent-contrast: var(--blue); }
+.bg-dark   { --bg: var(--dark);   --accent: var(--orange); --fg:#FFFFFF; }
+
+/* 長文閱讀 / 淺色場景：反轉為墨字白底藍強調 */
+.bg-paper {
+  --bg: var(--paper); --fg: var(--ink);
+  --fg-2: #2b2f37; --muted: #4a4f59; --meta: #6b6f78;
+  --accent: var(--blue); --accent-contrast: #FFFFFF;
+  --surface: #FFFFFF; --surface-2: #F2EFE8;
+  --border: #E4DFD3; --border-soft: #EEE9DD; --hover-border: #C9C3B4;
+}
+
+.scene { background: var(--bg); color: var(--fg); }
+
+/* =====================  基礎排版  ===================== */
+.display-1 { font-family:var(--font-display); font-weight:800; font-size:var(--h1); letter-spacing:-.03em; line-height:1.03; }
+.display-2 { font-family:var(--font-display); font-weight:700; font-size:var(--h2); letter-spacing:-.02em; line-height:1.08; }
+.display-3 { font-family:var(--font-display); font-weight:600; font-size:var(--h3); letter-spacing:-.01em; line-height:1.2; }
+.eyebrow   { font-family:var(--font-mono); font-size:var(--label); text-transform:uppercase; letter-spacing:.14em; color:var(--accent); }
+.body      { font-family:var(--font-body); font-weight:400; font-size:var(--body); line-height:1.6; color:var(--muted); max-width:var(--measure); }
+
+/* =====================  元件  ===================== */
+.btn { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-body); font-weight:600;
+  font-size:15px; padding:12px 22px; border-radius:var(--radius-pill); cursor:pointer;
+  transition:var(--transition-base); border:1px solid transparent; text-decoration:none; }
+
+/* 主 CTA：橘底深墨字 */
+.btn-primary { background:var(--accent); color:var(--accent-contrast); }
+.btn-primary:hover { background:var(--orange-hover); transform:translateY(-2px); }
+.bg-orange .btn-primary { background:#FFFFFF; color:var(--blue); }
+.bg-orange .btn-primary:hover { background:#F2EFE8; }
+
+/* 次 CTA：透明 + 目前前景色線框 */
+.btn-secondary { background:transparent; color:var(--fg); border-color:var(--border); }
+.btn-secondary:hover { border-color:var(--hover-border); background:var(--surface); }
+
+/* 磨砂卡片（藍/深底） */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-md); backdrop-filter:blur(12px);
+  padding:var(--sp-6); transition:var(--transition-base);
+}
+.card:hover { border-color:var(--hover-border); background:var(--surface-2); transform:translateY(-4px); }
+.bg-paper .card { backdrop-filter:none; box-shadow:var(--shadow-paper); }
+
+.badge { display:inline-flex; align-items:center; font-family:var(--font-mono); font-size:12px;
+  letter-spacing:.06em; padding:4px 10px; border-radius:var(--radius-pill);
+  border:1px solid var(--border); color:var(--fg-2); }
+
+/* 單色線條圖示 */
+.icon { width:24px; height:24px; stroke:currentColor; stroke-width:1.8; fill:none; }
+
+/* 焦點環 */
+:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+
+/* =====================  A11y：動效降級  ===================== */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration:.001ms !important; animation-iteration-count:1 !important;
+      transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}

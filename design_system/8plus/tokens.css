@@ -53,8 +53,8 @@
   --measure: 65ch;             /* 內文最大行寬 */
 
   /* ---- 圓角 / 線 ---- */
-  --radius-md: 20px;           /* signature：主卡片 / 容器 / 圖框 */
-  --radius-sm: 10px;
+  --radius-md: 16px;           /* signature：主卡片 / 容器 / 圖框（工程精確感） */
+  --radius-sm: 8px;
   --radius-pill: 999px;
   --hairline: 1px;
 

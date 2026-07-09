@@ -75,6 +75,17 @@ Resume file: None
 
 ## Discussion Log
 
+### 2026-07-09 CST — 打掉重練重新設計：Phase A–D 鎖定（Claude / Cowork）
+
+- 使用者定調：於 feature 分支打掉重練（設計/內容/CTA/商業/動畫/Logo），靠 Claude 產出完整 system design，Cowork 一階段一階段做。
+- **流程 SSOT**：`.planning/redesign/`。原則「先策略→內容→設計→Logo/動畫→重建→部署，鎖了不回頭」，對治歷史 churn。
+- **Phase A（策略）LOCKED** `00-STRATEGY-BRIEF.md`：定位/TA/三支柱整併；四決策=不設硬 KPI、CTA 明確+低承諾並存、定價不公開導向預約、中英雙語到底。
+- **Phase B（IA/內容）LOCKED** `01-IA-CONTENT.md`：保留現有九頁；路由+301、逐頁內容骨架、轉換動線；首頁七段順序、信任帶用經歷關鍵字。
+- **Phase C（設計系統）LOCKED** `02-DESIGN-SYSTEM.md` + `design_system/8plus/tokens.css` + `style-guide.html`：全新方向＝**藍色滿版 #1F4FFF + 橘強調 #FF7A18 + 白字**，四場景 bg-blue/orange/dark/paper，圓角 16px。
+- **Phase D（Logo/動畫）LOCKED** `03-LOGO-MOTION.md` + `public/brand/*.svg`：Logo=C2 兩圓+橘斜槓（mark/mono/lockup/favicon/og）；首頁單一 signature=純藍場景「網格建構+Logo 組裝」scroll pin，標語逐行 reveal，reduced-motion 降級。
+- **commits**：`ab59599`(階段0) → `acb306e`(A) → `49e6308`(B) → `267a237`/`d26cc12`(C) → `048522a`/`f4a84fe`(D)。分支 `feature/claude/2026-07-v3`。
+- **下一步**：Phase E 逐頁重建呈現層（先首頁 Hero）。注意：沙盒 node_modules 為 macOS 版，esbuild 平台不符 → 無法在此跑 velite/next build；tsc + validate-content 可用。頁面視覺需在本機 `pnpm dev` 檢視迭代。
+
 ### 2026-07-08 12:40 CST — 階段 0 執行：藍橘單一基底收斂（Claude / Cowork）
 
 - 承接 12:05 定案，使用者選擇「執行階段 0 清理 codebase」。

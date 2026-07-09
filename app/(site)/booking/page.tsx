@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useLanguage } from "@/components/language-provider";
-import { ContactForm } from "@/components/contact-form";
 import { CalendarCheck, Lightning } from "@phosphor-icons/react";
 
 const bookingCardKeys = ["ready", "topics", "clarify"] as const;
@@ -102,16 +101,6 @@ export default function BookingPage() {
             </div>
           );
         })}
-      </section>
-
-      <section id="contact" className="mt-12 scroll-mt-24">
-        <header className="mb-6 max-w-2xl">
-          <h2 className="display-title text-[clamp(1.75rem,4vw,2.5rem)] tracking-[-0.04em]">
-            {t("booking.contactSection")}
-          </h2>
-          <p className="body-lead mt-3">{t("booking.contactLead")}</p>
-        </header>
-        <ContactForm />
       </section>
     </div>
   );

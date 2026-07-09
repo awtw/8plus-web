@@ -9261,6 +9261,9 @@ html[data-hero-theme="lumina"] {
     position: absolute;
     inset: 0;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     background: #fdfdfb;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -9268,25 +9271,13 @@ html[data-hero-theme="lumina"] {
   }
 
   .home-hero-ed-figure img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 22%;
+    display: block;
+    width: min(78vw, 680px);
+    height: auto;
+    max-height: 72%;
+    object-fit: contain;
+    object-position: center center;
     will-change: transform;
-  }
-
-  .home-hero-ed-caption {
-    /* Offset past the cover clip inset (8vw / 12svh) so the caption
-       stays visible while the frame is still a windowed figure. */
-    position: absolute;
-    left: calc(8vw + 1.1rem);
-    bottom: calc(12svh + 1rem);
-    z-index: 2;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(16, 16, 16, 0.55);
   }
 
   .home-hero-ed-rules {
@@ -9427,7 +9418,6 @@ html[data-hero-theme="lumina"] {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .home-hero-ed-figure,
     .home-hero-ed-figure img,
     .home-hero-ed-headline,
     .home-hero-ed-pillar {
@@ -9681,25 +9671,28 @@ html[data-hero-theme="lumina"] {
     color: var(--muted);
   }
 
-  .home-booking-placeholder {
+  .home-booking-cal-wrap {
+    position: relative;
+    margin-top: 2rem;
+  }
+
+  .home-booking-loading {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
     min-height: clamp(14rem, 35vh, 20rem);
-    margin-top: 2rem;
-    border: 1px dashed var(--border-soft);
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-soft);
     border-radius: 22px;
-    color: var(--muted);
+    background: var(--surface);
     text-align: center;
   }
 
-  .home-booking-placeholder-note {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .home-booking-cal {
+    overflow: hidden;
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    background: var(--bg);
   }
 
   .home-booking-cta {

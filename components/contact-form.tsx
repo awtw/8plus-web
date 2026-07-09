@@ -1,8 +1,6 @@
 'use client'
 
 import { useActionState } from "react";
-import Link from "next/link";
-import { CalendarCheck } from "@phosphor-icons/react";
 import { useLanguage } from "@/components/language-provider";
 import { submitContactForm, type ContactFormState } from "@/lib/actions/contact";
 import { LineContactCard } from "@/components/line-contact-card";
@@ -112,18 +110,8 @@ export function ContactForm() {
           <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em]">{t("contact.quickBookTitle")}</h2>
           <p className="mt-3 text-sm leading-7 text-[color:var(--fg-2)]">{t("contact.quickBookLead")}</p>
         </div>
-        <div className="mt-6 space-y-3">
+        <div className="mt-6">
           <LineContactCard />
-          <Link href="/booking" className="brand-button-primary inline-flex w-full items-center justify-center gap-2">
-            <CalendarCheck className="h-4 w-4" weight="bold" />
-            {t("contact.bookCta")}
-          </Link>
-          <p className="text-center text-sm text-[color:var(--muted)]">
-            Email:{" "}
-            <a href="mailto:hello@8plus.app" className="text-[color:var(--fg)] underline underline-offset-4">
-              hello@8plus.app
-            </a>
-          </p>
         </div>
       </aside>
     </div>

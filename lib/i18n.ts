@@ -143,8 +143,6 @@ export const translations = {
         topics: { title: '合作主題', desc: '從架構、Code Review 到產品交付流程皆可討論。' },
         clarify: { title: '先釐清再開始', desc: '我們可以先定義問題，再一起找解法。' },
       },
-      contactSection: '或填寫表單',
-      contactLead: '不方便選時段？留下訊息，我會在 1–2 個工作天內回覆。',
     },
     // 關於頁面
     about: {
@@ -169,11 +167,10 @@ export const translations = {
       success: '已收到你的訊息，我會盡快回覆。',
       errorMissing: '請填寫姓名、Email 與訊息。',
       errorEmail: 'Email 格式不正確。',
-      errorGeneric: '送出失敗，請稍後再試或直接 Email 聯絡。',
+      errorGeneric: '送出失敗，請稍後再試。',
       quickBook: '急件？',
       quickBookTitle: '直接預約 30 分鐘',
       quickBookLead: '若已有明確議題，直接預約通常是最快的開始方式。',
-      bookCta: '前往預約',
       lineEyebrow: 'LINE 官方帳號',
       lineTitle: '加入 8plus Chatbot',
       lineLead: '掃描 QR 或點擊按鈕加好友，直接在 LINE 與我討論需求。',
@@ -388,8 +385,6 @@ export const translations = {
         topics: { title: 'Topics', desc: 'From architecture and code review to product delivery flow.' },
         clarify: { title: 'Clarify first', desc: 'We can define the problem before we define the solution.' },
       },
-      contactSection: 'Or send a message',
-      contactLead: 'Prefer async? Leave a note and I will reply within 1–2 business days.',
     },
     // About
     about: {
@@ -414,11 +409,10 @@ export const translations = {
       success: 'Message received — I will get back to you soon.',
       errorMissing: 'Please fill in name, email, and message.',
       errorEmail: 'Invalid email address.',
-      errorGeneric: 'Something went wrong. Please try again or email directly.',
+      errorGeneric: 'Something went wrong. Please try again.',
       quickBook: 'In a hurry?',
       quickBookTitle: 'Book 30 minutes directly',
       quickBookLead: 'If the topic is already clear, booking directly is usually the fastest path.',
-      bookCta: 'Book now',
       lineEyebrow: 'LINE Official Account',
       lineTitle: 'Add 8plus on LINE',
       lineLead: 'Scan the QR code or tap below to add the bot and message me directly.',

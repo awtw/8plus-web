@@ -49,9 +49,6 @@ export function SectionHero({ locale }: SectionHeroProps) {
             style={{ transform: `scale(${m.imageScale})` }}
             draggable={false}
           />
-          <span className="home-hero-ed-caption" style={{ opacity: m.captionOpacity }}>
-            {content.hero.figureCaption}
-          </span>
         </div>
 
         <div className="home-hero-ed-rules" aria-hidden="true" />

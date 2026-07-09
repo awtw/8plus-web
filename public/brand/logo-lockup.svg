@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-label="8plus">
+  <circle cx="18" cy="18" r="9" fill="currentColor"/>
+  <circle cx="46" cy="46" r="13" fill="currentColor"/>
+  <path d="M48 12 L16 52" stroke="#FF7A18" stroke-width="7" stroke-linecap="round"/>
+  <text x="78" y="42" font-family="Outfit, -apple-system, system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-1" fill="currentColor">8plus</text>
+</svg>

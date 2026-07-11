@@ -8,8 +8,8 @@ const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero',
   about: 'Story',
   lab: 'Lab',
+  path: 'Path',
   services: 'Service',
-  blog: 'Blog',
   booking: 'Book',
 }
 

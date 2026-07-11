@@ -9684,6 +9684,295 @@ html[data-hero-theme="lumina"] {
     color: var(--muted);
   }
 
+  /* --- About v2: kicker / lead / summary / capability spectrum --- */
+  .home-about-kicker {
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .home-about-lead {
+    margin-top: 0.75rem;
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .home-about-summary {
+    margin-top: 1.35rem;
+    max-width: 50ch;
+    font-size: clamp(1rem, 1.4vw, 1.1rem);
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--fg-2);
+  }
+
+  .home-about-spectrum-eyebrow {
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .home-about-spectrum {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .home-about-spectrum-item {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 1rem 1.15rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  .home-about-spectrum-bar {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .home-about-spectrum-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .home-about-spectrum-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .home-about-spectrum-index {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    color: var(--meta);
+  }
+
+  .home-about-spectrum-arrow {
+    margin-left: auto;
+    font-size: 0.82rem;
+    color: var(--meta);
+  }
+
+  .home-about-spectrum-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .home-about-spectrum-caption {
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .home-about-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.9rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .home-about-highlight {
+    min-width: 150px;
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  .home-about-highlight-lead {
+    border-color: var(--accent);
+  }
+
+  .home-about-highlight-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .home-about-highlight-value {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--fg);
+  }
+
+  .home-about-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .home-about-chip {
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--fg-2);
+    background: var(--surface);
+  }
+
+  .home-lab-arc {
+    margin: 1.25rem 0 0;
+  }
+
+  /* --- Path v2: compact career timeline --- */
+  .home-path-lead {
+    margin-top: 1rem;
+  }
+
+  .home-path-timeline {
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0;
+  }
+
+  .home-path-item {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .home-path-rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .home-path-rail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-soft);
+  }
+
+  .home-path-item:first-child .home-path-rail::before {
+    top: 0.65rem;
+  }
+
+  .home-path-item:last-child .home-path-rail::before {
+    bottom: auto;
+    height: 0.65rem;
+  }
+
+  .home-path-node {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.4rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .home-path-item-active .home-path-node {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent), transparent 78%);
+  }
+
+  .home-path-body {
+    padding: 0 0 1.75rem;
+  }
+
+  .home-path-item:last-child .home-path-body {
+    padding-bottom: 0;
+  }
+
+  .home-path-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .home-path-year {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .home-path-period {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--meta);
+  }
+
+  .home-path-title {
+    margin-top: 0.35rem;
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .home-path-subtitle {
+    margin-top: 0.15rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--fg-2);
+  }
+
+  .home-path-desc {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .home-path-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .home-path-tag {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
   .home-booking-cal-wrap {
     position: relative;
     margin-top: 2rem;
@@ -9744,4 +10033,162 @@ html[data-hero-theme="lumina"] {
   .scroll-story-progress {
     display: none;
   }
+}
+
+/* ============================================================
+   v2 CI — alternating color-field system (from 8plus Design System
+   tokens/colors.css + effects.css). Sections flip --bg and --accent;
+   text stays white, surfaces stay translucent glass.
+   ============================================================ */
+.bg-blue {
+  --bg: var(--color-blue);
+  --accent: var(--color-orange);
+  --accent-hover: #ff6a28;
+  --accent-active: #e04600;
+  --logo-mark-inverse: var(--color-blue);
+  background: var(--bg);
+  color: var(--fg);
+}
+.bg-orange {
+  --bg: var(--color-orange);
+  --accent: var(--color-blue);
+  --accent-hover: #104bfb;
+  --accent-active: #002583;
+  --logo-mark-inverse: var(--color-orange);
+  background: var(--bg);
+  color: var(--fg);
+}
+.bg-dark {
+  --bg: var(--color-dark);
+  --accent: var(--color-orange);
+  --accent-hover: #ff6a28;
+  --accent-active: #e04600;
+  --logo-mark-inverse: var(--color-dark);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* soft-light noise + halftone texture over a field */
+.noise-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: auto, 8px 8px;
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+  z-index: 0;
+}
+/* keep section content above the noise layer */
+.noise-field > .home-section-inner,
+.noise-field > .home-hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* gradient hairline card that lifts on hover (Card variant="highlight") */
+.gradient-border-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--bg), white 1%);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--elev-ring);
+  transition:
+    transform var(--motion-base) var(--ease-standard),
+    border-color var(--motion-base) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard);
+}
+.gradient-border-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--hover-border);
+  box-shadow: var(--shadow-hover);
+}
+.gradient-border-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent-line), var(--accent-soft));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-base) var(--ease-standard);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+.gradient-border-card:hover::before { opacity: 1; }
+
+/* v2 CI — Lab editorial card grid (kit Card variant="highlight") */
+.home-lab-grid-v2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  .home-lab-grid-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.home-lab-card-v2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.9rem 0.9rem 1.1rem;
+  color: var(--fg);
+}
+.home-lab-card-v2-thumb {
+  display: block;
+  height: 150px;
+  border-radius: 12px;
+  margin-bottom: 0.9rem;
+  border: 1px solid var(--border-soft);
+  background-color: var(--surface);
+  background-image: repeating-linear-gradient(135deg, var(--surface) 0 14px, transparent 14px 28px);
+  background-size: cover;
+  background-position: top center;
+}
+.home-lab-card-v2-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0 0.35rem;
+}
+.home-lab-card-v2-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.home-lab-card-v2-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--fg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  background: color-mix(in oklab, var(--surface), var(--bg) 18%);
+}
+.home-lab-card-v2-arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+.home-lab-card-v2-title {
+  margin-top: 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.home-lab-card-v2-summary {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--muted);
 }

@@ -4,11 +4,11 @@ import { useEffect } from 'react'
 import { useLanguage } from '@/components/language-provider'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { HomeSectionProgressNav } from '@/components/home/home-section-progress-nav'
-import { SectionHero } from '@/components/home/sections/section-hero'
+import { HeroV2 } from '@/components/home/hero/hero-v2'
 import { SectionAbout } from '@/components/home/sections/section-about'
 import { SectionLab } from '@/components/home/sections/section-lab'
+import { SectionPath } from '@/components/home/sections/section-path'
 import { SectionServices } from '@/components/home/sections/section-services'
-import { SectionBlog } from '@/components/home/sections/section-blog'
 import { SectionBooking } from '@/components/home/sections/section-booking'
 import { ensureGsapPlugins, ScrollTrigger } from '@/lib/motion/gsap-client'
 
@@ -29,11 +29,11 @@ export function HomeScrollRoot() {
   return (
     <div className="home-scroll-root">
       <HomeSectionProgressNav />
-      <SectionHero locale={homeLocale} />
+      <HeroV2 locale={homeLocale} />
       <SectionAbout locale={homeLocale} />
       <SectionLab locale={homeLocale} />
+      <SectionPath locale={homeLocale} />
       <SectionServices locale={homeLocale} />
-      <SectionBlog locale={homeLocale} />
       <SectionBooking locale={homeLocale} />
     </div>
   )

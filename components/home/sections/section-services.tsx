@@ -15,7 +15,7 @@ export function SectionServices({ locale }: SectionServicesProps) {
   return (
     <section
       id="home-section-services"
-      className="home-section home-section-services"
+      className="home-section home-section-services bg-blue noise-field"
       aria-labelledby="home-services-title"
     >
       <div className="home-section-inner section-shell">

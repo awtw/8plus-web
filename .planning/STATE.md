@@ -19,6 +19,8 @@ Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實
 
 ## What Was Done
 
+- ✅ **2026-07-11 23:43 CST — QR-Beam 行動端 QR 尺寸收斂**: `public/tool/qrcode.html` 將發送 QR 顯示由接近滿版的 640px 上限，改為手機 260–320px、桌機最高 420px；保留 640×640 canvas 輸出解析度。390px viewport 實測顯示 304×304px，`pnpm build` 通過。
+- ✅ **2026-07-11 23:55 CST — QR 垂直長圖結果區**: 「合成垂直長圖」完成後顯示預覽 + **下載長圖** 按鈕（避免非同步合成後自動下載被擋）。
 - ✅ **2026-07-01 CST — Phase 4.0 W0 IA + 路由**: nav 6 項（lab/about/services/path/blog/booking）；`/lab`；`/sb` `/sc` Share 殼；redirects；booking 併 contact；`pnpm build` 通過。
 - ✅ **2026-07-01 CST — Phase 4.0 規劃 LOCKED**: Round 1+2；`BRAND_EXPERIENCE_SPEC`、`4.0-IMPLEMENT-PLAN` 等；commit `6c054ca`。
 - ✅ **2026-07-01 CST — Rebranding 路線**: 重構現有 repo，保留 Velite/i18n/SEO；見 Discussion Log。

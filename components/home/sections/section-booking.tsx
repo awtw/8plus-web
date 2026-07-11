@@ -36,7 +36,7 @@ export function SectionBooking({ locale }: SectionBookingProps) {
   return (
     <section
       id="home-section-booking"
-      className="home-section home-section-booking home-section-last"
+      className="home-section home-section-booking home-section-last bg-dark noise-field"
       aria-labelledby="home-booking-title"
     >
       <div className="home-section-inner section-shell">

@@ -10,52 +10,52 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --color-blue:#002FA7;
-    --color-orange:#FE5000;
-    --color-dark:#0A0E1A;
+    --color-blue:#1F4FFF;
+    --color-blue-deep:#163BCC;
+    --color-orange:#FF7A18;
+    --color-dark:#0B0E14;
     --bg:var(--color-blue);
     --surface:rgba(255,255,255,.08);
     --surface-warm:rgba(255,255,255,.12);
     --ink:#ffffff;
     --fg-2:rgba(255,255,255,.88);
-    --mut:rgba(255,255,255,.76);
+    --mut:rgba(255,255,255,.72);
     --meta:rgba(255,255,255,.6);
     --border:rgba(255,255,255,.22);
     --border-soft:rgba(255,255,255,.12);
     --acc:var(--color-orange);
-    --acc-on:#ffffff;
-    --acc-hover:#FF6A28;
+    --acc-on:#14181F;
+    --acc-hover:#FF8F3D;
     --ok:#34d399;
     --warn:#eab308;
     --danger:#ff5f56;
     --input-bg:rgba(0,0,0,.22);
     --radius-sm:8px;
-    --radius:22px;
+    --radius:16px;
     --radius-pill:9999px;
     --font-body:"Outfit",-apple-system,BlinkMacSystemFont,system-ui,"Microsoft JhengHei",sans-serif;
-    --font-display:Georgia,"Outfit",-apple-system,system-ui,serif;
+    --font-display:"Outfit",-apple-system,BlinkMacSystemFont,system-ui,"Microsoft JhengHei",sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --shadow-hover:0 12px 40px rgba(0,0,0,.28);
+    --container:1200px;
     --ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box;}
+  html{background:var(--bg);overflow-x:hidden;}
   body{
     margin:0;
     font-family:var(--font-body);
-    background:
-      radial-gradient(1200px 600px at 12% -10%, rgba(255,255,255,.16), transparent 55%),
-      radial-gradient(900px 500px at 90% 0%, rgba(254,80,0,.22), transparent 50%),
-      var(--bg);
+    background:var(--bg);
     color:var(--ink);
     min-height:100vh;
+    overflow-x:hidden;
   }
   a{color:inherit;}
   header{
-    padding:22px 20px 18px;
+    padding:clamp(32px,6vw,72px) clamp(16px,4vw,48px) 28px;
     border-bottom:1px solid var(--border-soft);
-    backdrop-filter:blur(10px);
-    background:rgba(0,47,167,.35);
+    background:var(--color-blue-deep);
   }
+  header>*{width:min(100%,var(--container));margin-left:auto;margin-right:auto;}
   .eyebrow{
     margin:0 0 8px;
     display:inline-flex;
@@ -76,16 +76,16 @@
   header h1{
     margin:0;
     font-family:var(--font-display);
-    font-size:clamp(28px,4vw,40px);
-    font-weight:600;
-    letter-spacing:-.02em;
-    line-height:1.1;
+    font-size:clamp(40px,5.5vw,72px);
+    font-weight:800;
+    letter-spacing:-.03em;
+    line-height:1.03;
   }
-  header .lede{margin:10px 0 0;color:var(--mut);font-size:14px;line-height:1.6;max-width:54ch;}
-  .wrap{max-width:860px;margin:0 auto;padding:18px 16px 72px;}
-  .tabs{display:flex;gap:10px;margin:16px 0;}
+  header .lede{margin-top:14px;color:var(--mut);font-size:17px;line-height:1.6;max-width:65ch;}
+  .wrap{width:min(100%,var(--container));margin:0 auto;padding:24px clamp(16px,4vw,48px) 96px;}
+  .tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 20px;}
   .tab{
-    flex:1;padding:14px 12px;text-align:center;
+    min-height:52px;padding:14px 16px;text-align:center;
     background:var(--surface);
     border:1px solid var(--border-soft);
     border-radius:var(--radius);
@@ -95,10 +95,10 @@
   }
   .tab:hover{background:var(--surface-warm);border-color:var(--border);}
   .tab.active{
-    border-color:rgba(255,255,255,.55);
-    color:#fff;
-    background:rgba(255,255,255,.14);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);
+    border-color:var(--acc);
+    color:var(--acc-on);
+    background:var(--acc);
+    box-shadow:none;
   }
   .subtabs{display:flex;gap:8px;margin:6px 0 14px;flex-wrap:wrap;}
   .subtab{
@@ -112,26 +112,27 @@
   .subtab:hover{border-color:var(--border);color:var(--ink);}
   .subtab.active{
     border-color:var(--acc);
-    color:#fff;
-    background:rgba(254,80,0,.18);
+    color:var(--acc-on);
+    background:var(--acc);
   }
   .card{
     background:var(--surface);
-    border:1px solid var(--border-soft);
+    border:1px solid var(--border);
     border-radius:var(--radius);
-    padding:18px;
-    margin-bottom:14px;
+    padding:clamp(16px,3vw,24px);
+    margin-bottom:16px;
     backdrop-filter:blur(12px);
-    box-shadow:0 0 0 1px rgba(255,255,255,.04);
   }
-  label{display:block;font-size:13px;color:var(--mut);margin:8px 0 4px;}
+  label{display:block;font-size:13px;color:var(--fg-2);margin:8px 0 6px;font-weight:500;}
   textarea,select{
     width:100%;
+    max-width:100%;
     background:var(--input-bg);
     color:var(--ink);
-    border:1px solid var(--border-soft);
+    border:1px solid var(--border);
     border-radius:var(--radius-sm);
-    padding:10px 12px;
+    padding:11px 12px;
+    min-height:44px;
     font-size:14px;
     font-family:var(--font-body);
     transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
@@ -142,22 +143,27 @@
     border-color:var(--acc);
     box-shadow:0 0 0 2px rgba(254,80,0,.35);
   }
-  select{width:auto;min-width:100%;}
-  input[type=file]{width:100%;color:var(--mut);font-size:13px;}
+  select{display:block;}
+  input[type=file]{width:100%;max-width:100%;min-height:44px;color:var(--mut);font-size:13px;padding:10px 0;}
   button{
-    background:var(--ink);
-    color:var(--color-blue);
-    border:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:44px;
+    background:var(--acc);
+    color:var(--acc-on);
+    border:1px solid transparent;
     border-radius:var(--radius-pill);
-    padding:10px 18px;
+    padding:11px 20px;
     font-weight:600;
     cursor:pointer;
     font-size:14px;
     font-family:var(--font-body);
     transition:background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
   }
-  button:hover:not(:disabled){background:var(--acc);color:var(--acc-on);}
-  button:disabled{opacity:.45;cursor:not-allowed;}
+  button:hover:not(:disabled){background:var(--acc-hover);color:var(--acc-on);transform:translateY(-2px);}
+  button:disabled{opacity:.45;cursor:not-allowed;transform:none;}
   button.ghost{
     background:transparent;
     color:var(--fg-2);
@@ -168,18 +174,24 @@
     border-color:rgba(255,255,255,.5);
     color:#fff;
   }
-  .row{display:flex;gap:14px;flex-wrap:wrap;align-items:end;}
-  .row>div{flex:1;min-width:120px;}
+  .row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));
+    gap:12px;
+    align-items:end;
+  }
+  .row>div{min-width:0;}
+  .row button,.row a.ghost{width:100%;height:100%;min-height:44px;}
   canvas{
     background:#fff;
     border-radius:var(--radius);
     max-width:100%;
     display:block;
-    margin:14px auto;
+    margin:20px auto 14px;
     image-rendering:pixelated;
-    box-shadow:var(--shadow-hover);
+    border:1px solid var(--border);
   }
-  #sendCanvas{width:min(96vw,640px);height:auto;max-width:640px;}
+  #sendCanvas{width:clamp(260px,78vw,420px);height:auto;max-width:100%;}
   #rxCanvas{display:none;}
   #rxVideo{
     width:100%;max-height:50vh;
@@ -216,20 +228,19 @@
   hr.sep{border:0;border-top:1px solid var(--border-soft);margin:16px 0;}
   .result-panel{
     margin-top:12px;padding:16px;
-    border:1px solid var(--border-soft);
+    border:1px solid var(--border);
     border-radius:var(--radius);
     background:rgba(0,0,0,.2);
   }
-  .result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .result-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:8px;}
   .result-head h3{margin:0;font-size:15px;font-weight:600;}
-  .result-close{padding:4px 12px;font-size:13px;min-width:auto;}
+  .result-close{width:44px;min-width:44px;padding:0;font-size:13px;}
   #textResultBody{
     min-height:72px;max-height:220px;
     font-family:var(--font-mono);
     font-size:13px;line-height:1.5;
   }
   .result-actions{margin-top:10px;}
-  .result-actions button{min-width:120px;}
   button.ok-state{background:var(--ok);color:#052e16;}
   .modal-backdrop{
     position:fixed;inset:0;z-index:1000;
@@ -243,13 +254,14 @@
     border:1px solid var(--border);
     border-radius:var(--radius);
     padding:22px;
-    box-shadow:var(--shadow-hover);
+    max-height:calc(100dvh - 32px);
+    overflow:auto;
   }
   .modal-card h2{margin:0 0 10px;font-family:var(--font-display);font-size:22px;letter-spacing:-.02em;}
   .modal-info{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--fg-2);}
   .modal-info b{color:var(--ink);}
-  .modal-actions{display:flex;flex-wrap:wrap;gap:10px;}
-  .modal-actions button{flex:1;min-width:140px;}
+  .modal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .modal-actions button{width:100%;}
   .foot-note{text-align:center;opacity:.7;margin-top:8px;}
   button.accent{
     background:transparent;
@@ -306,6 +318,42 @@
     word-break:break-word;
   }
   .scan-metric .v.small{font-size:14px;font-weight:500;}
+  .file-preview{
+    margin:12px 0;max-width:100%;max-height:220px;border-radius:var(--radius);
+    border:1px solid var(--border-soft);background:rgba(0,0,0,.25);object-fit:contain;
+  }
+  .strip-preview{
+    margin:12px 0;max-width:min(100%,220px);max-height:360px;border-radius:var(--radius);
+    border:1px solid var(--border-soft);background:#fff;object-fit:contain;display:block;
+  }
+  .strip-preview-list{
+    display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:flex-start;
+  }
+  .strip-preview-card{
+    flex:0 0 auto;width:88px;text-align:center;
+  }
+  .strip-preview-card img{
+    width:88px;height:140px;object-fit:cover;object-position:top;
+    border-radius:8px;border:1px solid var(--border-soft);background:#fff;display:block;
+  }
+  .strip-preview-card .cap{
+    font-size:11px;color:var(--mut);margin-top:4px;font-family:var(--font-mono);
+  }
+  :focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  @media (max-width:639px){
+    header{padding:28px 16px 22px;}
+    header .lede{font-size:15px;}
+    .wrap{padding:16px 16px 72px;}
+    .tabs{gap:8px;margin-bottom:16px;}
+    .tab{padding:12px 8px;font-size:13px;}
+    .card{padding:16px;}
+    .row{grid-template-columns:1fr;}
+    .modal-actions{grid-template-columns:1fr;}
+    .result-actions{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  }
 </style>
 </head>
 <body>
@@ -346,7 +394,7 @@
         <div><label>容錯等級</label>
           <select id="eccSel"><option value="L">L（快／大檔）</option><option value="M" selected>M（建議）</option><option value="Q">Q</option><option value="H">H（最穩）</option></select></div>
         <div><label>每幀資料量</label>
-          <select id="chunkSel"><option value="300">300（好掃）</option><option value="500" selected>500（建議）</option><option value="800">800</option><option value="1200">1200</option><option value="1800">1800（大檔）</option><option value="2200">2200（幀最少）</option></select></div>
+          <select id="chunkSel"><option value="300">300（最好掃）</option><option value="500" selected>500（建議）</option><option value="800">800</option><option value="1200">1200（上限・相機仍可掃）</option><option value="1800">1800（密・難掃）</option></select></div>
         <div><label>播放模式</label>
           <select id="playModeSel"><option value="loop" selected>循環輪播</option><option value="manual">手動步進</option></select></div>
         <div><label>輪播間隔</label>
@@ -361,11 +409,28 @@
         <div><button class="ghost" id="btnPrevFrame" disabled>上一幀</button></div>
         <div><button class="ghost" id="btnNextFrame" disabled>下一幀</button></div>
         <div><button class="ghost" id="btnDownloadFrame" disabled>下載本幀</button></div>
+        <div><button class="ghost" id="btnDownloadAllFolder" disabled>下載全部到資料夾</button></div>
         <div><button class="ghost" id="btnDownloadAllFrames" disabled>下載全部 ZIP</button></div>
+        <div><button class="ghost" id="btnDownloadAllStrip" disabled>合成垂直長圖</button></div>
       </div>
       <canvas id="sendCanvas" width="480" height="480"></canvas>
       <div class="note"><span class="pill" id="playInfo">尚未產生</span></div>
       <div class="note" id="sendNote"></div>
+      <div id="stripResultPanel" class="result-panel" style="display:none;" aria-live="polite">
+        <div class="result-head">
+          <h3 id="stripResultTitle">垂直長圖已就緒</h3>
+          <button type="button" class="ghost result-close" id="btnCloseStripResult" aria-label="關閉">✕</button>
+        </div>
+        <span class="pill" id="stripResultKind">長圖</span>
+        <div class="note" id="stripResultInfo"></div>
+        <div id="stripPreviewList" class="strip-preview-list"></div>
+        <div class="row result-actions">
+          <div><button type="button" id="btnDownloadStripReady">下載全部 ZIP</button></div>
+          <div><button type="button" class="ghost" id="btnDownloadStripPngs">逐張下載 PNG</button></div>
+          <div><button type="button" class="ghost" id="btnRebuildStrip">重新合成</button></div>
+        </div>
+        <div class="note" id="stripResultHint">已切成多段短長圖（每段約 8 幀）。接收端可分批上傳長圖補幀，比單張超長圖好掃。</div>
+      </div>
     </div>
   </div>
 
@@ -407,19 +472,21 @@
         <div class="note" id="frameAssemblyInfo"></div>
         <div class="note" id="frameAssemblyMissing"></div>
         <div class="row result-actions" style="margin-top:12px;">
-          <div><button type="button" id="btnAssemblyUpload">改用圖片補幀</button></div>
+          <div><button type="button" id="btnAssemblyDownload" disabled>下載檔案</button></div>
+          <div><button type="button" class="ghost" id="btnAssemblyUpload">改用圖片補幀</button></div>
           <div><button type="button" class="ghost" id="btnResetAssembly">重新開始</button></div>
         </div>
-        <div class="note" id="frameAssemblyHint">連續掃描時請持續對準螢幕；數字會即時更新。重複掃到同一幀會增加「本場解碼」，但進度只在收到新符號時上升。</div>
+        <div class="note" id="frameAssemblyHint">連續掃描時請持續對準螢幕；數字會即時更新。重複掃到同一幀會增加「本場解碼」，但進度只在收到新符號時上升。檔案組齊後「下載檔案」會亮起可按。</div>
       </div>
 
       <div id="frameAssemblyPanel" style="display:none;" aria-hidden="true"></div>
 
       <hr class="sep">
-      <label>沒有相機？或相機掃描缺幀 — 從圖片解碼（上傳 QR 截圖，可分批）</label>
+      <label>沒有相機？或相機掃描缺幀 — 從圖片解碼（上傳 QR 截圖或垂直長圖，可分批）</label>
       <input type="file" id="imgInput" accept="image/*" multiple>
       <div class="row" style="margin-top:10px;">
         <div><button id="btnAnalyzeImg" disabled>分析圖片</button></div>
+        <div><button type="button" id="btnImgDownload" disabled>下載檔案</button></div>
         <div><button class="ghost" id="btnClearImg" disabled>清除</button></div>
         <div><button class="ghost" id="btnAddMoreFrames" style="display:none;">繼續上傳截圖</button></div>
       </div>
@@ -427,6 +494,36 @@
       <div class="note" id="imgProgress">等待分析…</div>
       <div class="bar"><div id="imgBar"></div></div>
       <div class="note" id="imgResult"></div>
+      <div id="imgReadyBar" class="result-panel" style="display:none;" role="status">
+        <div class="result-head">
+          <h3 id="imgReadyTitle">檔案已組齊</h3>
+        </div>
+        <span class="pill" id="imgReadyKind">狀態</span>
+        <div class="note" id="imgReadyInfo"></div>
+        <div class="row result-actions">
+          <div><button type="button" id="btnImgDownloadReady">⬇ 下載檔案</button></div>
+          <div><button type="button" class="ghost" id="btnImgShareReady">分享</button></div>
+          <div><button type="button" class="ghost" id="btnImgContinueUpload" style="display:none;">繼續上傳缺幀</button></div>
+        </div>
+      </div>
+      <div class="note" id="imgDownloadHint" style="display:none;">✅ 檔案已組好 — 請按橘色「下載檔案」。</div>
+
+      <div id="fileResultPanel" class="result-panel" style="display:none;" aria-live="polite">
+        <div class="result-head">
+          <h3 id="fileResultTitle">檔案已就緒 — 可下載</h3>
+          <button type="button" class="ghost result-close" id="btnCloseFileResult" aria-label="關閉">✕</button>
+        </div>
+        <span class="pill" id="fileResultKind">檔案</span>
+        <div class="note" id="fileResultInfo"></div>
+        <img id="filePreview" class="file-preview" alt="預覽" style="display:none;">
+        <div class="row result-actions">
+          <div><button type="button" id="btnDownloadFile">下載檔案</button></div>
+          <div><button type="button" class="ghost" id="btnShareFilePersist">分享</button></div>
+          <div><button type="button" class="ghost" id="btnPickSaveLocation">選擇儲存位置</button></div>
+          <div><a id="fileOpenLink" class="ghost" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-pill);color:#fff;">預覽／開啟</a></div>
+        </div>
+        <div class="note" id="fileResultHint">檔案組齊後請按「下載檔案」。關閉彈窗後此區仍保留，直到重新開始。</div>
+      </div>
 
       <div id="textResultPanel" class="result-panel" style="display:none;">
         <div class="result-head">
@@ -451,11 +548,12 @@
       <h2 id="saveModalTitle">檔案已接收</h2>
       <div class="modal-info" id="saveModalInfo"></div>
       <div class="modal-actions">
-        <button type="button" id="btnSaveFile">選擇儲存位置</button>
-        <button type="button" class="ghost" id="btnShareFile" style="display:none;">分享／另存</button>
-        <button type="button" class="ghost" id="btnSaveModalLater">稍後</button>
+        <button type="button" id="btnSaveFile">下載檔案</button>
+        <button type="button" class="ghost" id="btnShareFile">分享</button>
+        <button type="button" class="ghost" id="btnPickSaveLocationModal">選擇儲存位置</button>
+        <button type="button" class="ghost" id="btnSaveModalLater">稍後（保留下載區）</button>
       </div>
-      <div class="note" style="margin-top:12px;margin-bottom:0;">支援的瀏覽器會跳出系統檔案對話框；手機可改用「分享／另存」。</div>
+      <div class="note" style="margin-top:12px;margin-bottom:0;">按「下載」立刻存檔；「選擇儲存位置」可挑資料夾（支援的瀏覽器）。關閉後下方「檔案已就緒」仍可再下載／分享。</div>
     </div>
   </div>
 
@@ -777,6 +875,24 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     return null;
   }
+  /** Prefer UTF-8 from binaryData so CJK / emoji QR text is copyable, not mojibake. */
+  function codeToText(code){
+    if(!code) return '';
+    if(code.binaryData && code.binaryData.length){
+      try{
+        var decoded=utf8ToStr(Uint8Array.from(code.binaryData));
+        if(decoded && decoded.indexOf('\uFFFD')===-1) return decoded;
+      }catch(e){}
+    }
+    return code.data||'';
+  }
+  function textToQrBytePayload(text){
+    return bytesToLatin1(strToUtf8(text||''));
+  }
+  function isTextLikeFilename(name){
+    var n=(name||'').toLowerCase();
+    return n==='text.txt' || /\.(txt|md|json|csv|log|html?|xml|svg)$/.test(n);
+  }
   function reassembleFromSeq(seq){
     var asm=new Reassembler();
     for(var i=0;i<seq.length;i++){
@@ -820,7 +936,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   var API={crc32:crc32, strToUtf8:strToUtf8, utf8ToStr:utf8ToStr, bytesToLatin1:bytesToLatin1,
     concatBytes:concatBytes, makeStoredZip:makeStoredZip, buildFrames:buildFrames,
     parseFrame:parseFrame, Reassembler:Reassembler, buildSeqWithMeta:buildSeqWithMeta,
-    buildRepairFrame:buildRepairFrame, codeToBytes:codeToBytes, reassembleFromSeq:reassembleFromSeq,
+    buildRepairFrame:buildRepairFrame, codeToBytes:codeToBytes, codeToText:codeToText,
+    reassembleFromSeq:reassembleFromSeq,
     compressDeflate:compressDeflate, decompressDeflate:decompressDeflate,
     T_META:T_META, T_DATA:T_DATA, T_REPAIR:T_REPAIR};
 
@@ -834,6 +951,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   var qrcode=global.qrcode, jsQR=global.jsQR;
 
   var QR_RENDER_SIZE=640;
+  var STRIP_CELL=360, STRIP_GAP=20, STRIP_PAD=16;
+  var STRIP_WIDTH=STRIP_CELL+STRIP_PAD*2;
+  var STRIP_MAX_HEIGHT=16000;
+  var STRIP_FRAMES_PER_PART=8; // short strips = easier phone scan / multi-upload
   function paintQrToFixedCanvas(canvas, qr, targetSize){
     var n=qr.getModuleCount(), quiet=4;
     var target=targetSize||QR_RENDER_SIZE;
@@ -853,13 +974,48 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     return n;
   }
   function drawFrameQR(canvas, bytes, ecc){
-    var qr=qrcode(0, ecc||'M');
-    qr.addData(bytesToLatin1(bytes),'Byte'); qr.make();
-    return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
+    var levels=[ecc||'M','L'];
+    var lastErr=null;
+    for(var i=0;i<levels.length;i++){
+      try{
+        var qr=qrcode(0, levels[i]);
+        qr.addData(bytesToLatin1(bytes),'Byte'); qr.make();
+        return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
+      }catch(e){ lastErr=e; }
+    }
+    if(canvas){
+      canvas.width=QR_RENDER_SIZE; canvas.height=QR_RENDER_SIZE;
+      var ctx=canvas.getContext('2d');
+      ctx.fillStyle='#1a1020'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#ff8a80'; ctx.font='16px sans-serif';
+      ctx.fillText('QR 過密／編碼失敗', 24, 48);
+      ctx.fillStyle='#fff'; ctx.font='13px sans-serif';
+      ctx.fillText('請改小「每幀資料量」或 ECC=L', 24, 76);
+      if(lastErr && lastErr.message) ctx.fillText(String(lastErr.message).slice(0,60), 24, 104);
+    }
+    throw lastErr||new Error('QR encode failed');
+  }
+  function canEncodeBytes(bytes, ecc){
+    try{
+      var qr=qrcode(0, ecc||'M');
+      qr.addData(bytesToLatin1(bytes),'Byte'); qr.make();
+      return true;
+    }catch(e){ return false; }
+  }
+  function maxSafeChunkForEcc(ecc){
+    // Camera-friendly caps (below theoretical QR max). Dense V35–40 often fails phone scan.
+    switch(ecc){
+      case 'L': return 1200;
+      case 'M': return 800;
+      case 'Q': return 500;
+      case 'H': return 400;
+      default: return 800;
+    }
   }
   function drawRawTextQR(canvas, text, ecc){
     var qr=qrcode(0, ecc||'M');
-    qr.addData(text); qr.make();
+    // Always UTF-8 Byte mode — default addData() mangles CJK (keeps wrong code units).
+    qr.addData(textToQrBytePayload(text),'Byte'); qr.make();
     return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
   }
   function drawMultiQR(canvas, framesBytes, ecc, cols){
@@ -882,7 +1038,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
   }
 
-  var pendingSave={blob:null, name:'', url:null};
+  var pendingSave={blob:null, name:'', url:null, ok:true};
   var currentTextResult='';
   function mimeForName(name){
     var n=(name||'').toLowerCase();
@@ -905,31 +1061,129 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     return (n/1048576).toFixed(2)+' MB';
   }
   function clearPendingSave(){
-    pendingSave.blob=null; pendingSave.name='';
+    pendingSave.blob=null; pendingSave.name=''; pendingSave.ok=true;
     if(pendingSave.url){ try{URL.revokeObjectURL(pendingSave.url);}catch(e){} pendingSave.url=null; }
     hideSaveModal();
+    hideFileResult();
   }
   function hideSaveModal(){ var m=$('saveModal'); if(m) m.style.display='none'; }
+  function hideFileResult(){
+    var panel=$('fileResultPanel'); if(panel) panel.style.display='none';
+    var prev=$('filePreview'); if(prev){ prev.removeAttribute('src'); prev.style.display='none'; }
+    var link=$('fileOpenLink'); if(link){ link.removeAttribute('href'); link.style.display='none'; }
+    var ready=$('imgReadyBar'); if(ready) ready.style.display='none';
+    var hint=$('imgDownloadHint'); if(hint) hint.style.display='none';
+    var cont=$('btnImgContinueUpload'); if(cont) cont.style.display='none';
+    syncAssemblyDownloadBtn();
+  }
+  function syncAssemblyDownloadBtn(){
+    var ready=!!(pendingSave && pendingSave.blob);
+    var finishing=!!rx.finishing;
+    var reason='';
+    if(finishing) reason='正在解壓／準備檔案…';
+    else if(ready) reason='';
+    else if(rx.asm && rx.asm.meta && !rx.asm.done){
+      var miss=rx.asm.missing? rx.asm.missing():[];
+      reason='尚未組齊：'+rx.asm.got+' / '+rx.asm.meta.t+(miss.length?('，缺 '+miss.length+' 幀'):'');
+    } else if(rx.asm && rx.asm.meta && rx.asm.done && !ready){
+      reason='組裝完成但檔案尚未就緒，請再按分析或重新開始';
+    } else {
+      reason='請先上傳並組齊所有傳輸幀後才能下載';
+    }
+    var label=ready?('⬇ 下載 '+(pendingSave.name||'檔案')):(finishing?'解壓中…':'下載檔案');
+    ['btnAssemblyDownload','btnImgDownload','btnImgDownloadReady'].forEach(function(id){
+      var btn=$(id);
+      if(!btn) return;
+      btn.disabled=!ready;
+      btn.style.display='';
+      btn.title=ready?'下載已組齊的檔案':reason;
+      btn.setAttribute('aria-label', ready?label:('下載檔案（不可用：'+reason+'）'));
+      if(id==='btnImgDownloadReady'){
+        btn.textContent=ready?('⬇ 下載 '+(pendingSave.name||'檔案')):(finishing?'解壓中…':'下載檔案');
+      } else {
+        btn.textContent=label;
+      }
+    });
+    var hint=$('imgDownloadHint');
+    if(hint){
+      hint.style.display=ready?'block':'none';
+      if(ready){
+        hint.textContent='✅ 已組好「'+((pendingSave&&pendingSave.name)||'download.bin')+'」— 按橘色「下載檔案」。';
+      }
+    }
+  }
+  function showImgOutcome(kind, title, infoHtml){
+    // kind: ready | incomplete | error | wait
+    var bar=$('imgReadyBar'), info=$('imgReadyInfo'), h=$('imgReadyTitle'), kindEl=$('imgReadyKind');
+    var dl=$('btnImgDownloadReady'), share=$('btnImgShareReady'), cont=$('btnImgContinueUpload');
+    if(!bar) return;
+    bar.style.display='block';
+    if(h) h.textContent=title||'';
+    if(kindEl){
+      kindEl.textContent=kind==='ready'?'可下載':(kind==='incomplete'?'未組齊':(kind==='error'?'錯誤':'狀態'));
+    }
+    if(info) info.innerHTML=infoHtml||'';
+    if(dl) dl.style.display='';
+    if(share) share.style.display=(kind==='ready')?'':'none';
+    if(cont) cont.style.display=(kind==='incomplete' || kind==='wait')?'':'none';
+    try{ bar.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){}
+    syncAssemblyDownloadBtn();
+  }
+  function showFileResultPanel(ok){
+    var panel=$('fileResultPanel'); if(!panel || !pendingSave.blob) return;
+    panel.style.display='block';
+    var fname=pendingSave.name||'download.bin';
+    var info=$('fileResultInfo'), kind=$('fileResultKind'), title=$('fileResultTitle');
+    if(title) title.textContent='檔案已就緒 — 可下載';
+    if(kind) kind.textContent=ok===false?'CRC 警告':'檔案';
+    if(info){
+      info.innerHTML=(ok===false?'⚠️ CRC 不符，請確認後再儲存':'✅ CRC 通過')+
+        '<br>檔名：<b>'+escapeHtml(fname)+'</b><br>大小：<b>'+formatBytes(pendingSave.blob.size)+'</b>';
+    }
+    if(!pendingSave.url) pendingSave.url=URL.createObjectURL(pendingSave.blob);
+    var link=$('fileOpenLink');
+    if(link){
+      link.href=pendingSave.url;
+      link.download=fname;
+      link.style.display='inline-block';
+      link.textContent=/^image\//.test(pendingSave.blob.type)?'預覽圖片':'開啟／另存連結';
+    }
+    var prev=$('filePreview');
+    if(prev){
+      if(/^image\//.test(pendingSave.blob.type)){
+        prev.src=pendingSave.url; prev.style.display='block';
+      } else {
+        prev.removeAttribute('src'); prev.style.display='none';
+      }
+    }
+    syncAssemblyDownloadBtn();
+    if(pendingSave.blob){
+      showImgOutcome('ready', '檔案已組齊 — 可下載',
+        '檔名：<b>'+escapeHtml(pendingSave.name||'download.bin')+
+        '</b>　大小：<b>'+formatBytes(pendingSave.blob.size)+'</b>');
+    }
+    try{
+      var focus=$('imgReadyBar')||panel;
+      if(focus) focus.scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(e){}
+  }
   function promptSaveFile(bytes, name, ok){
-    clearPendingSave();
+    // keep URL lifecycle clean without wiping blob mid-flow
+    if(pendingSave.url){ try{URL.revokeObjectURL(pendingSave.url);}catch(e){} pendingSave.url=null; }
     var fname=name||'download.bin';
     var blob=new Blob([bytes],{type:mimeForName(fname)});
     pendingSave.blob=blob; pendingSave.name=fname;
+    pendingSave.ok=ok!==false;
+    pendingSave.url=URL.createObjectURL(blob);
     var modal=$('saveModal'), info=$('saveModalInfo'), shareBtn=$('btnShareFile');
     if(modal) modal.style.display='flex';
     if(info){
       info.innerHTML=(ok?'✅ CRC 通過':'⚠️ CRC 不符，請確認後再儲存')+
-        '<br>檔名：<b>'+escapeHtml(fname)+'</b><br>大小：<b>'+formatBytes(bytes.length)+'</b>';
+        '<br>檔名：<b>'+escapeHtml(fname)+'</b><br>大小：<b>'+formatBytes(bytes.length)+'</b>'+
+        '<br><span style="color:var(--mut)">也可關閉視窗，使用下方「檔案已就緒」區下載／分享。</span>';
     }
-    if(shareBtn){
-      var canShare=false;
-      try{
-        if(navigator.share && navigator.canShare){
-          canShare=navigator.canShare({files:[new File([blob], fname, {type:blob.type})]});
-        } else if(navigator.share){ canShare=true; }
-      }catch(e){ canShare=!!navigator.share; }
-      shareBtn.style.display=canShare?'':'none';
-    }
+    if(shareBtn) shareBtn.style.display='';
+    showFileResultPanel(ok);
   }
   function saveFileWithPicker(){
     if(!pendingSave.blob){ alert('尚無可儲存的檔案'); return; }
@@ -947,12 +1201,18 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         });
       }).then(function(){ hideSaveModal(); }).catch(function(err){
         if(err && err.name==='AbortError') return;
+        // picker unsupported types / permission → plain download
         downloadBytes(blob, fname);
         hideSaveModal();
       });
       return;
     }
     downloadBytes(blob, fname);
+    hideSaveModal();
+  }
+  function downloadPendingFile(){
+    if(!pendingSave.blob){ alert('尚無可下載的檔案'); return; }
+    downloadBytes(pendingSave.blob, pendingSave.name||'download.bin');
     hideSaveModal();
   }
   function downloadBytes(bytes, name){
@@ -963,7 +1223,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     document.body.appendChild(a); a.click();
     setTimeout(function(){URL.revokeObjectURL(url); a.remove();},1500);
   }
-  function savePendingFile(){ saveFileWithPicker(); }
+  function savePendingFile(){ downloadPendingFile(); }
   function sharePendingFile(){
     if(!pendingSave.blob){ alert('尚無可分享的檔案'); return; }
     var fname=pendingSave.name||'download.bin';
@@ -973,19 +1233,23 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var tryShare=function(p){
         return navigator.share(p).then(function(){ hideSaveModal(); }).catch(function(err){
           if(err && err.name==='AbortError') return;
+          // fallback: text-only share or download
+          if(navigator.canShare && navigator.canShare({title:fname, text:fname})){
+            return navigator.share({title:fname, text:'檔案：'+fname+'（請改用下載按鈕）'}).catch(function(){
+              downloadBytes(pendingSave.blob, fname);
+            });
+          }
           downloadBytes(pendingSave.blob, fname);
-          hideSaveModal();
         });
       };
       if(navigator.canShare && !navigator.canShare({files:[file]})){
         downloadBytes(pendingSave.blob, fname);
-        hideSaveModal();
         return;
       }
       tryShare(payload);
     } else {
       downloadBytes(pendingSave.blob, fname);
-      hideSaveModal();
+      alert('此瀏覽器不支援系統分享，已改為下載。');
     }
   }
   function isLikelyUrl(text){
@@ -1059,7 +1323,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function updatePlayerButtons(){
     var has=player.seq.length>1 || (player.symbols && player.symbols.length);
     var playing=has && !player.paused && player.mode==='loop';
-    ['btnPausePlay','btnPrevFrame','btnNextFrame','btnDownloadFrame','btnDownloadAllFrames','btnResetToMeta'].forEach(function(id){
+    ['btnPausePlay','btnPrevFrame','btnNextFrame','btnDownloadFrame','btnDownloadAllFrames','btnDownloadAllFolder','btnDownloadAllStrip','btnResetToMeta'].forEach(function(id){
       var el=$(id); if(el) el.disabled=!has;
     });
     var sc=$('btnStartCarousel');
@@ -1128,12 +1392,14 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(layout>=4 && hasFountain){
       var pkts=packetsForSlot(player.i, 4);
       while(pkts.length<4) pkts.push(pkts[pkts.length-1]||player.metaFrame);
-      drawMultiQR(cv, pkts, player.ecc, 2);
+      try{ drawMultiQR(cv, pkts, player.ecc, 2); }
+      catch(e){ try{ drawFrameQR(cv, pkts[0]||player.metaFrame, 'L'); }catch(e2){} }
       kindLabel='　[2×2 並行]';
     } else {
       var pkt=hasFountain? packetAtGlobalIndex(player.i) : player.seq[player.i % player.seq.length];
       if(!pkt) return;
-      drawFrameQR(cv, pkt, player.ecc);
+      try{ drawFrameQR(cv, pkt, player.ecc); }
+      catch(e){ /* canvas already shows error */ }
       var kind=parseFrame(pkt);
       kindLabel=kind?(kind.type==='meta'?'　[META]':(kind.type==='repair'?'　[REPAIR]':'　[DATA]')):'';
     }
@@ -1201,6 +1467,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(reset){
       player.seq=[]; player.i=0; player.dataFrames=0; player.symbols=null;
       player.metaFrame=null; player.dataFramesBuilt=null; player.meta=null; player.layout=1;
+      clearPendingStrip();
       updatePlayerButtons();
     } else {
       renderPlayerFrame();
@@ -1212,34 +1479,43 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function applyPlaybackSettings(dataFrameCount, byteLen){
     var hint='', chunk=currentChunk(), n=dataFrameCount||0;
     var eccEl=$('eccSel');
+    var ecc=(eccEl && eccEl.value)||'M';
+    var safeMax=maxSafeChunkForEcc(ecc);
+    if(chunk>safeMax){
+      chunk=safeMax;
+      if($('chunkSel')) $('chunkSel').value=String(safeMax);
+      hint='已將每幀資料量限制為 '+safeMax+'（ECC '+ecc+' 相機可掃上限），避免 QR 過密無法輪播／掃描。';
+    }
     if(byteLen){
       n=estimateDataFrames(byteLen, chunk);
-      // Phase 0: auto bump chunk + prefer L for large
-      if(n>40 && chunk<1200){ chunk=1200; if($('chunkSel')) $('chunkSel').value='1200'; n=estimateDataFrames(byteLen, chunk); }
-      if(n>80 && chunk<1800){ chunk=1800; if($('chunkSel')) $('chunkSel').value='1800'; n=estimateDataFrames(byteLen, chunk); }
-      if(n>120 && chunk<2200){ chunk=2200; if($('chunkSel')) $('chunkSel').value='2200'; n=estimateDataFrames(byteLen, chunk); }
-      if(n>60 && eccEl && eccEl.value!=='L'){ eccEl.value='L'; }
+      // bump within SAFE cap only
+      if(n>40 && chunk<Math.min(800, safeMax)){ chunk=Math.min(800, safeMax); if($('chunkSel')) $('chunkSel').value=String(chunk); n=estimateDataFrames(byteLen, chunk); }
+      if(n>80 && chunk<Math.min(1200, safeMax)){ chunk=Math.min(1200, safeMax); if($('chunkSel')) $('chunkSel').value=String(chunk); n=estimateDataFrames(byteLen, chunk); }
+      if(n>60 && eccEl && eccEl.value!=='L'){
+        eccEl.value='L';
+        safeMax=maxSafeChunkForEcc('L');
+        if(chunk>safeMax){ chunk=safeMax; if($('chunkSel')) $('chunkSel').value=String(chunk); n=estimateDataFrames(byteLen, chunk); }
+      }
     }
-    // NEVER force manual for large files — loop is the main path
     if(n>200){
       if($('fpsSel')) $('fpsSel').value='500';
       if($('playModeSel')) $('playModeSel').value='loop';
       if($('layoutSel')) $('layoutSel').value='4';
-      hint='紅燈：約 '+n+' 源符號。已啟用壓縮／大 chunk／ECC L／0.5s／2×2。噴泉碼可丟幀；持續對準即可。';
+      hint=(hint?hint+' ':'')+'紅燈：約 '+n+' 源符號。已啟用壓縮／安全 chunk／ECC L／0.5s／2×2。噴泉碼可丟幀。';
     } else if(n>80){
       if($('fpsSel')) $('fpsSel').value='500';
       if($('playModeSel')) $('playModeSel').value='loop';
-      hint='黃燈：約 '+n+' 源符號。已建議 0.5 秒/幀 + 循環輪播 + 噴泉修復幀。';
+      hint=(hint?hint+' ':'')+'黃燈：約 '+n+' 源符號。已建議 0.5 秒/幀 + 循環輪播 + 噴泉修復幀。';
     } else if(n>40){
       if($('fpsSel')) $('fpsSel').value='1000';
       if($('playModeSel')) $('playModeSel').value='loop';
-      hint='幀數較多（'+n+'）。先掃 META，再開始輪播；噴泉修復可補缺。';
+      hint=(hint?hint+' ':'')+'幀數較多（'+n+'）。先掃 META，再開始輪播；噴泉修復可補缺。';
     } else if(n>20){
       if($('fpsSel')) $('fpsSel').value='1000';
-      hint='已建議 1 秒/幀；接收端掃到 META 後持續對準即可。';
+      hint=(hint?hint+' ':'')+'已建議 1 秒/幀；接收端掃到 META 後持續對準即可。';
     }
     if(n>500){
-      hint+=' 警告：>500 源符號傳輸時間很長，建議先確認壓縮後大小。';
+      hint+=' 警告：>500 源符號傳輸時間很長，建議先縮小照片或改用較低解析度。';
     }
     return {chunk:chunk, dataFrames:n, hint:hint};
   }
@@ -1275,13 +1551,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     var pad=String(player.i+1).padStart(4,'0');
     downloadCanvasPng($('sendCanvas'), 'qrcode-frame-'+pad+'.png');
   }
-  function downloadAllFramesZip(){
-    if(!hasPlayerSeq()){ alert('尚無多幀 QR 可下載'); return; }
-    // export META + all source + some repairs (not infinite)
-    var btn=$('btnDownloadAllFrames');
-    var oldText=btn?btn.textContent:'';
-    if(btn){ btn.disabled=true; btn.textContent='打包中…'; }
-    pausePlayer();
+  function collectExportFrames(){
     var frames=[];
     if(player.metaFrame) frames.push(player.metaFrame);
     if(player.dataFramesBuilt) frames=frames.concat(player.dataFramesBuilt);
@@ -1290,38 +1560,310 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var K=player.symbols.length;
       for(var r=0;r<Math.max(8, Math.ceil(K*0.35));r++) frames.push(buildRepairFrame(player.symbols, K+r));
     }
+    return frames;
+  }
+  function frameExportName(bytes, idx){
+    var pad=String(idx+1).padStart(4,'0');
+    var kind=parseFrame(bytes);
+    var tag=kind?(kind.type==='meta'?'-META':(kind.type==='repair'?'-REP':'-DATA')):'';
+    return 'frame-'+pad+tag+'.png';
+  }
+  function canvasToPngBytes(canvas, done){
+    if(canvas.toBlob){
+      canvas.toBlob(function(blob){
+        if(!blob){ done(null); return; }
+        var fr=new FileReader();
+        fr.onload=function(){ done(new Uint8Array(fr.result)); };
+        fr.onerror=function(){ done(null); };
+        fr.readAsArrayBuffer(blob);
+      }, 'image/png');
+      return;
+    }
+    try{ done(dataUrlToBytes(canvas.toDataURL('image/png'))); }
+    catch(e){ done(null); }
+  }
+  function renderExportEntries(frames, onProgress, done){
     var canv=document.createElement('canvas'), entries=[], idx=0, ecc=player.ecc;
     (function next(){
-      if(idx>=frames.length){
-        try{
-          var zip=makeStoredZip(entries);
-          downloadBytes(zip, 'qrcode-frames-'+frames.length+'.zip');
-          if($('playInfo')) $('playInfo').textContent='已下載 '+frames.length+' 張 QR 截圖 ZIP';
-        }catch(e){ alert('打包失敗：'+e.message); }
-        if(btn){ btn.disabled=false; btn.textContent=oldText||'下載全部 ZIP'; }
-        renderPlayerFrame();
+      if(idx>=frames.length){ done(null, entries); return; }
+      if(onProgress) onProgress(idx, frames.length);
+      try{ drawFrameQR(canv, frames[idx], ecc); }
+      catch(e){ idx++; setTimeout(next,0); return; }
+      var name=frameExportName(frames[idx], idx);
+      canvasToPngBytes(canv, function(data){
+        if(data) entries.push({name:name, data:data});
+        idx++; setTimeout(next,0);
+      });
+    })();
+  }
+  function setExportBusy(busy, labels){
+    labels=labels||{};
+    [
+      ['btnDownloadAllFrames','下載全部 ZIP','zip'],
+      ['btnDownloadAllFolder','下載全部到資料夾','folder'],
+      ['btnDownloadAllStrip','合成垂直長圖','strip']
+    ].forEach(function(row){
+      var el=$(row[0]); if(!el) return;
+      if(!el._idleLabel) el._idleLabel=el.textContent||row[1];
+      el.disabled=busy || !hasPlayerSeq();
+      if(busy && labels[row[2]]) el.textContent=labels[row[2]];
+      else if(!busy) el.textContent=el._idleLabel;
+    });
+  }
+  function renderOneStripChunk(frames, onProgress, done){
+    var ecc=player.ecc, n=frames.length;
+    var cellW=STRIP_WIDTH, cellH=STRIP_CELL;
+    var totalH=STRIP_PAD*2 + n*cellH + Math.max(0,n-1)*STRIP_GAP;
+    if(totalH>STRIP_MAX_HEIGHT){
+      done(new Error('單段幀數過多（'+n+'），請改下載 ZIP。'));
+      return;
+    }
+    var strip=document.createElement('canvas');
+    strip.width=cellW; strip.height=totalH;
+    var sctx=strip.getContext('2d');
+    sctx.fillStyle='#fff'; sctx.fillRect(0,0,cellW,totalH);
+    var tmp=document.createElement('canvas'), idx=0;
+    (function next(){
+      if(idx>=n){
+        canvasToPngBytes(strip, function(data){
+          done(null, data, {width:cellW, height:totalH, frames:n});
+        });
         return;
       }
-      if($('playInfo')) $('playInfo').textContent='打包 ZIP… '+idx+' / '+frames.length;
-      drawFrameQR(canv, frames[idx], ecc);
-      var pad=String(idx+1).padStart(4,'0');
-      var kind=parseFrame(frames[idx]);
-      var tag=kind?(kind.type==='meta'?'-META':(kind.type==='repair'?'-REP':'-DATA')):'';
-      if(canv.toBlob){
-        canv.toBlob(function(blob){
-          if(!blob){ idx++; setTimeout(next,0); return; }
-          var fr=new FileReader();
-          fr.onload=function(){
-            entries.push({name:'frame-'+pad+tag+'.png', data:new Uint8Array(fr.result)});
-            idx++; setTimeout(next,0);
-          };
-          fr.readAsArrayBuffer(blob);
-        }, 'image/png');
-      } else {
-        entries.push({name:'frame-'+pad+tag+'.png', data:dataUrlToBytes(canv.toDataURL('image/png'))});
-        idx++; setTimeout(next,0);
-      }
+      if(onProgress) onProgress(idx, n);
+      try{ drawFrameQR(tmp, frames[idx], ecc); }
+      catch(e){ idx++; setTimeout(next,0); return; }
+      var y=STRIP_PAD + idx*(cellH+STRIP_GAP);
+      sctx.drawImage(tmp, STRIP_PAD, y, STRIP_CELL, STRIP_CELL);
+      idx++; setTimeout(next,0);
     })();
+  }
+  function chunkFrames(frames, size){
+    var out=[], i=0, n=frames.length, step=Math.max(1, size||STRIP_FRAMES_PER_PART);
+    while(i<n){ out.push(frames.slice(i, i+step)); i+=step; }
+    return out;
+  }
+  function renderExportStripParts(frames, onProgress, done){
+    var chunks=chunkFrames(frames, STRIP_FRAMES_PER_PART);
+    var parts=[], partIdx=0, doneFrames=0, totalFrames=frames.length;
+    (function nextPart(){
+      if(partIdx>=chunks.length){ done(null, parts); return; }
+      var chunk=chunks[partIdx];
+      var pad=String(partIdx+1).padStart(2,'0');
+      var totalPad=String(chunks.length).padStart(2,'0');
+      renderOneStripChunk(chunk, function(localI){
+        if(onProgress) onProgress(doneFrames+localI, totalFrames, partIdx+1, chunks.length);
+      }, function(err, data, meta){
+        if(err){ done(err); return; }
+        if(!data){ done(new Error('長圖段 '+(partIdx+1)+' 產生失敗')); return; }
+        parts.push({
+          name:'qrcode-strip-'+pad+'-of-'+totalPad+'-f'+chunk.length+'.png',
+          data:data,
+          frames:chunk.length,
+          width:meta.width,
+          height:meta.height,
+          part:partIdx+1,
+          parts:chunks.length
+        });
+        doneFrames+=chunk.length;
+        partIdx++;
+        setTimeout(nextPart,0);
+      });
+    })();
+  }
+  var pendingStrip={parts:[], totalFrames:0};
+  function clearPendingStrip(){
+    (pendingStrip.parts||[]).forEach(function(p){
+      if(p.url){ try{URL.revokeObjectURL(p.url);}catch(e){} }
+    });
+    pendingStrip.parts=[]; pendingStrip.totalFrames=0;
+    hideStripResult();
+  }
+  function hideStripResult(){
+    var panel=$('stripResultPanel'); if(panel) panel.style.display='none';
+    var list=$('stripPreviewList'); if(list) list.innerHTML='';
+  }
+  function showStripResultPanel(){
+    var panel=$('stripResultPanel'); if(!panel || !pendingStrip.parts.length) return;
+    panel.style.display='block';
+    var parts=pendingStrip.parts;
+    var info=$('stripResultInfo'), kind=$('stripResultKind'), title=$('stripResultTitle');
+    if(title) title.textContent=parts.length>1?'多段長圖已就緒':'垂直長圖已就緒';
+    if(kind) kind.textContent=parts.length+' 段 · '+pendingStrip.totalFrames+' 幀';
+    if(info){
+      info.innerHTML='✅ 合成完成<br>段數：<b>'+parts.length+
+        '</b>　總幀：<b>'+pendingStrip.totalFrames+
+        '</b>　每段約 <b>'+STRIP_FRAMES_PER_PART+'</b> 幀'+
+        '<br>建議：下載 ZIP 後，接收端依序上傳各段長圖（可分批）。';
+    }
+    var list=$('stripPreviewList');
+    if(list){
+      list.innerHTML='';
+      parts.forEach(function(p){
+        if(!p.url) p.url=URL.createObjectURL(p.blob);
+        var card=document.createElement('div');
+        card.className='strip-preview-card';
+        var img=document.createElement('img');
+        img.src=p.url; img.alt='長圖段 '+p.part;
+        var cap=document.createElement('div');
+        cap.className='cap';
+        cap.textContent=p.part+'/'+p.parts+' · '+p.frames+'幀';
+        card.appendChild(img); card.appendChild(cap);
+        list.appendChild(card);
+      });
+    }
+    var zipBtn=$('btnDownloadStripReady');
+    if(zipBtn) zipBtn.textContent=parts.length>1?'下載全部 ZIP':'下載長圖 PNG';
+    try{ panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+  }
+  function downloadPendingStrip(){
+    var parts=pendingStrip.parts||[];
+    if(!parts.length){ alert('尚無長圖可下載，請先合成'); return; }
+    if(parts.length===1){
+      downloadBytes(parts[0].blob, parts[0].name||'qrcode-strip.png');
+      if($('playInfo')) $('playInfo').textContent='已下載長圖（'+parts[0].frames+' 幀）';
+      return;
+    }
+    try{
+      var entries=parts.map(function(p){
+        return {name:p.name, data:p.data};
+      });
+      var zip=makeStoredZip(entries);
+      downloadBytes(zip, 'qrcode-strips-'+parts.length+'-parts.zip');
+      if($('playInfo')) $('playInfo').textContent='已下載 '+parts.length+' 段長圖 ZIP';
+    }catch(e){ alert('打包失敗：'+(e&&e.message?e.message:e)); }
+  }
+  function downloadPendingStripPngs(){
+    var parts=pendingStrip.parts||[];
+    if(!parts.length){ alert('尚無長圖可下載，請先合成'); return; }
+    var i=0;
+    (function next(){
+      if(i>=parts.length){
+        if($('playInfo')) $('playInfo').textContent='已逐張下載 '+parts.length+' 段長圖';
+        return;
+      }
+      downloadBytes(parts[i].blob, parts[i].name||('qrcode-strip-'+(i+1)+'.png'));
+      i++;
+      setTimeout(next, 350);
+    })();
+  }
+  function downloadAllFramesStrip(){
+    if(!hasPlayerSeq()){ alert('尚無多幀 QR 可下載'); return; }
+    setExportBusy(true, {strip:'合成中…'});
+    pausePlayer();
+    var frames=collectExportFrames();
+    renderExportStripParts(frames, function(i, total, part, partsN){
+      if($('playInfo')) $('playInfo').textContent='合成長圖… 段 '+part+'/'+partsN+' · 幀 '+i+' / '+total;
+      var s=$('btnDownloadAllStrip');
+      if(s) s.textContent='合成 '+part+'/'+partsN;
+    }, function(err, parts){
+      try{
+        if(err) throw err;
+        if(!parts || !parts.length) throw new Error('長圖產生失敗');
+        clearPendingStrip();
+        pendingStrip.parts=parts.map(function(p){
+          var blob=new Blob([p.data],{type:'image/png'});
+          return {
+            name:p.name,
+            data:p.data,
+            blob:blob,
+            url:URL.createObjectURL(blob),
+            frames:p.frames,
+            width:p.width,
+            height:p.height,
+            part:p.part,
+            parts:p.parts
+          };
+        });
+        pendingStrip.totalFrames=frames.length;
+        showStripResultPanel();
+        var n=pendingStrip.parts.length;
+        if($('playInfo')) $('playInfo').textContent='已合成 '+n+' 段長圖（'+frames.length+' 幀）— 按下方下載';
+        if($('sendNote')){
+          var extra='✅ 已切成 <b>'+n+'</b> 段垂直長圖（每段約 '+STRIP_FRAMES_PER_PART+
+            ' 幀）。請下載後在接收端依序上傳，較好掃。';
+          $('sendNote').innerHTML=(($('sendNote').innerHTML||'')+'<br>'+extra);
+        }
+      }catch(e){ alert('長圖失敗：'+(e&&e.message?e.message:e)); }
+      setExportBusy(false);
+      renderPlayerFrame();
+    });
+  }
+  function downloadAllFramesZip(){
+    if(!hasPlayerSeq()){ alert('尚無多幀 QR 可下載'); return; }
+    setExportBusy(true, {zip:'打包中…'});
+    pausePlayer();
+    var frames=collectExportFrames();
+    renderExportEntries(frames, function(i, total){
+      if($('playInfo')) $('playInfo').textContent='打包 ZIP… '+i+' / '+total;
+    }, function(err, entries){
+      try{
+        if(err) throw err;
+        var zip=makeStoredZip(entries);
+        downloadBytes(zip, 'qrcode-frames-'+entries.length+'.zip');
+        if($('playInfo')) $('playInfo').textContent='已下載 '+entries.length+' 張 QR 截圖 ZIP';
+      }catch(e){ alert('打包失敗：'+(e && e.message?e.message:e)); }
+      setExportBusy(false);
+      renderPlayerFrame();
+    });
+  }
+  function writeEntriesToDirectory(dirHandle, entries, onProgress){
+    var i=0;
+    return (function next(){
+      if(i>=entries.length) return Promise.resolve(entries.length);
+      if(onProgress) onProgress(i, entries.length);
+      var ent=entries[i++];
+      return dirHandle.getFileHandle(ent.name, {create:true}).then(function(fh){
+        return fh.createWritable().then(function(w){
+          return w.write(ent.data).then(function(){ return w.close(); });
+        });
+      }).then(next);
+    })();
+  }
+  function downloadAllFramesFolder(){
+    if(!hasPlayerSeq()){ alert('尚無多幀 QR 可下載'); return; }
+    if(!window.showDirectoryPicker){
+      if(confirm('此瀏覽器不支援「選資料夾寫入」。改下載 ZIP？')) downloadAllFramesZip();
+      return;
+    }
+    setExportBusy(true, {folder:'準備中…'});
+    pausePlayer();
+    window.showDirectoryPicker({mode:'readwrite'}).then(function(root){
+      var frames=collectExportFrames();
+      var folderName='qrcode-frames-'+frames.length;
+      return root.getDirectoryHandle(folderName, {create:true}).then(function(dir){
+        setExportBusy(true, {folder:'寫入中…'});
+        return new Promise(function(resolve, reject){
+          renderExportEntries(frames, function(i, total){
+            if($('playInfo')) $('playInfo').textContent='寫入資料夾… '+i+' / '+total;
+            var f=$('btnDownloadAllFolder');
+            if(f) f.textContent='寫入 '+i+'/'+total;
+          }, function(err, entries){
+            if(err){ reject(err); return; }
+            writeEntriesToDirectory(dir, entries, function(i, total){
+              if($('playInfo')) $('playInfo').textContent='寫入資料夾… '+i+' / '+total;
+            }).then(function(n){ resolve({n:n, folderName:folderName}); }).catch(reject);
+          });
+        });
+      });
+    }).then(function(res){
+      setExportBusy(false);
+      updatePlayerButtons();
+      renderPlayerFrame();
+      if($('playInfo')) $('playInfo').textContent='已寫入資料夾「'+res.folderName+'」共 '+res.n+' 張 PNG';
+      if($('sendNote')){
+        var extra='✅ 已匯出資料夾 <b>'+escapeHtml(res.folderName)+'</b>（'+res.n+' 張 PNG）。可用檔案總管開啟後逐張掃。';
+        $('sendNote').innerHTML=(($('sendNote').innerHTML||'')+'<br>'+extra);
+      }
+      return res;
+    }).catch(function(err){
+      if(err && err.name==='AbortError') return;
+      console.warn(err);
+      if(confirm('寫入資料夾失敗：'+(err && err.message?err.message:err)+'\n改下載 ZIP？')) downloadAllFramesZip();
+    }).then(function(){
+      setExportBusy(false);
+      updatePlayerButtons();
+    });
   }
   function onPlaybackSettingChange(){
     if(!hasPlayerSeq()) return;
@@ -1346,29 +1888,58 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var wire=comp.bytes;
       var pb2=applyPlaybackSettings(0, wire.length);
       var chunk=pb2.chunk;
-      var fr=buildFrames(wire, filename, chunk, {z:comp.z, rawSize:payloadBytes.length});
+      var ecc=currentEcc();
+      var fr=null, tries=0;
+      while(tries<6){
+        fr=buildFrames(wire, filename, chunk, {z:comp.z, rawSize:payloadBytes.length});
+        var probe=fr.dataFrames[0]||fr.metaFrame;
+        if(canEncodeBytes(probe, ecc) && canEncodeBytes(fr.metaFrame, ecc)) break;
+        // too dense — shrink chunk
+        chunk=Math.max(200, Math.floor(chunk*0.7));
+        if($('chunkSel')){
+          var opts=$('chunkSel').options, best=opts[0].value;
+          for(var oi=0;oi<opts.length;oi++){
+            if(parseInt(opts[oi].value,10)<=chunk) best=opts[oi].value;
+          }
+          $('chunkSel').value=best;
+          chunk=parseInt(best,10);
+        }
+        if(ecc!=='L'){ ecc='L'; if($('eccSel')) $('eccSel').value='L'; }
+        tries++;
+      }
+      if(tries>=6 && !canEncodeBytes(fr.dataFrames[0]||fr.metaFrame, ecc)){
+        alert('內容過大，即使縮小每幀仍無法編碼 QR。請壓縮照片或改傳較小檔。');
+        return;
+      }
       var repairN=Math.max(8, Math.ceil(fr.dataFrames.length*0.4));
-      var seq=buildSeqWithMeta(fr.metaFrame, fr.dataFrames, fr.symbols, repairN);
       var layout=currentLayout();
       if(fr.dataFrames.length>200 && $('layoutSel')){ $('layoutSel').value='4'; layout=4; }
-      preparePlayer(seq, currentEcc(), {
+      if($('playModeSel')) $('playModeSel').value='loop';
+      // Fountain packets are generated lazily by packetAtGlobalIndex().
+      // Prebuilding every repair frame blocks the UI and duplicates large files in memory.
+      preparePlayer([fr.metaFrame], ecc, {
         dataFrames:fr.dataFrames.length,
         symbols:fr.symbols,
         metaFrame:fr.metaFrame,
         dataFramesBuilt:fr.dataFrames,
         meta:fr.meta,
-        layout:layout
+        layout:layout,
+        mode:'loop'
       });
-      var ratio=comp.z?('壓縮 '+(100-Math.round(wire.length/payloadBytes.length*100))+'% → '+formatBytes(wire.length)):'未壓縮（已夠小或不可壓）';
+      var ratio=comp.z?('壓縮 '+(100-Math.round(wire.length/payloadBytes.length*100))+'% → '+formatBytes(wire.length)):'未壓縮（照片等通常難壓）';
       var etaSec=Math.ceil((fr.dataFrames.length*(layout>=4?0.35:1.1))*(currentIntervalMs()/1000));
       var note='檔名：<b>'+escapeHtml(filename)+'</b>　原始：<b>'+formatBytes(payloadBytes.length)+
-        '</b>　'+ratio+'　源符號：<b>'+fr.dataFrames.length+'</b>　噴泉修復：<b>'+repairN+
+        '</b>　'+ratio+'　源符號：<b>'+fr.dataFrames.length+'</b>　每幀：<b>'+chunk+
+        '</b>　ECC：<b>'+ecc+'</b>　噴泉修復：<b>'+repairN+
         '</b>　佈局：<b>'+(layout>=4?'2×2':'單張')+'</b>　預估對準約 <b>'+etaSec+'</b> 秒。'+
-        '<br>已停駐 <b>META</b>。接收端掃到 META 後持續對準；噴泉碼允許丟幀。'+
+        '<br>已停駐 <b>META</b>，並自動開始輪播。接收端掃到 META 後持續對準。'+
+        (tries?('<br><span style="color:var(--warn)">已自動縮小每幀至 '+chunk+'，避免 QR 過密無法顯示。</span>'):'')+
         (pb2.hint?('<br><span style="color:var(--warn)">'+pb2.hint+'</span>'):'')+
         (extraNote?('<br>'+extraNote):'');
       if($('sendNote')) $('sendNote').innerHTML=note;
       if($('sendNote-text')) $('sendNote-text').innerHTML=note;
+      // auto-start carousel so photo/file transfer actually plays
+      startCarousel();
     }).catch(function(err){
       alert('編碼失敗：'+(err && err.message?err.message:err));
     });
@@ -1380,13 +1951,17 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(!text){ alert('請先輸入文字或網址'); return; }
     stopPlayer(true);
     var fits=true;
-    try{ var t=qrcode(0,currentEcc()); t.addData(text); t.make(); }catch(e){ fits=false; }
+    try{
+      var t=qrcode(0,currentEcc());
+      t.addData(textToQrBytePayload(text),'Byte');
+      t.make();
+    }catch(e){ fits=false; }
     if(fits){
       drawRawTextQR($('sendCanvas'), text, currentEcc());
       $('playInfo').textContent='單張標準 QR（任何掃碼 App 可讀）';
       updatePlayerButtons();
-      if($('sendNote')) $('sendNote').textContent='✅ 單張標準 QR。';
-      if($('sendNote-text')) $('sendNote-text').textContent='✅ 單張標準 QR。';
+      if($('sendNote')) $('sendNote').textContent='✅ 單張標準 QR（UTF-8）。';
+      if($('sendNote-text')) $('sendNote-text').textContent='✅ 單張標準 QR（UTF-8）。';
       return;
     }
     var bytes=strToUtf8(text);
@@ -1424,7 +1999,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   // ---- RECEIVE ----
   var rx={
     asm:null, stream:null, raf:null, running:false, asmPanelScrolled:false, sawDataBeforeMeta:false,
-    decodeCount:0, uniqueCount:0, lastFrameLabel:'尚未解到', seenKeys:{}
+    decodeCount:0, uniqueCount:0, lastFrameLabel:'尚未解到', seenKeys:{}, savePrompted:false, finishing:false
   };
   var lastScanText='', lastScanTextAt=0;
   function escapeHtml(s){
@@ -1456,13 +2031,28 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       if(seen[key]) return;
       seen[key]=1; codes.push(code);
     }
-    add(decodeQrFromImageData(imgData, width, height));
-    // 2x2 quadrants for parallel layout
     var src=document.createElement('canvas');
     src.width=width; src.height=height;
     var sctx=src.getContext('2d');
     var clamped=(imgData instanceof Uint8ClampedArray)? imgData : new Uint8ClampedArray(imgData);
     sctx.putImageData(new ImageData(clamped, width, height),0,0);
+    // vertical strip: stacked square QRs (export long image)
+    if(height>width*1.15){
+      var padX=Math.max(8, Math.round(width*STRIP_PAD/STRIP_WIDTH));
+      var cell=width-2*padX;
+      var gap=Math.max(8, Math.round(width*STRIP_GAP/STRIP_WIDTH));
+      var step=cell+gap;
+      for(var sy=padX; sy+cell<=height-padX+4; sy+=step){
+        var sq=document.createElement('canvas');
+        sq.width=cell; sq.height=cell;
+        sq.getContext('2d').drawImage(src, padX, sy, cell, cell, 0, 0, cell, cell);
+        var sd=sq.getContext('2d').getImageData(0,0,cell,cell);
+        add(decodeQrFromImageData(sd.data, cell, cell));
+      }
+      if(codes.length>1) return codes;
+    }
+    add(decodeQrFromImageData(imgData, width, height));
+    // 2x2 quadrants for parallel layout
     var cols=2, rows=2;
     for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
       var rw=Math.floor(width/cols), rh=Math.floor(height/rows);
@@ -1530,6 +2120,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       }
       if(missEl) missEl.textContent='';
       if(more) more.style.display='none';
+      syncAssemblyDownloadBtn();
       return;
     }
     var pct=Math.floor(a.got/a.meta.t*100);
@@ -1558,6 +2149,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         (a.done?'檔案已收齊':(rx.running?'持續對準螢幕…':'可繼續掃描或上傳圖片補幀'));
     }
     if(more) more.style.display=(!a.done && miss.length)?'':'none';
+    syncAssemblyDownloadBtn();
     if(!rx.asmPanelScrolled && a.meta){
       rx.asmPanelScrolled=true;
       var dash=$('scanDash');
@@ -1573,6 +2165,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     rx.uniqueCount=0;
     rx.lastFrameLabel='尚未解到';
     rx.seenKeys={};
+    rx.savePrompted=false;
+    rx.finishing=false;
     hideFrameAssemblyPanel();
     hideTextResult();
     if($('rxProgress')) $('rxProgress').textContent='待機：按「開始掃描」後會連續掃碼並顯示數量。';
@@ -1586,6 +2180,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     var bytes=codeToBytes(code);
     if(bytes && bytes.length){
       var f=parseFrame(bytes);
+      // META must look like our transfer header; otherwise treat as plain text.
+      if(f && f.type==='meta'){
+        var m=f.meta||{};
+        if(m.n==null || m.s==null || m.t==null || m.c==null) f=null;
+      }
       if(f){
         noteDecodedFrame(f, bytes);
         if(f.type==='meta'){
@@ -1607,7 +2206,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         return 'frame';
       }
     }
-    if(code.data){
+    var plain=codeToText(code);
+    if(plain){
       if(rx.asm && rx.asm.meta && !rx.asm.done) return null;
       rx.decodeCount=(rx.decodeCount||0)+1;
       rx.lastFrameLabel='一般文字';
@@ -1628,6 +2228,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       rx.uniqueCount=0;
       rx.lastFrameLabel='尚未解到';
       rx.seenKeys={};
+      rx.savePrompted=false;
+      rx.finishing=false;
       lastScanText=''; lastScanTextAt=0;
       hideTextResult();
       hideFrameAssemblyPanel();
@@ -1652,7 +2254,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
           var codes=decodeAllQrRegions(img.data, img.width, img.height);
           for(var i=0;i<codes.length;i++){
             var kind=ingestDecodedCode(codes[i]);
-            if(kind==='text') showScanTextResult(codes[i].data);
+            if(kind==='text') showScanTextResult(codeToText(codes[i]));
           }
         }
         rx.raf=requestAnimationFrame(loop);
@@ -1697,29 +2299,150 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       $('scanState').textContent='META 已鎖定 — 自動組裝 '+pct+'%（'+a.got+'/'+a.meta.t+'）。持續對準，收齊後存檔。';
     }
   }
+  function tryFinalizeAssembly(){
+    var a=rx.asm;
+    if(!a || !a.meta) return false;
+    if(!a.done){
+      var miss=a.missing? a.missing():[];
+      if(!miss.length) a.finish();
+    }
+    if(a.done && a.result){
+      finishRx();
+      return true;
+    }
+    return false;
+  }
   function finishRx(){
     var wasScanning=rx.running;
     if(wasScanning) stopScan();
-    var r=rx.asm.result;
-    if(!r) return;
+    var a=rx.asm;
+    if(!a) return;
+    if(!a.result && a.meta){
+      var miss=a.missing? a.missing():[];
+      if(!miss.length) a.finish();
+    }
+    var r=a.result;
+    if(!r){
+      rx.finishing=false;
+      var miss2=a.missing? a.missing():[];
+      var err='組裝未完成，無法下載。進度 '+(a.got||0)+' / '+(a.meta?a.meta.t:'?')+
+        (miss2.length?('，缺 '+miss2.length+' 幀'):'');
+      if($('imgResult')) $('imgResult').textContent='⚠️ '+err;
+      if($('rxProgress')) $('rxProgress').textContent=err;
+      showImgOutcome('incomplete', '尚未組齊 — 不能下載',
+        escapeHtml(err)+'<br>請繼續上傳缺幀截圖／長圖，或改用相機對準發送端。');
+      syncAssemblyDownloadBtn();
+      return;
+    }
+    // Idempotent: ingest + decodeImages both call finishRx; don't re-open modal / wipe UI.
+    if(rx.savePrompted && pendingSave.blob){
+      syncAssemblyDownloadBtn();
+      showImgOutcome('ready', '檔案已組齊 — 可下載',
+        '檔名：<b>'+escapeHtml(pendingSave.name||r.name||'download.bin')+
+        '</b>　大小：<b>'+formatBytes(pendingSave.blob.size)+'</b>');
+      return;
+    }
+    if(rx.savePrompted && rx.finishing){
+      syncAssemblyDownloadBtn();
+      return;
+    }
+    rx.savePrompted=true;
+    rx.finishing=!!r.z;
+    syncAssemblyDownloadBtn();
+    if(rx.finishing){
+      showImgOutcome('wait', '組裝完成 — 解壓中…',
+        '檔名：<b>'+escapeHtml(r.name||'')+'</b>　正在解壓，完成後即可下載。');
+    }
     function afterBytes(bytes, ok){
-      var msg=ok?'✅ 檔案已收齊，請選擇儲存位置':'⚠️ 已收齊但 CRC 不符，仍請確認後儲存';
+      rx.finishing=false;
+      var msg=ok?'✅ 檔案已收齊，可下載':'⚠️ 已收齊但 CRC 不符，仍可下載確認';
       $('scanState').innerHTML=msg;
       if($('imgResult')) $('imgResult').textContent=msg;
       if($('rxProgress')) $('rxProgress').textContent=msg;
       updateScanDash();
       promptSaveFile(bytes, r.name, ok);
+      // text.txt / plain-text / json payloads also show copy panel
+      if(isTextLikeFilename(r.name)){
+        try{
+          var txt=utf8ToStr(bytes);
+          if(txt){
+            showTextResult(txt, {
+              title:'文字已收齊 — 可複製',
+              hint:'也可下載成檔案；下方文字框可全選複製'
+            });
+          }
+        }catch(e){}
+      }
     }
     if(r.z){
       decompressDeflate(r.bytes).then(function(raw){
         afterBytes(raw, true);
       }).catch(function(err){
-        alert('解壓失敗：'+(err && err.message?err.message:err));
+        alert('解壓失敗：'+(err && err.message?err.message:err)+' — 仍提供壓縮原始位元組下載');
         afterBytes(r.bytes, false);
       });
     } else {
       afterBytes(r.bytes, r.ok);
     }
+  }
+  function reportImageDecodeOutcome(stats){
+    stats=stats||{};
+    var a=rx.asm;
+    var msg='已處理 '+(stats.images||0)+' 張：解出 '+(stats.decoded||0)+' 個 QR，其中 '+(stats.frames||0)+' 張為傳輸幀。';
+    if(stats.append) msg='（追加模式）'+msg;
+
+    if(pendingSave.blob){
+      msg+=' ✅ 已可下載「'+pendingSave.name+'」。';
+      setImgProgress(stats.images||0, stats.images||0, '組裝完成 — 可下載');
+      showImgOutcome('ready', '檔案已組齊 — 可下載',
+        '檔名：<b>'+escapeHtml(pendingSave.name)+'</b>　大小：<b>'+formatBytes(pendingSave.blob.size)+'</b>');
+      if($('imgResult')) $('imgResult').textContent=msg;
+      syncAssemblyDownloadBtn();
+      return;
+    }
+
+    if(tryFinalizeAssembly() && pendingSave.blob){
+      // finishRx may still be decompressing
+      return;
+    }
+    if(rx.finishing){
+      msg+=' 組裝完成，解壓中…';
+      setImgProgress(stats.images||0, stats.images||0, '解壓中…');
+      if($('imgResult')) $('imgResult').textContent=msg;
+      syncAssemblyDownloadBtn();
+      return;
+    }
+
+    if(a && a.meta && !a.done){
+      var miss=a.missing? a.missing():[];
+      msg+=' ⚠️ 組裝未完成 '+a.got+' / '+a.meta.t+'，尚不可下載。';
+      if(miss.length) msg+=' 缺幀：'+miss.slice(0,24).join(',')+(miss.length>24?'…':'');
+      setImgProgress(stats.images||0, stats.images||0,
+        '圖片分析完・組裝 '+a.got+'/'+a.meta.t+'（未可下載）');
+      showImgOutcome('incomplete', '尚未組齊 — 下載不可用',
+        '檔名：<b>'+escapeHtml(a.meta.n||'')+'</b>　進度：<b>'+a.got+' / '+a.meta.t+'</b>'+
+        (miss.length?('　缺 <b>'+miss.length+'</b> 幀'):'')+
+        '<br>「分析完成」只代表圖片掃完，不代表檔案組齊。請按「繼續上傳缺幀」補圖。');
+      showFrameAssemblyPanel();
+    } else if(a && !a.meta && (stats.frames||0)>0){
+      msg+=' ⚠️ 已掃到傳輸幀但缺少 META（檔案資訊），無法組裝／下載。請上傳含 META 的截圖。';
+      setImgProgress(stats.images||0, stats.images||0, '缺 META — 不可下載');
+      showImgOutcome('wait', '缺少 META — 不可下載',
+        '請先上傳／掃描含檔名與大小的 <b>META</b> 幀，再補 DATA／REPAIR。');
+    } else if(!(stats.frames||0) && !(stats.texts||0)){
+      msg+=' 未辨識到 QR。';
+      setImgProgress(stats.images||0, stats.images||0, '未辨識到 QR');
+      showImgOutcome('error', '未辨識到 QR',
+        '請確認圖片清楚、對比足夠；長圖請用本工具匯出的垂直長圖。');
+    } else if((stats.texts||0)>0 && !(stats.frames||0)){
+      msg+=' 為一般文字 QR（非檔案傳輸），請用上方文字結果複製。';
+      setImgProgress(stats.images||0, stats.images||0, '文字 QR — 無檔案下載');
+      var bar=$('imgReadyBar'); if(bar) bar.style.display='none';
+    } else {
+      setImgProgress(stats.images||0, stats.images||0, '分析結束');
+    }
+    if($('imgResult')) $('imgResult').textContent=msg;
+    syncAssemblyDownloadBtn();
   }
   function stopScan(){
     rx.running=false;
@@ -1788,6 +2511,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(!opts.append){
       clearPendingSave();
       rx.asm=new Reassembler();
+      rx.savePrompted=false;
+      rx.finishing=false;
     } else if(!rx.asm){
       rx.asm=new Reassembler();
     }
@@ -1797,27 +2522,19 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     (function next(i){
       if(i>=arr.length){
         imgQueue.busy=false; updateImgPickUI();
-        var msg='已處理 '+arr.length+' 張：解出 '+decoded+' 個 QR，其中 '+frames+' 張為傳輸幀。';
-        if(opts.append) msg='（追加模式）'+msg;
-        if(rx.asm && rx.asm.meta && !rx.asm.done){
-          var miss=rx.asm.missing? rx.asm.missing():[];
-          msg+=' 組裝 '+rx.asm.got+' / '+rx.asm.meta.t+'。可再選圖自動補幀，或改用相機。';
-          if(miss.length) msg+=' 缺：'+miss.slice(0,16).join(',')+(miss.length>16?'…':'');
-          showFrameAssemblyPanel();
-        } else if(!frames && !texts.length){
-          msg+=' 未辨識到 QR。';
-        }
-        $('imgResult').textContent=msg;
-        if(texts.length && !(rx.asm && rx.asm.meta && !rx.asm.done)){
+        if(texts.length && !(rx.asm && rx.asm.meta && !rx.asm.done) && !pendingSave.blob){
           var combined=texts.length===1? texts[0]: texts.join('\n\n---\n\n');
           showTextResult(combined, {
             title:texts.length===1?'圖片解碼結果':'圖片解碼結果（'+texts.length+' 筆）',
             hint:texts.length>1?'多筆內容以分隔線區隔，可一次複製':''
           });
         }
-        setImgProgress(total, total, '分析完成 '+total+' / '+total+'（100%）');
+        // Prefer finalize → download; never leave user with only「分析完成」且無說明
+        tryFinalizeAssembly();
+        reportImageDecodeOutcome({
+          images:arr.length, decoded:decoded, frames:frames, texts:texts.length, append:!!opts.append
+        });
         updateRxUI();
-        if(rx.asm && rx.asm.done) finishRx();
         return;
       }
       setImgProgress(i, total, '分析中 '+(i+1)+' / '+total+' — '+((arr[i]&&arr[i].name)||('圖'+(i+1))));
@@ -1826,7 +2543,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
           decoded++;
           var kind=ingestDecodedCode(codes[ci]);
           if(kind==='frame') frames++;
-          else if(kind==='text' && codes[ci] && codes[ci].data) texts.push(codes[ci].data);
+          else if(kind==='text'){
+            var plain=codeToText(codes[ci]);
+            if(plain) texts.push(plain);
+          }
         }
         setImgProgress(i+1, total);
         setTimeout(function(){ next(i+1); }, 0);
@@ -1863,6 +2583,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if($('btnNextFrame')) $('btnNextFrame').onclick=function(){ stepPlayer(1); };
     if($('btnDownloadFrame')) $('btnDownloadFrame').onclick=downloadCurrentFramePng;
     if($('btnDownloadAllFrames')) $('btnDownloadAllFrames').onclick=downloadAllFramesZip;
+    if($('btnDownloadAllFolder')) $('btnDownloadAllFolder').onclick=downloadAllFramesFolder;
+    if($('btnDownloadAllStrip')) $('btnDownloadAllStrip').onclick=downloadAllFramesStrip;
+    if($('btnDownloadStripReady')) $('btnDownloadStripReady').onclick=downloadPendingStrip;
+    if($('btnDownloadStripPngs')) $('btnDownloadStripPngs').onclick=downloadPendingStripPngs;
+    if($('btnRebuildStrip')) $('btnRebuildStrip').onclick=downloadAllFramesStrip;
+    if($('btnCloseStripResult')) $('btnCloseStripResult').onclick=hideStripResult;
     if($('fpsSel')) $('fpsSel').onchange=onPlaybackSettingChange;
     if($('playModeSel')) $('playModeSel').onchange=onPlaybackSettingChange;
     if($('layoutSel')) $('layoutSel').onchange=onPlaybackSettingChange;
@@ -1904,7 +2630,23 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     };
     if($('btnSaveFile')) $('btnSaveFile').onclick=savePendingFile;
     if($('btnShareFile')) $('btnShareFile').onclick=sharePendingFile;
-    if($('btnSaveModalLater')) $('btnSaveModalLater').onclick=hideSaveModal;
+    if($('btnDownloadFile')) $('btnDownloadFile').onclick=downloadPendingFile;
+    if($('btnAssemblyDownload')) $('btnAssemblyDownload').onclick=downloadPendingFile;
+    if($('btnImgDownload')) $('btnImgDownload').onclick=downloadPendingFile;
+    if($('btnImgDownloadReady')) $('btnImgDownloadReady').onclick=downloadPendingFile;
+    if($('btnImgShareReady')) $('btnImgShareReady').onclick=sharePendingFile;
+    if($('btnImgContinueUpload')) $('btnImgContinueUpload').onclick=triggerImgUpload;
+    if($('btnShareFilePersist')) $('btnShareFilePersist').onclick=sharePendingFile;
+    if($('btnPickSaveLocation')) $('btnPickSaveLocation').onclick=saveFileWithPicker;
+    if($('btnPickSaveLocationModal')) $('btnPickSaveLocationModal').onclick=saveFileWithPicker;
+    if($('btnCloseFileResult')) $('btnCloseFileResult').onclick=function(){
+      hideFileResult();
+      // keep pendingSave so modal can reopen if needed; user can re-download via analyzing again
+    };
+    if($('btnSaveModalLater')) $('btnSaveModalLater').onclick=function(){
+      hideSaveModal();
+      showFileResultPanel(pendingSave.ok);
+    };
     if($('saveModal')) $('saveModal').onclick=function(e){ if(e.target===$('saveModal')) hideSaveModal(); };
     if($('btnCopyText')) $('btnCopyText').onclick=function(){
       if(!currentTextResult){ alert('尚無可複製的內容'); return; }

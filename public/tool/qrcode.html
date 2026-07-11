@@ -251,6 +251,61 @@
   .modal-actions{display:flex;flex-wrap:wrap;gap:10px;}
   .modal-actions button{flex:1;min-width:140px;}
   .foot-note{text-align:center;opacity:.7;margin-top:8px;}
+  button.accent{
+    background:transparent;
+    color:#fff;
+    border:1px solid var(--acc);
+  }
+  button.accent:hover:not(:disabled){
+    background:rgba(254,80,0,.22);
+    border-color:var(--acc-hover);
+    color:#fff;
+  }
+  .scan-dash{
+    margin-top:12px;padding:16px;
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    background:rgba(0,0,0,.2);
+  }
+  .scan-dash-head{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;
+  }
+  .scan-live{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+    padding:4px 10px;border-radius:var(--radius-pill);
+    border:1px solid var(--border-soft);background:rgba(0,0,0,.22);color:var(--mut);
+  }
+  .scan-live.on{border-color:var(--acc);color:#fff;background:rgba(254,80,0,.18);}
+  .scan-live .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--meta);
+  }
+  .scan-live.on .dot{
+    background:var(--acc);
+    box-shadow:0 0 0 0 rgba(254,80,0,.55);
+    animation:scanPulse 1.2s var(--ease) infinite;
+  }
+  @keyframes scanPulse{
+    0%{box-shadow:0 0 0 0 rgba(254,80,0,.55);}
+    70%{box-shadow:0 0 0 10px rgba(254,80,0,0);}
+    100%{box-shadow:0 0 0 0 rgba(254,80,0,0);}
+  }
+  .scan-metrics{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin-top:4px;
+  }
+  @media (min-width:640px){
+    .scan-metrics{grid-template-columns:repeat(4,minmax(0,1fr));}
+  }
+  .scan-metric{min-width:0;}
+  .scan-metric .k{
+    display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--meta);margin-bottom:4px;
+  }
+  .scan-metric .v{
+    display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.2;color:#fff;
+    word-break:break-word;
+  }
+  .scan-metric .v.small{font-size:14px;font-weight:500;}
 </style>
 </head>
 <body>
@@ -302,6 +357,7 @@
       <div class="row" style="margin-top:10px;">
         <div><button id="btnStartCarousel" disabled>開始輪播</button></div>
         <div><button class="ghost" id="btnPausePlay" disabled>暫停輪播</button></div>
+        <div><button class="accent" id="btnResetToMeta" disabled>回到 META</button></div>
         <div><button class="ghost" id="btnPrevFrame" disabled>上一幀</button></div>
         <div><button class="ghost" id="btnNextFrame" disabled>下一幀</button></div>
         <div><button class="ghost" id="btnDownloadFrame" disabled>下載本幀</button></div>
@@ -319,26 +375,45 @@
         <div><button id="btnStartScan">開始掃描</button></div>
         <div><button class="ghost" id="btnStopScan">停止</button></div>
       </div>
-      <div class="note" id="scanState">按「開始掃描」：相機持續讀取（含 2×2）。META 鎖定後不清進度，噴泉修復可丟幀，收齊 100% 存檔。停止後再開始＝續傳。</div>
+      <div class="note" id="scanState">按「開始掃描」：相機會<strong>連續讀取</strong>，無需一直按按鈕。META 鎖定後自動累積進度；停止後再開始＝續傳。</div>
       <video id="rxVideo" playsinline></video>
       <canvas id="rxCanvas"></canvas>
-      <div class="note" id="rxProgress">等待中…</div>
-      <div class="bar"><div id="rxBar"></div></div>
 
-      <div id="frameAssemblyPanel" class="result-panel" style="display:none;">
-        <div class="result-head">
-          <h3>檔案自動組裝</h3>
-          <span class="pill" id="frameAssemblyStatus">進行中</span>
+      <div id="scanDash" class="scan-dash" aria-live="polite">
+        <div class="scan-dash-head">
+          <span class="scan-live" id="scanLivePill"><span class="dot" aria-hidden="true"></span><span id="scanLiveLabel">待機</span></span>
+          <span class="pill" id="frameAssemblyStatus">等待 META</span>
         </div>
+        <div class="scan-metrics">
+          <div class="scan-metric">
+            <span class="k">已收進度</span>
+            <span class="v" id="scanGotTotal">— / —</span>
+          </div>
+          <div class="scan-metric">
+            <span class="k">完成率</span>
+            <span class="v" id="scanPct">—</span>
+          </div>
+          <div class="scan-metric">
+            <span class="k">本場解碼</span>
+            <span class="v" id="scanDecodeCount">0</span>
+          </div>
+          <div class="scan-metric">
+            <span class="k">最近一幀</span>
+            <span class="v small" id="scanLastFrame">尚未解到</span>
+          </div>
+        </div>
+        <div class="note" id="rxProgress">待機：按「開始掃描」後會連續掃碼並顯示數量。</div>
+        <div class="bar"><div id="rxBar"></div></div>
         <div class="note" id="frameAssemblyInfo"></div>
-        <div class="bar"><div id="frameAssemblyBar"></div></div>
         <div class="note" id="frameAssemblyMissing"></div>
-        <div class="row result-actions">
+        <div class="row result-actions" style="margin-top:12px;">
           <div><button type="button" id="btnAssemblyUpload">改用圖片補幀</button></div>
           <div><button type="button" class="ghost" id="btnResetAssembly">重新開始</button></div>
         </div>
-        <div class="note" id="frameAssemblyHint">相機會持續掃描並累積進度，無需手動上傳。若缺幀可對準發送端下一幀，或按「改用圖片補幀」上傳截圖。</div>
+        <div class="note" id="frameAssemblyHint">連續掃描時請持續對準螢幕；數字會即時更新。重複掃到同一幀會增加「本場解碼」，但進度只在收到新符號時上升。</div>
       </div>
+
+      <div id="frameAssemblyPanel" style="display:none;" aria-hidden="true"></div>
 
       <hr class="sep">
       <label>沒有相機？或相機掃描缺幀 — 從圖片解碼（上傳 QR 截圖，可分批）</label>
@@ -984,7 +1059,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function updatePlayerButtons(){
     var has=player.seq.length>1 || (player.symbols && player.symbols.length);
     var playing=has && !player.paused && player.mode==='loop';
-    ['btnPausePlay','btnPrevFrame','btnNextFrame','btnDownloadFrame','btnDownloadAllFrames'].forEach(function(id){
+    ['btnPausePlay','btnPrevFrame','btnNextFrame','btnDownloadFrame','btnDownloadAllFrames','btnResetToMeta'].forEach(function(id){
       var el=$(id); if(el) el.disabled=!has;
     });
     var sc=$('btnStartCarousel');
@@ -1098,6 +1173,20 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(!hasPlayerSeq()) return;
     if(player.mode==='manual'){ alert('目前為手動步進，請切換「循環輪播」再開始，或用上一幀／下一幀'); return; }
     resumePlayer();
+  }
+  function resetToMeta(){
+    if(!hasPlayerSeq()) return;
+    var wasPlaying=!player.paused && player.mode==='loop';
+    player.i=0;
+    if(wasPlaying){
+      clearPlayerTimer();
+      player.paused=false;
+      player.intervalMs=currentIntervalMs();
+      player.timer=setInterval(function(){ advancePlayer(player.layout>=4?4:1); }, player.intervalMs);
+    } else {
+      pausePlayer();
+    }
+    renderPlayerFrame();
   }
   function togglePause(){
     if(player.paused) resumePlayer(); else pausePlayer();
@@ -1333,7 +1422,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
 
   // ---- RECEIVE ----
-  var rx={asm:null, stream:null, raf:null, running:false, asmPanelScrolled:false, sawDataBeforeMeta:false};
+  var rx={
+    asm:null, stream:null, raf:null, running:false, asmPanelScrolled:false, sawDataBeforeMeta:false,
+    decodeCount:0, uniqueCount:0, lastFrameLabel:'尚未解到', seenKeys:{}
+  };
   var lastScanText='', lastScanTextAt=0;
   function escapeHtml(s){
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1386,48 +1478,108 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function shouldAppendFrames(){
     return !!(rx.asm && rx.asm.meta && !rx.asm.done);
   }
+  function setScanLive(label, on){
+    var pill=$('scanLivePill'), lab=$('scanLiveLabel');
+    if(lab) lab.textContent=label;
+    if(pill){
+      if(on) pill.classList.add('on');
+      else pill.classList.remove('on');
+    }
+  }
+  function frameLabelFromParsed(f){
+    if(!f) return '未知幀';
+    if(f.type==='meta') return 'META';
+    if(f.type==='data') return 'DATA #'+f.idx;
+    if(f.type==='repair') return 'REPAIR esi='+f.esi;
+    return f.type;
+  }
+  function noteDecodedFrame(f, bytes){
+    rx.decodeCount=(rx.decodeCount||0)+1;
+    rx.lastFrameLabel=frameLabelFromParsed(f);
+    var key='';
+    if(f.type==='meta') key='M';
+    else if(f.type==='data') key='D'+f.idx;
+    else if(f.type==='repair') key='R'+f.esi;
+    else if(bytes && bytes.length) key='B'+bytes.length;
+    if(key && !rx.seenKeys[key]){
+      rx.seenKeys[key]=1;
+      rx.uniqueCount=(rx.uniqueCount||0)+1;
+    }
+  }
   function hideFrameAssemblyPanel(){
-    var panel=$('frameAssemblyPanel'); if(panel) panel.style.display='none';
     var btn=$('btnAddMoreFrames'); if(btn) btn.style.display='none';
   }
-  function showFrameAssemblyPanel(){
-    var a=rx.asm, panel=$('frameAssemblyPanel');
-    if(!panel || !a || !a.meta){ hideFrameAssemblyPanel(); return; }
-    if(a.done){ hideFrameAssemblyPanel(); return; }
-    panel.style.display='block';
+  function updateScanDash(){
+    var a=rx.asm;
+    var gotEl=$('scanGotTotal'), pctEl=$('scanPct'), decEl=$('scanDecodeCount'), lastEl=$('scanLastFrame');
+    var statusEl=$('frameAssemblyStatus'), infoEl=$('frameAssemblyInfo'), missEl=$('frameAssemblyMissing');
+    var bar=$('rxBar'), more=$('btnAddMoreFrames');
+    if(decEl) decEl.textContent=String(rx.decodeCount||0);
+    if(lastEl) lastEl.textContent=rx.lastFrameLabel||'尚未解到';
+    if(!a || !a.meta){
+      if(gotEl) gotEl.textContent='— / —';
+      if(pctEl) pctEl.textContent='—';
+      if(bar) bar.style.width='0%';
+      if(statusEl){
+        statusEl.textContent=rx.sawDataBeforeMeta?'等待 META':'等待 META';
+      }
+      if(infoEl){
+        infoEl.textContent=rx.sawDataBeforeMeta?
+          '已掃到資料/修復幀，請先對準 META（檔案資訊）幀。':
+          (rx.running?'持續掃描中…尚未鎖定檔案。':'待機：開始掃描後數字會即時更新。');
+      }
+      if(missEl) missEl.textContent='';
+      if(more) more.style.display='none';
+      return;
+    }
     var pct=Math.floor(a.got/a.meta.t*100);
     var miss=a.missing? a.missing():[];
     var sps=a.symbolsPerSec? a.symbolsPerSec():0;
     var remain=a.meta.t-a.got;
     var eta=sps>0? Math.ceil(remain/sps)+' 秒':'計算中';
-    if($('frameAssemblyInfo')){
-      $('frameAssemblyInfo').innerHTML='檔名：<b>'+escapeHtml(a.meta.n)+'</b>　已收：<b>'+a.got+' / '+a.meta.t+
+    if(gotEl) gotEl.textContent=a.got+' / '+a.meta.t;
+    if(pctEl) pctEl.textContent=pct+'%';
+    if(bar) bar.style.width=pct+'%';
+    if(statusEl){
+      if(a.done) statusEl.textContent='已完成';
+      else if(pct>=100) statusEl.textContent='即將完成';
+      else statusEl.textContent='組裝中 '+pct+'%';
+    }
+    if(infoEl){
+      infoEl.innerHTML='檔名：<b>'+escapeHtml(a.meta.n)+'</b>　已收：<b>'+a.got+' / '+a.meta.t+
         '</b>（'+pct+'%）　大小：<b>'+formatBytes(a.meta.s)+'</b>'+
         (a.meta.z?'　<b>壓縮</b>':'')+(a.fountain?'　<b>噴泉</b>':'')+
-        '<br>速度：<b>'+(sps?sps.toFixed(1):'—')+'</b> 符號/秒　ETA：<b>'+eta+'</b>';
+        '<br>速度：<b>'+(sps?sps.toFixed(1):'—')+'</b> 符號/秒　ETA：<b>'+eta+'</b>'+
+        '　本場解碼：<b>'+(rx.decodeCount||0)+'</b>（新符號 '+((rx.uniqueCount||0))+'）';
     }
-    if($('frameAssemblyBar')) $('frameAssemblyBar').style.width=pct+'%';
-    if($('frameAssemblyStatus')) $('frameAssemblyStatus').textContent=pct>=100?'即將完成':'組裝中 '+pct+'%';
-    if($('frameAssemblyMissing')){
-      $('frameAssemblyMissing').textContent=miss.length?
+    if(missEl){
+      missEl.textContent=miss.length?
         ('尚缺 '+miss.length+' 源符號'+(miss.length<=24?('：'+miss.join(', ')):'（前 24：'+miss.slice(0,24).join(', ')+'…）')+' — 繼續對準，噴泉修復幀可補') :
-        (rx.running?'持續對準螢幕…':'可繼續掃描或上傳圖片補幀');
+        (a.done?'檔案已收齊':(rx.running?'持續對準螢幕…':'可繼續掃描或上傳圖片補幀'));
     }
-    var more=$('btnAddMoreFrames'); if(more) more.style.display=miss.length?'':'none';
-    if(!rx.asmPanelScrolled){
+    if(more) more.style.display=(!a.done && miss.length)?'':'none';
+    if(!rx.asmPanelScrolled && a.meta){
       rx.asmPanelScrolled=true;
-      try{ panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+      var dash=$('scanDash');
+      try{ if(dash) dash.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
     }
   }
+  function showFrameAssemblyPanel(){ updateScanDash(); }
   function resetFrameAssembly(){
     rx.asm=new Reassembler();
     rx.sawDataBeforeMeta=false;
     rx.asmPanelScrolled=false;
+    rx.decodeCount=0;
+    rx.uniqueCount=0;
+    rx.lastFrameLabel='尚未解到';
+    rx.seenKeys={};
     hideFrameAssemblyPanel();
     hideTextResult();
-    if($('rxProgress')) $('rxProgress').textContent='等待中…';
+    if($('rxProgress')) $('rxProgress').textContent='待機：按「開始掃描」後會連續掃碼並顯示數量。';
     if($('rxBar')) $('rxBar').style.width='0%';
     if($('imgResult')) $('imgResult').textContent='';
+    setScanLive(rx.running?'掃描中':'待機', !!rx.running);
+    updateScanDash();
   }
   function ingestDecodedCode(code){
     if(!code) return null;
@@ -1435,6 +1587,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(bytes && bytes.length){
       var f=parseFrame(bytes);
       if(f){
+        noteDecodedFrame(f, bytes);
         if(f.type==='meta'){
           if(!rx.asm) rx.asm=new Reassembler();
           rx.asm.setMeta(f.meta);
@@ -1456,6 +1609,9 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     if(code.data){
       if(rx.asm && rx.asm.meta && !rx.asm.done) return null;
+      rx.decodeCount=(rx.decodeCount||0)+1;
+      rx.lastFrameLabel='一般文字';
+      updateScanDash();
       return 'text';
     }
     return null;
@@ -1468,17 +1624,25 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       rx.asm=new Reassembler();
       rx.sawDataBeforeMeta=false;
       rx.asmPanelScrolled=false;
+      rx.decodeCount=0;
+      rx.uniqueCount=0;
+      rx.lastFrameLabel='尚未解到';
+      rx.seenKeys={};
       lastScanText=''; lastScanTextAt=0;
       hideTextResult();
       hideFrameAssemblyPanel();
       if($('rxProgress')) $('rxProgress').textContent='相機啟動中…';
       if($('rxBar')) $('rxBar').style.width='0%';
+      updateScanDash();
     }
+    setScanLive('啟動中…', true);
     navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(stream){
       rx.stream=stream; video.srcObject=stream; video.setAttribute('playsinline',''); video.play();
       rx.running=true;
+      setScanLive('掃描中', true);
       $('scanState').textContent='掃描中：對準發送端 QR。META 鎖定後會持續組裝直到 100%（噴泉可丟幀）。';
       if($('rxProgress')) $('rxProgress').textContent='持續掃描中…對準螢幕上的 QR';
+      updateScanDash();
       var loop=function(){
         if(!rx.running) return;
         if(video.readyState===video.HAVE_ENOUGH_DATA){
@@ -1495,35 +1659,43 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       };
       rx.raf=requestAnimationFrame(loop);
     }).catch(function(err){
+      rx.running=false;
+      setScanLive('待機', false);
       $('scanState').textContent='無法開啟相機：'+err.message+
         '（請確認以 file:// 或 https 開啟，並允許相機權限）';
+      updateScanDash();
     });
   }
   function updateRxUI(){
-    var a=rx.asm; if(!a){ hideFrameAssemblyPanel(); return; }
+    var a=rx.asm;
+    updateScanDash();
+    if(!a){
+      if(rx.running && $('rxProgress')) $('rxProgress').textContent='持續掃描中…對準螢幕上的 QR';
+      return;
+    }
     if(!a.meta){
       if(rx.sawDataBeforeMeta){
-        $('rxProgress').textContent='已讀到資料/修復幀，請對準 META 幀（檔案資訊）…';
+        if($('rxProgress')) $('rxProgress').textContent='已讀到資料/修復幀，請對準 META 幀（檔案資訊）…';
         if(rx.running) $('scanState').textContent='已讀到部分資料，請對準含檔名的 META 幀';
       } else if(rx.running) {
-        $('rxProgress').textContent='持續掃描中…尚未讀到檔案資訊';
+        if($('rxProgress')) $('rxProgress').textContent='持續掃描中…尚未讀到檔案資訊';
       }
-      hideFrameAssemblyPanel();
       return;
     }
     var pct=Math.floor(a.got/a.meta.t*100);
     var sps=a.symbolsPerSec? a.symbolsPerSec():0;
     var remain=a.meta.t-a.got;
     var eta=sps>0?('　ETA ~'+Math.ceil(remain/sps)+'s'):'';
-    $('rxProgress').innerHTML='🔒 <b>'+escapeHtml(a.meta.n)+'</b>　進度：<b>'+a.got+' / '+a.meta.t+
-      '</b>（'+pct+'%）　缺 '+(a.meta.t-a.got)+'　'+(sps?sps.toFixed(1)+' 符/秒':'')+eta+
-      (a.meta.z?'　壓縮':'')+(a.fountain?'　噴泉':'');
-    $('rxBar').style.width=pct+'%';
+    if($('rxProgress')){
+      $('rxProgress').innerHTML='🔒 <b>'+escapeHtml(a.meta.n)+'</b>　進度：<b>'+a.got+' / '+a.meta.t+
+        '</b>（'+pct+'%）　缺 '+(a.meta.t-a.got)+'　'+(sps?sps.toFixed(1)+' 符/秒':'')+eta+
+        (a.meta.z?'　壓縮':'')+(a.fountain?'　噴泉':'')+
+        '　本場解碼 <b>'+(rx.decodeCount||0)+'</b>';
+    }
+    if($('rxBar')) $('rxBar').style.width=pct+'%';
     if(rx.running){
       $('scanState').textContent='META 已鎖定 — 自動組裝 '+pct+'%（'+a.got+'/'+a.meta.t+'）。持續對準，收齊後存檔。';
     }
-    if(a.done) hideFrameAssemblyPanel();
-    else showFrameAssemblyPanel();
   }
   function finishRx(){
     var wasScanning=rx.running;
@@ -1534,7 +1706,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var msg=ok?'✅ 檔案已收齊，請選擇儲存位置':'⚠️ 已收齊但 CRC 不符，仍請確認後儲存';
       $('scanState').innerHTML=msg;
       if($('imgResult')) $('imgResult').textContent=msg;
-      hideFrameAssemblyPanel();
+      if($('rxProgress')) $('rxProgress').textContent=msg;
+      updateScanDash();
       promptSaveFile(bytes, r.name, ok);
     }
     if(r.z){
@@ -1552,6 +1725,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     rx.running=false;
     if(rx.raf) cancelAnimationFrame(rx.raf);
     if(rx.stream){ rx.stream.getTracks().forEach(function(t){t.stop();}); rx.stream=null; }
+    setScanLive('待機', false);
+    updateScanDash();
   }
 
   // ---- decode from image files ----
@@ -1683,6 +1858,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     $('btnSendText').onclick=sendText;
     if($('btnStartCarousel')) $('btnStartCarousel').onclick=startCarousel;
     if($('btnPausePlay')) $('btnPausePlay').onclick=togglePause;
+    if($('btnResetToMeta')) $('btnResetToMeta').onclick=resetToMeta;
     if($('btnPrevFrame')) $('btnPrevFrame').onclick=function(){ stepPlayer(-1); };
     if($('btnNextFrame')) $('btnNextFrame').onclick=function(){ stepPlayer(1); };
     if($('btnDownloadFrame')) $('btnDownloadFrame').onclick=downloadCurrentFramePng;
@@ -1693,7 +1869,16 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     $('fileInput').onchange=function(e){sendFiles(e.target.files);};
     $('folderInput').onchange=function(e){sendFiles(e.target.files);};
     $('btnStartScan').onclick=startScan;
-    $('btnStopScan').onclick=function(){stopScan();$('scanState').textContent='已停止（組裝進度保留，可再按開始掃描續傳）';};
+    $('btnStopScan').onclick=function(){
+      stopScan();
+      $('scanState').textContent='已停止（組裝進度保留，可再按開始掃描續傳）';
+      if($('rxProgress') && rx.asm && rx.asm.meta && !rx.asm.done){
+        /* keep progress text from updateRxUI */
+      } else if($('rxProgress') && !(rx.asm && rx.asm.meta)){
+        $('rxProgress').textContent='已停止。進度保留；再按開始掃描可續傳。';
+      }
+      updateScanDash();
+    };
     if($('imgInput')) $('imgInput').onchange=function(e){onImgFilesSelected(e.target.files);};
     if($('btnAnalyzeImg')) $('btnAnalyzeImg').onclick=function(){
       if(!imgQueue.files.length){ alert('請先選擇圖片'); return; }
@@ -1728,6 +1913,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if($('btnCloseTextResult')) $('btnCloseTextResult').onclick=hideTextResult;
     updateImgPickUI();
     updatePlayerButtons();
+    updateScanDash();
+    setScanLive('待機', false);
     showTab('send'); showSub('text');
   });
 

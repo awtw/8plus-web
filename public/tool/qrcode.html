@@ -4,60 +4,260 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>QR-Beam　離線 QR 傳輸工具</title>
+<title>QR-Beam　離線 QR 傳輸工具｜8plus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0f172a;--card:#1e293b;--ink:#e2e8f0;--mut:#94a3b8;--acc:#38bdf8;--ok:#22c55e;--warn:#f59e0b;}
+  :root{
+    --color-blue:#002FA7;
+    --color-orange:#FE5000;
+    --color-dark:#0A0E1A;
+    --bg:var(--color-blue);
+    --surface:rgba(255,255,255,.08);
+    --surface-warm:rgba(255,255,255,.12);
+    --ink:#ffffff;
+    --fg-2:rgba(255,255,255,.88);
+    --mut:rgba(255,255,255,.76);
+    --meta:rgba(255,255,255,.6);
+    --border:rgba(255,255,255,.22);
+    --border-soft:rgba(255,255,255,.12);
+    --acc:var(--color-orange);
+    --acc-on:#ffffff;
+    --acc-hover:#FF6A28;
+    --ok:#34d399;
+    --warn:#eab308;
+    --danger:#ff5f56;
+    --input-bg:rgba(0,0,0,.22);
+    --radius-sm:8px;
+    --radius:22px;
+    --radius-pill:9999px;
+    --font-body:"Outfit",-apple-system,BlinkMacSystemFont,system-ui,"Microsoft JhengHei",sans-serif;
+    --font-display:Georgia,"Outfit",-apple-system,system-ui,serif;
+    --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --shadow-hover:0 12px 40px rgba(0,0,0,.28);
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink);}
-  header{padding:18px 20px;border-bottom:1px solid #334155;}
-  header h1{margin:0;font-size:20px;} header p{margin:4px 0 0;color:var(--mut);font-size:13px;}
-  .wrap{max-width:860px;margin:0 auto;padding:18px 16px 60px;}
-  .tabs{display:flex;gap:8px;margin:14px 0;}
-  .tab{flex:1;padding:12px;text-align:center;background:var(--card);border:1px solid #334155;border-radius:10px;cursor:pointer;font-weight:600;}
-  .tab.active{border-color:var(--acc);color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset;}
-  .subtabs{display:flex;gap:8px;margin:6px 0 14px;}
-  .subtab{padding:8px 14px;background:transparent;border:1px solid #334155;border-radius:20px;cursor:pointer;font-size:13px;color:var(--mut);}
-  .subtab.active{border-color:var(--acc);color:var(--acc);}
-  .card{background:var(--card);border:1px solid #334155;border-radius:12px;padding:16px;margin-bottom:14px;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:
+      radial-gradient(1200px 600px at 12% -10%, rgba(255,255,255,.16), transparent 55%),
+      radial-gradient(900px 500px at 90% 0%, rgba(254,80,0,.22), transparent 50%),
+      var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  a{color:inherit;}
+  header{
+    padding:22px 20px 18px;
+    border-bottom:1px solid var(--border-soft);
+    backdrop-filter:blur(10px);
+    background:rgba(0,47,167,.35);
+  }
+  .eyebrow{
+    margin:0 0 8px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--meta);
+  }
+  .eyebrow a{
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,.35);
+  }
+  .eyebrow a:hover{border-color:var(--acc);color:#fff;}
+  header h1{
+    margin:0;
+    font-family:var(--font-display);
+    font-size:clamp(28px,4vw,40px);
+    font-weight:600;
+    letter-spacing:-.02em;
+    line-height:1.1;
+  }
+  header .lede{margin:10px 0 0;color:var(--mut);font-size:14px;line-height:1.6;max-width:54ch;}
+  .wrap{max-width:860px;margin:0 auto;padding:18px 16px 72px;}
+  .tabs{display:flex;gap:10px;margin:16px 0;}
+  .tab{
+    flex:1;padding:14px 12px;text-align:center;
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    cursor:pointer;font-weight:600;font-size:14px;
+    color:var(--fg-2);
+    transition:border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
+  }
+  .tab:hover{background:var(--surface-warm);border-color:var(--border);}
+  .tab.active{
+    border-color:rgba(255,255,255,.55);
+    color:#fff;
+    background:rgba(255,255,255,.14);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);
+  }
+  .subtabs{display:flex;gap:8px;margin:6px 0 14px;flex-wrap:wrap;}
+  .subtab{
+    padding:8px 16px;
+    background:transparent;
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius-pill);
+    cursor:pointer;font-size:13px;color:var(--mut);
+    transition:all .2s var(--ease);
+  }
+  .subtab:hover{border-color:var(--border);color:var(--ink);}
+  .subtab.active{
+    border-color:var(--acc);
+    color:#fff;
+    background:rgba(254,80,0,.18);
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+    backdrop-filter:blur(12px);
+    box-shadow:0 0 0 1px rgba(255,255,255,.04);
+  }
   label{display:block;font-size:13px;color:var(--mut);margin:8px 0 4px;}
-  textarea{width:100%;height:120px;background:#0b1220;color:var(--ink);border:1px solid #334155;border-radius:8px;padding:10px;font-size:14px;resize:vertical;}
+  textarea,select{
+    width:100%;
+    background:var(--input-bg);
+    color:var(--ink);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    font-size:14px;
+    font-family:var(--font-body);
+    transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  textarea{height:120px;resize:vertical;}
+  textarea:focus,select:focus{
+    outline:none;
+    border-color:var(--acc);
+    box-shadow:0 0 0 2px rgba(254,80,0,.35);
+  }
+  select{width:auto;min-width:100%;}
   input[type=file]{width:100%;color:var(--mut);font-size:13px;}
-  select{background:#0b1220;color:var(--ink);border:1px solid #334155;border-radius:8px;padding:6px 8px;}
-  button{background:var(--acc);color:#04283a;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;font-size:14px;}
+  button{
+    background:var(--ink);
+    color:var(--color-blue);
+    border:0;
+    border-radius:var(--radius-pill);
+    padding:10px 18px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+    font-family:var(--font-body);
+    transition:background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  }
+  button:hover:not(:disabled){background:var(--acc);color:var(--acc-on);}
   button:disabled{opacity:.45;cursor:not-allowed;}
-  button.ghost{background:transparent;color:var(--ink);border:1px solid #334155;}
+  button.ghost{
+    background:transparent;
+    color:var(--fg-2);
+    border:1px solid var(--border);
+  }
+  button.ghost:hover:not(:disabled){
+    background:rgba(255,255,255,.1);
+    border-color:rgba(255,255,255,.5);
+    color:#fff;
+  }
   .row{display:flex;gap:14px;flex-wrap:wrap;align-items:end;}
   .row>div{flex:1;min-width:120px;}
-  canvas{background:#fff;border-radius:10px;max-width:100%;display:block;margin:12px auto;image-rendering:pixelated;}
+  canvas{
+    background:#fff;
+    border-radius:var(--radius);
+    max-width:100%;
+    display:block;
+    margin:14px auto;
+    image-rendering:pixelated;
+    box-shadow:var(--shadow-hover);
+  }
+  #sendCanvas{width:min(96vw,640px);height:auto;max-width:640px;}
   #rxCanvas{display:none;}
-  #rxVideo{width:100%;max-height:50vh;border-radius:10px;background:#000;}
+  #rxVideo{
+    width:100%;max-height:50vh;
+    border-radius:var(--radius);
+    background:#000;
+    border:1px solid var(--border-soft);
+  }
   .note{font-size:13px;color:var(--mut);line-height:1.6;margin-top:10px;}
-  .bar{height:10px;background:#0b1220;border-radius:6px;overflow:hidden;margin-top:8px;}
-  .bar>div{height:100%;width:0;background:var(--ok);transition:width .2s;}
-  .pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;background:#0b1220;color:var(--mut);}
-  code{background:#0b1220;padding:1px 5px;border-radius:4px;}
-  a.link{color:var(--acc);}
-  .result-panel{margin-top:12px;padding:14px;border:1px solid #334155;border-radius:12px;background:#0b1220;}
+  .bar{
+    height:10px;
+    background:rgba(0,0,0,.28);
+    border-radius:var(--radius-pill);
+    overflow:hidden;margin-top:8px;
+  }
+  .bar>div{height:100%;width:0;background:var(--ok);transition:width .2s var(--ease);}
+  .pill{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:var(--radius-pill);
+    background:rgba(0,0,0,.22);
+    border:1px solid var(--border-soft);
+    color:var(--mut);
+  }
+  code{
+    font-family:var(--font-mono);
+    background:rgba(0,0,0,.22);
+    padding:1px 6px;
+    border-radius:6px;
+    font-size:12px;
+  }
+  a.link{color:#fff;border-bottom:1px solid var(--acc);}
+  hr.sep{border:0;border-top:1px solid var(--border-soft);margin:16px 0;}
+  .result-panel{
+    margin-top:12px;padding:16px;
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    background:rgba(0,0,0,.2);
+  }
   .result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-  .result-head h3{margin:0;font-size:15px;}
-  .result-close{padding:4px 10px;font-size:13px;min-width:auto;}
-  #textResultBody{min-height:72px;max-height:220px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;}
+  .result-head h3{margin:0;font-size:15px;font-weight:600;}
+  .result-close{padding:4px 12px;font-size:13px;min-width:auto;}
+  #textResultBody{
+    min-height:72px;max-height:220px;
+    font-family:var(--font-mono);
+    font-size:13px;line-height:1.5;
+  }
   .result-actions{margin-top:10px;}
   .result-actions button{min-width:120px;}
   button.ok-state{background:var(--ok);color:#052e16;}
-  .modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:16px;}
-  .modal-card{width:100%;max-width:420px;background:var(--card);border:1px solid #334155;border-radius:14px;padding:18px;box-shadow:0 16px 48px rgba(0,0,0,.45);}
-  .modal-card h2{margin:0 0 10px;font-size:18px;}
-  .modal-info{font-size:14px;line-height:1.6;margin-bottom:14px;}
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:1000;
+    background:rgba(10,14,26,.72);
+    display:flex;align-items:center;justify-content:center;padding:16px;
+    backdrop-filter:blur(6px);
+  }
+  .modal-card{
+    width:100%;max-width:420px;
+    background:var(--color-blue);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow-hover);
+  }
+  .modal-card h2{margin:0 0 10px;font-family:var(--font-display);font-size:22px;letter-spacing:-.02em;}
+  .modal-info{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--fg-2);}
   .modal-info b{color:var(--ink);}
   .modal-actions{display:flex;flex-wrap:wrap;gap:10px;}
   .modal-actions button{flex:1;min-width:140px;}
+  .foot-note{text-align:center;opacity:.7;margin-top:8px;}
 </style>
 </head>
 <body>
 <header>
-  <h1>QR-Beam　離線 QR 傳輸工具</h1>
-  <p>完全離線・免安裝・單一 HTML　—　把文字/網址/檔案/資料夾變成 QR，另一台裝置掃碼接收，全程不經網路。</p>
+  <p class="eyebrow"><a href="/">8plus</a><span>·</span><span>Lab Tool</span></p>
+  <h1>QR-Beam</h1>
+  <p class="lede">離線 QR 傳輸工具 — 完全離線・免安裝・單一 HTML。把文字／網址／檔案變成 QR，另一台裝置掃碼接收，全程不經網路。</p>
 </header>
 <div class="wrap">
   <div class="tabs">
@@ -83,19 +283,21 @@
       <input type="file" id="fileInput">
       <label style="margin-top:12px;">或選擇整個資料夾（會自動打包成未壓縮 .zip 後傳輸）</label>
       <input type="file" id="folderInput" webkitdirectory directory multiple>
-      <div class="note">大檔會切成多張 QR 連續播放（動畫）。檔案越大，掃描時間越長，建議先從小檔測試。</div>
+      <div class="note">大檔會自動壓縮（DEFLATE）+ 提高每幀容量 + 噴泉修復幀；可用 2×2 同屏加速。接收端掃到 META 後持續對準即可。</div>
     </div>
 
     <div class="card">
       <div class="row">
         <div><label>容錯等級</label>
-          <select id="eccSel"><option value="L">L（快）</option><option value="M" selected>M（建議）</option><option value="Q">Q</option><option value="H">H（最穩）</option></select></div>
+          <select id="eccSel"><option value="L">L（快／大檔）</option><option value="M" selected>M（建議）</option><option value="Q">Q</option><option value="H">H（最穩）</option></select></div>
         <div><label>每幀資料量</label>
-          <select id="chunkSel"><option value="300">300 bytes（好掃）</option><option value="500" selected>500 bytes（建議）</option><option value="800">800 bytes（較少幀）</option><option value="1000">1000 bytes（大檔）</option><option value="1200">1200 bytes（幀最少、較密）</option></select></div>
+          <select id="chunkSel"><option value="300">300（好掃）</option><option value="500" selected>500（建議）</option><option value="800">800</option><option value="1200">1200</option><option value="1800">1800（大檔）</option><option value="2200">2200（幀最少）</option></select></div>
         <div><label>播放模式</label>
           <select id="playModeSel"><option value="loop" selected>循環輪播</option><option value="manual">手動步進</option></select></div>
         <div><label>輪播間隔</label>
           <select id="fpsSel"><option value="500">0.5 秒/幀（最快）</option><option value="1000" selected>1 秒/幀</option><option value="1500">1.5 秒/幀</option><option value="2000">2 秒/幀</option><option value="3000">3 秒/幀（最穩）</option></select></div>
+        <div><label>同屏佈局</label>
+          <select id="layoutSel"><option value="1" selected>單張 QR</option><option value="4">2×2 四張（加速）</option></select></div>
       </div>
       <div class="row" style="margin-top:10px;">
         <div><button id="btnStartCarousel" disabled>開始輪播</button></div>
@@ -117,7 +319,7 @@
         <div><button id="btnStartScan">開始掃描</button></div>
         <div><button class="ghost" id="btnStopScan">停止</button></div>
       </div>
-      <div class="note" id="scanState">按「開始掃描」：相機會<strong>持續讀取</strong>多幀 QR、自動組裝檔案，收齊 100% 跳出儲存視窗。單張文字/網址 QR 也支援。</div>
+      <div class="note" id="scanState">按「開始掃描」：相機持續讀取（含 2×2）。META 鎖定後不清進度，噴泉修復可丟幀，收齊 100% 存檔。停止後再開始＝續傳。</div>
       <video id="rxVideo" playsinline></video>
       <canvas id="rxCanvas"></canvas>
       <div class="note" id="rxProgress">等待中…</div>
@@ -138,7 +340,7 @@
         <div class="note" id="frameAssemblyHint">相機會持續掃描並累積進度，無需手動上傳。若缺幀可對準發送端下一幀，或按「改用圖片補幀」上傳截圖。</div>
       </div>
 
-      <hr style="border:0;border-top:1px solid #334155;margin:16px 0;">
+      <hr class="sep">
       <label>沒有相機？或相機掃描缺幀 — 從圖片解碼（上傳 QR 截圖，可分批）</label>
       <input type="file" id="imgInput" accept="image/*" multiple>
       <div class="row" style="margin-top:10px;">
@@ -182,7 +384,7 @@
     </div>
   </div>
 
-  <div class="note" style="text-align:center;opacity:.7;">單一檔案・完全離線・無任何外部連線　|　內嵌 qrcode-generator (MIT) + jsQR (Apache-2.0)</div>
+  <div class="note foot-note">單一檔案・完全離線・無任何外部連線　|　內嵌 qrcode-generator (MIT) + jsQR (Apache-2.0)</div>
 </div>
 
 <script>
@@ -259,23 +461,89 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     return concatBytes(chunks.concat([cd,end]));
   }
 
-  // ---------- FRAME PROTOCOL ----------
-  // META frame : [0x00][utf8 JSON {n,s,t,c}]   n=name s=size t=totalDataFrames c=crc32
-  // DATA frame : [0x01][idx u24 BE][payload bytes]
-  var T_META=0x00, T_DATA=0x01;
+  // ---------- FRAME PROTOCOL v2 ----------
+  // META   : [0x00][utf8 JSON {n,s,t,c,z?,v?,f?,cs?}]
+  // DATA   : [0x01][idx u24 BE][payload]          systematic source
+  // REPAIR : [0x02][esi u32 BE][payload]          LT XOR repair
+  var T_META=0x00, T_DATA=0x01, T_REPAIR=0x02;
+  var PROTO_V=2;
 
-  function buildFrames(fileBytes, filename, chunkSize){
-    chunkSize = chunkSize||500;
+  function mulberry32(seed){
+    var a=seed>>>0;
+    return function(){
+      a=(a+0x6D2B79F5)>>>0;
+      var t=a; t=Math.imul(t^(t>>>15),1|t);
+      t=t+Math.imul(t^(t>>>7),61|t)^t;
+      return ((t^(t>>>14))>>>0)/4294967296;
+    };
+  }
+  function ltDegree(rng){
+    var r=rng();
+    if(r<0.05) return 1;
+    if(r<0.55) return 2;
+    if(r<0.75) return 3;
+    if(r<0.90) return 4;
+    if(r<0.97) return 6;
+    return 8;
+  }
+  function ltNeighbors(esi, K, degree){
+    var rng=mulberry32((esi*2654435761)>>>0);
+    var set={}, out=[], guard=0;
+    degree=Math.min(degree, K);
+    while(out.length<degree && guard++<degree*20){
+      var idx=Math.floor(rng()*K);
+      if(set[idx]) continue;
+      set[idx]=1; out.push(idx);
+    }
+    out.sort(function(a,b){return a-b;});
+    return out;
+  }
+  function xorInto(dst, src){
+    var n=Math.min(dst.length, src.length);
+    for(var i=0;i<n;i++) dst[i]^=src[i];
+  }
+  function makeRepairPayload(symbols, esi, K){
+    var deg=ltDegree(mulberry32((esi*40503)^0x9E3779B9));
+    var neigh=ltNeighbors(esi, K, deg);
+    var out=new Uint8Array(symbols[0].length);
+    for(var i=0;i<neigh.length;i++) xorInto(out, symbols[neigh[i]]);
+    return {payload:out, neighbors:neigh};
+  }
+
+  function buildFrames(fileBytes, filename, chunkSize, opts){
+    opts=opts||{};
+    chunkSize=chunkSize||500;
     var total=Math.max(1, Math.ceil(fileBytes.length/chunkSize));
-    var meta={n:filename, s:fileBytes.length, t:total, c:crc32(fileBytes)};
-    var metaFrame=concatBytes([new Uint8Array([T_META]), strToUtf8(JSON.stringify(meta))]);
-    var dataFrames=[];
+    var symbols=[];
     for(var i=0;i<total;i++){
       var slice=fileBytes.subarray(i*chunkSize,(i+1)*chunkSize);
-      var hdr=new Uint8Array([T_DATA,(i>>16)&0xFF,(i>>8)&0xFF,i&0xFF]);
-      dataFrames.push(concatBytes([hdr,slice]));
+      var pad=new Uint8Array(chunkSize);
+      pad.set(slice);
+      symbols.push(pad);
     }
-    return {meta:meta, metaFrame:metaFrame, dataFrames:dataFrames};
+    var meta={
+      n:filename, s:fileBytes.length, t:total, c:crc32(fileBytes),
+      v:PROTO_V, f:1, cs:chunkSize
+    };
+    if(opts.z) meta.z=1;
+    if(opts.rawSize!=null) meta.rs=opts.rawSize;
+    var metaFrame=concatBytes([new Uint8Array([T_META]), strToUtf8(JSON.stringify(meta))]);
+    var dataFrames=[];
+    for(var j=0;j<total;j++){
+      var real=fileBytes.subarray(j*chunkSize,(j+1)*chunkSize);
+      var hdr=new Uint8Array([T_DATA,(j>>16)&0xFF,(j>>8)&0xFF,j&0xFF]);
+      dataFrames.push(concatBytes([hdr,real]));
+    }
+    return {meta:meta, metaFrame:metaFrame, dataFrames:dataFrames, symbols:symbols};
+  }
+
+  function buildRepairFrame(symbols, esi){
+    var K=symbols.length;
+    var made=makeRepairPayload(symbols, esi, K);
+    var hdr=new Uint8Array(5);
+    hdr[0]=T_REPAIR;
+    hdr[1]=(esi>>>24)&0xFF; hdr[2]=(esi>>>16)&0xFF; hdr[3]=(esi>>>8)&0xFF; hdr[4]=esi&0xFF;
+    return concatBytes([hdr, made.payload]);
   }
 
   function parseFrame(bytes){
@@ -286,24 +554,105 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       if(bytes.length<4) return null;
       var idx=(bytes[1]<<16)|(bytes[2]<<8)|bytes[3];
       return {type:'data', idx:idx, payload:bytes.subarray(4)};
+    } else if(bytes[0]===T_REPAIR){
+      if(bytes.length<5) return null;
+      var esi=((bytes[1]<<24)|(bytes[2]<<16)|(bytes[3]<<8)|bytes[4])>>>0;
+      return {type:'repair', esi:esi, payload:bytes.subarray(5)};
     }
     return null;
   }
 
-  // Receiver state machine
   function Reassembler(){
     this.meta=null; this.chunks=null; this.got=0; this.done=false; this.result=null;
+    this.fountain=false; this.cs=0; this.packets=[]; this.seenRepair={};
+    this.rateWindow=[]; this.lastGotAt=0;
   }
   Reassembler.prototype.setMeta=function(meta){
     if(this.meta) return;
-    this.meta=meta; this.chunks=new Array(meta.t); this.got=0;
+    this.meta=meta;
+    this.fountain=!!meta.f;
+    this.cs=meta.cs||0;
+    this.chunks=new Array(meta.t);
+    this.got=0;
+  };
+  Reassembler.prototype._markGot=function(){
+    this.got++;
+    var now=Date.now();
+    this.rateWindow.push(now);
+    while(this.rateWindow.length && now-this.rateWindow[0]>4000) this.rateWindow.shift();
+    this.lastGotAt=now;
+    if(this.got>=this.meta.t) this.finish();
+  };
+  Reassembler.prototype.symbolsPerSec=function(){
+    if(this.rateWindow.length<2) return 0;
+    var dt=(this.rateWindow[this.rateWindow.length-1]-this.rateWindow[0])/1000;
+    if(dt<=0) return 0;
+    return (this.rateWindow.length-1)/dt;
   };
   Reassembler.prototype.addData=function(idx,payload){
+    if(!this.meta || this.done) return false;
+    if(idx<0||idx>=this.meta.t) return false;
+    if(this.chunks[idx]) return false;
+    var buf;
+    if(this.fountain && this.cs){
+      buf=new Uint8Array(this.cs); buf.set(payload);
+    } else {
+      buf=Uint8Array.from(payload);
+    }
+    this.chunks[idx]=buf;
+    this._markGot();
+    if(this.fountain && !this.done) this._peel();
+    return true;
+  };
+  Reassembler.prototype.addRepair=function(esi,payload){
+    if(!this.meta || this.done || !this.fountain) return false;
+    if(this.seenRepair[esi]) return false;
+    this.seenRepair[esi]=1;
+    var K=this.meta.t;
+    var neigh=ltNeighbors(esi, K, ltDegree(mulberry32((esi*40503)^0x9E3779B9)));
+    var val=Uint8Array.from(payload);
+    // reduce known symbols
+    var unknown=[];
+    for(var i=0;i<neigh.length;i++){
+      var ix=neigh[i];
+      if(this.chunks[ix]) xorInto(val, this.chunks[ix]);
+      else unknown.push(ix);
+    }
+    if(unknown.length===0) return false;
+    this.packets.push({n:unknown, v:val});
+    this._peel();
+    return true;
+  };
+  Reassembler.prototype._peel=function(){
     if(!this.meta || this.done) return;
-    if(idx<0||idx>=this.meta.t) return;
-    if(this.chunks[idx]) return;
-    this.chunks[idx]=Uint8Array.from(payload); this.got++;
-    if(this.got===this.meta.t){ this.finish(); }
+    var changed=true, guard=0;
+    while(changed && !this.done && guard++<this.meta.t*4){
+      changed=false;
+      for(var p=0;p<this.packets.length;p++){
+        var pkt=this.packets[p];
+        if(!pkt || pkt.n.length===0) continue;
+        // drop resolved
+        var nn=[], vv=Uint8Array.from(pkt.v);
+        for(var i=0;i<pkt.n.length;i++){
+          var ix=pkt.n[i];
+          if(this.chunks[ix]){ xorInto(vv, this.chunks[ix]); }
+          else nn.push(ix);
+        }
+        pkt.n=nn; pkt.v=vv;
+        if(nn.length===1){
+          var only=nn[0];
+          if(!this.chunks[only]){
+            var cs=this.cs||vv.length;
+            var buf=new Uint8Array(cs);
+            buf.set(vv.subarray(0, Math.min(vv.length, cs)));
+            this.chunks[only]=buf;
+            this._markGot();
+            changed=true;
+          }
+          pkt.n=[];
+        }
+      }
+    }
   };
   Reassembler.prototype.missing=function(){
     var m=[]; if(!this.meta) return m;
@@ -311,17 +660,35 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     return m;
   };
   Reassembler.prototype.finish=function(){
-    var all=concatBytes(this.chunks);
+    if(this.done || !this.meta) return this.result;
+    var parts=[], need=this.meta.s, off=0;
+    for(var i=0;i<this.meta.t;i++){
+      var ch=this.chunks[i];
+      if(!ch){ this.done=false; return null; }
+      var take=Math.min(ch.length, need-off);
+      parts.push(ch.subarray(0, take));
+      off+=take;
+    }
+    var all=concatBytes(parts);
+    if(all.length>this.meta.s) all=all.subarray(0, this.meta.s);
     var ok = all.length===this.meta.s && crc32(all)===(this.meta.c>>>0);
-    this.done=true; this.result={ok:ok, bytes:all, name:this.meta.n};
+    this.done=true; this.result={ok:ok, bytes:all, name:this.meta.n, z:!!this.meta.z};
     return this.result;
   };
 
-  function buildSeqWithMeta(metaFrame, dataFrames){
-    var seq=[metaFrame], every=Math.max(4, Math.ceil(dataFrames.length/12));
+  function buildSeqWithMeta(metaFrame, dataFrames, symbols, repairCount){
+    var seq=[metaFrame], every=Math.max(3, Math.ceil(dataFrames.length/10));
     for(var i=0;i<dataFrames.length;i++){
       if(i>0 && i%every===0) seq.push(metaFrame);
       seq.push(dataFrames[i]);
+    }
+    repairCount=repairCount!=null?repairCount:Math.max(8, Math.ceil(dataFrames.length*0.35));
+    if(symbols && symbols.length){
+      var K=symbols.length;
+      for(var r=0;r<repairCount;r++){
+        if(r%every===0) seq.push(metaFrame);
+        seq.push(buildRepairFrame(symbols, K+r));
+      }
     }
     return seq;
   }
@@ -342,14 +709,45 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       if(!f) continue;
       if(f.type==='meta') asm.setMeta(f.meta);
       else if(f.type==='data') asm.addData(f.idx, f.payload);
+      else if(f.type==='repair') asm.addRepair(f.esi, f.payload);
     }
     return asm;
+  }
+
+  function compressDeflateSyncFallback(bytes){ return {bytes:bytes, z:0}; }
+  function compressDeflate(bytes){
+    if(typeof CompressionStream==='undefined'){
+      return Promise.resolve(compressDeflateSyncFallback(bytes));
+    }
+    try{
+      var cs=new CompressionStream('deflate');
+      var w=cs.writable.getWriter();
+      w.write(bytes); w.close();
+      return new Response(cs.readable).arrayBuffer().then(function(ab){
+        var out=new Uint8Array(ab);
+        if(out.length < bytes.length * 0.97) return {bytes:out, z:1, raw:bytes.length};
+        return {bytes:bytes, z:0, raw:bytes.length};
+      }).catch(function(){ return compressDeflateSyncFallback(bytes); });
+    }catch(e){
+      return Promise.resolve(compressDeflateSyncFallback(bytes));
+    }
+  }
+  function decompressDeflate(bytes){
+    if(typeof DecompressionStream==='undefined'){
+      return Promise.reject(new Error('瀏覽器不支援 DecompressionStream'));
+    }
+    var ds=new DecompressionStream('deflate');
+    var w=ds.writable.getWriter();
+    w.write(bytes); w.close();
+    return new Response(ds.readable).arrayBuffer().then(function(ab){ return new Uint8Array(ab); });
   }
 
   var API={crc32:crc32, strToUtf8:strToUtf8, utf8ToStr:utf8ToStr, bytesToLatin1:bytesToLatin1,
     concatBytes:concatBytes, makeStoredZip:makeStoredZip, buildFrames:buildFrames,
     parseFrame:parseFrame, Reassembler:Reassembler, buildSeqWithMeta:buildSeqWithMeta,
-    codeToBytes:codeToBytes, reassembleFromSeq:reassembleFromSeq, T_META:T_META, T_DATA:T_DATA};
+    buildRepairFrame:buildRepairFrame, codeToBytes:codeToBytes, reassembleFromSeq:reassembleFromSeq,
+    compressDeflate:compressDeflate, decompressDeflate:decompressDeflate,
+    T_META:T_META, T_DATA:T_DATA, T_REPAIR:T_REPAIR};
 
   if(typeof module!=='undefined' && module.exports){ module.exports=API; }
   global.QRBEAM=API;
@@ -360,31 +758,55 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   var $=function(id){return document.getElementById(id);};
   var qrcode=global.qrcode, jsQR=global.jsQR;
 
+  var QR_RENDER_SIZE=640;
+  function paintQrToFixedCanvas(canvas, qr, targetSize){
+    var n=qr.getModuleCount(), quiet=4;
+    var target=targetSize||QR_RENDER_SIZE;
+    var cells=n+quiet*2;
+    var scale=Math.max(1, Math.floor(target/cells));
+    var drawn=cells*scale;
+    var offset=Math.floor((target-drawn)/2);
+    canvas.width=target; canvas.height=target;
+    var ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,target,target);
+    ctx.fillStyle='#000';
+    for(var r=0;r<n;r++)for(var c=0;c<n;c++){
+      if(qr.isDark(r,c)){
+        ctx.fillRect(offset+(c+quiet)*scale, offset+(r+quiet)*scale, scale, scale);
+      }
+    }
+    return n;
+  }
   function drawFrameQR(canvas, bytes, ecc){
     var qr=qrcode(0, ecc||'M');
     qr.addData(bytesToLatin1(bytes),'Byte'); qr.make();
-    var n=qr.getModuleCount(), quiet=4, avail=canvas.width;
-    var scale=Math.max(1, Math.floor(avail/(n+quiet*2)));
-    var px=(n+quiet*2)*scale;
-    canvas.width=px; canvas.height=px;
-    var ctx=canvas.getContext('2d');
-    ctx.fillStyle='#fff'; ctx.fillRect(0,0,px,px);
-    ctx.fillStyle='#000';
-    for(var r=0;r<n;r++)for(var c=0;c<n;c++){ if(qr.isDark(r,c)){
-      ctx.fillRect((c+quiet)*scale,(r+quiet)*scale,scale,scale); }}
-    return n;
+    return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
   }
   function drawRawTextQR(canvas, text, ecc){
     var qr=qrcode(0, ecc||'M');
-    qr.addData(text); qr.make();  // default mode; universally scannable
-    var n=qr.getModuleCount(), quiet=4, scale=Math.max(2,Math.floor(360/(n+quiet*2)));
-    var px=(n+quiet*2)*scale; canvas.width=px; canvas.height=px;
-    var ctx=canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,px,px);
-    ctx.fillStyle='#000';
-    for(var r=0;r<n;r++)for(var c=0;c<n;c++){ if(qr.isDark(r,c)){
-      ctx.fillRect((c+quiet)*scale,(r+quiet)*scale,scale,scale);}}
-    return n;
+    qr.addData(text); qr.make();
+    return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
   }
+  function drawMultiQR(canvas, framesBytes, ecc, cols){
+    cols=cols||2;
+    var n=framesBytes.length;
+    var rows=Math.ceil(n/cols);
+    var cell=QR_RENDER_SIZE;
+    var gap=16;
+    var W=cols*cell+(cols+1)*gap;
+    var H=rows*cell+(rows+1)*gap;
+    canvas.width=W; canvas.height=H;
+    var ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    var tmp=document.createElement('canvas');
+    for(var i=0;i<n;i++){
+      drawFrameQR(tmp, framesBytes[i], ecc);
+      var c=i%cols, r=Math.floor(i/cols);
+      var x=gap+c*(cell+gap), y=gap+r*(cell+gap);
+      ctx.drawImage(tmp, x, y, cell, cell);
+    }
+  }
+
   var pendingSave={blob:null, name:'', url:null};
   var currentTextResult='';
   function mimeForName(name){
@@ -397,33 +819,31 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(n.endsWith('.zip')) return 'application/zip';
     if(n.endsWith('.txt')) return 'text/plain';
     if(n.endsWith('.json')) return 'application/json';
+    if(n.endsWith('.md')) return 'text/markdown';
     if(n.endsWith('.html')||n.endsWith('.htm')) return 'text/html';
     return 'application/octet-stream';
   }
-  function clearPendingSave(){
-    if(pendingSave.url){ try{URL.revokeObjectURL(pendingSave.url);}catch(e){} }
-    pendingSave={blob:null, name:'', url:null};
-    var modal=$('saveModal'); if(modal) modal.style.display='none';
-  }
-  function hideSaveModal(){
-    var modal=$('saveModal'); if(modal) modal.style.display='none';
-  }
   function formatBytes(n){
+    n=n||0;
     if(n<1024) return n+' B';
-    if(n<1024*1024) return (n/1024).toFixed(1)+' KB';
-    return (n/1024/1024).toFixed(2)+' MB';
+    if(n<1048576) return (n/1024).toFixed(1)+' KB';
+    return (n/1048576).toFixed(2)+' MB';
   }
+  function clearPendingSave(){
+    pendingSave.blob=null; pendingSave.name='';
+    if(pendingSave.url){ try{URL.revokeObjectURL(pendingSave.url);}catch(e){} pendingSave.url=null; }
+    hideSaveModal();
+  }
+  function hideSaveModal(){ var m=$('saveModal'); if(m) m.style.display='none'; }
   function promptSaveFile(bytes, name, ok){
     clearPendingSave();
     var fname=name||'download.bin';
     var blob=new Blob([bytes],{type:mimeForName(fname)});
     pendingSave.blob=blob; pendingSave.name=fname;
-    pendingSave.url=URL.createObjectURL(blob);
     var modal=$('saveModal'), info=$('saveModalInfo'), shareBtn=$('btnShareFile');
-    if(!modal) return;
-    modal.style.display='flex';
+    if(modal) modal.style.display='flex';
     if(info){
-      info.innerHTML=(ok?'✅ 校驗通過':'⚠️ CRC 不符，資料可能有誤')+
+      info.innerHTML=(ok?'✅ CRC 通過':'⚠️ CRC 不符，請確認後再儲存')+
         '<br>檔名：<b>'+escapeHtml(fname)+'</b><br>大小：<b>'+formatBytes(bytes.length)+'</b>';
     }
     if(shareBtn){
@@ -548,8 +968,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
   }
 
-  // ---- state ----
-  var player={seq:[], i:0, timer:null, intervalMs:1000, ecc:'M', mode:'loop', paused:true, dataFrames:0};
+  // ---- player ----
+  var player={
+    seq:[], i:0, timer:null, intervalMs:1000, ecc:'M', mode:'loop', paused:true,
+    dataFrames:0, symbols:null, fountainEsi:0, layout:1, metaFrame:null
+  };
   function frameKindInSeq(seq, idx){
     if(!seq || !seq[idx]) return null;
     var f=parseFrame(seq[idx]);
@@ -557,8 +980,9 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function frameKindAt(idx){ return frameKindInSeq(player.seq, idx); }
   function currentPlayMode(){ return $('playModeSel')?$('playModeSel').value:'loop'; }
+  function currentLayout(){ return parseInt(($('layoutSel')?$('layoutSel').value:'1'),10)||1; }
   function updatePlayerButtons(){
-    var has=player.seq.length>1;
+    var has=player.seq.length>1 || (player.symbols && player.symbols.length);
     var playing=has && !player.paused && player.mode==='loop';
     ['btnPausePlay','btnPrevFrame','btnNextFrame','btnDownloadFrame','btnDownloadAllFrames'].forEach(function(id){
       var el=$(id); if(el) el.disabled=!has;
@@ -574,28 +998,83 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       else pp.textContent=player.paused?'已暫停':'暫停輪播';
     }
   }
+  function packetsForSlot(baseIdx, count){
+    var out=[], i;
+    for(i=0;i<count;i++){
+      var pkt=packetAtGlobalIndex(baseIdx+i);
+      if(pkt) out.push(pkt);
+    }
+    return out;
+  }
+  function packetAtGlobalIndex(g){
+    if(player.metaFrame && g===0) return player.metaFrame;
+    if(!player.symbols || !player.symbols.length){
+      if(player.seq && player.seq.length) return player.seq[g % player.seq.length];
+      return null;
+    }
+    var K=player.symbols.length;
+    // stream: 0=meta, 1..K=data, then repairs forever; also reinsert meta every cycleStart
+    var cycleMetaEvery=Math.max(K+1, 12);
+    var pos=g;
+    if(pos===0) return player.metaFrame;
+    // map infinite stream
+    var phase=pos; // 1+
+    if(phase % cycleMetaEvery===0) return player.metaFrame;
+    var dataIdx=phase-1;
+    // count metas before
+    var metasBefore=Math.floor(phase/cycleMetaEvery);
+    var logical=phase-metasBefore; // 1-based logical packet after metas
+    if(logical<=K){
+      var di=logical-1;
+      var realLen=player.meta? Math.min(player.symbols[di].length, Math.max(0, player.meta.s-di*(player.meta.cs||player.symbols[di].length))) : player.symbols[di].length;
+      // use prebuilt data frame from seq if available
+      if(player.dataFramesBuilt && player.dataFramesBuilt[di]) return player.dataFramesBuilt[di];
+      var hdr=new Uint8Array([T_DATA,(di>>16)&0xFF,(di>>8)&0xFF,di&0xFF]);
+      var slice=player.symbols[di];
+      // trim padding for wire: use cs from meta; last frame shorter
+      var cs=player.meta && player.meta.cs? player.meta.cs: slice.length;
+      var start=di*cs;
+      var remain=(player.meta?player.meta.s:slice.length)-start;
+      var payload=slice.subarray(0, Math.max(0, Math.min(cs, remain)));
+      return concatBytes([hdr, payload]);
+    }
+    var repairEsi=K+(logical-K-1);
+    return buildRepairFrame(player.symbols, repairEsi);
+  }
   function renderPlayerFrame(){
-    if(!player.seq.length) return;
-    if(player.i<0) player.i=0;
-    if(player.i>=player.seq.length) player.i=player.seq.length-1;
     var cv=$('sendCanvas');
-    drawFrameQR(cv, player.seq[player.i], player.ecc);
-    var kind=frameKindAt(player.i);
-    var kindLabel=kind==='meta'?'　[META 檔案資訊]':(kind==='data'?'　[DATA]':'');
-    var modeLabel=player.mode==='manual'?'手動步進':'循環輪播';
-    var stateLabel=!hasPlayerSeq()?'尚未產生':(player.paused?'已暫停':(player.mode==='manual'?'等待操作':'輪播中'));
-    var df=player.dataFrames?('　資料幀 '+player.dataFrames):'';
+    if(!cv) return;
+    var layout=player.layout||1;
+    var hasFountain=player.symbols && player.symbols.length && player.metaFrame;
+    if(!hasFountain && !player.seq.length) return;
+    if(player.i<0) player.i=0;
+    var kindLabel='', modeLabel=player.mode==='manual'?'手動步進':'循環輪播';
+    var stateLabel=player.paused?'已暫停':(player.mode==='manual'?'等待操作':'輪播中');
+    if(layout>=4 && hasFountain){
+      var pkts=packetsForSlot(player.i, 4);
+      while(pkts.length<4) pkts.push(pkts[pkts.length-1]||player.metaFrame);
+      drawMultiQR(cv, pkts, player.ecc, 2);
+      kindLabel='　[2×2 並行]';
+    } else {
+      var pkt=hasFountain? packetAtGlobalIndex(player.i) : player.seq[player.i % player.seq.length];
+      if(!pkt) return;
+      drawFrameQR(cv, pkt, player.ecc);
+      var kind=parseFrame(pkt);
+      kindLabel=kind?(kind.type==='meta'?'　[META]':(kind.type==='repair'?'　[REPAIR]':'　[DATA]')):'';
+    }
+    var df=player.dataFrames?('　源符號 '+player.dataFrames):'';
     var iv=!player.paused && player.mode==='loop'?('　'+player.intervalMs+'ms/幀'):'';
-    $('playInfo').textContent=stateLabel+'　序 '+((player.i+1)+' / '+player.seq.length)+kindLabel+'　'+modeLabel+iv+df;
+    var totalHint=hasFountain?'∞ 噴泉流':' / '+player.seq.length;
+    $('playInfo').textContent=stateLabel+'　序 '+(player.i+1)+totalHint+kindLabel+'　'+modeLabel+iv+df;
     updatePlayerButtons();
   }
-  function hasPlayerSeq(){ return player.seq.length>1; }
+  function hasPlayerSeq(){ return player.seq.length>1 || !!(player.symbols && player.symbols.length); }
   function clearPlayerTimer(){
     if(player.timer){ clearInterval(player.timer); player.timer=null; }
   }
   function advancePlayer(delta){
-    if(!player.seq.length) return;
-    player.i=(player.i+delta+player.seq.length)%player.seq.length;
+    if(!hasPlayerSeq()) return;
+    player.i=Math.max(0, player.i+delta);
     renderPlayerFrame();
   }
   function pausePlayer(){
@@ -612,12 +1091,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     player.paused=false;
     clearPlayerTimer();
     player.intervalMs=currentIntervalMs();
-    player.timer=setInterval(function(){ advancePlayer(1); }, player.intervalMs);
+    player.timer=setInterval(function(){ advancePlayer(player.layout>=4?4:1); }, player.intervalMs);
     renderPlayerFrame();
   }
   function startCarousel(){
     if(!hasPlayerSeq()) return;
-    if(player.mode==='manual'){ alert('目前為手動步進，請切換「循環自動」再輪播，或用上一幀／下一幀'); return; }
+    if(player.mode==='manual'){ alert('目前為手動步進，請切換「循環輪播」再開始，或用上一幀／下一幀'); return; }
     resumePlayer();
   }
   function togglePause(){
@@ -625,13 +1104,14 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function stepPlayer(delta){
     pausePlayer();
-    advancePlayer(delta);
+    advancePlayer(player.layout>=4?delta*4:delta);
   }
   function stopPlayer(reset){
     clearPlayerTimer();
     player.paused=true;
     if(reset){
-      player.seq=[]; player.i=0; player.dataFrames=0;
+      player.seq=[]; player.i=0; player.dataFrames=0; player.symbols=null;
+      player.metaFrame=null; player.dataFramesBuilt=null; player.meta=null; player.layout=1;
       updatePlayerButtons();
     } else {
       renderPlayerFrame();
@@ -642,31 +1122,49 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function applyPlaybackSettings(dataFrameCount, byteLen){
     var hint='', chunk=currentChunk(), n=dataFrameCount||0;
+    var eccEl=$('eccSel');
     if(byteLen){
       n=estimateDataFrames(byteLen, chunk);
-      if(n>80 && chunk<1000){ chunk=1000; if($('chunkSel')) $('chunkSel').value='1000'; n=estimateDataFrames(byteLen, chunk); }
-      if(n>120 && chunk<1200){ chunk=1200; if($('chunkSel')) $('chunkSel').value='1200'; n=estimateDataFrames(byteLen, chunk); }
+      // Phase 0: auto bump chunk + prefer L for large
+      if(n>40 && chunk<1200){ chunk=1200; if($('chunkSel')) $('chunkSel').value='1200'; n=estimateDataFrames(byteLen, chunk); }
+      if(n>80 && chunk<1800){ chunk=1800; if($('chunkSel')) $('chunkSel').value='1800'; n=estimateDataFrames(byteLen, chunk); }
+      if(n>120 && chunk<2200){ chunk=2200; if($('chunkSel')) $('chunkSel').value='2200'; n=estimateDataFrames(byteLen, chunk); }
+      if(n>60 && eccEl && eccEl.value!=='L'){ eccEl.value='L'; }
     }
-    if(n>80){
-      if($('fpsSel')) $('fpsSel').value='1000';
-      if($('playModeSel')) $('playModeSel').value='manual';
-      hint='幀數很多（'+n+'）。已停駐 META 幀；建議「下載全部 ZIP」或手動步進。輪播最快 0.5 秒/幀。';
+    // NEVER force manual for large files — loop is the main path
+    if(n>200){
+      if($('fpsSel')) $('fpsSel').value='500';
+      if($('playModeSel')) $('playModeSel').value='loop';
+      if($('layoutSel')) $('layoutSel').value='4';
+      hint='紅燈：約 '+n+' 源符號。已啟用壓縮／大 chunk／ECC L／0.5s／2×2。噴泉碼可丟幀；持續對準即可。';
+    } else if(n>80){
+      if($('fpsSel')) $('fpsSel').value='500';
+      if($('playModeSel')) $('playModeSel').value='loop';
+      hint='黃燈：約 '+n+' 源符號。已建議 0.5 秒/幀 + 循環輪播 + 噴泉修復幀。';
     } else if(n>40){
       if($('fpsSel')) $('fpsSel').value='1000';
       if($('playModeSel')) $('playModeSel').value='loop';
-      hint='幀數較多（'+n+'）。先掃 META 幀，再按「開始輪播」或下載 ZIP。';
+      hint='幀數較多（'+n+'）。先掃 META，再開始輪播；噴泉修復可補缺。';
     } else if(n>20){
       if($('fpsSel')) $('fpsSel').value='1000';
-      hint='已建議 1 秒/幀；接收端先對準 META 幀再輪播。';
+      hint='已建議 1 秒/幀；接收端掃到 META 後持續對準即可。';
+    }
+    if(n>500){
+      hint+=' 警告：>500 源符號傳輸時間很長，建議先確認壓縮後大小。';
     }
     return {chunk:chunk, dataFrames:n, hint:hint};
   }
   function preparePlayer(seq, ecc, opts){
     opts=opts||{};
     clearPlayerTimer();
-    player.seq=seq; player.i=0; player.intervalMs=currentIntervalMs();
+    player.seq=seq||[]; player.i=0; player.intervalMs=currentIntervalMs();
     player.ecc=ecc||currentEcc(); player.mode=opts.mode||currentPlayMode();
     player.dataFrames=opts.dataFrames||0;
+    player.symbols=opts.symbols||null;
+    player.metaFrame=opts.metaFrame||null;
+    player.dataFramesBuilt=opts.dataFramesBuilt||null;
+    player.meta=opts.meta||null;
+    player.layout=opts.layout||currentLayout();
     player.paused=true;
     renderPlayerFrame();
   }
@@ -684,33 +1182,42 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     return out;
   }
   function downloadCurrentFramePng(){
-    if(!player.seq.length){ alert('尚無 QR 可下載'); return; }
+    if(!hasPlayerSeq()){ alert('尚無 QR 可下載'); return; }
     var pad=String(player.i+1).padStart(4,'0');
-    var tag=frameKindAt(player.i)==='meta'? '-META':'';
-    downloadCanvasPng($('sendCanvas'), 'qrcode-frame-'+pad+tag+'.png');
+    downloadCanvasPng($('sendCanvas'), 'qrcode-frame-'+pad+'.png');
   }
   function downloadAllFramesZip(){
     if(!hasPlayerSeq()){ alert('尚無多幀 QR 可下載'); return; }
-    var seq=player.seq.slice(), ecc=player.ecc, btn=$('btnDownloadAllFrames');
+    // export META + all source + some repairs (not infinite)
+    var btn=$('btnDownloadAllFrames');
     var oldText=btn?btn.textContent:'';
     if(btn){ btn.disabled=true; btn.textContent='打包中…'; }
     pausePlayer();
-    var canv=document.createElement('canvas'), entries=[], idx=0;
+    var frames=[];
+    if(player.metaFrame) frames.push(player.metaFrame);
+    if(player.dataFramesBuilt) frames=frames.concat(player.dataFramesBuilt);
+    else if(player.seq.length) frames=player.seq.slice();
+    if(player.symbols){
+      var K=player.symbols.length;
+      for(var r=0;r<Math.max(8, Math.ceil(K*0.35));r++) frames.push(buildRepairFrame(player.symbols, K+r));
+    }
+    var canv=document.createElement('canvas'), entries=[], idx=0, ecc=player.ecc;
     (function next(){
-      if(idx>=seq.length){
+      if(idx>=frames.length){
         try{
           var zip=makeStoredZip(entries);
-          downloadBytes(zip, 'qrcode-frames-'+seq.length+'.zip');
-          if($('playInfo')) $('playInfo').textContent='已下載 '+seq.length+' 張 QR 截圖 ZIP';
+          downloadBytes(zip, 'qrcode-frames-'+frames.length+'.zip');
+          if($('playInfo')) $('playInfo').textContent='已下載 '+frames.length+' 張 QR 截圖 ZIP';
         }catch(e){ alert('打包失敗：'+e.message); }
         if(btn){ btn.disabled=false; btn.textContent=oldText||'下載全部 ZIP'; }
         renderPlayerFrame();
         return;
       }
-      if($('playInfo')) $('playInfo').textContent='打包 ZIP… '+idx+' / '+seq.length;
-      drawFrameQR(canv, seq[idx], ecc);
+      if($('playInfo')) $('playInfo').textContent='打包 ZIP… '+idx+' / '+frames.length;
+      drawFrameQR(canv, frames[idx], ecc);
       var pad=String(idx+1).padStart(4,'0');
-      var tag=frameKindInSeq(seq, idx)==='meta'? '-META':'';
+      var kind=parseFrame(frames[idx]);
+      var tag=kind?(kind.type==='meta'?'-META':(kind.type==='repair'?'-REP':'-DATA')):'';
       if(canv.toBlob){
         canv.toBlob(function(blob){
           if(!blob){ idx++; setTimeout(next,0); return; }
@@ -731,10 +1238,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(!hasPlayerSeq()) return;
     player.intervalMs=currentIntervalMs();
     player.mode=currentPlayMode();
+    player.layout=currentLayout();
     if(player.mode==='manual') pausePlayer();
     else if(!player.paused){
       clearPlayerTimer();
-      player.timer=setInterval(function(){ advancePlayer(1); }, player.intervalMs);
+      player.timer=setInterval(function(){ advancePlayer(player.layout>=4?4:1); }, player.intervalMs);
     }
     renderPlayerFrame();
   }
@@ -743,59 +1251,84 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function currentChunk(){ return parseInt(($('chunkSel')?$('chunkSel').value:'500'),10); }
   function currentIntervalMs(){ return parseInt(($('fpsSel')?$('fpsSel').value:'1000'),10)||1000; }
 
+  function publishTransfer(payloadBytes, filename, extraNote){
+    if($('sendNote')) $('sendNote').textContent='壓縮／編碼中…';
+    compressDeflate(payloadBytes).then(function(comp){
+      var wire=comp.bytes;
+      var pb2=applyPlaybackSettings(0, wire.length);
+      var chunk=pb2.chunk;
+      var fr=buildFrames(wire, filename, chunk, {z:comp.z, rawSize:payloadBytes.length});
+      var repairN=Math.max(8, Math.ceil(fr.dataFrames.length*0.4));
+      var seq=buildSeqWithMeta(fr.metaFrame, fr.dataFrames, fr.symbols, repairN);
+      var layout=currentLayout();
+      if(fr.dataFrames.length>200 && $('layoutSel')){ $('layoutSel').value='4'; layout=4; }
+      preparePlayer(seq, currentEcc(), {
+        dataFrames:fr.dataFrames.length,
+        symbols:fr.symbols,
+        metaFrame:fr.metaFrame,
+        dataFramesBuilt:fr.dataFrames,
+        meta:fr.meta,
+        layout:layout
+      });
+      var ratio=comp.z?('壓縮 '+(100-Math.round(wire.length/payloadBytes.length*100))+'% → '+formatBytes(wire.length)):'未壓縮（已夠小或不可壓）';
+      var etaSec=Math.ceil((fr.dataFrames.length*(layout>=4?0.35:1.1))*(currentIntervalMs()/1000));
+      var note='檔名：<b>'+escapeHtml(filename)+'</b>　原始：<b>'+formatBytes(payloadBytes.length)+
+        '</b>　'+ratio+'　源符號：<b>'+fr.dataFrames.length+'</b>　噴泉修復：<b>'+repairN+
+        '</b>　佈局：<b>'+(layout>=4?'2×2':'單張')+'</b>　預估對準約 <b>'+etaSec+'</b> 秒。'+
+        '<br>已停駐 <b>META</b>。接收端掃到 META 後持續對準；噴泉碼允許丟幀。'+
+        (pb2.hint?('<br><span style="color:var(--warn)">'+pb2.hint+'</span>'):'')+
+        (extraNote?('<br>'+extraNote):'');
+      if($('sendNote')) $('sendNote').innerHTML=note;
+      if($('sendNote-text')) $('sendNote-text').innerHTML=note;
+    }).catch(function(err){
+      alert('編碼失敗：'+(err && err.message?err.message:err));
+    });
+  }
+
   // ---- TEXT send ----
   function sendText(){
     var text=$('textInput').value;
     if(!text){ alert('請先輸入文字或網址'); return; }
     stopPlayer(true);
-    var bytes=strToUtf8(text);
-    // try single universal QR first (any scanner can read)
     var fits=true;
     try{ var t=qrcode(0,currentEcc()); t.addData(text); t.make(); }catch(e){ fits=false; }
     if(fits){
       drawRawTextQR($('sendCanvas'), text, currentEcc());
-      $('playInfo').textContent='單張 QR（一般掃碼 App 即可讀取，'+bytes.length+' bytes）';
-      $('sendNote').textContent='✅ 這是標準單張 QR，任何手機掃碼器都能讀。';
-    } else {
-      // fall back to framed multi-frame (needs THIS tool to receive)
-      var pb=applyPlaybackSettings(0, bytes.length);
-      var fr=buildFrames(bytes,'text.txt',pb.chunk);
-      var seq=buildSeqWithMeta(fr.metaFrame, fr.dataFrames);
-      preparePlayer(seq, currentEcc(), {dataFrames:fr.dataFrames.length});
-      $('sendNote').textContent='⚠️ 多幀 QR：已停駐 META 幀，請接收端先掃此張。按「開始輪播」或「下載全部 ZIP」。'+(pb.hint?(' '+pb.hint):'');
+      $('playInfo').textContent='單張標準 QR（任何掃碼 App 可讀）';
+      updatePlayerButtons();
+      if($('sendNote')) $('sendNote').textContent='✅ 單張標準 QR。';
+      if($('sendNote-text')) $('sendNote-text').textContent='✅ 單張標準 QR。';
+      return;
     }
+    var bytes=strToUtf8(text);
+    publishTransfer(bytes, 'text.txt', '內容過長，已改多幀噴泉傳輸。');
   }
 
-  // ---- FILE / FOLDER send ----
-  function sendFiles(fileList){
-    if(!fileList||!fileList.length){ return; }
-    var files=Array.prototype.slice.call(fileList);
-    var readers=files.map(function(f){
-      return new Promise(function(res){
-        var fr=new FileReader();
-        fr.onload=function(){ res({name:(f.webkitRelativePath||f.name), data:new Uint8Array(fr.result)}); };
-        fr.readAsArrayBuffer(f);
-      });
+  // ---- FILE send ----
+  function readFileAsBytes(file){
+    return new Promise(function(res,rej){
+      var fr=new FileReader();
+      fr.onload=function(){ res({name:file.name, data:new Uint8Array(fr.result), path:file.webkitRelativePath||file.name}); };
+      fr.onerror=function(){ rej(fr.error); };
+      fr.readAsArrayBuffer(file);
     });
-    Promise.all(readers).then(function(entries){
+  }
+  function sendFiles(fileList){
+    var files=fileList? Array.prototype.slice.call(fileList):[];
+    if(!files.length) return;
+    stopPlayer(true);
+    if($('sendNote')) $('sendNote').textContent='讀取檔案中…';
+    Promise.all(files.map(readFileAsBytes)).then(function(entries){
       var payloadBytes, filename;
       if(entries.length===1 && !files[0].webkitRelativePath){
         payloadBytes=entries[0].data; filename=entries[0].name;
       } else {
-        payloadBytes=makeStoredZip(entries);
+        payloadBytes=makeStoredZip(entries.map(function(e){ return {name:e.path||e.name, data:e.data}; }));
         filename=(files[0].webkitRelativePath? files[0].webkitRelativePath.split('/')[0] : 'bundle')+'.zip';
       }
-      var pb=applyPlaybackSettings(0, payloadBytes.length);
-      var fr=buildFrames(payloadBytes, filename, pb.chunk);
-      var seq=buildSeqWithMeta(fr.metaFrame, fr.dataFrames);
-      var roundMs=seq.length*currentIntervalMs();
-      var secs=currentPlayMode()==='loop'? (roundMs/1000).toFixed(0):'—';
-      $('sendNote').innerHTML='檔名：<b>'+filename+'</b>　大小：<b>'+payloadBytes.length+
-        '</b> bytes　資料幀：<b>'+fr.dataFrames.length+'</b>　播放序：<b>'+seq.length+
-        '</b>'+(secs!=='—'?'　一輪約 <b>'+secs+'</b> 秒':'')+
-        '。<br>已停駐 <b>META 幀</b>（第 1 張）— 接收端先掃此張取得檔案資訊，再按「開始輪播」或下載 ZIP 慢慢掃。'+
-        (pb.hint?('<br><span style="color:var(--warn)">'+pb.hint+'</span>'):'');
-      preparePlayer(seq, currentEcc(), {dataFrames:fr.dataFrames.length});
+      publishTransfer(payloadBytes, filename, '');
+    }).catch(function(err){
+      alert('讀檔失敗：'+(err && err.message?err.message:err));
     });
   }
 
@@ -823,6 +1356,33 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     return null;
   }
+  function decodeAllQrRegions(imgData, width, height){
+    var codes=[], seen={};
+    function add(code){
+      if(!code) return;
+      var key=(code.binaryData && code.binaryData.length)? bytesToLatin1(Uint8Array.from(code.binaryData).subarray(0,24)) : (code.data||'').slice(0,32);
+      if(seen[key]) return;
+      seen[key]=1; codes.push(code);
+    }
+    add(decodeQrFromImageData(imgData, width, height));
+    // 2x2 quadrants for parallel layout
+    var src=document.createElement('canvas');
+    src.width=width; src.height=height;
+    var sctx=src.getContext('2d');
+    var clamped=(imgData instanceof Uint8ClampedArray)? imgData : new Uint8ClampedArray(imgData);
+    sctx.putImageData(new ImageData(clamped, width, height),0,0);
+    var cols=2, rows=2;
+    for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
+      var rw=Math.floor(width/cols), rh=Math.floor(height/rows);
+      var x=c*rw, y=r*rh;
+      var q=document.createElement('canvas');
+      q.width=rw; q.height=rh;
+      q.getContext('2d').drawImage(src, x, y, rw, rh, 0, 0, rw, rh);
+      var d=q.getContext('2d').getImageData(0,0,rw,rh);
+      add(decodeQrFromImageData(d.data, rw, rh));
+    }
+    return codes;
+  }
   function shouldAppendFrames(){
     return !!(rx.asm && rx.asm.meta && !rx.asm.done);
   }
@@ -837,16 +1397,21 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     panel.style.display='block';
     var pct=Math.floor(a.got/a.meta.t*100);
     var miss=a.missing? a.missing():[];
+    var sps=a.symbolsPerSec? a.symbolsPerSec():0;
+    var remain=a.meta.t-a.got;
+    var eta=sps>0? Math.ceil(remain/sps)+' 秒':'計算中';
     if($('frameAssemblyInfo')){
       $('frameAssemblyInfo').innerHTML='檔名：<b>'+escapeHtml(a.meta.n)+'</b>　已收：<b>'+a.got+' / '+a.meta.t+
-        '</b>（'+pct+'%）　大小：<b>'+formatBytes(a.meta.s)+'</b>';
+        '</b>（'+pct+'%）　大小：<b>'+formatBytes(a.meta.s)+'</b>'+
+        (a.meta.z?'　<b>壓縮</b>':'')+(a.fountain?'　<b>噴泉</b>':'')+
+        '<br>速度：<b>'+(sps?sps.toFixed(1):'—')+'</b> 符號/秒　ETA：<b>'+eta+'</b>';
     }
     if($('frameAssemblyBar')) $('frameAssemblyBar').style.width=pct+'%';
     if($('frameAssemblyStatus')) $('frameAssemblyStatus').textContent=pct>=100?'即將完成':'組裝中 '+pct+'%';
     if($('frameAssemblyMissing')){
       $('frameAssemblyMissing').textContent=miss.length?
-        ('尚缺 '+miss.length+' 幀'+(miss.length<=20?('：'+miss.join(', ')):'（前 20：'+miss.slice(0,20).join(', ')+'…）')):
-        (rx.running?'持續對準螢幕補齊最後幀…':'可繼續掃描或上傳圖片補幀');
+        ('尚缺 '+miss.length+' 源符號'+(miss.length<=24?('：'+miss.join(', ')):'（前 24：'+miss.slice(0,24).join(', ')+'…）')+' — 繼續對準，噴泉修復幀可補') :
+        (rx.running?'持續對準螢幕…':'可繼續掃描或上傳圖片補幀');
     }
     var more=$('btnAddMoreFrames'); if(more) more.style.display=miss.length?'':'none';
     if(!rx.asmPanelScrolled){
@@ -871,15 +1436,21 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var f=parseFrame(bytes);
       if(f){
         if(f.type==='meta'){
+          if(!rx.asm) rx.asm=new Reassembler();
           rx.asm.setMeta(f.meta);
           rx.sawDataBeforeMeta=false;
           hideTextResult();
         } else if(f.type==='data'){
+          if(!rx.asm) rx.asm=new Reassembler();
           if(!rx.asm.meta) rx.sawDataBeforeMeta=true;
           rx.asm.addData(f.idx, f.payload);
+        } else if(f.type==='repair'){
+          if(!rx.asm) rx.asm=new Reassembler();
+          if(!rx.asm.meta) rx.sawDataBeforeMeta=true;
+          else rx.asm.addRepair(f.esi, f.payload);
         }
         updateRxUI();
-        if(rx.asm.done){ finishRx(); }
+        if(rx.asm && rx.asm.done){ finishRx(); }
         return 'frame';
       }
     }
@@ -892,18 +1463,21 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function startScan(){
     if(rx.running) return;
     var video=$('rxVideo'), cv=$('rxCanvas'), ctx=cv.getContext('2d');
-    rx.asm=new Reassembler();
-    rx.sawDataBeforeMeta=false;
-    rx.asmPanelScrolled=false;
-    lastScanText=''; lastScanTextAt=0;
-    hideTextResult();
-    if($('rxProgress')) $('rxProgress').textContent='相機啟動中…';
-    if($('rxBar')) $('rxBar').style.width='0%';
-    hideFrameAssemblyPanel();
+    // resume if assembly in progress
+    if(!(rx.asm && rx.asm.meta && !rx.asm.done)){
+      rx.asm=new Reassembler();
+      rx.sawDataBeforeMeta=false;
+      rx.asmPanelScrolled=false;
+      lastScanText=''; lastScanTextAt=0;
+      hideTextResult();
+      hideFrameAssemblyPanel();
+      if($('rxProgress')) $('rxProgress').textContent='相機啟動中…';
+      if($('rxBar')) $('rxBar').style.width='0%';
+    }
     navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(stream){
       rx.stream=stream; video.srcObject=stream; video.setAttribute('playsinline',''); video.play();
       rx.running=true;
-      $('scanState').textContent='掃描中：請對準發送端 QR，系統會自動累積進度直到 100%';
+      $('scanState').textContent='掃描中：對準發送端 QR。META 鎖定後會持續組裝直到 100%（噴泉可丟幀）。';
       if($('rxProgress')) $('rxProgress').textContent='持續掃描中…對準螢幕上的 QR';
       var loop=function(){
         if(!rx.running) return;
@@ -911,10 +1485,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
           cv.width=video.videoWidth; cv.height=video.videoHeight;
           ctx.drawImage(video,0,0,cv.width,cv.height);
           var img=ctx.getImageData(0,0,cv.width,cv.height);
-          var code=decodeQrFromImageData(img.data, img.width, img.height);
-          if(code){
-            var kind=ingestDecodedCode(code);
-            if(kind==='text') showScanTextResult(code.data);
+          var codes=decodeAllQrRegions(img.data, img.width, img.height);
+          for(var i=0;i<codes.length;i++){
+            var kind=ingestDecodedCode(codes[i]);
+            if(kind==='text') showScanTextResult(codes[i].data);
           }
         }
         rx.raf=requestAnimationFrame(loop);
@@ -929,7 +1503,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     var a=rx.asm; if(!a){ hideFrameAssemblyPanel(); return; }
     if(!a.meta){
       if(rx.sawDataBeforeMeta){
-        $('rxProgress').textContent='已讀到資料幀，請對準 META 幀（檔案資訊）…';
+        $('rxProgress').textContent='已讀到資料/修復幀，請對準 META 幀（檔案資訊）…';
         if(rx.running) $('scanState').textContent='已讀到部分資料，請對準含檔名的 META 幀';
       } else if(rx.running) {
         $('rxProgress').textContent='持續掃描中…尚未讀到檔案資訊';
@@ -938,11 +1512,15 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       return;
     }
     var pct=Math.floor(a.got/a.meta.t*100);
-    $('rxProgress').innerHTML='檔名：<b>'+escapeHtml(a.meta.n)+'</b>　進度：<b>'+a.got+' / '+a.meta.t+
-      '</b>（'+pct+'%）'+(a.got<a.meta.t?'　缺 '+(a.meta.t-a.got)+' 幀':'');
+    var sps=a.symbolsPerSec? a.symbolsPerSec():0;
+    var remain=a.meta.t-a.got;
+    var eta=sps>0?('　ETA ~'+Math.ceil(remain/sps)+'s'):'';
+    $('rxProgress').innerHTML='🔒 <b>'+escapeHtml(a.meta.n)+'</b>　進度：<b>'+a.got+' / '+a.meta.t+
+      '</b>（'+pct+'%）　缺 '+(a.meta.t-a.got)+'　'+(sps?sps.toFixed(1)+' 符/秒':'')+eta+
+      (a.meta.z?'　壓縮':'')+(a.fountain?'　噴泉':'');
     $('rxBar').style.width=pct+'%';
     if(rx.running){
-      $('scanState').textContent='自動組裝中 '+pct+'%（'+a.got+'/'+a.meta.t+'）— 持續對準螢幕，收齊後跳出儲存視窗';
+      $('scanState').textContent='META 已鎖定 — 自動組裝 '+pct+'%（'+a.got+'/'+a.meta.t+'）。持續對準，收齊後存檔。';
     }
     if(a.done) hideFrameAssemblyPanel();
     else showFrameAssemblyPanel();
@@ -951,11 +1529,24 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     var wasScanning=rx.running;
     if(wasScanning) stopScan();
     var r=rx.asm.result;
-    var msg=r.ok?'✅ 檔案已收齊，請選擇儲存位置':'⚠️ 已收齊但 CRC 不符，仍請確認後儲存';
-    $('scanState').innerHTML=msg;
-    if($('imgResult')) $('imgResult').textContent=msg;
-    hideFrameAssemblyPanel();
-    promptSaveFile(r.bytes, r.name, r.ok);
+    if(!r) return;
+    function afterBytes(bytes, ok){
+      var msg=ok?'✅ 檔案已收齊，請選擇儲存位置':'⚠️ 已收齊但 CRC 不符，仍請確認後儲存';
+      $('scanState').innerHTML=msg;
+      if($('imgResult')) $('imgResult').textContent=msg;
+      hideFrameAssemblyPanel();
+      promptSaveFile(bytes, r.name, ok);
+    }
+    if(r.z){
+      decompressDeflate(r.bytes).then(function(raw){
+        afterBytes(raw, true);
+      }).catch(function(err){
+        alert('解壓失敗：'+(err && err.message?err.message:err));
+        afterBytes(r.bytes, false);
+      });
+    } else {
+      afterBytes(r.bytes, r.ok);
+    }
   }
   function stopScan(){
     rx.running=false;
@@ -963,7 +1554,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if(rx.stream){ rx.stream.getTracks().forEach(function(t){t.stop();}); rx.stream=null; }
   }
 
-  // ---- decode from image files (no camera) ----
+  // ---- decode from image files ----
   var imgQueue={files:[], busy:false};
   function setImgProgress(done, total, extra){
     var pct=total? Math.floor(done/total*100):0;
@@ -974,7 +1565,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function updateImgPickUI(){
     var n=imgQueue.files.length;
     var pick=$('imgPickInfo'), btnA=$('btnAnalyzeImg'), btnC=$('btnClearImg');
-    if(pick) pick.textContent=n?('已選 '+n+' 張圖片'+(imgQueue.busy?'，分析中…':'，可再按「分析圖片」重跑')):'尚未選擇圖片';
+    if(pick) pick.textContent=n?('已選 '+n+' 張（選完自動解碼；大檔請改用相機對螢幕）'):'尚未選擇圖片';
     if(btnA) btnA.disabled=!n || imgQueue.busy;
     if(btnC) btnC.disabled=!n && !imgQueue.busy;
   }
@@ -987,9 +1578,14 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function onImgFilesSelected(fileList){
     var files=fileList? Array.prototype.slice.call(fileList):[];
-    imgQueue.files=files;
+    // append to queue if assembling
+    if(shouldAppendFrames() && imgQueue.files.length){
+      imgQueue.files=imgQueue.files.concat(files);
+    } else {
+      imgQueue.files=files;
+    }
     imgQueue.busy=false;
-    setImgProgress(0,0, files.length?('已選 '+files.length+' 張，準備分析…'):'等待分析…');
+    setImgProgress(0,0, files.length?('已選，自動分析中…'):'等待分析…');
     if($('imgBar')) $('imgBar').style.width='0%';
     updateImgPickUI();
     if(files.length) decodeImages(files, {append:shouldAppendFrames()});
@@ -1002,10 +1598,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         c.width=img.naturalWidth; c.height=img.naturalHeight;
         var x=c.getContext('2d'); x.drawImage(img,0,0);
         var d=x.getImageData(0,0,c.width,c.height);
-        res(decodeQrFromImageData(d.data,d.width,d.height));
+        res(decodeAllQrRegions(d.data,d.width,d.height));
         URL.revokeObjectURL(img.src);
       };
-      img.onerror=function(){ res(null); };
+      img.onerror=function(){ res([]); };
       img.src=URL.createObjectURL(file);
     });
   }
@@ -1030,11 +1626,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         if(opts.append) msg='（追加模式）'+msg;
         if(rx.asm && rx.asm.meta && !rx.asm.done){
           var miss=rx.asm.missing? rx.asm.missing():[];
-          msg+=' 尚未收齊：'+rx.asm.got+' / '+rx.asm.meta.t+'。請按「繼續上傳截圖」補齊缺幀。';
+          msg+=' 組裝 '+rx.asm.got+' / '+rx.asm.meta.t+'。可再選圖自動補幀，或改用相機。';
           if(miss.length) msg+=' 缺：'+miss.slice(0,16).join(',')+(miss.length>16?'…':'');
           showFrameAssemblyPanel();
         } else if(!frames && !texts.length){
-          msg+=' 未辨識到 QR，請確認截圖清晰、完整，且為本工具產生的多幀或標準 QR。';
+          msg+=' 未辨識到 QR。';
         }
         $('imgResult').textContent=msg;
         if(texts.length && !(rx.asm && rx.asm.meta && !rx.asm.done)){
@@ -1049,19 +1645,20 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         if(rx.asm && rx.asm.done) finishRx();
         return;
       }
-      setImgProgress(i, total, '分析中 '+(i+1)+' / '+total+'（'+Math.floor(i/total*100)+'%）— '+((arr[i]&&arr[i].name)||('圖'+(i+1))));
-      decodeImageFile(arr[i]).then(function(code){
-        if(code) decoded++;
-        var kind=ingestDecodedCode(code);
-        if(kind==='frame') frames++;
-        else if(kind==='text' && code && code.data) texts.push(code.data);
+      setImgProgress(i, total, '分析中 '+(i+1)+' / '+total+' — '+((arr[i]&&arr[i].name)||('圖'+(i+1))));
+      decodeImageFile(arr[i]).then(function(codes){
+        for(var ci=0;ci<codes.length;ci++){
+          decoded++;
+          var kind=ingestDecodedCode(codes[ci]);
+          if(kind==='frame') frames++;
+          else if(kind==='text' && codes[ci] && codes[ci].data) texts.push(codes[ci].data);
+        }
         setImgProgress(i+1, total);
         setTimeout(function(){ next(i+1); }, 0);
       });
     })(0);
   }
 
-  // ---- tabs ----
   function showTab(name){
     ['send','recv'].forEach(function(t){
       $('tab-'+t).classList.toggle('active', t===name);
@@ -1092,10 +1689,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if($('btnDownloadAllFrames')) $('btnDownloadAllFrames').onclick=downloadAllFramesZip;
     if($('fpsSel')) $('fpsSel').onchange=onPlaybackSettingChange;
     if($('playModeSel')) $('playModeSel').onchange=onPlaybackSettingChange;
+    if($('layoutSel')) $('layoutSel').onchange=onPlaybackSettingChange;
     $('fileInput').onchange=function(e){sendFiles(e.target.files);};
     $('folderInput').onchange=function(e){sendFiles(e.target.files);};
     $('btnStartScan').onclick=startScan;
-    $('btnStopScan').onclick=function(){stopScan();$('scanState').textContent='已停止掃描';};
+    $('btnStopScan').onclick=function(){stopScan();$('scanState').textContent='已停止（組裝進度保留，可再按開始掃描續傳）';};
     if($('imgInput')) $('imgInput').onchange=function(e){onImgFilesSelected(e.target.files);};
     if($('btnAnalyzeImg')) $('btnAnalyzeImg').onclick=function(){
       if(!imgQueue.files.length){ alert('請先選擇圖片'); return; }
@@ -1112,9 +1710,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if($('btnAssemblyUpload')) $('btnAssemblyUpload').onclick=triggerImgUpload;
     if($('btnResetAssembly')) $('btnResetAssembly').onclick=function(){
       if(imgQueue.busy){ alert('分析進行中，請稍候'); return; }
+      if(rx.asm && rx.asm.meta && !rx.asm.done){
+        if(!confirm('確定放棄目前組裝進度？')) return;
+      }
       resetFrameAssembly();
       clearPendingSave();
-      if($('imgResult')) $('imgResult').textContent='已重新開始，請上傳 QR 截圖。';
+      if($('imgResult')) $('imgResult').textContent='已重新開始。';
     };
     if($('btnSaveFile')) $('btnSaveFile').onclick=savePendingFile;
     if($('btnShareFile')) $('btnShareFile').onclick=sharePendingFile;

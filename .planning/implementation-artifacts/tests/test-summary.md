@@ -1,24 +1,25 @@
 # Test Automation Summary
 
-**Date:** 2026-07-12 00:40（UTC+8）  
+**Date:** 2026-07-12 01:10（UTC+8）  
 **Project:** QR-Beam / 8plus_web `public/tool/qrcode.html`  
-**Focus:** openapi.json 類大檔組裝後下載鈕不亮
+**Focus:** 多段長圖組裝缺幀
 
-## Root cause
+## Root causes（已確認）
 
-「分析完成」= 圖片掃完，≠ 檔案組齊。缺幀時下載保持 disabled 且舊 UI 無說明；解壓非同步時狀態也曾不一致。
+1. 長圖匯出把 640px QR **縮成 360** → 密模組損壞  
+2. 解碼早退、失敗格不重試；高圖誤走 2×2  
+3. META 前 DATA/REPAIR 直接丟 → 亂序多段缺幀
 
 ## Fixes
 
-- `reportImageDecodeOutcome` / `showImgOutcome`：未組齊／缺 META／可下載／解壓中 明確提示
-- `tryFinalizeAssembly` + `rx.finishing`：組齊後必走到下載就緒
-- disabled 下載鈕 `title` 說明原因；「繼續上傳缺幀」CTA
+- `STRIP_CELL=400` 原生繪製（不縮放）
+- `decodeVerticalStrip` + upscale/offset retry
+- 高圖不 fallthrough 2×2
+- `rx.preMeta` 緩衝至 META
 
-## E2E
+## E2E regression
 
-- [x] incomplete → download disabled + 尚未組齊
-- [x] openapi-like JSON → download `openapi.json`
-- [x] 既有 download / 中文文字 / multi-frame
+- [x] `multi-part vertical strips round-trip without missing frames`（密資料 + **逆序**多段）
 
 ## Docs
 
@@ -27,8 +28,8 @@
 ## Results
 
 - Unit: **11 passed**
-- E2E: **15 passed**（含本輪新增）
-- Total: **26 passed**
+- E2E: **16 passed**
+- Total: **27 passed**
 
 ## Sync
 

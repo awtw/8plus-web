@@ -429,7 +429,7 @@
           <div><button type="button" class="ghost" id="btnDownloadStripPngs">逐張下載 PNG</button></div>
           <div><button type="button" class="ghost" id="btnRebuildStrip">重新合成</button></div>
         </div>
-        <div class="note" id="stripResultHint">已切成多段短長圖（每段約 8 幀）。接收端可分批上傳長圖補幀，比單張超長圖好掃。</div>
+        <div class="note" id="stripResultHint">已切成多段短長圖（每段約 8 幀、每格 400px）。接收端可一次全選或分批上傳；順序不限（會緩衝至掃到 META）。</div>
       </div>
     </div>
   </div>
@@ -951,10 +951,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   var qrcode=global.qrcode, jsQR=global.jsQR;
 
   var QR_RENDER_SIZE=640;
-  var STRIP_CELL=360, STRIP_GAP=20, STRIP_PAD=16;
+  var STRIP_CELL=400, STRIP_GAP=24, STRIP_PAD=16; // larger cell = denser QR survives strip export
   var STRIP_WIDTH=STRIP_CELL+STRIP_PAD*2;
   var STRIP_MAX_HEIGHT=16000;
   var STRIP_FRAMES_PER_PART=8; // short strips = easier phone scan / multi-upload
+  var STRIP_DECODE_MIN=420; // upscale crop before jsQR
   function paintQrToFixedCanvas(canvas, qr, targetSize){
     var n=qr.getModuleCount(), quiet=4;
     var target=targetSize||QR_RENDER_SIZE;
@@ -973,18 +974,19 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     return n;
   }
-  function drawFrameQR(canvas, bytes, ecc){
+  function drawFrameQR(canvas, bytes, ecc, targetSize){
     var levels=[ecc||'M','L'];
     var lastErr=null;
+    var size=targetSize||QR_RENDER_SIZE;
     for(var i=0;i<levels.length;i++){
       try{
         var qr=qrcode(0, levels[i]);
         qr.addData(bytesToLatin1(bytes),'Byte'); qr.make();
-        return paintQrToFixedCanvas(canvas, qr, QR_RENDER_SIZE);
+        return paintQrToFixedCanvas(canvas, qr, size);
       }catch(e){ lastErr=e; }
     }
     if(canvas){
-      canvas.width=QR_RENDER_SIZE; canvas.height=QR_RENDER_SIZE;
+      canvas.width=size; canvas.height=size;
       var ctx=canvas.getContext('2d');
       ctx.fillStyle='#1a1020'; ctx.fillRect(0,0,canvas.width,canvas.height);
       ctx.fillStyle='#ff8a80'; ctx.font='16px sans-serif';
@@ -1631,10 +1633,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         return;
       }
       if(onProgress) onProgress(idx, n);
-      try{ drawFrameQR(tmp, frames[idx], ecc); }
+      try{ drawFrameQR(tmp, frames[idx], ecc, STRIP_CELL); }
       catch(e){ idx++; setTimeout(next,0); return; }
       var y=STRIP_PAD + idx*(cellH+STRIP_GAP);
-      sctx.drawImage(tmp, STRIP_PAD, y, STRIP_CELL, STRIP_CELL);
+      // Native STRIP_CELL paint — do NOT downscale from 640 (loses dense modules).
+      sctx.drawImage(tmp, STRIP_PAD, y);
       idx++; setTimeout(next,0);
     })();
   }
@@ -1999,7 +2002,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   // ---- RECEIVE ----
   var rx={
     asm:null, stream:null, raf:null, running:false, asmPanelScrolled:false, sawDataBeforeMeta:false,
-    decodeCount:0, uniqueCount:0, lastFrameLabel:'尚未解到', seenKeys:{}, savePrompted:false, finishing:false
+    decodeCount:0, uniqueCount:0, lastFrameLabel:'尚未解到', seenKeys:{}, savePrompted:false, finishing:false,
+    preMeta:[]
   };
   var lastScanText='', lastScanTextAt=0;
   function escapeHtml(s){
@@ -2023,6 +2027,55 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     return null;
   }
+  function decodeQrCellFromCanvas(srcCanvas, sx, sy, side){
+    if(side<24) return null;
+    var sq=document.createElement('canvas');
+    sq.width=side; sq.height=side;
+    var sctx=sq.getContext('2d');
+    sctx.imageSmoothingEnabled=false;
+    sctx.drawImage(srcCanvas, sx, sy, side, side, 0, 0, side, side);
+    var target=side;
+    var img=sq;
+    if(side<STRIP_DECODE_MIN){
+      target=STRIP_DECODE_MIN;
+      var up=document.createElement('canvas');
+      up.width=target; up.height=target;
+      var uctx=up.getContext('2d');
+      uctx.imageSmoothingEnabled=false;
+      uctx.drawImage(sq, 0, 0, target, target);
+      img=up;
+    }
+    var d=img.getContext('2d').getImageData(0,0,target,target);
+    return decodeQrFromImageData(d.data, target, target);
+  }
+  function decodeVerticalStrip(srcCanvas, width, height){
+    var padX=Math.max(1, Math.round(width*STRIP_PAD/STRIP_WIDTH));
+    var cell=width-2*padX;
+    if(cell<32) return [];
+    var gap=Math.max(0, Math.round(width*STRIP_GAP/STRIP_WIDTH));
+    var step=cell+gap;
+    var expected=Math.max(1, Math.round((height-2*padX+gap)/step));
+    // Prefer exact layout match for our exporter
+    var exactH=STRIP_PAD*2 + expected*STRIP_CELL + Math.max(0,expected-1)*STRIP_GAP;
+    if(Math.abs(height-exactH)<=4 && Math.abs(width-STRIP_WIDTH)<=4){
+      padX=STRIP_PAD; cell=STRIP_CELL; gap=STRIP_GAP; step=cell+gap;
+    }
+    var codes=[], dyList=[0,-2,2,-4,4,-6,6,-8,8], dpList=[0,-1,1,-2,2];
+    for(var i=0;i<expected;i++){
+      var found=null;
+      for(var di=0;di<dyList.length && !found;di++){
+        for(var pi=0;pi<dpList.length && !found;pi++){
+          var px=Math.max(0, padX+dpList[pi]);
+          var sy=Math.max(0, padX+i*step+dyList[di]);
+          var side=Math.min(cell, width-px, height-sy);
+          if(side<32) continue;
+          found=decodeQrCellFromCanvas(srcCanvas, px, sy, side);
+        }
+      }
+      if(found) codes.push(found);
+    }
+    return codes;
+  }
   function decodeAllQrRegions(imgData, width, height){
     var codes=[], seen={};
     function add(code){
@@ -2036,20 +2089,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     var sctx=src.getContext('2d');
     var clamped=(imgData instanceof Uint8ClampedArray)? imgData : new Uint8ClampedArray(imgData);
     sctx.putImageData(new ImageData(clamped, width, height),0,0);
-    // vertical strip: stacked square QRs (export long image)
+    // vertical strip: stacked square QRs (export long image / multi-part strips)
     if(height>width*1.15){
-      var padX=Math.max(8, Math.round(width*STRIP_PAD/STRIP_WIDTH));
-      var cell=width-2*padX;
-      var gap=Math.max(8, Math.round(width*STRIP_GAP/STRIP_WIDTH));
-      var step=cell+gap;
-      for(var sy=padX; sy+cell<=height-padX+4; sy+=step){
-        var sq=document.createElement('canvas');
-        sq.width=cell; sq.height=cell;
-        sq.getContext('2d').drawImage(src, padX, sy, cell, cell, 0, 0, cell, cell);
-        var sd=sq.getContext('2d').getImageData(0,0,cell,cell);
-        add(decodeQrFromImageData(sd.data, cell, cell));
-      }
-      if(codes.length>1) return codes;
+      var stripCodes=decodeVerticalStrip(src, width, height);
+      for(var si=0;si<stripCodes.length;si++) add(stripCodes[si]);
+      // Tall image: never fall through to 2×2 (false crops create bogus frames).
+      if(stripCodes.length) return codes;
     }
     add(decodeQrFromImageData(imgData, width, height));
     // 2x2 quadrants for parallel layout
@@ -2057,16 +2102,23 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
       var rw=Math.floor(width/cols), rh=Math.floor(height/rows);
       var x=c*rw, y=r*rh;
-      var q=document.createElement('canvas');
-      q.width=rw; q.height=rh;
-      q.getContext('2d').drawImage(src, x, y, rw, rh, 0, 0, rw, rh);
-      var d=q.getContext('2d').getImageData(0,0,rw,rh);
-      add(decodeQrFromImageData(d.data, rw, rh));
+      var code=decodeQrCellFromCanvas(src, x, y, Math.min(rw, rh));
+      add(code);
     }
     return codes;
   }
   function shouldAppendFrames(){
-    return !!(rx.asm && rx.asm.meta && !rx.asm.done);
+    return !!(rx.asm && !rx.asm.done && (rx.asm.meta || rx.sawDataBeforeMeta || (rx.preMeta && rx.preMeta.length)));
+  }
+  function flushPreMeta(){
+    if(!rx.asm || !rx.asm.meta || !rx.preMeta || !rx.preMeta.length) return;
+    var q=rx.preMeta.slice();
+    rx.preMeta=[];
+    for(var i=0;i<q.length;i++){
+      var item=q[i];
+      if(item.type==='data') rx.asm.addData(item.idx, item.payload);
+      else if(item.type==='repair') rx.asm.addRepair(item.esi, item.payload);
+    }
   }
   function setScanLive(label, on){
     var pill=$('scanLivePill'), lab=$('scanLiveLabel');
@@ -2167,6 +2219,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     rx.seenKeys={};
     rx.savePrompted=false;
     rx.finishing=false;
+    rx.preMeta=[];
     hideFrameAssemblyPanel();
     hideTextResult();
     if($('rxProgress')) $('rxProgress').textContent='待機：按「開始掃描」後會連續掃碼並顯示數量。';
@@ -2192,14 +2245,25 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
           rx.asm.setMeta(f.meta);
           rx.sawDataBeforeMeta=false;
           hideTextResult();
+          flushPreMeta();
         } else if(f.type==='data'){
           if(!rx.asm) rx.asm=new Reassembler();
-          if(!rx.asm.meta) rx.sawDataBeforeMeta=true;
-          rx.asm.addData(f.idx, f.payload);
+          if(!rx.asm.meta){
+            rx.sawDataBeforeMeta=true;
+            rx.preMeta=rx.preMeta||[];
+            rx.preMeta.push({type:'data', idx:f.idx, payload:Uint8Array.from(f.payload)});
+          } else {
+            rx.asm.addData(f.idx, f.payload);
+          }
         } else if(f.type==='repair'){
           if(!rx.asm) rx.asm=new Reassembler();
-          if(!rx.asm.meta) rx.sawDataBeforeMeta=true;
-          else rx.asm.addRepair(f.esi, f.payload);
+          if(!rx.asm.meta){
+            rx.sawDataBeforeMeta=true;
+            rx.preMeta=rx.preMeta||[];
+            rx.preMeta.push({type:'repair', esi:f.esi, payload:Uint8Array.from(f.payload)});
+          } else {
+            rx.asm.addRepair(f.esi, f.payload);
+          }
         }
         updateRxUI();
         if(rx.asm && rx.asm.done){ finishRx(); }
@@ -2230,6 +2294,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       rx.seenKeys={};
       rx.savePrompted=false;
       rx.finishing=false;
+      rx.preMeta=[];
       lastScanText=''; lastScanTextAt=0;
       hideTextResult();
       hideFrameAssemblyPanel();
@@ -2476,8 +2541,9 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function onImgFilesSelected(fileList){
     var files=fileList? Array.prototype.slice.call(fileList):[];
-    // append to queue if assembling
-    if(shouldAppendFrames() && imgQueue.files.length){
+    var append=shouldAppendFrames();
+    // append to queue if assembling / buffering pre-META frames
+    if(append && imgQueue.files.length){
       imgQueue.files=imgQueue.files.concat(files);
     } else {
       imgQueue.files=files;
@@ -2486,7 +2552,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     setImgProgress(0,0, files.length?('已選，自動分析中…'):'等待分析…');
     if($('imgBar')) $('imgBar').style.width='0%';
     updateImgPickUI();
-    if(files.length) decodeImages(files, {append:shouldAppendFrames()});
+    if(files.length) decodeImages(files, {append:append});
   }
   function decodeImageFile(file){
     return new Promise(function(res){
@@ -2513,6 +2579,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       rx.asm=new Reassembler();
       rx.savePrompted=false;
       rx.finishing=false;
+      rx.preMeta=[];
+      rx.sawDataBeforeMeta=false;
     } else if(!rx.asm){
       rx.asm=new Reassembler();
     }

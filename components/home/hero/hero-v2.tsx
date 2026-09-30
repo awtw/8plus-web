@@ -6,7 +6,8 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
-import { HERO_BACKDROPS } from './hero-backdrops'
+import { HERO_BACKDROPS, HeroBackdropStyles } from './hero-backdrops'
+import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 const HERO_CSS = `
   .hv-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transition: opacity .5s ease; }
@@ -143,9 +144,6 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null)
 
   React.useEffect(() => {
-    let st = document.getElementById('hero-v2-css')
-    if (!st) { st = document.createElement('style'); st.id = 'hero-v2-css'; document.head.appendChild(st) }
-    st.textContent = HERO_CSS
     // pick a fresh random main-visual on every page load / home entry
     const keys = Object.keys(HERO_LABELS)
     const pick = keys[Math.floor(Math.random() * keys.length)]
@@ -178,9 +176,10 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         const nx = p.x + Math.cos(a * 3) * 1.4, ny = p.y + Math.sin(a * 3) * 1.4
         ctx.strokeStyle = 'rgba(' + p.c + ',.66)'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke()
         p.x = nx; p.y = ny; if (p.x < 0 || p.x > cv.width || p.y < 0 || p.y > cv.height) { p.x = Math.random() * cv.width; p.y = Math.random() * cv.height } }
-      raf = requestAnimationFrame(draw) }
-    if (!reduce) draw(); else { ctx.fillStyle = '#002FA7'; ctx.fillRect(0, 0, cv.width, cv.height) }
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    }
+    let stop = () => {}
+    if (!reduce) stop = startFrameLoop({ host: sec, frame: draw }); else { ctx.fillStyle = '#002FA7'; ctx.fillRect(0, 0, cv.width, cv.height) }
+    return () => { stop(); window.removeEventListener('resize', resize) }
   }, [variant])
 
   // logo intake lines
@@ -223,9 +222,10 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         const nx = o.x + Math.cos(a) * 1.9, ny = o.y + Math.sin(a) * 1.9
         ctx.strokeStyle = 'rgba(' + o.c + ',.5)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(nx, ny); ctx.stroke()
         o.x = nx; o.y = ny; if (o.x < 0 || o.x > cv.width || o.y < 0 || o.y > cv.height || Math.hypot(o.x - p.x, o.y - p.y) < 16) { o.x = Math.random() * cv.width; o.y = Math.random() * cv.height } }
-      raf = requestAnimationFrame(draw) }
-    if (!reduce) draw(); else { ctx.fillStyle = '#002FA7'; ctx.fillRect(0, 0, cv.width, cv.height) }
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    }
+    let stop = () => {}
+    if (!reduce) stop = startFrameLoop({ host: sec, frame: draw }); else { ctx.fillStyle = '#002FA7'; ctx.fillRect(0, 0, cv.width, cv.height) }
+    return () => { stop(); window.removeEventListener('resize', resize) }
   }, [variant])
 
   // section height = viewport minus site header
@@ -265,6 +265,9 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       onClick={onHeroClick}
       style={{ position: 'relative', height: 'calc(100vh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}
     >
+      {/* rendered in SSR HTML so the hero is styled on first paint (no CLS) */}
+      <style id="hero-v2-css" dangerouslySetInnerHTML={{ __html: HERO_CSS }} />
+      <HeroBackdropStyles />
       <div ref={sceneRef} style={{ position: 'absolute', inset: 0, zIndex: 0, transition: 'transform .3s ease' }} aria-hidden="true">
         <div className={'hv-bg' + (variant === 'combo' ? ' on' : '')}>
           <div className="ht-scene"><div className="ht-plane ht-floor"></div><div className="ht-plane ht-ceil"></div></div>

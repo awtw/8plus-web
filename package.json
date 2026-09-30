@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "check:bundle": "node ./scripts/check-bundle.mjs",
+    "check:contrast": "node ./scripts/check-contrast.mjs",
     "validate:content": "node ./scripts/validate-content.mjs",
     "generate:avatar-layers": "node ./scripts/generate-avatar-layers.mjs",
     "postinstall": "shx mkdir -p public/og || true"

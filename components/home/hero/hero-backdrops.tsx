@@ -5,6 +5,7 @@
 // Each component takes { active } and renders a .hv-bg layer; canvas
 // loops run only while their variant is active.
 import React from 'react'
+import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 const HB_CSS = `
   .hv-bg canvas.hb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -123,27 +124,24 @@ function injectCss(id, text) {
 
 const KB = '#002FA7'
 
-// shared canvas loop: runs only while active; one static frame under reduced motion.
+// shared canvas loop: pauses when off-screen / tab hidden, 30fps cap on phones,
+// one static frame under reduced motion or Data Saver (see lib/motion/frame-loop).
 function useCv(active, setup) {
   const ref = React.useRef(null)
   React.useEffect(() => {
     if (!active) return
     const cv = ref.current; if (!cv) return
-    const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches
     const ctx = cv.getContext('2d')
-    let raf, stop = false
     const inst = setup(cv, ctx)
     const resize = () => { const p = cv.parentElement; cv.width = p.clientWidth || 1280; cv.height = p.clientHeight || 720 }
     resize(); window.addEventListener('resize', resize)
-    const loop = () => { inst.frame(); if (!stop) raf = requestAnimationFrame(loop) }
-    if (!reduce) loop(); else inst.frame()
-    return () => { stop = true; cancelAnimationFrame(raf); window.removeEventListener('resize', resize); if (inst.dispose) inst.dispose() }
+    const stop = startFrameLoop({ host: cv.parentElement, frame: () => inst.frame() })
+    return () => { stop(); window.removeEventListener('resize', resize); if (inst.dispose) inst.dispose() }
   }, [active])
   return ref
 }
 
 function Shell({ active, cls, children }) {
-  React.useEffect(() => { injectCss('hb-css', HB_CSS); injectCss('hb2-css', HB2_CSS) }, [])
   return <div className={'hv-bg' + (cls ? ' ' + cls : '') + (active ? ' on' : '')}>{children}</div>
 }
 
@@ -894,6 +892,16 @@ function Eclipse({ active }) {
       <div className="sun"></div>
       <div className="moon"></div>
     </Shell>
+  )
+}
+
+// Rendered once by HeroV2 so backdrop CSS ships in the SSR HTML.
+export function HeroBackdropStyles() {
+  return (
+    <>
+      <style id="hb-css" dangerouslySetInnerHTML={{ __html: HB_CSS }} />
+      <style id="hb2-css" dangerouslySetInnerHTML={{ __html: HB2_CSS }} />
+    </>
   )
 }
 

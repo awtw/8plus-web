@@ -15,7 +15,7 @@ type SectionLabProps = {
 function labThumb(key: string): string | null {
   const remap: Record<string, string> = { 'crm-series': 'crm', 'power-bi': 'powerbi' }
   const id = remap[key] ?? key
-  return `/og/labs/${id}/web.png`
+  return `/og/labs/${id}/web.webp`
 }
 
 export function SectionLab({ locale }: SectionLabProps) {

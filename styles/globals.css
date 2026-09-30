@@ -71,7 +71,10 @@
   --focus-ring: 0 0 0 2px var(--accent);
   --motion-fast: 150ms;
   --motion-base: 200ms;
+  --motion-slow: 550ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --transition-base: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --container-max: 1440px;
   --container-gutter-desktop: 32px;

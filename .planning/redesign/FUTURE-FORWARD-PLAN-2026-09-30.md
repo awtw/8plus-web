@@ -148,14 +148,15 @@
 
 ---
 
-## 9. 待使用者決策
+## 9. 已定案決策（2026-09-30 CST，使用者回覆）
 
-1. **目標客群優先序**：企業客戶（重信任/案例）vs 新創/個人（重互動/價格透明）？影響 E 的估算器深度。
-2. **是否上 AI 助理（I9）**：需 LLM API 費用與內容治理；建議先做 Quiz，助理放後。
-3. **3D / WebGL**：是否接受只放 Hero 一處？
-4. **真實案例可公開程度**：可否署名客戶？決定 case study 寫法（署名 / 匿名化）。
-5. **next-intl 遷移時機**：建議在 A 完成後、D 之前處理（View Transitions 與路由結構相關）。
-6. **內容產能**：每月可投入幾篇文章？決定 C/AI 系列節奏。
+| # | 決策 | 影響 |
+|---|---|---|
+| D1 | **定位 = 獨立工作室**：讓人認識個人品牌；接受**委託案、教育訓練、職涯探討、AI 實務、顧問**。企業/新創/個人三類客群都要服務 | 首屏改「多入口」而非單一顧問敘事；見 §11 |
+| D2 | **Quiz 先做，做成「像 LLM 對話」但實際為規則式** | 見 §12；不做真 LLM，省 API 成本與內容治理風險；I9 助理延後 |
+| D3 | **接受 Hero 一處 3D/WebGL** | 限 Hero，動態 import、手機降級靜態圖 |
+| D4 | **客戶不可署名** | Case study 一律匿名化：產業＋規模＋角色＋數字；推薦語用「某製造業 CTO」格式；可用**自有專案/Lab**作為可署名證據 |
+| D5 | **內容產能 1–3 篇／月，且為「情況更新」** | 改為輕量「Field Notes / 近況」格式（短文、可日誌式）；不追長篇系列；AI 系列改為「每篇獨立、可被 GEO 引用」 |
 
 ---
 
@@ -168,3 +169,60 @@
 - [15 B2B Website Best Practices for 2026 — Directive](https://directiveconsulting.com/blog/15-b2b-website-best-practices-for-2026-built-for-buyers-not-just-browsers/)
 - [Improve Your Consulting Website Conversion Rate in 2026 — SCG](https://www.schmidtconsulting.group/blog/consulting-website-conversion/)
 - 內部：`.planning/research/domain-8plus-web-copy-motion-modernization-research-2026-06-30.md`、`.planning/UX-OPTIMIZATION-REVIEW.md`、`.planning/I18N-SSR-EVALUATION-2026-09-30.md`
+
+---
+
+## 11. 依 D1 調整：首頁多入口 + 服務分軌
+
+五條服務軌，每軌一頁區塊＋一個 CTA＋一個代表證據：
+
+| 軌 | 對象 | 主要 CTA | 證據（可署名的優先用自有作品） |
+|---|---|---|---|
+| 委託開發 | 企業/新創 | 預約需求訪談 | Lab 專案、匿名 case study |
+| 顧問（架構/AI 導入） | 企業/團隊 | 架構健檢 Quiz | 匿名 case study、方法論文章 |
+| AI 實務 | 團隊/個人 | Quiz → 預約 | Lab demo、Field Notes |
+| 教育訓練 | 企業 HR/團隊 | 下載課綱 + 預約 | 課綱大綱、講授主題、學員回饋（匿名） |
+| 職涯探討 | 個人 | 預約 1:1 | 職涯 Path、方法論短文 |
+
+首頁 Services 區改為「你是哪一種需求？」五張卡（bento，選中展開），同時是 Quiz 入口。
+
+新增頁面：`/training`（課綱、形式、對象、報價區間）、`/career`（1:1 流程、適合對象、預約）。`/services` 保留為總覽並連到各軌。
+
+---
+
+## 12. 「類 LLM」Quiz 規格（I7 + D2）
+
+**原則**：體驗像對話，實作為**決策樹＋加權評分＋模板化輸出**。不呼叫任何 LLM API。
+**誠信**：介面小字標示「引導式診斷（規則式，非生成式 AI）」——不誤導使用者；體驗好不需要靠隱瞞。
+
+體驗設計
+- 對話串 UI：機器人氣泡逐字輸出（typewriter，20–35ms/字，可點擊跳過）、思考點點點 400–800ms 隨機延遲。
+- 使用者以**快速選項 chip** 回覆（手機友善），少量題目允許自由輸入（僅用於預約備註，不參與判斷）。
+- 分支：第 1 題「你是哪一種需求？」決定走委託／顧問／AI／訓練／職涯五條子樹，每條 4–6 題。
+- 進度提示：頂部細進度條＋「約還有 2 題」。可返回上一題、可重來。
+- 結果頁：「診斷摘要」卡——建議服務組合、預估期程區間、建議下一步、相關文章/Lab 連結（依標籤自動挑）、可**複製摘要**與**一鍵預約（預填 Cal.com 備註）**。
+- 動效：結果卡以逐段 stream-in 呈現，模擬生成感；reduced-motion 時直接顯示。
+
+技術
+- 資料：`lib/quiz/tree.ts`（節點、選項、分數、標籤）＋`lib/quiz/outcomes.ts`（模板文案，中英雙語）。全靜態、可測試。
+- 元件：`components/quiz/`（`quiz-chat.tsx`、`typewriter.tsx`、`result-card.tsx`）。狀態用 `useReducer`；答案寫入 URL hash 可分享／還原。
+- 隱私：預設不上傳；「寄給我」為選填，走既有 Server Action webhook；分析只記匿名步驟漏斗事件。
+- 測試：決策樹單元測試（每條路徑皆可達、每個結果有模板）。
+
+驗收：五條子樹皆可完成；手機 390px 單手可操作；reduced-motion 正常；雙語；結果→預約預填成功。
+
+---
+
+## 13. 依決策修訂後的路線圖
+
+| 階段 | 週期 | 內容 |
+|---|---|---|
+| **A. 基礎與護欄** | 1 週 | Motion token、reduced-motion、效能預算、色場對比、清孤兒檔、匿名分析 |
+| **B. 手機優先** | 1–1.5 週 | 底部 tab／Sticky CTA、水平 snap、Hero 手機降級 |
+| **C'. 五軌重構 + 匿名 Case study** | 2 週（與 B 並行） | 首頁五入口、`/training`、`/career`、3–4 篇匿名 case、Field Notes 版型 |
+| **D. 互動 I** | 1.5 週 | ⌘K、Lab 篩選、View Transitions、閱讀進度 |
+| **E'. 類 LLM Quiz + 預約預填** | 1.5 週 | §12 全部；報價估算器降為 Quiz 結果內的「期程區間」 |
+| **F'. Hero 3D + GEO** | 1.5 週 | Hero WebGL（lazy、降級）、`llms.txt`、JSON-LD |
+| **G. 精緻化** | 持續 | Kinetic type、cursor、Lab mini demo、Path scrub；真 LLM 助理（I9）視需求再議 |
+
+下一步：以 GSD 建立 Phase 6.0（= A），逐階段 `/gsd-plan-phase`。

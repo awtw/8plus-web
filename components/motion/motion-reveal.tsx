@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useReducedMotion } from '@/components/motion/use-reduced-motion'
+import { MOTION } from '@/lib/motion/tokens'
 
 type MotionRevealProps = {
   children: ReactNode
@@ -11,12 +12,10 @@ type MotionRevealProps = {
   y?: number
 }
 
-const ease = [0.16, 1, 0.3, 1] as const
-
 export function MotionReveal({
   children,
   delay = 0,
-  y = 24,
+  y = MOTION.distance,
   className,
 }: MotionRevealProps) {
   const reduced = useReducedMotion()
@@ -31,7 +30,7 @@ export function MotionReveal({
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-8%' }}
-      transition={{ duration: 0.55, delay, ease }}
+      transition={{ duration: MOTION.duration.slow, delay, ease: MOTION.ease.out }}
     >
       {children}
     </motion.div>

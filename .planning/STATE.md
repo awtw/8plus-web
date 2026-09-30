@@ -19,6 +19,8 @@ Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實
 
 ## What Was Done
 
+- ✅ **2026-10-01 CST — ESLint 修復 + GA4 追蹤擴充**: 新增 `eslint.config.mjs`（flat config，`eslint-config-next` core-web-vitals + typescript；`.planning`/`docs`/`_bmad` 等排除）；4 條舊碼規則（`no-explicit-any`、`ban-ts-comment`、`no-require-imports`、`set-state-in-effect`）暫降為 warn，`pnpm lint` 0 error / 25 warn。GA 擴充：每事件自帶 `page_type`/`content_slug`/`device_type`/`site_locale`/`visitor_type`/`visit_count`/session 進度；轉換事件帶 `cta_location`/`pages_before_conversion`/`seconds_to_convert`；新事件 `content_view`/`content_read`/`copy_text`/`web_vital`/`not_found`/`js_error`/`session_summary`。`pnpm typecheck` 通過，尚未 DebugView 實測。
+- ✅ **2026-10-01 CST — GA4 埋碼 + 動線事件 + 轉換追蹤**: 新 property `G-KF309NTS2D`（`8plus.app`）；`lib/analytics.ts`（`track`/`EVENTS`/Cal 綁定）+ `components/analytics/analytics.tsx`（僅 production 載入，全站點擊委派、scroll/section/engaged、`entry_source` 首觸來源）；Cal `bookingSuccessful` → `booking_complete`；QR/語言切換用 `data-track`；文件 `docs/ANALYTICS.md`。`pnpm typecheck` 通過；待 DebugView 實測 + GA4 後台標 Key events/自訂維度。
 - ✅ **2026-07-11 23:43 CST — QR-Beam 行動端 QR 尺寸收斂**: `public/tool/qrcode.html` 將發送 QR 顯示由接近滿版的 640px 上限，改為手機 260–320px、桌機最高 420px；保留 640×640 canvas 輸出解析度。390px viewport 實測顯示 304×304px，`pnpm build` 通過。
 - ✅ **2026-07-11 23:55 CST — QR 垂直長圖結果區**: 「合成垂直長圖」完成後顯示預覽 + **下載長圖** 按鈕（避免非同步合成後自動下載被擋）。
 - ✅ **2026-07-01 CST — Phase 4.0 W0 IA + 路由**: nav 6 項（lab/about/services/path/blog/booking）；`/lab`；`/sb` `/sc` Share 殼；redirects；booking 併 contact；`pnpm build` 通過。
@@ -400,3 +402,27 @@ Resume file: None
 - 產出：`.planning/redesign/FUTURE-FORWARD-PLAN-2026-09-30.md`（現況診斷、趨勢適用度、設計方向 Editorial-Tech 2.0、15 項互動、內容缺口、手機專章、護欄、A–G 路線圖、6 項待決策）。
 - 結論：視覺已足夠大膽；缺口在互動深度、內容證據力、GEO、手機專屬體驗、效能/無障礙護欄。建議先 C（內容）+ B（手機）。
 - 狀態：DRAFT，待使用者回覆 §9 決策後進入 GSD phase 規劃。
+
+### 2026-09-30 CST — 前衛化計畫決策定案（使用者）
+- D1 獨立工作室，五軌服務（委託／顧問／AI 實務／教育訓練／職涯探討）；D2 先做規則式「類 LLM」Quiz；D3 接受 Hero 一處 3D；D4 客戶不可署名→全匿名化；D5 內容 1–3 篇／月、情況更新型。
+- 計畫已更新：`.planning/redesign/FUTURE-FORWARD-PLAN-2026-09-30.md` §9、§11–13。
+
+### 2026-10-01 CST — Phase 6.0 階段 A 啟動（Claude）
+- 新增 `.planning/phases/6.0-FOUNDATION-GUARDRAILS-PLAN.md`（A1–A6）。
+- ✅ A1 `lib/motion/tokens.ts` + CSS `--motion-slow/--ease-out/--ease-in-out`；`MotionReveal` 改吃 token。
+- ✅ A2 `lib/motion/frame-loop.ts`：分頁隱藏／捲出視窗暫停、<768px 30fps、reduced-motion／saveData 靜態一幀；套用 `hero-backdrops.tsx` `useCv` 與 `hero-v2.tsx` flow/lines。`pnpm typecheck`、`pnpm build` 通過。
+- ⚠️ 未能在瀏覽器實測 rAF 暫停（預覽窗 `visibilityState=hidden`）；需實機／聚焦視窗補驗。
+- ⚠️ 發現：首頁 Lab 縮圖 `/og/labs/ckd2026/web.png`、`/og/labs/crm/web.png` 404（既有問題，非本次改動）。
+- 待做：A3 bundle 預算、A4 對比檢查、A5 分析（待選廠商）、A6 Lighthouse 基準。
+
+### 2026-10-01 CST — Phase 6.0 A3/A4/A6 完成 + Lab 縮圖 404 修復（Claude）
+- ✅ 修復：補 `public/og/labs/ckd2026/web.png`、`crm/web.png`（複製，MDX 原引用不變）。
+- ✅ A3 `pnpm check:bundle`（目標 200KB warn／340KB fail）；A4 `pnpm check:contrast`；A6 Lighthouse 基準 → `.planning/redesign/BASELINE-2026-10-01.md`。
+- ⚠️ 首頁 mobile Perf 66、LCP 6.0s、TBT 450ms、BP 77（Cal.com 第三方 cookie）；內頁 94–95。新增 A7 首頁效能修復。
+- ⚠️ 橘色場白字對比 3.30 < AA 4.5 → 待決策 D6。
+- 待決策：A5 分析廠商（Plausible／Umami）、D6 橘場文字色。
+
+### 2026-10-01 CST — A7 首頁效能第一輪（Claude）
+- ✅ Lab 縮圖 WebP（6.6MB→2.5MB）；✅ Hero CSS 改 SSR `<style>`（CLS 0.91→0、TBT 450→10ms）；首頁 mobile Perf 66→73~89。
+- ⏳ Cal.com 延後載入（BP 77 主因）、手機固定輕量 Hero（LCP 波動）。
+- ⚠️ 另一會話同時在改 analytics／booking-embed；動 Cal 前先協調。詳見 `.planning/redesign/BASELINE-2026-10-01.md`。

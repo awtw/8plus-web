@@ -1,97 +1,98 @@
 'use client'
 
-import Link from "next/link";
-import { useLanguage } from "@/components/language-provider";
-import { getLocalizedProjects, isProjectLocaleFallback } from "@/lib/projects";
-import { ArrowRight, Sparkle } from "@phosphor-icons/react";
+import Link from 'next/link'
+import { useLanguage } from '@/components/language-provider'
+import { PageSection } from '@/components/page/page-section'
+import { PageHeader } from '@/components/page/page-header'
+import { LabCard } from '@/components/lab/lab-card'
+import { getLocalizedProjects, isProjectLocaleFallback, type Project } from '@/lib/projects'
+import {
+  LAB_GROUP_OF,
+  LAB_GROUP_ORDER,
+  getLabContent,
+  labRoleTag,
+  type LabGroupKey,
+} from '@/lib/content/lab'
+import '@/styles/pages/lab.css'
+
+const keyOf = (p: Project) => p.baseSlug ?? p.slug
 
 export default function ProjectsPage() {
-  const { t, locale } = useLanguage();
-  const publishedProjects = getLocalizedProjects(locale);
+  const { t, locale } = useLanguage()
+  const c = getLabContent(locale)
+  const projects = getLocalizedProjects(locale)
+  const featured = projects.filter((p) => p.featured)
+
+  const groups = LAB_GROUP_ORDER.map((key: LabGroupKey) => ({
+    key,
+    items: projects.filter((p) => (LAB_GROUP_OF[keyOf(p)] ?? 'other') === key),
+  })).filter((g) => g.items.length > 0)
+
+  const card = (p: Project, isFeatured = false) => (
+    <li key={`${p.slug}-${p.locale}`}>
+      <LabCard
+        project={p}
+        featured={isFeatured}
+        roleTag={labRoleTag(keyOf(p), locale) ?? p.role}
+        chip={isProjectLocaleFallback(p, locale) ? c.fallbackChip : undefined}
+        cta={isFeatured ? t('projects.viewDetails') : undefined}
+      />
+    </li>
+  )
 
   return (
-    <div className="section-shell section-pad-y">
-      <header className="max-w-4xl">
-        <span className="eyebrow">
-          <Sparkle className="h-3.5 w-3.5" weight="fill" />
-          Lab
-        </span>
-        <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4.5rem)] tracking-[-0.04em]">
-          {t('projects.title')}
-        </h1>
-        <p className="body-lead mt-4">
-          {t('projects.description')}
-        </p>
-      </header>
+    <>
+      <PageSection field="blue" className="lab-hero">
+        <PageHeader
+          eyebrow={`${c.eyebrow} · ${String(projects.length).padStart(2, '0')}`}
+          title={<span className="lab-hero-title">{t('projects.title')}</span>}
+          lead={c.lead}
+        />
+      </PageSection>
 
-      {publishedProjects.length === 0 ? (
-        <div className="surface-card mt-10 p-6">
-          <p className="text-[color:var(--fg-2)]">{t('projects.noProjects')}</p>
-        </div>
+      {projects.length === 0 ? (
+        <PageSection field="orange">
+          <p className="lab-empty">{t('projects.noProjects')}</p>
+        </PageSection>
       ) : (
-        <div className="mt-10 grid gap-4 lg:grid-cols-2">
-          {publishedProjects.map(project => (
-            <Link
-              key={`${project.slug}-${project.locale}`}
-              href={`/lab/${project.slug}`}
-              className="gradient-border-card p-6 sm:p-7"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-2xl font-semibold tracking-[-0.03em]">
-                      {project.title}
-                    </h2>
-                    {isProjectLocaleFallback(project, locale) && (
-                      <span className="metric-chip">中文</span>
-                    )}
-                  </div>
-                  <div className="mt-2 space-y-1 text-sm text-[color:var(--fg-2)]">
-                    {project.role && <p>{project.role}</p>}
-                    {project.period && <p className="text-[color:var(--muted)]">{project.period}</p>}
-                  </div>
-                </div>
-                <ArrowRight className="mt-1 h-5 w-5 text-[color:var(--muted)]" weight="bold" />
+        <>
+          {featured.length > 0 && (
+            <PageSection field="orange">
+              <div className="lab-section-head">
+                <h2 className="lab-section-title">{c.featured}</h2>
+                <span className="lab-section-meta">
+                  {c.featuredMeta} · {featured.length}
+                </span>
               </div>
+              <ul className="lab-grid">{featured.map((p) => card(p, true))}</ul>
+            </PageSection>
+          )}
 
-              <p className="mt-4 text-sm leading-7 text-[color:var(--fg-2)]">
-                {project.summary}
-              </p>
-
-              {project.stack && project.stack.length > 0 && (
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.stack.map(tech => (
-                    <span
-                      key={tech}
-                      className="metric-chip"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {project.highlights && project.highlights.length > 0 && (
-                <div className="mt-5 rounded-2xl border border-border-soft bg-[color:var(--surface)] p-4">
-                  <h3 className="text-sm font-semibold tracking-[-0.02em]">{t('projects.highlights')}</h3>
-                  <ul className="mt-3 space-y-2 text-sm leading-7 text-[color:var(--fg-2)]">
-                    {project.highlights.map((highlight, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="mt-5 text-sm font-medium text-[color:var(--fg)]">
-                {t('projects.viewDetails')}
+          {groups.map((g, i) => (
+            <PageSection key={g.key} field={i % 2 === 0 ? 'blue' : 'orange'}>
+              <div className="lab-section-head">
+                <h2 className="lab-section-title">{c.groups[g.key]}</h2>
+                <span className="lab-section-meta">
+                  {String(g.items.length).padStart(2, '0')} {c.countLabel}
+                </span>
               </div>
-            </Link>
+              <ul className="lab-grid">{g.items.map((p) => card(p))}</ul>
+            </PageSection>
           ))}
-        </div>
+        </>
       )}
-    </div>
-  );
+
+      <PageSection field="dark" className="border-t border-border-soft">
+        <h2 className="lab-cta-title">{c.ctaTitle}</h2>
+        <div className="lab-cta-actions">
+          <Link href="/booking" className="brand-button-primary">
+            {c.ctaPrimary} →
+          </Link>
+          <Link href="/services" className="brand-button-secondary">
+            {c.ctaSecondary}
+          </Link>
+        </div>
+      </PageSection>
+    </>
+  )
 }

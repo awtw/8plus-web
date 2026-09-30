@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8plus — Hero v5 · 握手主視覺</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="image-slot.js"></script>
+<style>
+  :root{--blue:#002FA7;--orange:#FE5000;--dark:#04061a;--fg:#fff;--meta:rgba(255,255,255,.58);
+    --sans:"Noto Sans TC","Outfit",sans-serif;--mono:"JetBrains Mono",monospace;--body:"Outfit","Noto Sans TC",sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:var(--dark);color:var(--fg);font-family:var(--body);overflow:hidden}
+
+  .switcher{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:6px;max-width:96vw;
+    background:rgba(4,6,26,.8);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.14);border-radius:16px}
+  .switcher button{font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--meta);background:transparent;border:0;cursor:pointer;padding:7px 12px;border-radius:11px;transition:.22s;white-space:nowrap}
+  .switcher button .n{font-weight:700;margin-right:5px}
+  .switcher button:hover{color:#fff}.switcher button.on{background:#fff;color:var(--dark)}
+
+  .hero{position:absolute;inset:0;overflow:hidden}
+  .stagewrap{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s}
+  .stagewrap.on{opacity:1;pointer-events:auto}
+  .grain{position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* top nav */
+  .topbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:24px 44px}
+  .nav{display:flex;gap:28px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em}
+  .nav a{color:#fff;text-decoration:none;opacity:.72;transition:.2s}.nav a:hover{opacity:1;color:var(--orange)}
+  .mark .wt{font-family:var(--sans);font-weight:900;font-size:22px;letter-spacing:-.02em;color:#fff}
+  .mark .wt sup{font-size:.5em;font-weight:700;vertical-align:super;color:var(--orange);margin-left:1px}
+
+  /* bottom-right caption */
+  .caption{position:absolute;right:44px;bottom:46px;z-index:20;max-width:min(42ch,44vw);text-align:right}
+  .caption .eye{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--meta);display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-bottom:16px}
+  .caption .eye .dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+  .caption h1{font-family:var(--sans);font-weight:900;font-size:clamp(26px,3.2vw,46px);line-height:1.18;letter-spacing:-.02em;color:#fff;text-shadow:0 4px 30px rgba(0,10,50,.6)}
+  .caption p{font-family:var(--body);font-weight:300;font-size:clamp(14px,1.15vw,17px);color:rgba(255,255,255,.8);margin-top:14px;line-height:1.7}
+  .caption .cta{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+  .btn{font-family:var(--sans);font-weight:500;font-size:14px;white-space:nowrap;padding:12px 24px;border-radius:999px;cursor:pointer;transition:.28s;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff}
+  .btn.solid{background:#fff;color:var(--dark);border-color:#fff}
+  .btn.solid:hover{background:var(--orange);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+  .btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .label{position:absolute;left:44px;bottom:24px;z-index:20;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--meta)}
+
+  /* shared left visual area */
+  .vis{position:absolute;left:0;top:0;bottom:0;width:70%;z-index:1}
+  @media(max-width:900px){.vis{width:100%}.caption{max-width:none;left:22px;right:22px;bottom:30px}}
+
+  /* 5a 線流交會 */
+  #a .vis svg{width:100%;height:100%}
+  #a .flowline{fill:none;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.4s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  #a .spark{position:absolute;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff,#FE5000 55%,transparent 72%);
+    box-shadow:0 0 40px 12px rgba(254,80,0,.6);animation:sparkPulse 2.6s ease-in-out infinite;opacity:0;animation-delay:2.2s;animation-fill-mode:forwards}
+  @keyframes sparkPulse{0%{opacity:0;transform:scale(.4)}30%{opacity:1}50%{transform:scale(1.15)}70%{transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
+
+  /* 5b image slot handshake */
+  #b .vis{width:74%}
+  #b .frame{position:absolute;inset:0;overflow:hidden}
+  #b image-slot{filter:saturate(1.15) contrast(1.05)}
+  #b .duo{position:absolute;inset:0;pointer-events:none;mix-blend-mode:color;
+    background:linear-gradient(100deg,rgba(0,47,167,.55) 0%,rgba(0,47,167,.15) 42%,rgba(254,80,0,.15) 58%,rgba(254,80,0,.6) 100%)}
+  #b .vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 40% 45%,transparent 40%,rgba(4,6,26,.6) 100%)}
+  #b .edge{position:absolute;right:-2px;top:0;bottom:0;width:38%;pointer-events:none;background:linear-gradient(90deg,transparent,var(--dark))}
+
+  /* 5c 8+ logo centric */
+  #c .vis{display:flex;align-items:center;justify-content:center}
+  #c .rays{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(72vh,680px);aspect-ratio:1}
+  #c .rays span{position:absolute;left:50%;top:50%;width:50%;height:1px;transform-origin:left center;background:linear-gradient(90deg,rgba(123,168,255,.55),transparent)}
+  #c .glyph{position:relative;font-family:var(--sans);font-weight:900;font-size:min(52vh,460px);line-height:.8;letter-spacing:-.05em;color:#fff;
+    text-shadow:0 0 80px rgba(47,102,255,.5);animation:floaty 6s ease-in-out infinite}
+  #c .glyph sup{font-size:.34em;vertical-align:super;color:var(--orange);text-shadow:0 0 50px rgba(254,80,0,.7)}
+  #c .ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(254,80,0,.4);width:min(60vh,560px);aspect-ratio:1;animation:spin 30s linear infinite}
+  #c .ring::before{content:"";position:absolute;top:-5px;left:50%;width:9px;height:9px;border-radius:50%;background:var(--orange);box-shadow:0 0 20px 4px rgba(254,80,0,.8)}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  /* 5d 粒子指尖 */
+  #d .vis{width:100%}
+  #d canvas{width:100%;height:100%}
+
+  @media (prefers-reduced-motion:reduce){
+    #a .flowline{stroke-dashoffset:0;animation:none}#a .spark{opacity:1;animation:none}
+    #c .glyph,#c .ring{animation:none}
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="switcher" id="sw">
+  <button data-go="a" class="on"><span class="n">5a</span>線流交會</button>
+  <button data-go="b"><span class="n">5b</span>握手實照 (可換圖)</button>
+  <button data-go="c"><span class="n">5c</span>8+ 巨型字標</button>
+  <button data-go="d"><span class="n">5d</span>粒子指尖</button>
+</nav>
+
+<section class="hero" id="hero">
+
+  <!-- 5a -->
+  <div class="stagewrap on" id="a" data-screen-label="Hero 5a">
+    <div class="vis"><svg id="flowsvg" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice"></svg><div class="spark" id="spark"></div></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- 5b -->
+  <div class="stagewrap" id="b" data-screen-label="Hero 5b">
+    <div class="vis"><div class="frame">
+      <image-slot id="handshake" shape="rect" fit="cover" src="../uploads/CleanShot%202026-07-09%20at%2005.46.47%402x.png" placeholder="拖入你的網格手×熱感手照片"></image-slot>
+      <div class="duo"></div><div class="vign"></div><div class="edge"></div>
+    </div></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- 5c -->
+  <div class="stagewrap" id="c" data-screen-label="Hero 5c">
+    <div class="vis">
+      <div class="rays" id="rays"></div>
+      <div class="ring"></div>
+      <div class="glyph">8<sup>+</sup></div>
+    </div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- 5d -->
+  <div class="stagewrap" id="d" data-screen-label="Hero 5d">
+    <div class="vis"><canvas id="pcv"></canvas></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- shared chrome -->
+  <div class="topbar">
+    <div class="mark"><span class="wt">8plus<sup>+</sup></span></div>
+    <div class="nav"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div>
+  </div>
+  <div class="caption">
+    <div class="eye"><span>顧問 · 開發 · 交付</span><span class="dot"></span></div>
+    <h1>把想法，<br>交到對的手上</h1>
+    <p>從構想到上線，技術的事放心交給我。</p>
+    <div class="cta"><button class="btn solid">預約諮詢</button><button class="btn ghost">看作品</button></div>
+  </div>
+  <div class="label" id="label">5a · 線流交會 LINE CONVERGENCE</div>
+</section>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const caps = { a:'5a · 線流交會 LINE CONVERGENCE', b:'5b · 握手實照 REAL HANDSHAKE（拖曳可換圖）', c:'5c · 8+ 巨型字標 LOGO HERO', d:'5d · 粒子指尖 PARTICLE TOUCH' };
+
+  // build 5a converging lines
+  (function(){
+    const svg=document.getElementById('flowsvg');const ns='http://www.w3.org/2000/svg';
+    const P={x:560,y:360}; // touch point
+    function add(x1,y1,cx,cy,col,i,from){
+      const p=document.createElementNS(ns,'path');
+      const d='M '+x1+' '+y1+' Q '+cx+' '+cy+' '+P.x+' '+P.y;
+      p.setAttribute('d',d);p.setAttribute('class','flowline');
+      p.setAttribute('stroke',col);p.setAttribute('stroke-width',(from==='L'?1.1:1.4));
+      p.setAttribute('opacity',from==='L'?.55:.7);
+      const len=Math.hypot(cx-x1,cy-y1)+Math.hypot(P.x-cx,P.y-cy);
+      p.style.setProperty('--len',len);p.style.animationDelay=(i*0.05)+'s';
+      svg.appendChild(p);
+    }
+    // left bundle (blue/white mesh) reaching from left edge
+    for(let i=0;i<16;i++){const y=120+i*30;add(-40,y,300,(y+P.y)/2,i%4===0?'#9fc0ff':'rgba(255,255,255,.85)',i,'L');}
+    // right/lower bundle (orange) reaching from bottom-right
+    for(let i=0;i<14;i++){const x=520+i*36;add(x,860,(x+P.x)/2,620,i%3===0?'#ffb27a':'#FE5000',i,'R');}
+    // place spark at P (viewBox 1000x800 sliced into .vis)
+    const spark=document.getElementById('spark');
+    function place(){const v=document.querySelector('#a .vis').getBoundingClientRect();
+      // slice: scale = max(w/1000,h/800)
+      const s=Math.max(v.width/1000,v.height/800);const ox=(v.width-1000*s)/2, oy=(v.height-800*s)/2;
+      spark.style.left=(ox+P.x*s-13)+'px';spark.style.top=(oy+P.y*s-13)+'px';}
+    place();addEventListener('resize',place);
+  })();
+
+  // build 5c rays
+  (function(){const rays=document.getElementById('rays');
+    for(let i=0;i<40;i++){const s=document.createElement('span');s.style.transform='rotate('+(i*9)+'deg)';s.style.opacity=(0.15+Math.random()*0.4);rays.appendChild(s);}})();
+
+  // 5d particle touch
+  let dCleanup=null;
+  function initD(){
+    const cv=document.getElementById('pcv');const ctx=cv.getContext('2d');const host=cv.parentElement;
+    let W,H,ps=[],raf;
+    function resize(){W=cv.width=host.clientWidth;H=cv.height=host.clientHeight;
+      const P={x:W*0.5,y:H*0.44};
+      ps=Array.from({length:Math.min(360,(W*H/3000)|0)},()=>{
+        const side=Math.random()<.55; // left mesh vs right warm
+        const ang=side?(Math.PI*(0.75+Math.random()*0.5)):(Math.random()*0.5-0.25);
+        const r=120+Math.random()*Math.max(W,H)*0.5;
+        return{tx:P.x+Math.cos(ang)*r,ty:P.y+Math.sin(ang)*r,x:Math.random()*W,y:Math.random()*H,
+          c:side?(Math.random()<.25?'159,192,255':'255,255,255'):'254,80,0',px:P.x,py:P.y};});
+    }
+    resize();addEventListener('resize',resize);
+    let t=0;
+    function draw(){t+=0.01;ctx.fillStyle='rgba(4,6,26,.16)';ctx.fillRect(0,0,W,H);
+      const P={x:W*0.5,y:H*0.44};
+      for(const p of ps){const dx=p.tx-p.x,dy=p.ty-p.y;p.x+=dx*0.04;p.y+=dy*0.04;
+        p.x+=Math.sin(t+p.ty)*0.3;
+        ctx.fillStyle='rgba('+p.c+',.85)';ctx.beginPath();ctx.arc(p.x,p.y,1.5,0,7);ctx.fill();
+        const dP=Math.hypot(p.x-P.x,p.y-P.y);
+        if(dP<90){ctx.strokeStyle='rgba('+p.c+','+(1-dP/90)*.4+')';ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(P.x,P.y);ctx.stroke();}}
+      // central glow
+      const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,60);g.addColorStop(0,'rgba(254,80,0,.5)');g.addColorStop(1,'rgba(254,80,0,0)');
+      ctx.fillStyle=g;ctx.fillRect(P.x-60,P.y-60,120,120);
+      raf=requestAnimationFrame(draw);}
+    if(!reduce)draw();else{ctx.fillStyle='#04061a';ctx.fillRect(0,0,W,H);for(const p of ps){ctx.fillStyle='rgba('+p.c+',.85)';ctx.beginPath();ctx.arc(p.tx,p.ty,1.5,0,7);ctx.fill();}}
+    return ()=>{cancelAnimationFrame(raf);removeEventListener('resize',resize);};
+  }
+
+  const stages={a:document.getElementById('a'),b:document.getElementById('b'),c:document.getElementById('c'),d:document.getElementById('d')};
+  function go(k){
+    Object.entries(stages).forEach(([id,el])=>el.classList.toggle('on',id===k));
+    document.querySelectorAll('#sw button').forEach(b=>b.classList.toggle('on',b.dataset.go===k));
+    document.getElementById('label').textContent=caps[k];
+    localStorage.setItem('heroV5',k);
+    if(dCleanup){dCleanup();dCleanup=null;}
+    if(k==='d')dCleanup=initD();
+  }
+  document.querySelectorAll('#sw button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+  go(localStorage.getItem('heroV5')||'a');
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#04061a"/>
+<g fill="none" stroke-width="1.4"><path d="M4 40 Q40 46 50 50" stroke="#9fc0ff"/><path d="M6 30 Q40 40 50 50" stroke="#fff"/><path d="M96 62 Q60 58 50 50" stroke="#FE5000"/><path d="M92 74 Q60 60 50 50" stroke="#FE5000"/></g>
+<circle cx="50" cy="50" r="5" fill="#FE5000"/></svg>
+</template>
+</body>
+</html>

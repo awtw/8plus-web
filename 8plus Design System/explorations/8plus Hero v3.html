@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8plus — Hero 動畫探索 v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --blue:#002FA7;--orange:#FE5000;--dark:#0A0E1A;--fg:#fff;--meta:rgba(255,255,255,.58);
+    --sans:"Noto Sans TC","Outfit",sans-serif;--mono:"JetBrains Mono",monospace;--body:"Outfit","Noto Sans TC",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:var(--blue);color:var(--fg);font-family:var(--body);overflow:hidden}
+  a{color:#fff;text-decoration:none}a:hover{color:var(--orange)}
+
+  .switcher{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:300;display:flex;gap:5px;padding:6px;
+    background:rgba(10,14,26,.72);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.14);border-radius:999px;max-width:94vw}
+  .switcher button{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--meta);background:transparent;border:0;cursor:pointer;padding:8px 14px;border-radius:999px;transition:.25s;white-space:nowrap}
+  .switcher button .n{font-weight:700;margin-right:6px}
+  .switcher button:hover{color:#fff}.switcher button.on{background:#fff;color:var(--dark)}
+
+  .stage{position:relative;width:100vw;height:100vh}
+  .hero{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s;display:flex;flex-direction:column;overflow:hidden}
+  .hero.on{opacity:1;pointer-events:auto}
+  .grain{position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .topbar{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:26px 44px;flex-shrink:0}
+  .nav{display:flex;gap:30px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em}
+  .nav a{opacity:.72;transition:.2s}.nav a:hover{opacity:1}
+  .mark{display:flex;align-items:center;gap:11px}
+  .mark .wt{font-family:var(--sans);font-weight:900;font-size:22px;letter-spacing:-.02em;line-height:1}
+  .mark .wt sup{font-size:.5em;font-weight:700;vertical-align:super;color:var(--orange);margin-left:1px}
+
+  .content{position:relative;z-index:20;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 44px 60px}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.16em;color:var(--meta);display:flex;align-items:center;gap:14px;margin-bottom:26px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+  h1.zh{font-family:var(--sans);font-weight:900;font-size:clamp(44px,6.6vw,104px);line-height:1.02;letter-spacing:-.03em;max-width:15ch;text-wrap:balance}
+  .sub{font-family:var(--body);font-weight:300;font-size:clamp(15px,1.5vw,20px);color:rgba(255,255,255,.82);max-width:40ch;margin-top:24px;line-height:1.7}
+  .cta-row{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+  .btn{font-family:var(--sans);font-weight:500;font-size:15px;white-space:nowrap;padding:15px 30px;border-radius:999px;cursor:pointer;transition:.28s;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff}
+  .btn.solid{background:#fff;color:var(--dark);border-color:#fff}
+  .btn.solid:hover{background:var(--orange);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+  .btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);transform:translateY(-2px)}
+  .split{display:grid;grid-template-columns:1.04fr .96fr;flex:1;align-items:center;gap:24px}
+  .scrollcue{position:absolute;bottom:24px;left:44px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--meta);display:flex;align-items:center;gap:12px;z-index:20}
+  .scrollcue .line{width:34px;height:1px;background:var(--meta);position:relative;overflow:hidden}
+  .scrollcue .line::after{content:"";position:absolute;inset:0;background:var(--orange);transform:translateX(-100%);animation:sweep 2.4s ease-in-out infinite}
+  @keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
+  /* ===== 3a 磁流體光球 ===== */
+  #a{background:radial-gradient(120% 120% at 75% 45%,#0034b6,#00136b 72%)}
+  #a .orbwrap{position:relative;height:min(70vh,600px);display:flex;align-items:center;justify-content:center}
+  #a .orb{width:min(52vh,460px);aspect-ratio:1;border-radius:47% 53% 55% 45%/50% 48% 52% 50%;
+    background:conic-gradient(from 0deg,#002FA7,#2f66ff,#FE5000,#ff9a5c,#7bd0ff,#002FA7);
+    filter:blur(4px) saturate(1.25);animation:orbSpin 18s linear infinite, orbMorph 9s ease-in-out infinite;
+    box-shadow:0 40px 140px -20px rgba(254,80,0,.5), inset -30px -30px 90px rgba(0,20,90,.7), inset 30px 30px 80px rgba(255,255,255,.25)}
+  #a .orb::after{content:"";position:absolute;inset:0;border-radius:inherit;
+    background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.75),transparent 34%)}
+  #a .ring{position:absolute;width:min(64vh,580px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(255,255,255,.18);animation:ringPulse 6s ease-in-out infinite}
+  @keyframes orbSpin{to{transform:rotate(360deg)}}
+  @keyframes orbMorph{0%,100%{border-radius:47% 53% 55% 45%/50% 48% 52% 50%}50%{border-radius:56% 44% 43% 57%/46% 55% 45% 54%}}
+  @keyframes ringPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.06);opacity:.15}}
+
+  /* ===== 3b 動態字幕帶 ===== */
+  #b{background:var(--blue)}
+  #b .bands{position:absolute;inset:0;z-index:0;display:flex;flex-direction:column;justify-content:center;gap:0;opacity:.9}
+  #b .track{white-space:nowrap;font-family:var(--sans);font-weight:900;font-size:15vh;line-height:1.05;letter-spacing:-.02em;display:flex;will-change:transform}
+  #b .track span{padding-right:.4em}
+  #b .t1{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.5);animation:mLeft 26s linear infinite}
+  #b .t2{color:var(--orange);animation:mRight 30s linear infinite}
+  #b .t3{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.28);animation:mLeft 34s linear infinite}
+  @keyframes mLeft{to{transform:translateX(-33.33%)}}
+  @keyframes mRight{from{transform:translateX(-33.33%)}to{transform:translateX(0)}}
+  #b .content{background:radial-gradient(120% 90% at 30% 50%,rgba(0,20,80,.82),transparent 72%)}
+  #b h1.zh{text-shadow:0 4px 40px rgba(0,10,60,.6)}
+
+  /* ===== 3c 對角對撞 ===== */
+  #c{background:var(--blue);overflow:hidden}
+  #c .half{position:absolute;inset:0;z-index:0}
+  #c .h-orange{background:var(--orange);clip-path:polygon(100% 0,100% 100%,32% 100%,58% 0);animation:diag 12s ease-in-out infinite}
+  #c .h-blue{background:linear-gradient(140deg,#0038c9,#001542);clip-path:polygon(0 0,55% 0,29% 100%,0 100%);animation:diag2 12s ease-in-out infinite}
+  #c .seam{position:absolute;top:-10%;left:0;width:140%;height:120%;z-index:1;pointer-events:none;
+    background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.9) 50%,transparent 58%);
+    mix-blend-mode:overlay;transform:translateX(-6%);animation:seam 6s ease-in-out infinite}
+  @keyframes diag{0%,100%{clip-path:polygon(100% 0,100% 100%,32% 100%,58% 0)}50%{clip-path:polygon(100% 0,100% 100%,28% 100%,54% 0)}}
+  @keyframes diag2{0%,100%{clip-path:polygon(0 0,55% 0,29% 100%,0 100%)}50%{clip-path:polygon(0 0,51% 0,25% 100%,0 100%)}}
+  @keyframes seam{0%,100%{transform:translateX(-8%)}50%{transform:translateX(4%)}}
+  #c .content{align-items:flex-start}
+  #c .tags{position:absolute;right:44px;bottom:60px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.85);text-align:right;line-height:2;z-index:20}
+
+  /* ===== 3d 透視格線隧道 ===== */
+  #d{background:radial-gradient(120% 120% at 50% 30%,#00135f,#04061a 80%)}
+  #d .tunnel{position:absolute;inset:0;z-index:0;perspective:520px;perspective-origin:50% 42%;overflow:hidden}
+  #d .floor{position:absolute;left:-50%;right:-50%;bottom:-20%;height:150%;transform:rotateX(76deg);transform-origin:bottom center;
+    background-image:linear-gradient(rgba(123,168,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(123,168,255,.35) 1px,transparent 1px);
+    background-size:64px 64px;animation:flow 2.6s linear infinite;
+    mask-image:linear-gradient(transparent,#000 40%)}
+  #d .glow{position:absolute;left:0;right:0;top:36%;height:40%;z-index:0;
+    background:radial-gradient(60% 100% at 50% 100%,rgba(254,80,0,.5),transparent 70%);filter:blur(20px)}
+  @keyframes flow{to{background-position:0 64px}}
+  #d .content{align-items:center;text-align:center}
+  #d h1.zh{max-width:20ch}#d .sub{margin-left:auto;margin-right:auto}#d .cta-row{justify-content:center}
+  #d .eyebrow{justify-content:center}
+
+  @media (max-width:820px){
+    .topbar{padding:20px 22px}.content{padding:0 22px 50px}.nav{display:none}
+    .split{grid-template-columns:1fr}#a .orbwrap{display:none}.scrollcue{left:22px}#c .tags{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #a .orb,#a .ring{animation:none}#b .track{animation:none}
+    #c .h-orange,#c .h-blue,#c .seam{animation:none}#d .floor{animation:none}.scrollcue .line::after{animation:none}
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="switcher">
+  <button data-go="a" class="on"><span class="n">3a</span>磁流體光球</button>
+  <button data-go="b"><span class="n">3b</span>動態字幕帶</button>
+  <button data-go="c"><span class="n">3c</span>對角對撞</button>
+  <button data-go="d"><span class="n">3d</span>格線隧道</button>
+</nav>
+
+<div class="stage">
+
+  <!-- 3a -->
+  <section class="hero on" id="a" data-screen-label="Hero 3a">
+    <div class="grain"></div>
+    <div class="topbar"><div class="mark"><span class="wt">8plus<sup>+</sup></span></div>
+      <div class="nav"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div></div>
+    <div class="content">
+      <div class="split">
+        <div>
+          <div class="eyebrow"><span class="dot"></span>ARCHITECTURE · DELIVERY</div>
+          <h1 class="zh">架構先行，<br>AI 落地</h1>
+          <p class="sub">把需求交付成可信系統。一顆流動的能量核心,象徵藍(技術)與橘(交付)持續融合。</p>
+          <div class="cta-row"><button class="btn solid">預約諮詢</button><button class="btn ghost">看 Lab 作品</button></div>
+        </div>
+        <div class="orbwrap"><div class="ring"></div><div class="orb"></div></div>
+      </div>
+    </div>
+    <div class="scrollcue">SCROLL<span class="line"></span></div>
+  </section>
+
+  <!-- 3b -->
+  <section class="hero" id="b" data-screen-label="Hero 3b">
+    <div class="bands" aria-hidden="true">
+      <div class="track t1"><span>ARCHITECTURE — DELIVERY —&nbsp;</span><span>ARCHITECTURE — DELIVERY —&nbsp;</span><span>ARCHITECTURE — DELIVERY —&nbsp;</span></div>
+      <div class="track t2"><span>CONSULT · BUILD · SHIP&nbsp;</span><span>CONSULT · BUILD · SHIP&nbsp;</span><span>CONSULT · BUILD · SHIP&nbsp;</span></div>
+      <div class="track t3"><span>8PLUS — 8PLUS — 8PLUS —&nbsp;</span><span>8PLUS — 8PLUS — 8PLUS —&nbsp;</span><span>8PLUS — 8PLUS — 8PLUS —&nbsp;</span></div>
+    </div>
+    <div class="grain"></div>
+    <div class="topbar"><div class="mark"><span class="wt">8plus<sup>+</sup></span></div>
+      <div class="nav"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div></div>
+    <div class="content">
+      <div class="eyebrow"><span class="dot"></span>NO.01 — 2026</div>
+      <h1 class="zh">架構先行，<br>AI 落地</h1>
+      <p class="sub">把需求交付成可信系統。動態字幕帶不停流動,底層是永遠在跑的工程節奏。</p>
+      <div class="cta-row"><button class="btn solid">預約諮詢</button><button class="btn ghost">了解服務</button></div>
+    </div>
+    <div class="scrollcue">SCROLL<span class="line"></span></div>
+  </section>
+
+  <!-- 3c -->
+  <section class="hero" id="c" data-screen-label="Hero 3c">
+    <div class="half h-blue"></div><div class="half h-orange"></div><div class="seam"></div>
+    <div class="grain"></div>
+    <div class="topbar"><div class="mark"><span class="wt">8plus<sup>+</sup></span></div>
+      <div class="nav"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div></div>
+    <div class="content">
+      <div class="eyebrow"><span class="dot"></span>TECHNICAL × DELIVERY</div>
+      <h1 class="zh">架構先行，<br>AI 落地</h1>
+      <p class="sub">把需求交付成可信系統。藍與橘在對角線相撞——技術與交付,一刀劃開又縫合。</p>
+      <div class="cta-row"><button class="btn solid">預約諮詢</button><button class="btn ghost">關於我</button></div>
+    </div>
+    <div class="tags">CONSULTING<br>ARCHITECTURE<br>FULL-STACK<br>FREELANCE</div>
+    <div class="scrollcue">SCROLL<span class="line"></span></div>
+  </section>
+
+  <!-- 3d -->
+  <section class="hero" id="d" data-screen-label="Hero 3d">
+    <div class="tunnel"><div class="floor"></div></div><div class="glow"></div>
+    <div class="grain"></div>
+    <div class="topbar"><div class="mark"><span class="wt">8plus<sup>+</sup></span></div>
+      <div class="nav"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div></div>
+    <div class="content">
+      <div class="eyebrow"><span class="dot"></span>INTO PRODUCTION</div>
+      <h1 class="zh">架構先行，AI 落地</h1>
+      <p class="sub">把需求交付成可信系統。一條會流動的網格軌道,把每個需求送進生產環境。</p>
+      <div class="cta-row"><button class="btn solid">預約諮詢</button><button class="btn ghost">Lab 作品集</button></div>
+    </div>
+    <div class="scrollcue">SCROLL<span class="line"></span></div>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  const heroes = { a:document.getElementById('a'), b:document.getElementById('b'), c:document.getElementById('c'), d:document.getElementById('d') };
+  const btns = [...document.querySelectorAll('.switcher button')];
+  function go(k){
+    Object.entries(heroes).forEach(([id,el])=>el.classList.toggle('on', id===k));
+    btns.forEach(b=>b.classList.toggle('on', b.dataset.go===k));
+    localStorage.setItem('heroPickV3', k);
+  }
+  btns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+  go(localStorage.getItem('heroPickV3') || 'a');
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#002FA7"/>
+  <defs><radialGradient id="g" cx="40%" cy="35%"><stop offset="0%" stop-color="#fff"/><stop offset="45%" stop-color="#FE5000"/><stop offset="100%" stop-color="#002FA7"/></radialGradient></defs>
+  <circle cx="50" cy="50" r="26" fill="url(#g)"/>
+</svg>
+</template>
+</body>
+</html>

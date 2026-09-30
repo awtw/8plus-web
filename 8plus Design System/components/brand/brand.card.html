@@ -1,0 +1,36 @@
+<!-- @dsCard group="品牌" viewport="700x220" name="Logo 標誌與字標" subtitle="抽象標誌在 CI 色場上的呈現" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); }
+  .row { display: flex; align-items: stretch; height: 220px; }
+  .cell { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .blue { background: var(--color-blue); } .orange { background: var(--color-orange); } .dark { background: var(--color-dark); }
+  .l { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.7); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { Logo } = window.Ds8plusDesignSystem_1b9e83;
+  function Demo() {
+    return (
+      <div className="row">
+        <div className="cell blue"><Logo size={60} /><span className="l">on blue</span></div>
+        <div className="cell orange"><Logo size={60} /><span className="l">on orange</span></div>
+        <div className="cell dark"><Logo size={60} variant="brand" /><span className="l">brand tile</span></div>
+        <div className="cell dark"><Logo size={34} wordmark /><span className="l">wordmark</span></div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

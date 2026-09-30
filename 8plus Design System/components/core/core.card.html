@@ -1,0 +1,75 @@
+<!-- @dsCard group="元件" viewport="700x520" name="核心 — Button、Card、Badge、Section" subtitle="藥丸按鈕、玻璃卡、Mono eyebrow、交替色場" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--color-dark); }
+  .sec { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,.6); margin: 0 0 12px; }
+  .block { padding: 22px 24px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { Button, Card, CardHeader, CardTitle, CardDescription, Badge } = window.Ds8plusDesignSystem_1b9e83;
+  function Demo() {
+    return (
+      <div>
+        <div className="block bg-blue">
+          <p className="sec">Blue field · orange accent</p>
+          <div className="row" style={{marginBottom:16}}>
+            <Button>預約諮詢</Button>
+            <Button variant="secondary">了解服務</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="link">閱讀完整故事</Button>
+            <Button disabled>Disabled</Button>
+          </div>
+          <div className="row">
+            <Badge>03 · SERVICES</Badge>
+            <Badge variant="chip">Next.js</Badge>
+            <Badge variant="accent">開放預約</Badge>
+            <Badge variant="status">Available for consulting</Badge>
+          </div>
+        </div>
+        <div className="block bg-orange">
+          <p className="sec">Orange field · blue accent — same components, flipped</p>
+          <div className="row">
+            <Button>Book a call</Button>
+            <Button variant="secondary">Explore</Button>
+            <Badge>05 · BOOKING</Badge>
+            <Badge variant="accent">30 MIN · FREE</Badge>
+          </div>
+        </div>
+        <div className="block bg-blue">
+          <p className="sec">Glass cards</p>
+          <div className="row" style={{alignItems:'stretch'}}>
+            <Card style={{ width: 260 }}>
+              <CardHeader>
+                <Badge style={{alignSelf:'flex-start'}}>A · 架構先行</Badge>
+                <CardTitle style={{marginTop:8}}>程式架構諮詢</CardTitle>
+                <CardDescription>系統邊界、技術選型、可擴展與可維護的架構設計。</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card variant="highlight" style={{ width: 260 }}>
+              <CardHeader>
+                <Badge style={{alignSelf:'flex-start'}}>B · AI 導入</Badge>
+                <CardTitle style={{marginTop:8}}>網站開發</CardTitle>
+                <CardDescription>Next.js 全端開發、生產級交付與迭代上線。Hover me.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

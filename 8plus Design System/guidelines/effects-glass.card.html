@@ -1,0 +1,23 @@
+<!-- @dsCard group="效果" viewport="700x210" name="玻璃卡片" subtitle="色場上的半透明白卡；細線框 ＋ hover 上浮" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); }
+  .stage { background: var(--color-blue); padding: 24px; display: flex; gap: 18px; align-items: stretch; }
+  .card { width: 200px; padding: 20px; color: #fff; }
+  .t { font-size: 16px; font-weight: 500; margin: 0 0 4px; }
+  .d { font-size: 13px; color: rgba(255,255,255,.76); margin: 0; }
+  .l { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.55); margin-top: 12px; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="card glass-card"><p class="t">glass-card</p><p class="d">Default surface + soft hairline.</p><p class="l">--border-soft · 22px</p></div>
+    <div class="card glass-card-strong"><p class="t">glass-card-strong</p><p class="d">Denser glass, stronger border.</p><p class="l">--surface · --border</p></div>
+    <div class="card gradient-border-card"><p class="t">highlight</p><p class="d">Hover: +2px lift, gradient hairline reveal.</p><p class="l">gradient-border-card</p></div>
+  </div>
+</body>
+</html>

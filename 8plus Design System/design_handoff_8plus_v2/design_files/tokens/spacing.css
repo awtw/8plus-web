@@ -1,0 +1,39 @@
+/* ============================================================
+   8plus — Spacing, radius & layout tokens · v2 CI
+   8px base grid. The signature is the 22px card radius
+   (--radius-md); pills for buttons/badges. Copied from
+   styles/globals.css.
+   ============================================================ */
+:root {
+  /* --- Spacing (8px base) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* --- Section vertical rhythm --- */
+  --section-y-desktop: 80px;
+  --section-y-tablet: 64px;
+  --section-y-phone: 48px;
+
+  /* --- Radius --- */
+  --radius-sm: 8px;        /* dialogs, small tags */
+  --radius-md: 22px;       /* SIGNATURE — main cards */
+  --radius-lg: 22px;
+  --radius-pill: 9999px;   /* buttons, badges */
+
+  /* --- Layout --- */
+  --container-max: 1600px;
+  --container-gutter-desktop: 32px;
+  --container-gutter-tablet: 24px;
+  --container-gutter-phone: 16px;
+
+  /* --- Control heights --- */
+  --control-sm: 36px;
+  --control-md: 44px;   /* min touch target */
+  --control-lg: 52px;
+}

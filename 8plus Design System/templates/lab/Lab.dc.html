@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Lab 作品集" description="技術 Lab 與客戶案例 — 全 16 案依角色分組（全端/後端/前端設計/資料）＋置頂精選，兩種版面（卡片牆 / 編年索引）" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-body); background: var(--color-blue); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  a:hover { color: var(--fg); }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { [data-rise] { animation: none !important; opacity: 1 !important; transform: none !important; } }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; overflow-x: hidden;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-soft); background: color-mix(in oklab, var(--color-dark), transparent 12%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div style="max-width: var(--container-max); margin: 0 auto; min-height: 4.5rem; padding: 0 clamp(24px, 4vw, 28px); display: flex; align-items: center; gap: 32px;">
+      <a href="#top" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <svg viewBox="0 0 100 100" width="26" height="26" role="img" aria-label="8plus" style="display: block; overflow: visible; flex: none;">
+          <circle cx="32" cy="29" r="18" fill="#ffffff"></circle>
+          <path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path>
+          <circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle>
+        </svg>
+        <span style="font-family: var(--font-body); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; color: var(--fg); line-height: 1;">8plus</span>
+      </a>
+      <nav style="display: flex; gap: 24px; margin-left: 4px; flex-wrap: wrap;">
+        <a href="/about" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">關於</a>
+        <a href="#top" style="font-size: 14px; text-decoration: none; color: var(--fg); opacity: 1;">Lab</a>
+        <a href="/path" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">歷程</a>
+        <a href="/services" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">服務</a>
+        <a href="/booking" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">預約</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+        <a href="#top" style="display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 1.1rem; border-radius: var(--radius-pill); font-size: 13px; font-family: var(--font-body); color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">繁中 ▾</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ============ HERO (blue) ============ -->
+  <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 104px) clamp(32px, 5vw, 52px);">
+      <div style="display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);" data-rise=""><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span>LAB · 03</div>
+      <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.6rem, 6vw, 4.5rem); line-height: 1.03; letter-spacing: -0.04em; color: var(--fg); margin: 18px 0 0; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">Lab</h1>
+      <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--fg-2); margin: 20px 0 0; max-width: 56ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .08s both;" data-rise="">精選的技術 Lab 與客戶案例 —— 全 16 個作品，依角色分為全端開發、後端、前端設計與資料四類，涵蓋從高併發後端、企業系統到品牌官網與 AI 平台的實作紀錄。</p>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED STRIP (orange) ============ -->
+  <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(40px, 6vw, 64px);">
+      <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px;">
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">精選</h2>
+        <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--meta);">FEATURED · 3</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        <sc-for list="{{ featured }}" as="p" hint-placeholder-count="3">
+          <a href="{{ p.href }}" class="gradient-border-card" style="padding: 28px; display: flex; flex-direction: column; text-decoration: none;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-on); background: var(--accent); border-radius: 9999px; padding: 5px 11px;">{{ p.roleTag }}</span>
+              <span style="color: var(--accent); font-size: 20px;">↗</span>
+            </div>
+            <h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 1.85rem); letter-spacing: -0.03em; color: var(--fg); margin: 20px 0 0;">{{ p.title }}</h3>
+            <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">{{ p.summary }}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;">
+              <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3"><span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 11px;">{{ t }}</span></sc-for>
+            </div>
+            <div style="margin-top: 20px; color: var(--fg); font-size: 14px; font-weight: 500;">查看詳情</div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROLE GROUPS ============ -->
+  <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+    <section class="{{ g.bgClass }} noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(44px, 6vw, 72px);">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-soft);">
+          <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2.1rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">{{ g.label }}</h2>
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--meta);">{{ g.meta }}</span>
+        </div>
+
+        <!-- Version A — card wall -->
+        <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="3">
+            <a href="{{ p.href }}" class="gradient-border-card" style="padding: 26px; display: flex; flex-direction: column; text-decoration: none;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+                <span style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 11px;">{{ p.roleTag }}</span>
+                <span style="color: var(--accent); font-size: 19px;">↗</span>
+              </div>
+              <h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.65rem); letter-spacing: -0.03em; color: var(--fg); margin: 18px 0 0;">{{ p.title }}</h3>
+              <p style="font-weight: 300; font-size: 14.5px; line-height: 1.7; color: var(--fg-2); margin: 11px 0 0;">{{ p.summary }}</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3"><span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 11px;">{{ t }}</span></sc-for>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <!-- Version B — editorial index -->
+        <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; gap: 0;">
+          <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="3">
+            <a href="{{ p.href }}" style="display: grid; grid-template-columns: 150px 1fr auto; gap: clamp(16px, 3vw, 48px); align-items: baseline; padding: 22px 0; border-top: 1px solid var(--border-soft); text-decoration: none;">
+              <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--meta);">{{ p.roleTag }}</div>
+              <div>
+                <h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">{{ p.title }}</h3>
+                <p style="font-weight: 300; font-size: 14.5px; line-height: 1.7; color: var(--fg-2); margin: 7px 0 0; max-width: 64ch;">{{ p.summary }}</p>
+              </div>
+              <span style="color: var(--accent); font-size: 22px;">↗</span>
+            </a>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+    </section>
+  </sc-for>
+
+  <!-- ============ CTA (dark) ============ -->
+  <section class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 96px);">
+      <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch;">有想一起做的系統嗎？</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
+        <a href="/booking" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: var(--fg); color: var(--bg); text-decoration: none; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">預約諮詢 →</a>
+        <a href="/services" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">看服務內容</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin: 0 auto; padding: 48px clamp(24px, 4vw, 28px); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 100 100" width="24" height="24" role="img" aria-label="8plus" style="display: block; overflow: visible;"><circle cx="32" cy="29" r="18" fill="#ffffff"></circle><path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path><circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle></svg>
+          <span style="font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg);">8plus</span>
+        </div>
+        <p style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--meta); margin: 14px 0 0;">架構驅動的技術夥伴</p>
+        <p style="font-size: 13px; color: var(--meta); margin: 8px 0 0;">© 2026 8plus · Made in Taiwan</p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div style="display: flex; gap: 18px; font-size: 14px;">
+          <a href="https://line.me/R/ti/p/@482ykgdg" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">LINE</a>
+          <a href="/contact" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">Email</a>
+          <a href="/feed.xml" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">RSS</a>
+        </div>
+        <p style="font-size: 12px; color: var(--meta); margin: 0;">Next.js 15 · Velite · Vercel</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ VARIANT TOGGLE ============ -->
+  <div style="position: fixed; bottom: 18px; right: 18px; z-index: 60; display: inline-flex; gap: 4px; background: rgba(3,6,26,.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px;">
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 A · 卡片牆</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 A · 卡片牆</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 B · 索引</button></sc-if>
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 B · 索引</button></sc-if>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;variant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;default&quot;: &quot;A&quot;, &quot;tsType&quot;: &quot;\&quot;A\&quot; | \&quot;B\&quot;&quot;, &quot;section&quot;: &quot;版面版本&quot;}}">
+class Component extends DCLogic {
+  state = { variant: this.props.variant || "A" };
+
+  componentDidUpdate(prev) {
+    if (prev.variant !== this.props.variant && this.props.variant && this.props.variant !== this.state.variant) {
+      this.setState({ variant: this.props.variant });
+    }
+  }
+
+  renderVals() {
+    const P = (slug, title, roleTag, summary, tags, featured) => ({ slug, href: "/lab/" + slug, title, roleTag, summary, tags, featured });
+    const all = [
+      P("crm-series", "CRM 系列設計", "IA / UX", "登入、權限、清單、表單與流程引導的 CRM 原型系列，聚焦資訊架構與操作動線。", ["4+ 模組", "Vercel 即時預覽"], true),
+      P("smart-community-backend", "SmartCommunity 後端", "後端", "面向智慧社區應用的 .NET 後端服務，涵蓋住戶、設備、事件通報與通知中心。", [".NET", "PostgreSQL", "Redis", "Docker"], true),
+      P("b18", "b18 品牌官網", "品牌 / 前端", "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。", ["品牌設計", "社群導流"], true),
+      P("8plus", "8plus 諮詢平台", "全端", "結合職涯與技術諮詢的預約平台，整合 Google Calendar 並聚焦高轉換的諮詢流程。", ["Next.js", "Google Calendar", "Vercel"], false),
+      P("ecommerce-dashboard", "電商管理後台", "全端 · 2024", "為中小型電商打造的現代化管理後台，整合訂單管理、庫存控制與數據分析（訂單效率 +45%、庫存錯誤 −60%）。", ["Next.js 15", "TypeScript", "Prisma", "PostgreSQL"], false),
+      P("e-cooperative", "e-cooperative 光復平台", "全端", "為花蓮光復災害協作打造的資訊整合與資源媒合平台，聚焦快速上線與社群協作。", ["資源媒合", "快速上線"], false),
+      P("resume-2025", "resume 2025 作品集", "全端", "Next.js 15 個人作品集與諮詢入口，整合 Google Calendar 預約流程與現代 UIX。", ["Next.js 15", "cal 預約"], false),
+      P("flash-sale-api", "Flash Sale API", "後端", "面向高併發限量搶購場景的後端 API，透過鎖、佇列與快取避免超賣並維持系統穩定。", ["NestJS", "PostgreSQL", "Redis", "RabbitMQ"], false),
+      P("experimentlab", "ExperimentLab 醫學分析", "前端 / 設計", "協助醫師建立研究原型與基礎預測模型的醫學分析平台，支援指標視覺化與研究報表匯出。", ["Vue 3", "資料視覺化"], false),
+      P("1914", "1914 精油品牌官網", "品牌 / 前端", "自創精油品牌官網與客服自動化 Lab，整合品牌設計、香氛配方與 LINE/Messenger Chatbot。", ["品牌設計", "Chatbot"], false),
+      P("shuyan-art", "shuyan_art 設計接案平台", "品牌 / 前端", "為設計接案品牌打造的作品展示與接案入口，聚焦視覺質感、服務呈現與轉換動線。", ["品牌設計", "接案入口"], false),
+      P("resume-2024", "resume 2024", "前端 / 設計", "Vue 3 商業風格作品集，強調品牌凝聚力、專案價值呈現與轉換動線。", ["Vue 3"], false),
+      P("resume-2021", "resume 2021", "前端 / 設計", "Angular 技能導向作品集，整理前端模組化、PayPal 串接與 Sass 樣式工程化經驗。", ["Angular", "Sass"], false),
+      P("resume-2019", "resume 2019", "前端 / 設計", "以 VanillaJS 與 CSS 動效打造的早期作品集，聚焦互動細節與動態資訊呈現。", ["VanillaJS", "CSS 動效"], false),
+      P("power-bi", "Power BI 資料探索", "資料", "以 Python 與 Power BI 探索市場、就業與疾病資料的潛在關聯，建立互動式分析儀表板。", ["Python", "Power BI"], false),
+      P("r-analysis", "R 分析", "資料", "以 R 建立購物車按鍵影響因素分析模型，搭配 VanillaJS 呈現互動式洞察。", ["R", "VanillaJS"], false),
+    ];
+
+    const pick = (slugs) => slugs.map((s) => all.find((p) => p.slug === s)).filter(Boolean);
+    const groups = [
+      { key: "fullstack", label: "全端開發", items: pick(["8plus", "ecommerce-dashboard", "e-cooperative", "resume-2025"]) },
+      { key: "backend", label: "後端", items: pick(["smart-community-backend", "flash-sale-api"]) },
+      { key: "frontend", label: "前端設計", items: pick(["crm-series", "b18", "experimentlab", "1914", "shuyan-art", "resume-2024", "resume-2021", "resume-2019"]) },
+      { key: "data", label: "資料", items: pick(["power-bi", "r-analysis"]) },
+    ].map((g, i) => ({
+      ...g,
+      bgClass: i % 2 === 0 ? "bg-blue" : "bg-orange",
+      meta: String(g.items.length).padStart(2, "0") + " 件",
+    }));
+
+    const v = this.state.variant;
+    return {
+      featured: all.filter((p) => p.featured),
+      groups,
+      isA: v === "A",
+      isB: v === "B",
+      selA: () => this.setState({ variant: "A" }),
+      selB: () => this.setState({ variant: "B" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

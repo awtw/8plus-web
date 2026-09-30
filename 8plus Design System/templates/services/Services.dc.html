@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="服務 Services" description="服務頁 — 兩種版面（能力卡 / 編年條列），交替色場、玻璃卡、FAQ 折疊、簽名進場動效" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-body); background: var(--color-blue); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @keyframes sweepIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  @media (prefers-reduced-motion: reduce) { [data-rise], [data-sweep] { animation: none !important; opacity: 1 !important; transform: none !important; } }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; overflow-x: hidden;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-soft); background: color-mix(in oklab, var(--color-dark), transparent 12%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div style="max-width: var(--container-max); margin: 0 auto; min-height: 4.5rem; padding: 0 clamp(24px, 4vw, 28px); display: flex; align-items: center; gap: 32px;">
+      <a href="#top" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <svg viewBox="0 0 100 100" width="26" height="26" role="img" aria-label="8plus" style="display: block; overflow: visible; flex: none;">
+          <circle cx="32" cy="29" r="18" fill="#ffffff"></circle>
+          <path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path>
+          <circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle>
+        </svg>
+        <span style="font-family: var(--font-body); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; color: var(--fg); line-height: 1;">8plus</span>
+      </a>
+      <nav style="display: flex; gap: 24px; margin-left: 4px; flex-wrap: wrap;">
+        <a href="/about" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">關於</a>
+        <a href="/lab" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">Lab</a>
+        <a href="/path" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">歷程</a>
+        <a href="#top" style="font-size: 14px; text-decoration: none; color: var(--fg); opacity: 1;">服務</a>
+        <a href="/booking" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">預約</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+        <a href="#cta" style="display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 1.1rem; border-radius: var(--radius-pill); font-size: 13px; font-family: var(--font-body); color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">繁中 ▾</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ============ VERSION A — 能力卡 (Capability cards) ============ -->
+  <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <!-- Hero (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 104px) clamp(36px, 5vw, 56px);">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);" data-rise="">04 · SERVICES</div>
+        <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 5.6vw, 4.5rem); line-height: 1.04; letter-spacing: -0.04em; color: var(--fg); margin: 20px 0 0; max-width: 20ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">服務不是菜單，而是一起把問題做清楚</h1>
+        <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--fg-2); margin: 24px 0 0; max-width: 64ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .08s both;" data-rise="">我的協作範圍比頁面上列出的項目更廣。與其把服務寫成固定清單，不如把它理解成不同的合作模式，最後都回到同一件事：幫你把技術問題變得可以執行。</p>
+      </div>
+    </section>
+
+    <!-- 一條龍 End-to-end pipeline (orange) -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">END-TO-END · 一條龍</div>
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: -0.03em; color: var(--fg); margin: 14px 0 0; max-width: 24ch;">從一張草圖到正式上線，交給同一個人</h2>
+        <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.15rem); line-height: 1.65; color: var(--fg-2); margin: 16px 0 0; max-width: 62ch;">重新設計、前後端架構、租借雲端主機、購買網域、部署上架 —— 你不用四處找不同廠商對接，整條產線由我一手串起來。</p>
+        <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 01</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">重新設計</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">品牌與介面重塑，先把「要給誰看、想達成什麼」講清楚。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 02</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">前後端架構</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">從資料模型、API 到前端實作，一條線設計，不留接縫。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 03</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">雲端主機</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">依流量與預算選型，租借並設定雲端伺服器與執行環境。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 04</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">網域申請</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">選購網域、設定 DNS 與 HTTPS 憑證，門牌一次到位。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent-on); background: var(--accent); border-radius: 9999px; padding: 4px 10px;">STEP 05</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">部署上架</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">CI/CD 部署、上線監控，交付一個真的能跑起來的網站。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service cards (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <div class="gradient-border-card" style="padding: 28px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 6px 12px;">A · SERVICE</span>
+              <span style="color: var(--accent); font-size: 18px;">↗</span>
+            </div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 22px 0 0;">Architecture &amp; Delivery</h2>
+            <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">適合要重新梳理架構、拆解舊系統、定義新平台邊界的合作情境。</p>
+          </div>
+          <div class="gradient-border-card" style="padding: 28px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 6px 12px;">B · SERVICE</span>
+              <span style="color: var(--accent); font-size: 18px;">↗</span>
+            </div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 22px 0 0;">Frontend / Full-stack</h2>
+            <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">從 UI、資料流到 API 與部署，把產品與實作拉成同一條線。</p>
+          </div>
+          <div class="gradient-border-card" style="padding: 28px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 6px 12px;">C · SERVICE</span>
+              <span style="color: var(--accent); font-size: 18px;">↗</span>
+            </div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 22px 0 0;">Review &amp; Optimization</h2>
+            <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">Code Review、效能優化、可靠性與交付流程上的實務建議。</p>
+          </div>
+          <div class="gradient-border-card" style="padding: 28px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 6px 12px;">D · SERVICE</span>
+              <span style="color: var(--accent); font-size: 18px;">↗</span>
+            </div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; color: var(--fg); margin: 22px 0 0;">Consulting Support</h2>
+            <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">如果需求還在模糊期，也可以先幫你把問題定義與優先順序整理出來。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (orange) -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: 840px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">FAQ</div>
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -0.03em; color: var(--fg); margin: 14px 0 0;">常見問題</h2>
+        <div style="margin-top: 26px; display: grid; gap: 12px;">
+          <details style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 18px 22px;"><summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 500; color: var(--fg);">一定要簽長約嗎？<span style="color: var(--accent); font-size: 18px;">+</span></summary><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 14px 0 0;">不需要。可以先從單次 Discovery Call 或短期 sprint 開始，確認合作節奏再決定是否 retainer。</p></details>
+          <details style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 18px 22px;"><summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 500; color: var(--fg);">可以遠端協作嗎？<span style="color: var(--accent); font-size: 18px;">+</span></summary><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 14px 0 0;">可以。過去專案多為遠端 + 非同步，重要里程碑會安排 sync meeting。</p></details>
+          <details style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 18px 22px;"><summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 500; color: var(--fg);">AI 導入包含哪些？<span style="color: var(--accent); font-size: 18px;">+</span></summary><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 14px 0 0;">從資料準備、RAG/Agent 架構、權限控管到人機協作流程，依團隊成熟度分階段導入。</p></details>
+          <details style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 18px 22px;"><summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 500; color: var(--fg);">如何開始？<span style="color: var(--accent); font-size: 18px;">+</span></summary><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 14px 0 0;">預約 30 分鐘諮詢時段，或透過聯絡表單描述你的情境，我會在 1–2 個工作天回覆。</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA (dark) -->
+    <section id="cta" class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 96px);">
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch;">準備好把問題做清楚了嗎？</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
+          <a href="/booking" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: var(--fg); color: var(--bg); text-decoration: none; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">前往預約 →</a>
+          <a href="/about" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">看更多背景</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ VERSION B — 編年條列 (Editorial rows) ============ -->
+  <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <!-- Hero centered (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(64px, 9vw, 120px) clamp(36px, 5vw, 56px); text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);" data-rise="">04 · SERVICES</div>
+        <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 5.6vw, 4.75rem); line-height: 1.04; letter-spacing: -0.04em; color: var(--fg); margin: 20px auto 0; max-width: 20ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">服務不是菜單，而是一起把問題做清楚</h1>
+        <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--fg-2); margin: 24px auto 0; max-width: 60ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .08s both;" data-rise="">與其把服務寫成固定清單，不如把它理解成不同的合作模式，最後都回到同一件事：幫你把技術問題變得可以執行。</p>
+      </div>
+    </section>
+
+    <!-- 一條龍 End-to-end pipeline (orange) -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">END-TO-END · 一條龍</div>
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: -0.03em; color: var(--fg); margin: 14px 0 0; max-width: 24ch;">從一張草圖到正式上線，交給同一個人</h2>
+        <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.15rem); line-height: 1.65; color: var(--fg-2); margin: 16px 0 0; max-width: 62ch;">重新設計、前後端架構、租借雲端主機、購買網域、部署上架 —— 你不用四處找不同廠商對接，整條產線由我一手串起來。</p>
+        <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 01</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">重新設計</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">品牌與介面重塑，先把「要給誰看、想達成什麼」講清楚。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 02</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">前後端架構</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">從資料模型、API 到前端實作，一條線設計，不留接縫。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 03</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">雲端主機</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">依流量與預算選型，租借並設定雲端伺服器與執行環境。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px 10px;">STEP 04</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">網域申請</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">選購網域、設定 DNS 與 HTTPS 憑證，門牌一次到位。</p></div>
+          <div class="glass-card" style="padding: 24px 22px; display: flex; flex-direction: column; gap: 12px;"><span style="align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent-on); background: var(--accent); border-radius: 9999px; padding: 4px 10px;">STEP 05</span><h3 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -0.02em; color: var(--fg); margin: 0;">部署上架</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;">CI/CD 部署、上線監控，交付一個真的能跑起來的網站。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service rows (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; gap: 0;">
+          <div style="display: grid; grid-template-columns: 120px 1fr auto; gap: clamp(16px, 3vw, 48px); align-items: baseline; padding: 28px 0; border-top: 1px solid var(--border-soft);"><div style="font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--fg); line-height: 1;">01</div><div><h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">Architecture &amp; Delivery</h2><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0; max-width: 60ch;">適合要重新梳理架構、拆解舊系統、定義新平台邊界的合作情境。</p></div><span style="color: var(--accent); font-size: 22px;">↗</span></div>
+          <div style="display: grid; grid-template-columns: 120px 1fr auto; gap: clamp(16px, 3vw, 48px); align-items: baseline; padding: 28px 0; border-top: 1px solid var(--border-soft);"><div style="font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--fg); line-height: 1;">02</div><div><h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">Frontend / Full-stack</h2><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0; max-width: 60ch;">從 UI、資料流到 API 與部署，把產品與實作拉成同一條線。</p></div><span style="color: var(--accent); font-size: 22px;">↗</span></div>
+          <div style="display: grid; grid-template-columns: 120px 1fr auto; gap: clamp(16px, 3vw, 48px); align-items: baseline; padding: 28px 0; border-top: 1px solid var(--border-soft);"><div style="font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--fg); line-height: 1;">03</div><div><h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">Review &amp; Optimization</h2><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0; max-width: 60ch;">Code Review、效能優化、可靠性與交付流程上的實務建議。</p></div><span style="color: var(--accent); font-size: 22px;">↗</span></div>
+          <div style="display: grid; grid-template-columns: 120px 1fr auto; gap: clamp(16px, 3vw, 48px); align-items: baseline; padding: 28px 0; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);"><div style="font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--fg); line-height: 1;">04</div><div><h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">Consulting Support</h2><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0; max-width: 60ch;">如果需求還在模糊期，也可以先幫你把問題定義與優先順序整理出來。</p></div><span style="color: var(--accent); font-size: 22px;">↗</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ 2-col (orange) -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <h2 style="display: inline-block; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; padding-bottom: 8px; position: relative;">常見問題<span data-sweep="" style="position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); transform-origin: left; animation: sweepIn .7s cubic-bezier(.16,1,.3,1) .2s both;"></span></h2>
+        <div style="margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+          <div class="glass-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; color: var(--fg); margin: 0;">一定要簽長約嗎？</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">不需要。可以先從單次 Discovery Call 或短期 sprint 開始，確認合作節奏再決定是否 retainer。</p></div>
+          <div class="glass-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; color: var(--fg); margin: 0;">可以遠端協作嗎？</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">可以。過去專案多為遠端 + 非同步，重要里程碑會安排 sync meeting。</p></div>
+          <div class="glass-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; color: var(--fg); margin: 0;">AI 導入包含哪些？</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">從資料準備、RAG/Agent 架構、權限控管到人機協作流程，依團隊成熟度分階段導入。</p></div>
+          <div class="glass-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; color: var(--fg); margin: 0;">如何開始？</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">預約 30 分鐘諮詢時段，或透過聯絡表單描述你的情境，我會在 1–2 個工作天回覆。</p></div>
+        </div>
+        <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px;">
+          <a href="/booking" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: var(--fg); color: var(--bg); text-decoration: none; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">前往預約 →</a>
+          <a href="/about" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">看更多背景</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin: 0 auto; padding: 48px clamp(24px, 4vw, 28px); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 100 100" width="24" height="24" role="img" aria-label="8plus" style="display: block; overflow: visible;"><circle cx="32" cy="29" r="18" fill="#ffffff"></circle><path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path><circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle></svg>
+          <span style="font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg);">8plus</span>
+        </div>
+        <p style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--meta); margin: 14px 0 0;">架構驅動的技術夥伴</p>
+        <p style="font-size: 13px; color: var(--meta); margin: 8px 0 0;">© 2026 8plus · Made in Taiwan</p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div style="display: flex; gap: 18px; font-size: 14px;">
+          <a href="https://line.me/R/ti/p/@482ykgdg" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">LINE</a>
+          <a href="/contact" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">Email</a>
+          <a href="/feed.xml" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">RSS</a>
+        </div>
+        <p style="font-size: 12px; color: var(--meta); margin: 0;">Next.js 15 · Velite · Vercel</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ VARIANT TOGGLE ============ -->
+  <div style="position: fixed; bottom: 18px; right: 18px; z-index: 60; display: inline-flex; gap: 4px; background: rgba(3,6,26,.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px;">
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 A · 能力卡</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 A · 能力卡</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 B · 條列</button></sc-if>
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 B · 條列</button></sc-if>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;variant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;default&quot;: &quot;A&quot;, &quot;tsType&quot;: &quot;\&quot;A\&quot; | \&quot;B\&quot;&quot;, &quot;section&quot;: &quot;版面版本&quot;}}">
+class Component extends DCLogic {
+  state = { variant: this.props.variant || "A" };
+
+  componentDidUpdate(prev) {
+    if (prev.variant !== this.props.variant && this.props.variant && this.props.variant !== this.state.variant) {
+      this.setState({ variant: this.props.variant });
+    }
+  }
+
+  renderVals() {
+    const v = this.state.variant;
+    const isA = v === "A";
+    const isB = v === "B";
+    return {
+      isA,
+      isB,
+      selA: () => this.setState({ variant: "A" }),
+      selB: () => this.setState({ variant: "B" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

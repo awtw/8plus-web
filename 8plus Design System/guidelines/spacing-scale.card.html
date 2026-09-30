@@ -1,0 +1,27 @@
+<!-- @dsCard group="間距" viewport="700x160" name="間距級距" subtitle="8px 基準網格；區段節奏 48 / 64 / 80" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--color-blue); padding: 20px; }
+  .row { display: flex; align-items: flex-end; gap: 14px; }
+  .u { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar { background: var(--color-orange); border-radius: 3px; width: 22px; }
+  .l { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.7); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="u"><div class="bar" style="height:4px"></div><div class="l">1·4</div></div>
+    <div class="u"><div class="bar" style="height:8px"></div><div class="l">2·8</div></div>
+    <div class="u"><div class="bar" style="height:12px"></div><div class="l">3·12</div></div>
+    <div class="u"><div class="bar" style="height:16px"></div><div class="l">4·16</div></div>
+    <div class="u"><div class="bar" style="height:20px"></div><div class="l">5·20</div></div>
+    <div class="u"><div class="bar" style="height:24px"></div><div class="l">6·24</div></div>
+    <div class="u"><div class="bar" style="height:32px"></div><div class="l">8·32</div></div>
+    <div class="u"><div class="bar" style="height:48px"></div><div class="l">12·48</div></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!-- @dsCard group="元件" viewport="700x420" name="覆蓋層 — Sheet 與 DropdownMenu" subtitle="側邊抽屜（行動選單）與下拉（語言切換）" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--color-dark); padding: 22px; color: var(--fg); }
+  .sec { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--meta); margin: 0 0 10px; }
+  .frame { position: relative; height: 320px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 18px; overflow: hidden; }
+  .row { display: flex; gap: 12px; align-items: center; }
+  .navlink { font-size: 16px; color: var(--fg-2); padding: 10px 0; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const NS = window.Ds8plusDesignSystem_1b9e83;
+  const { Button, Logo, Separator } = NS;
+  const { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } = NS;
+  const { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } = NS;
+  function Demo() {
+    return (
+      <div className="frame bg-blue">
+        <div className="row" style={{ justifyContent:'space-between' }}>
+          <Logo size={26} wordmark />
+          <div className="row">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild><Button variant="secondary" size="sm">繁中 ▾</Button></DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Language</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>繁體中文</DropdownMenuItem>
+                <DropdownMenuItem>English</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Sheet>
+              <SheetTrigger asChild><Button variant="ghost" size="icon">≡</Button></SheetTrigger>
+              <SheetContent side="right">
+                <SheetHeader>
+                  <SheetTitle>8plus</SheetTitle>
+                  <SheetDescription>架構先行 · AI 落地</SheetDescription>
+                </SheetHeader>
+                <Separator />
+                <nav style={{ display:'flex', flexDirection:'column' }}>
+                  {['Lab','About','Services','Path','Blog','Booking'].map(x => <div key={x} className="navlink">{x}</div>)}
+                </nav>
+                <Button style={{ marginTop:'auto' }}>預約諮詢</Button>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+        <p style={{ fontSize:14, color:'var(--muted)', marginTop:40, maxWidth:'34ch' }}>
+          Tap ≡ to open the mobile-nav sheet, or the language button for the dropdown.
+        </p>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

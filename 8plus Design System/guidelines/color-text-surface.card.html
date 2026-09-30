@@ -1,0 +1,34 @@
+<!-- @dsCard group="顏色" viewport="700x170" name="文字與表面" subtitle="白字階梯 ＋ 半透明玻璃表面與細線框" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); padding: 0; }
+  .stage { background: var(--color-blue); padding: 22px; display: flex; gap: 22px; align-items: center; }
+  .ladder { display: flex; flex-direction: column; gap: 6px; }
+  .ladder span { font-size: 15px; }
+  .l1 { color: #fff; } .l2 { color: rgba(255,255,255,.88); } .l3 { color: rgba(255,255,255,.76); } .l4 { color: rgba(255,255,255,.6); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.5); }
+  .surfs { display: flex; gap: 12px; }
+  .s { width: 90px; height: 90px; border-radius: var(--radius-md); display: flex; align-items: flex-end; padding: 8px; }
+  .g1 { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); }
+  .g2 { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="ladder">
+      <span class="l1">Primary text — fg <span class="lbl">#fff</span></span>
+      <span class="l2">Secondary — fg-2 <span class="lbl">.88</span></span>
+      <span class="l3">Body / muted <span class="lbl">.76</span></span>
+      <span class="l4">Meta / caption <span class="lbl">.6</span></span>
+    </div>
+    <div class="surfs">
+      <div class="s g1"><span class="lbl">surface .08</span></div>
+      <div class="s g2"><span class="lbl">border .22</span></div>
+    </div>
+  </div>
+</body>
+</html>

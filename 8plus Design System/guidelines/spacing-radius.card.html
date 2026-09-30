@@ -1,0 +1,23 @@
+<!-- @dsCard group="間距" viewport="700x160" name="圓角" subtitle="22px 是簽名卡片圓角；按鈕與 Badge 用藥丸形" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--color-blue); padding: 20px; }
+  .row { display: flex; gap: 18px; align-items: center; }
+  .u { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .box { width: 96px; height: 72px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.4); }
+  .l { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.7); }
+  .big { border: 2px solid var(--color-orange); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="u"><div class="box" style="border-radius:8px"></div><div class="l">sm · 8</div></div>
+    <div class="u"><div class="box big" style="border-radius:22px"></div><div class="l">md · 22 ★</div></div>
+    <div class="u"><div class="box" style="border-radius:9999px"></div><div class="l">pill</div></div>
+  </div>
+</body>
+</html>

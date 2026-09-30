@@ -1,0 +1,97 @@
+/* ============================================================
+   8plus — Color tokens · v2 CI (single version, no light/dark)
+   Copied verbatim from styles/globals.css :root.
+
+   The identity is a DUAL base color: International Klein Blue
+   (technical architecture) and Pantone Orange 021 C (commercial
+   delivery). Sections ALTERNATE between blue and orange fields;
+   the accent flips to the complementary color on each. Text is
+   always white; surfaces are translucent white glass. There is
+   no light mode — color-scheme is dark.
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  /* --- CI base colors --- */
+  --color-blue: #002FA7;    /* International Klein Blue — /sc, technical architecture, DEFAULT field */
+  --color-orange: #FE5000;  /* Pantone Orange 021 C — /sb, commercial delivery */
+  --color-dark: #0A0E1A;    /* deep night — full-bleed media chapters */
+
+  /* --- Current-field tokens (overridden by section variants) --- */
+  --bg: var(--color-blue);
+
+  --fg: #ffffff;                        /* primary text */
+  --fg-2: rgba(255, 255, 255, 0.88);    /* secondary text */
+  --muted: rgba(255, 255, 255, 0.76);   /* supporting text / body */
+  --meta: rgba(255, 255, 255, 0.6);     /* captions, corner marks */
+
+  /* --- Accent (flips with field; default = orange on blue) --- */
+  --accent: var(--color-orange);
+  --accent-on: #ffffff;
+  --accent-hover: #FF6A28;
+  --accent-active: #E04600;
+  --accent-soft: rgba(255, 255, 255, 0.14);
+  --accent-line: rgba(255, 255, 255, 0.45);
+  --accent-glow: rgba(255, 255, 255, 0.3);
+
+  /* --- Glass surfaces (translucent white over the color field) --- */
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-warm: rgba(255, 255, 255, 0.12);
+
+  /* --- Borders / hairlines --- */
+  --border: rgba(255, 255, 255, 0.22);
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --hover-border: rgba(255, 255, 255, 0.5);
+
+  /* --- Hover fills --- */
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --hover-bg-strong: rgba(255, 255, 255, 0.15);
+  --hover-fg: #ffffff;
+
+  /* --- Status --- */
+  --success: #34d399;
+  --warn: #eab308;
+  --danger: #ff5f56;
+
+  /* --- Logo --- */
+  --logo-mark: #ffffff;
+  --logo-mark-inverse: var(--color-blue);
+
+  --page-bg: var(--bg);
+}
+
+/* ============================================================
+   Section variants — override the field + accent per <section>.
+   Blue field pairs with an orange accent; orange field pairs
+   with a blue accent; dark field pairs with orange. Everything
+   inside reads the tokens, so no hard-coded colors are needed.
+   ============================================================ */
+.bg-blue {
+  --bg: var(--color-blue);
+  --accent: var(--color-orange);
+  --accent-hover: #FF6A28;
+  --accent-active: #E04600;
+  --logo-mark-inverse: var(--color-blue);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.bg-orange {
+  --bg: var(--color-orange);
+  --accent: var(--color-blue);
+  --accent-hover: #104BFB;
+  --accent-active: #002583;
+  --logo-mark-inverse: var(--color-orange);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.bg-dark {
+  --bg: var(--color-dark);
+  --accent: var(--color-orange);
+  --accent-hover: #FF6A28;
+  --accent-active: #E04600;
+  --logo-mark-inverse: var(--color-dark);
+  background: var(--bg);
+  color: var(--fg);
+}

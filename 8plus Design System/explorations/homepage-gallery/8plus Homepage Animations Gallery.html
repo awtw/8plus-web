@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>8plus — 首頁動畫畫廊（全 35 款 · RWD）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="image-slot.js"></script>
+<style>
+  :root{
+    --blue:#002FA7;--orange:#FE5000;--dark:#04061a;--fg:#fff;--meta:rgba(255,255,255,.6);
+    --sans:"Noto Sans TC","Outfit",sans-serif;--mono:"JetBrains Mono",monospace;--body:"Outfit","Noto Sans TC",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:var(--dark);overflow:hidden}
+  body{font-family:var(--body);color:#fff;-webkit-font-smoothing:antialiased}
+  a{color:#fff;text-decoration:none}a:hover{color:var(--orange)}
+  button{font:inherit}
+
+  /* ---------- stage ---------- */
+  .stage{position:fixed;inset:0;height:100vh;height:100dvh;overflow:hidden;background:var(--dark);transition:opacity .18s ease}
+  .stage.fading{opacity:0}
+  .scene-root{position:absolute;inset:0;overflow:hidden}
+
+  .grain{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .scrim{position:fixed;left:0;right:0;bottom:0;height:54%;z-index:15;pointer-events:none;
+    background:linear-gradient(to top, rgba(4,6,26,.86) 0%, rgba(4,6,26,.48) 40%, transparent 100%)}
+
+  /* ---------- topbar ---------- */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+    padding:max(20px, env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) 0 max(20px, env(safe-area-inset-left,0px));
+    pointer-events:none}
+  .topbar>*{pointer-events:auto}
+  .mark{display:flex;align-items:center;gap:10px}
+  .mark .wt{font-family:var(--sans);font-weight:900;font-size:20px;letter-spacing:-.02em}
+  .mark .wt sup{font-size:.5em;font-weight:700;vertical-align:super;color:var(--orange);margin-left:1px}
+  .topnav{display:flex;align-items:center;gap:20px}
+  .navlinks{display:flex;gap:24px;font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+  .navlinks a{opacity:.7;transition:.2s}.navlinks a:hover{opacity:1}
+
+  .pickerToggle{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    background:rgba(4,6,26,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;padding:8px 8px 8px 16px;cursor:pointer;color:#fff;min-height:44px}
+  .pickerToggle .idx{color:var(--meta);font-weight:700}
+  .pickerToggle .lbl{max-width:24ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pickerToggle .chev{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.12);font-size:10px;flex-shrink:0}
+
+  /* ---------- edge nav ---------- */
+  .edge{position:fixed;top:50%;transform:translateY(-50%);z-index:25;width:46px;height:46px;border-radius:50%;
+    background:rgba(4,6,26,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);color:#fff;
+    font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+  .edge:hover{background:rgba(255,255,255,.16)}
+  .edge.prev{left:max(14px, env(safe-area-inset-left,0px))}
+  .edge.next{right:max(14px, env(safe-area-inset-right,0px))}
+
+  /* ---------- caption ---------- */
+  .caption{position:fixed;z-index:20;left:max(44px, calc(env(safe-area-inset-left,0px) + 24px));bottom:max(48px, calc(env(safe-area-inset-bottom,0px) + 32px));
+    max-width:min(42ch,46vw);display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+  .caption.align-center{left:50%;right:auto;transform:translateX(-50%);max-width:min(46ch,72vw);align-items:center;text-align:center}
+  .caption.align-right{left:auto;right:max(44px, calc(env(safe-area-inset-right,0px) + 24px));align-items:flex-end;text-align:right}
+  .caption .eye{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--meta);display:flex;align-items:center;gap:12px;margin-bottom:16px;min-height:1.3em}
+  .caption .eye .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0}
+  .caption h1{font-family:var(--sans);font-weight:900;font-size:clamp(30px,4.2vw,58px);line-height:1.16;letter-spacing:-.02em;
+    text-shadow:0 4px 30px rgba(0,10,50,.55)}
+  .caption p{font-family:var(--body);font-weight:300;font-size:clamp(14px,1.2vw,17px);color:rgba(255,255,255,.85);margin-top:14px;line-height:1.7;max-width:38ch}
+  .caption .cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+  .caption.align-center .cta,.caption.align-center .eye{justify-content:center}
+  .caption.align-right .cta{justify-content:flex-end}
+  .btn{font-family:var(--sans);font-weight:500;font-size:14.5px;white-space:nowrap;padding:13px 26px;min-height:44px;
+    border-radius:999px;cursor:pointer;transition:.28s;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff}
+  .btn.solid{background:#fff;color:var(--dark);border-color:#fff}
+  .btn.solid:hover{background:var(--orange);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+  .btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.1);transform:translateY(-2px)}
+
+  /* fx hooks some scenes apply to the shared caption itself */
+  @keyframes flow2b{to{background-position:230% 0}}
+  .caption.fx-2b h1{background:linear-gradient(100deg,#fff 12%,#FE5000 40%,#ffd9c4 58%,#fff 85%);
+    background-size:230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow2b 7s linear infinite}
+  .caption.fx-2d .eye{color:var(--orange)}
+
+  /* ---------- picker overlay ---------- */
+  .picker{position:fixed;inset:0;z-index:60;background:rgba(3,4,16,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    opacity:0;pointer-events:none;transition:opacity .2s ease;display:flex;flex-direction:column}
+  .picker.on{opacity:1;pointer-events:auto}
+  .picker-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+    padding:max(22px, calc(env(safe-area-inset-top,0px) + 22px)) 28px 18px}
+  .picker-head h2{font-family:var(--sans);font-weight:700;font-size:18px}
+  .picker-close{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:16px;cursor:pointer}
+  .picker-body{flex:1;overflow-y:auto;padding:0 28px calc(env(safe-area-inset-bottom,0px) + 28px)}
+  .pgroup{margin-bottom:26px}
+  .pgroup h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--meta);margin-bottom:12px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .pitem{display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);color:#fff;cursor:pointer;text-align:left;transition:.2s;width:100%}
+  .pitem:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+  .pitem.on{background:#fff;color:var(--dark);border-color:#fff}
+  .pswatch{width:26px;height:26px;border-radius:8px;flex-shrink:0}
+  .pitem .pid{display:block;font-family:var(--mono);font-weight:700;font-size:11px;opacity:.65}
+  .pitem .pname{display:block;font-family:var(--sans);font-size:13px;font-weight:500}
+
+  /* ---------- mobile ---------- */
+  @media(max-width:700px){
+    .navlinks{display:none}
+    .pickerToggle .lbl{max-width:9ch}
+    .topbar{padding-left:16px;padding-right:16px;padding-top:max(14px, env(safe-area-inset-top,0px))}
+    .edge{width:42px;height:42px;font-size:18px}
+    .caption,.caption.align-center,.caption.align-right{left:20px;right:20px;bottom:max(24px, calc(env(safe-area-inset-bottom,0px) + 18px));
+      max-width:none;transform:none;align-items:flex-start;text-align:left}
+    .caption.align-center{align-items:center;text-align:center}
+    .caption h1{font-size:clamp(28px,8.6vw,40px)}
+    .caption p{max-width:none}
+    .btn{padding:12px 20px;font-size:13.5px}
+    .scrim{height:60%}
+    .pgrid{grid-template-columns:1fr 1fr}
+    .picker-head{padding-left:20px;padding-right:20px}
+    .picker-body{padding-left:20px;padding-right:20px}
+  }
+  @media(max-width:420px){
+    .pgrid{grid-template-columns:1fr}
+    .caption h1{font-size:clamp(26px,9vw,34px)}
+    .caption .cta{width:100%}
+    .caption .cta .btn{flex:1 1 auto;text-align:center}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage"></div>
+<div class="scrim"></div>
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="mark">
+    <svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true">
+      <rect x="1" y="1" width="32" height="32" rx="9" fill="#fff"/>
+      <path d="M17 1 h7 a9 9 0 0 1 9 9 v14 a9 9 0 0 1 -9 9 h-7 Z" fill="#FE5000"/>
+      <text x="17" y="23" font-family="Noto Sans TC, sans-serif" font-weight="900" font-size="19" text-anchor="middle" fill="#002FA7">8</text>
+    </svg>
+    <span class="wt">8plus<sup>+</sup></span>
+  </div>
+  <div class="topnav">
+    <div class="navlinks"><a href="#">關於</a><a href="#">Lab</a><a href="#">服務</a><a href="#">預約</a></div>
+    <button class="pickerToggle" id="pickerToggle" aria-haspopup="dialog">
+      <span class="idx" id="pIdx">01/35</span><span class="lbl" id="pLbl">流體對撞</span><span class="chev">▾</span>
+    </button>
+  </div>
+</header>
+
+<button class="edge prev" id="prevBtn" aria-label="上一個動畫">‹</button>
+<button class="edge next" id="nextBtn" aria-label="下一個動畫">›</button>
+
+<div class="caption align-left" id="caption">
+  <div class="eye"><span class="dot"></span><span>ARCHITECTURE · AI · DELIVERY</span></div>
+  <h1>架構先行，AI 落地</h1>
+  <p>把需求交付成可信系統。技術顧問 · 架構導入 · 全端接案。</p>
+  <div class="cta"><button class="btn solid">預約諮詢</button><button class="btn ghost">看 Lab 作品</button></div>
+</div>
+
+<div class="picker" id="picker" role="dialog" aria-label="瀏覽全部首頁動畫">
+  <div class="picker-head"><h2>瀏覽全部首頁動畫 · 35 款</h2><button class="picker-close" id="pickerClose" aria-label="關閉">✕</button></div>
+  <div class="picker-body" id="pickerBody"></div>
+</div>
+
+<script>
+  // orchestrator — defined here, invoked after every scene file has registered.
+  function initGallery(){
+    const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    function mobileNow(){ return matchMedia('(max-width:700px)').matches; }
+
+    const stageEl = document.getElementById('stage');
+    const captionEl = document.getElementById('caption');
+    const pickerToggle = document.getElementById('pickerToggle');
+    const idxEl = document.getElementById('pIdx');
+    const lblEl = document.getElementById('pLbl');
+    const picker = document.getElementById('picker');
+    const pickerBody = document.getElementById('pickerBody');
+    const scenes = window.GALLERY_SCENES || [];
+    const groups = [
+      ['g1','01 · 流體與形態'],['g2','02 · 資料與訊號'],['g3','03 · 色場與空間'],
+      ['g4','04 · 背景素材庫'],['g5','05 · 握手與焦點'],['g6','06 · 標誌動態'],
+      ['g7','07 · 線流交會'],['g8','08 · 透視隧道']
+    ];
+
+    groups.forEach(([gid,glabel])=>{
+      const list = scenes.filter(s=>s.group===gid);
+      if(!list.length) return;
+      const gDiv=document.createElement('div'); gDiv.className='pgroup';
+      const h3=document.createElement('h3'); h3.textContent=glabel; gDiv.appendChild(h3);
+      const grid=document.createElement('div'); grid.className='pgrid';
+      list.forEach(s=>{
+        const b=document.createElement('button'); b.className='pitem'; b.dataset.id=s.id; b.type='button';
+        b.innerHTML='<span class="pswatch" style="background:'+s.thumb+'"></span><span><span class="pid">'+s.id+'</span><span class="pname">'+s.label+'</span></span>';
+        b.addEventListener('click',()=>{ go(s.id); closePicker(); });
+        grid.appendChild(b);
+      });
+      gDiv.appendChild(grid); pickerBody.appendChild(gDiv);
+    });
+
+    function openPicker(){ picker.classList.add('on'); refreshPickerActive(); }
+    function closePicker(){ picker.classList.remove('on'); }
+    function refreshPickerActive(){
+      const id = scenes[current] && scenes[current].id;
+      [...pickerBody.querySelectorAll('.pitem')].forEach(b=>b.classList.toggle('on', b.dataset.id===id));
+    }
+    pickerToggle.addEventListener('click', openPicker);
+    document.getElementById('pickerClose').addEventListener('click', closePicker);
+    picker.addEventListener('click', e=>{ if(e.target===picker) closePicker(); });
+
+    let current = -1, cleanup = null, root = null;
+
+    function go(id){
+      const i = scenes.findIndex(s=>s.id===id);
+      if(i<0 || i===current) return;
+      current = i;
+      const scene = scenes[current];
+      stageEl.classList.add('fading');
+      setTimeout(()=>{
+        if(cleanup){ try{cleanup();}catch(e){} }
+        if(root) root.remove();
+        root = document.createElement('div');
+        root.className = 'scene-root scn-'+scene.id;
+        root.setAttribute('data-screen-label', scene.id+' · '+scene.label);
+        stageEl.appendChild(root);
+        try{ cleanup = scene.mount(root, { reduce, isMobile: mobileNow() }, captionEl) || null; }
+        catch(e){ console.error('scene mount failed', scene.id, e); cleanup=null; }
+        captionEl.className = 'caption align-'+(scene.align||'left');
+        idxEl.textContent = String(current+1).padStart(2,'0')+'/'+scenes.length;
+        lblEl.textContent = scene.id+' · '+scene.label;
+        stageEl.classList.remove('fading');
+        try{ localStorage.setItem('galleryScene', scene.id); history.replaceState(null,'','#'+scene.id); }catch(e){}
+        refreshPickerActive();
+      }, reduce?0:160);
+    }
+    function step(delta){
+      if(!scenes.length) return;
+      const i = ((current<0?0:current)+delta+scenes.length)%scenes.length;
+      go(scenes[i].id);
+    }
+    document.getElementById('prevBtn').addEventListener('click',()=>step(-1));
+    document.getElementById('nextBtn').addEventListener('click',()=>step(1));
+    addEventListener('keydown', e=>{
+      if(picker.classList.contains('on')){ if(e.key==='Escape') closePicker(); return; }
+      if(e.key==='ArrowRight') step(1);
+      else if(e.key==='ArrowLeft') step(-1);
+    });
+
+    let tsx=0, tsy=0;
+    stageEl.addEventListener('touchstart', e=>{ tsx=e.touches[0].clientX; tsy=e.touches[0].clientY; }, {passive:true});
+    stageEl.addEventListener('touchend', e=>{
+      const dx=e.changedTouches[0].clientX-tsx, dy=e.changedTouches[0].clientY-tsy;
+      if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)) step(dx<0?1:-1);
+    }, {passive:true});
+
+    let rTimer;
+    addEventListener('resize', ()=>{
+      clearTimeout(rTimer);
+      rTimer=setTimeout(()=>{
+        if(current<0 || !root) return;
+        const scene = scenes[current];
+        if(cleanup){ try{cleanup();}catch(e){} }
+        root.innerHTML='';
+        try{ cleanup = scene.mount(root, { reduce, isMobile: mobileNow() }, captionEl) || null; }
+        catch(e){ console.error('scene remount failed', scene.id, e); cleanup=null; }
+      }, 220);
+    });
+
+    if(scenes.length){
+      const startId = (location.hash||'').slice(1);
+      let want = scenes.find(s=>s.id===startId) ? startId : null;
+      if(!want){ try{ const saved=localStorage.getItem('galleryScene'); if(scenes.find(s=>s.id===saved)) want=saved; }catch(e){} }
+      go(want || scenes[0].id);
+    }
+  }
+</script>
+<script src="scenes-1-fluid.js"></script>
+<script src="scenes-2-signal.js"></script>
+<script src="scenes-3-field.js"></script>
+<script src="scenes-4-library.js"></script>
+<script src="scenes-5-handshake.js"></script>
+<script src="scenes-6-mark.js"></script>
+<script src="scenes-7-lines.js"></script>
+<script src="scenes-8-tunnel.js"></script>
+<script>initGallery();</script>
+
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#04061a"/>
+  <circle cx="38" cy="50" r="22" fill="#002FA7"/>
+  <circle cx="64" cy="50" r="22" fill="#FE5000" opacity="0.85"/>
+</svg>
+</template>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Lab 作品詳頁" description="單一作品 case study 詳頁 — 統一框架（標題頭 / 挑戰·解決 / 內文 / 亮點·連結 / CTA），用 slug 下拉切換全 16 案，資料取自真實 mdx" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-body); background: var(--color-blue); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  a:hover { color: var(--fg); }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { [data-rise] { animation: none !important; opacity: 1 !important; transform: none !important; } }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; overflow-x: hidden;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-soft); background: color-mix(in oklab, var(--color-dark), transparent 12%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div style="max-width: var(--container-max); margin: 0 auto; min-height: 4.5rem; padding: 0 clamp(24px, 4vw, 28px); display: flex; align-items: center; gap: 32px;">
+      <a href="/" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <svg viewBox="0 0 100 100" width="26" height="26" role="img" aria-label="8plus" style="display: block; overflow: visible; flex: none;">
+          <circle cx="32" cy="29" r="18" fill="#ffffff"></circle>
+          <path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path>
+          <circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle>
+        </svg>
+        <span style="font-family: var(--font-body); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; color: var(--fg); line-height: 1;">8plus</span>
+      </a>
+      <nav style="display: flex; gap: 24px; margin-left: 4px; flex-wrap: wrap;">
+        <a href="/about" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">關於</a>
+        <a href="/lab" style="font-size: 14px; text-decoration: none; color: var(--fg); opacity: 1;">Lab</a>
+        <a href="/path" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">歷程</a>
+        <a href="/services" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">服務</a>
+        <a href="/booking" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">預約</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ TITLE HEAD (blue) ============ -->
+  <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(40px, 6vw, 72px) clamp(36px, 5vw, 56px);">
+      <a href="/lab" style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg-2); text-decoration: none; margin-bottom: 26px;" style-hover="color: var(--fg);">← 返回 Lab</a>
+      <div style="display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);" data-rise=""><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span>{{ p.eyebrow }}</div>
+      <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.3rem, 5.4vw, 4rem); line-height: 1.04; letter-spacing: -0.04em; color: var(--fg); margin: 16px 0 0; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">{{ p.title }}</h1>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 22px 0 0; font-size: 14px; color: var(--fg-2);">
+        <sc-for list="{{ p.meta }}" as="m" hint-placeholder-count="3"><div><span style="font-weight: 500; color: var(--fg);">{{ m.k }}：</span><span>{{ m.v }}</span></div></sc-for>
+      </div>
+
+      <p style="font-weight: 300; font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.62; color: var(--fg); margin: 22px 0 0; max-width: 62ch;">{{ p.summary }}</p>
+
+      <sc-if value="{{ hasMetrics }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+        <sc-for list="{{ p.metrics }}" as="m" hint-placeholder-count="3"><div class="glass-card" style="padding: 18px 20px;"><div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">{{ m.label }}</div><div style="font-size: 1.25rem; font-weight: 600; color: var(--fg); margin-top: 6px;">{{ m.value }}</div></div></sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ hasStack }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top: 28px;">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);">技術棧</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
+          <sc-for list="{{ p.stack }}" as="t" hint-placeholder-count="4"><span style="font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 13px;">{{ t }}</span></sc-for>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ============ CHALLENGE / SOLUTION (orange) ============ -->
+  <sc-if value="{{ hasCS }}" hint-placeholder-val="{{ false }}">
+  <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(40px, 6vw, 64px); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
+      <div class="glass-card" style="padding: 28px;">
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.7rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">挑戰</h2>
+        <p style="font-weight: 300; font-size: 15px; line-height: 1.75; color: var(--fg-2); margin: 16px 0 0;">{{ p.challenge }}</p>
+      </div>
+      <div class="glass-card" style="padding: 28px;">
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.7rem); letter-spacing: -0.03em; color: var(--fg); margin: 0;">解決方案</h2>
+        <p style="font-weight: 300; font-size: 15px; line-height: 1.75; color: var(--fg-2); margin: 16px 0 0;">{{ p.solution }}</p>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ============ BODY: intro + point groups (blue) ============ -->
+  <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: 760px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(44px, 6vw, 72px);">
+      <sc-if value="{{ hasIntro }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-bottom: 40px;">
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0 0 16px;">簡介</h2>
+        <p style="font-weight: 300; font-size: 16px; line-height: 1.85; color: var(--fg-2); margin: 0;">{{ p.intro }}</p>
+      </div>
+      </sc-if>
+
+      <sc-for list="{{ p.points }}" as="grp" hint-placeholder-count="2">
+        <div style="margin-bottom: 36px;">
+          <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0 0 16px;">{{ grp.h }}</h2>
+          <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 12px;">
+            <sc-for list="{{ grp.items }}" as="it" hint-placeholder-count="3"><li style="display: flex; gap: 12px; font-weight: 300; font-size: 15.5px; line-height: 1.7; color: var(--fg-2);"><span style="margin-top: 9px; width: 6px; height: 6px; border-radius: 9999px; background: var(--accent); flex: none;"></span><span>{{ it }}</span></li></sc-for>
+          </ul>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ SCREENSHOTS (blue) ============ -->
+  <sc-if value="{{ hasShots }}" hint-placeholder-val="{{ false }}">
+  <section class="bg-blue noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(40px, 6vw, 64px);">
+      <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta); margin-bottom: 20px;">畫面</div>
+      <div style="display: grid; gap: 22px;">
+        <sc-for list="{{ p.shots }}" as="s" hint-placeholder-count="0">
+          <figure style="margin: 0;">
+            <div class="glass-card" style="padding: 10px; overflow: hidden;">
+              <img src="{{ s.src }}" alt="{{ s.caption }}" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: calc(var(--radius-md) - 6px);"></img>
+            </div>
+            <figcaption style="font-size: 13px; color: var(--meta); margin-top: 10px; text-align: center;">{{ s.caption }}</figcaption>
+          </figure>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ============ LINKS (inline strip, blue) ============ -->
+  <sc-if value="{{ hasLinks }}" hint-placeholder-val="{{ true }}">
+  <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+    <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: 0 clamp(40px, 6vw, 64px);">
+      <div class="glass-card" style="padding: 22px 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px;">
+        <div style="display: inline-flex; align-items: center; gap: 10px; flex: none;">
+          <span style="width: 6px; height: 6px; border-radius: 9999px; background: var(--accent);"></span>
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);">連結</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <sc-for list="{{ p.links }}" as="l" hint-placeholder-count="1"><a href="{{ l.url }}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; height: var(--control-md); padding: 0 1.3rem; border-radius: var(--radius-pill); font-size: 14.5px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="border-color: var(--accent); color: var(--accent);">{{ l.label }} ↗</a></sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ============ CTA (dark) ============ -->
+  <section class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 96px);">
+      <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 24ch;">想了解更多技術細節，或討論類似專案？</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
+        <a href="/booking" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: var(--fg); color: var(--bg); text-decoration: none; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">預約諮詢 →</a>
+        <a href="/lab" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">看其他作品</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin: 0 auto; padding: 48px clamp(24px, 4vw, 28px); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 100 100" width="24" height="24" role="img" aria-label="8plus" style="display: block; overflow: visible;"><circle cx="32" cy="29" r="18" fill="#ffffff"></circle><path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path><circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle></svg>
+          <span style="font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg);">8plus</span>
+        </div>
+        <p style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--meta); margin: 14px 0 0;">架構驅動的技術夥伴</p>
+        <p style="font-size: 13px; color: var(--meta); margin: 8px 0 0;">© 2026 8plus · Made in Taiwan</p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div style="display: flex; gap: 18px; font-size: 14px;">
+          <a href="https://line.me/R/ti/p/@482ykgdg" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">LINE</a>
+          <a href="/contact" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">Email</a>
+          <a href="/feed.xml" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">RSS</a>
+        </div>
+        <p style="font-size: 12px; color: var(--meta); margin: 0;">Next.js 15 · Velite · Vercel</p>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;slug&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;8plus&quot;, &quot;ecommerce-dashboard&quot;, &quot;smart-community-backend&quot;, &quot;crm-series&quot;, &quot;b18&quot;, &quot;e-cooperative&quot;, &quot;resume-2025&quot;, &quot;flash-sale-api&quot;, &quot;experimentlab&quot;, &quot;1914&quot;, &quot;shuyan-art&quot;, &quot;resume-2024&quot;, &quot;resume-2021&quot;, &quot;resume-2019&quot;, &quot;power-bi&quot;, &quot;r-analysis&quot;], &quot;default&quot;: &quot;8plus&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;作品&quot;}}">
+class Component extends DCLogic {
+  DATA() {
+    return {
+      "ecommerce-dashboard": {
+        title: "電商管理後台", eyebrow: "案例研究 · 全端", caseStudy: true,
+        meta: [{ k: "角色", v: "全端開發 & 系統架構" }, { k: "期間", v: "2024.09 – 2024.12" }],
+        summary: "為中小型電商企業打造的現代化管理後台，整合訂單管理、庫存控制與數據分析。",
+        metrics: [{ label: "訂單處理效率", value: "+45%" }, { label: "庫存錯誤率", value: "−60%" }, { label: "系統響應", value: "< 200ms" }],
+        stack: ["Next.js 15", "TypeScript", "Prisma", "PostgreSQL", "Tailwind CSS", "Shadcn/ui"],
+        challenge: "訂單、庫存、客戶數據散落在不同系統，缺乏統一視圖；手動處理耗時易錯，且既有系統難以支撐多店鋪的業務增長。",
+        solution: "以 Next.js 15 App Router + Server Components 建置前端，Prisma + PostgreSQL 設計多租戶資料模型與即時同步，並以 Tailwind + Shadcn/ui 打造響應式、無障礙的元件化介面。",
+        intro: "隨著電商業務快速發展，傳統管理方式已無法滿足現代企業需求。本專案為中小型電商提供一套涵蓋數據儀表板、訂單、庫存與客戶關係的完整管理解決方案。",
+        points: [
+          { h: "核心功能模組", items: ["數據儀表板：即時銷售視覺化、多維度分析與自定義報表", "訂單管理：自動化流程、批量操作、狀態追蹤與退換貨", "庫存控制：即時監控、自動補貨提醒、多倉庫與預警", "客戶關係：資料整合、購買行為分析與客服工單"] },
+          { h: "技術亮點", items: ["Server Components 減少客戶端 JS 負載，程式碼分割按需載入", "PostgreSQL LISTEN/NOTIFY + WebSocket 實現即時數據推送", "Row-Level Security 達成多租戶資料隔離與加密", "JWT 認證與 RBAC 權限，符合 WCAG 2.1 無障礙標準"] },
+        ],
+        links: [{ label: "Live Demo", url: "https://demo.ecommerce-dashboard.com" }, { label: "GitHub", url: "https://github.com/example/ecommerce-dashboard" }],
+      },
+      "smart-community-backend": {
+        title: "SmartCommunity 後端", eyebrow: "案例研究 · 後端", caseStudy: true,
+        meta: [{ k: "客戶", v: "智慧社區平台（開源專案）" }],
+        summary: "面向智慧社區應用的 .NET 後端服務，涵蓋住戶、設備、事件通報與通知中心，強調可靠性與可觀測性。",
+        metrics: [{ label: "模組", value: "4 核心域" }, { label: "堆疊", value: ".NET + PG + Redis" }, { label: "部署", value: "Docker" }],
+        stack: [".NET", "PostgreSQL", "Redis", "Message Queue", "Docker"],
+        challenge: "社區場景涉及住戶、設備、事件與通知等多模組，需可擴展的後端架構與清晰的 API 邊界。",
+        solution: "以 .NET 分層架構建置核心服務，整合 PostgreSQL、Redis 與訊息佇列，並以 Docker 標準化部署。",
+        intro: "面向智慧社區應用的後端服務，涵蓋住戶、設備、社區服務與事件通報等核心模組，強調可靠性與可觀測性。",
+        points: [
+          { h: "核心模組", items: ["使用者 / 住戶 / 權限管理", "設備與感測資料收集", "通報與工作流程（任務分派、處理、回報）", "通知中心（Email / SMS / 推播）"] },
+          { h: "技術棧", items: ["平台：.NET", "資料：PostgreSQL、Redis", "佇列：RabbitMQ / Kafka（視部署配置）", "佈署：Docker / docker-compose"] },
+        ],
+        links: [{ label: "GitHub", url: "https://github.com/awtw/SmartCommunityBackEnd" }],
+      },
+      "crm-series": {
+        title: "CRM 系列設計", eyebrow: "案例研究 · IA / UX", caseStudy: true,
+        meta: [{ k: "客戶", v: "SaaS / 企業內部工具（可公開原型）" }],
+        summary: "針對登入、權限、清單、表單與流程引導設計的 CRM 原型系列，聚焦資訊架構與操作動線。",
+        metrics: [{ label: "原型版本", value: "4+ 模組" }, { label: "部署", value: "Vercel 即時預覽" }, { label: "聚焦", value: "IA + UX 動線" }],
+        stack: ["VanillaJS", "Next.js", "Vercel", "UI/UX Design"],
+        challenge: "多版本 CRM 需求並存，登入 / 權限 / 清單 / 表單模組需一致語言卻又能快速迭代不同情境。",
+        solution: "建立元件化 IA 與任務導向流程，以可重用列表 / 表單骨架支援權限與狀態變化，並部署可互動原型供利害關係人驗證。",
+        intro: "針對不同情境設計多版 CRM 原型，涵蓋登入 / 權限、清單檢索、表單編輯、流程引導等常見功能模組，強調資訊架構與操作動線的清晰性。",
+        points: [
+          { h: "設計重點", items: ["一致的設計語言與元件系統", "以任務為導向的頁面與操作流", "可擴充的列表 / 表單架構，支援權限與狀態變化"] },
+        ],
+        links: [{ label: "CRM Dev", url: "https://crmdev.8plus.app/en" }, { label: "Onboarding 原型", url: "https://on-boarding-system.vercel.app/en/login" }, { label: "文件 A", url: "https://awtw.github.io/resume/#/project/project-manage/main" }, { label: "文件 B", url: "https://awtw.github.io/resume/#/project/menu/center/centent" }],
+      },
+      "b18": {
+        title: "b18 品牌官網", eyebrow: "案例研究 · 品牌 / 前端", caseStudy: true,
+        meta: [{ k: "客戶", v: "b18 新創服飾品牌" }],
+        summary: "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。",
+        metrics: [{ label: "上線", value: "2 週內" }, { label: "技術", value: "Next.js + Vercel" }, { label: "導流", value: "IG 整合" }],
+        stack: ["Next.js", "Instagram", "UI/UX Design", "Vercel"],
+        challenge: "新品牌需同時建立視覺識別、產品敘事與 Instagram 導流，且預算與時程有限。",
+        solution: "以 Next.js 建置輕量官網，整合品牌故事、Lookbook 與社群 CTA，並優化行動端首屏轉換。",
+        intro: "為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。",
+        points: [
+          { h: "設計與體驗", items: ["以版型與留白凸顯產品質感與品牌定位", "以導購節點導流至社群與購買流程", "具一致性的設計系統與元件"] },
+        ],
+        links: [{ label: "官網", url: "https://b18.8plus.app/" }],
+      },
+      "8plus": {
+        title: "8plus 諮詢平台", eyebrow: "Lab · 全端", caseStudy: false,
+        meta: [], summary: "結合職涯與技術諮詢的預約平台，整合 Google Calendar 並聚焦高轉換的諮詢流程。",
+        metrics: [], stack: ["Next.js", "Google Calendar", "Vercel", "UI/UX Design"],
+        intro: "結合多年產品與開發經驗，打造能快速預約的諮詢平台，協助使用者就職涯與程式開發議題深度討論。透過資料分析背景與長期實務經驗，聚焦挖掘每位使用者的能力特點，給出具體可行的規劃路徑。",
+        points: [{ h: "特色亮點", items: ["系統化的預約流程，與 Google Calendar 無縫整合", "以使用者目標為中心的諮詢框架與問題引導", "極簡清晰的介面，降低學習成本、提升完成率"] }],
+        links: [{ label: "官網 Demo", url: "https://8plus.app/" }],
+        shots: [{ src: "./shots/8plus/web.png", caption: "8plus Web — 首頁與諮詢入口" }, { src: "./shots/8plus/content.png", caption: "8plus 內容 — 諮詢流程與預約" }],
+      },
+      "e-cooperative": {
+        title: "e-cooperative 光復平台", eyebrow: "Lab · 全端", caseStudy: false,
+        meta: [], summary: "為花蓮光復災害協作打造的資訊整合與資源媒合平台，聚焦快速上線與社群協作。",
+        metrics: [], stack: ["Next.js", "Vercel", "Python Flask API", "UI/UX Design"],
+        intro: "2025/09/23 花蓮光復區發生馬太鞍溪堰塞湖災害。透過社群與志工串聯，啟動協作平台的設計與原型開發，目標為整合資訊、提升溝通效率並協助資源媒合。",
+        points: [{ h: "目標與價值", items: ["整合多來源災情資訊，建立標準化資料模型", "提供志工與居民的互助與媒合機制", "以輕量可維護為前提，快速上線與迭代"] }],
+        links: [{ label: "官網", url: "https://www.hopenet-gf.com" }],
+      },
+      "resume-2025": {
+        title: "resume 2025 作品集", eyebrow: "Lab · 全端", caseStudy: false,
+        meta: [], summary: "Next.js 15 個人作品集與諮詢入口，整合 Google Calendar 預約流程與現代 UIX。",
+        metrics: [], stack: ["Next.js", "Google Calendar", "Vercel", "UI/UX Design"],
+        intro: "整合多年經驗與設計語彙，快速完成的新一代個人作品集。導入 Google Calendar 預約流程，讓對諮詢有興趣的使用者可直接線上預約，提升轉換效率。",
+        points: [{ h: "特色亮點", items: ["明快的資訊架構，突顯專案價值與角色貢獻", "以可讀性為核心的版面與動態細節", "內建預約入口（Google Calendar）"] }],
+        links: [{ label: "官網", url: "https://resume.2025.8plus.app/" }],
+      },
+      "flash-sale-api": {
+        title: "Flash Sale API", eyebrow: "Lab · 後端", caseStudy: false,
+        meta: [], summary: "面向高併發限量搶購場景的後端 API，透過鎖、佇列與快取避免超賣並維持系統穩定。",
+        metrics: [], stack: ["NestJS", "PostgreSQL", "Redis", "RabbitMQ", "Jest"],
+        intro: "針對「高併發限量搶購」設計，確保在極端流量下不超賣，並維持庫存一致性與系統穩定性。",
+        points: [
+          { h: "核心設計", items: ["以行鎖（SELECT ... FOR UPDATE）處理競態條件", "以 RabbitMQ 佇列削峰，保護資料庫", "以 Redis 快取加速讀取，降低 DB 壓力", "Rate Limiting 限制惡意或異常流量"] },
+          { h: "API 範例", items: ["POST /purchase：下單購買（保證不超賣）", "GET /products/:id：查詢商品庫存"] },
+        ],
+        links: [{ label: "GitHub", url: "https://github.com/awtw/flash-sale-api" }],
+      },
+      "experimentlab": {
+        title: "ExperimentLab 醫學分析", eyebrow: "Lab · 前端 / 設計", caseStudy: false,
+        meta: [], summary: "協助醫師建立研究原型與基礎預測模型的醫學分析平台，支援指標視覺化與研究報表匯出。",
+        metrics: [], stack: ["Vue 3", "UI/UX Design", "Analysis Algorithm"],
+        intro: "協助醫師在申請研究計畫時使用的原型平台，透過指標數據（例如覆膜透析程度、基因表現）建立初步預測模型，評估疾病惡化或好轉的風險趨勢。",
+        points: [{ h: "功能重點", items: ["指標資料視覺化呈現與趨勢追蹤", "基礎模型推估與可調參數", "記錄與匯出研究用報表"] }],
+        links: [{ label: "官網", url: "https://experimentlab.online/#/" }],
+      },
+      "1914": {
+        title: "1914 精油品牌官網", eyebrow: "Lab · 品牌 / 前端", caseStudy: false,
+        meta: [], summary: "自創精油品牌官網與客服自動化 Lab，整合品牌設計、香氛配方與 LINE / Messenger Chatbot。",
+        metrics: [], stack: ["VanillaJS", "LINE / Messenger Chatbot", "Dialogflow", "Heroku"],
+        intro: "1914 為替代役期間自創的精油品牌，從品牌命名、Logo 與視覺、包裝設計、配方研發到客服自動化全流程獨立完成，將生物化學背景與設計、工程能力整合為一致的品牌體驗。",
+        points: [{ h: "產品與體驗", items: ["以科學方法開發香氛配方，強調穩定與安全", "設計一致的視覺系統（Logo、包裝、行銷素材）", "以聊天機器人建立 24/7 客服流程（LINE、Messenger）"] }],
+        links: [{ label: "官網 Demo", url: "https://1914.augustwang.com/" }],
+      },
+      "shuyan-art": {
+        title: "shuyan_art 設計接案平台", eyebrow: "Lab · 品牌 / 前端", caseStudy: false,
+        meta: [], summary: "為設計接案品牌打造的作品展示與接案入口，聚焦視覺質感、服務呈現與轉換動線。",
+        metrics: [], stack: ["UI/UX Design"],
+        intro: "為設計接案品牌打造的作品展示與接案入口，聚焦視覺質感、服務呈現與轉換動線。",
+        points: [],
+        links: [{ label: "官網", url: "https://www.shuyan.art/" }],
+      },
+      "resume-2024": {
+        title: "resume 2024", eyebrow: "Lab · 前端 / 設計", caseStudy: false,
+        meta: [], summary: "Vue 3 商業風格作品集，強調品牌凝聚力、專案價值呈現與轉換動線。",
+        metrics: [], stack: ["Vue 3", "UI/UX Design"],
+        intro: "以商業導向為主的作品集設計，強調品牌凝聚力與專案價值呈現，注重資訊階層、視覺節奏與轉換動線。",
+        points: [{ h: "技術重點", items: ["Vue 3 元件化與路由規劃", "商業風格視覺與版面系統", "可維護的設計與代碼結構"] }],
+        links: [{ label: "官網", url: "https://www.augustwang.com/" }],
+      },
+      "resume-2021": {
+        title: "resume 2021", eyebrow: "Lab · 前端 / 設計", caseStudy: false,
+        meta: [], summary: "Angular 技能導向作品集，整理前端模組化、PayPal 串接與 Sass 樣式工程化經驗。",
+        metrics: [], stack: ["Angular", "Sass", "PayPal", "UI/UX Design"],
+        intro: "在震旦集團任職期間累積的技術與設計經驗，整理為技能導向的作品集，包含前端模組化設計、支付流程（PayPal）與樣式工程化實務。",
+        points: [{ h: "技術重點", items: ["Angular 元件化與狀態管理", "支付串接流程（PayPal）", "樣式工程（Sass）"] }],
+        links: [{ label: "官網", url: "https://resume.2021.augustwang.com/" }],
+      },
+      "resume-2019": {
+        title: "resume 2019", eyebrow: "Lab · 前端 / 設計", caseStudy: false,
+        meta: [], summary: "以 VanillaJS 與 CSS 動效打造的早期作品集，聚焦互動細節與動態資訊呈現。",
+        metrics: [], stack: ["VanillaJS", "CSS Animation", "Sass", "Gulp"],
+        intro: "在碩班期間以多種 JS / CSS 動畫技巧實作的作品集，聚焦互動細節與動態呈現，探索資訊與動態之間的平衡。",
+        points: [{ h: "技術重點", items: ["CSS 動畫與轉場效果", "任務導向的互動設計", "前端建構流程（Sass、Gulp）"] }],
+        links: [{ label: "官網", url: "https://resume.2019.augustwang.com/" }],
+      },
+      "power-bi": {
+        title: "Power BI 資料探索", eyebrow: "Lab · 資料", caseStudy: false,
+        meta: [], summary: "以 Python 與 Power BI 探索市場、就業與疾病資料的潛在關聯，建立互動式分析儀表板。",
+        metrics: [], stack: ["Python", "Power BI"],
+        intro: "以公開資料為基礎，探索股市與就業市場變化與特定疾病之間的潛在關聯。以 Python 進行資料處理與特徵工程，並以 Power BI 建立互動式儀表板。",
+        points: [{ h: "重點", items: ["資料清理與特徵工程流程", "指標與時間序列視覺化", "篩選與交互分析"] }],
+        links: [],
+      },
+      "r-analysis": {
+        title: "R 分析", eyebrow: "Lab · 資料", caseStudy: false,
+        meta: [], summary: "以 R 建立購物車按鍵影響因素分析模型，搭配 VanillaJS 呈現互動式洞察。",
+        metrics: [], stack: ["R", "VanillaJS"],
+        intro: "利用 R 建立分析模型，探討購物車按鍵設計對購買轉換的影響，並配合 VanillaJS 進行互動式視覺化，輔助決策與迭代。",
+        points: [{ h: "重點", items: ["模型假設與變數選擇", "實驗設計與 A/B 比較", "視覺化呈現與洞察整理"] }],
+        links: [{ label: "官網", url: "https://awtw.github.io/R_page/" }],
+      },
+    };
+  }
+
+  renderVals() {
+    const data = this.DATA();
+    const slug = data[this.props.slug] ? this.props.slug : "8plus";
+    const p = data[slug];
+    return {
+      p,
+      hasMetrics: p.metrics && p.metrics.length > 0,
+      hasStack: p.stack && p.stack.length > 0,
+      hasCS: !!(p.challenge || p.solution),
+      hasIntro: !!p.intro,
+      hasLinks: p.links && p.links.length > 0,
+      hasShots: p.shots && p.shots.length > 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

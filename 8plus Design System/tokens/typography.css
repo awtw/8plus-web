@@ -1,0 +1,41 @@
+/* ============================================================
+   8plus — Typography tokens · v2 CI
+   "Serif declares, sans executes." Georgia/serif Display for
+   H1–H2 headlines; Outfit for body & UI; JetBrains Mono for
+   eyebrows, section numbers and technical labels. Body weight
+   stays 300–400; 700+ is banned in running text.
+   ============================================================ */
+:root {
+  --font-display: "Georgia", var(--font-outfit, "Outfit"), -apple-system, system-ui, serif;
+  --font-body: var(--font-outfit, "Outfit"), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: var(--font-jbmono, "JetBrains Mono"), "SFMono-Regular", monospace;
+
+  /* --- Type scale --- */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;   /* body default */
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 60px;
+  --text-4xl: 72px;
+
+  /* --- Line heights --- */
+  --leading-body: 1.5;
+  --leading-tight: 1;
+
+  /* --- Tracking --- */
+  --tracking-display: -0.02em;   /* @kind other */
+  --tracking-mono: 0.12em;       /* @kind other */
+
+  /* --- Weights (300–600; no 700+ in body) --- */
+  --fw-light: 300;      /* @kind font */
+  --fw-regular: 400;    /* @kind font */
+  --fw-medium: 500;     /* @kind font */
+  --fw-semibold: 600;   /* @kind font */
+
+  /* --- Semantic roles --- */
+  --display-family: var(--font-display);
+  --body-family: var(--font-body);
+  --mono-family: var(--font-mono);
+}

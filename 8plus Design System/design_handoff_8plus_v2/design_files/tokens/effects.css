@@ -1,0 +1,119 @@
+/* ============================================================
+   8plus — Elevation, effects & motion tokens · v2 CI
+   Depth is expressed with translucent glass + hairline rings,
+   not drop shadows. The signature ease is a calm cubic-bezier;
+   a soft-light noise texture and slow aurora drift live over
+   the color fields. Copied from styles/globals.css.
+   ============================================================ */
+:root {
+  /* --- Elevation --- */
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--border-soft);
+  --elev-raised: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.28);
+  --focus-ring: 0 0 0 2px var(--accent);
+
+  /* --- Motion --- */
+  --motion-fast: 150ms;   /* @kind other */
+  --motion-base: 200ms;   /* @kind other */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);          /* @kind other */
+  --transition-base: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);  /* @kind other */
+}
+
+/* --- Glass card (over the color field) --- */
+.glass-card,
+.surface-card {
+  background: color-mix(in oklab, var(--bg), white 1%);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elev-ring);
+}
+.glass-card-strong {
+  background: color-mix(in oklab, var(--surface), white 3%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elev-ring);
+}
+
+/* Gradient hairline border that raises + reveals on hover */
+.gradient-border-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--bg), white 1%);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--elev-ring);
+  transition:
+    transform var(--motion-base) var(--ease-standard),
+    border-color var(--motion-base) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard);
+}
+.gradient-border-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--hover-border);
+  box-shadow: var(--shadow-hover);
+}
+.gradient-border-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent-line), var(--accent-soft));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-base) var(--ease-standard);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+.gradient-border-card:hover::before { opacity: 1; }
+
+/* --- Soft-light noise + halftone texture over the field --- */
+.noise-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: auto, 8px 8px;
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+  z-index: 0;
+}
+
+/* --- Aurora drift (decorative glow over the field) --- */
+.animate-aurora { animation: aurora 12s ease-in-out infinite; }
+@keyframes aurora {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.18; }
+  25% { transform: translate(8%, -8%) scale(1.08); opacity: 0.22; }
+  50% { transform: translate(-5%, 10%) scale(0.94); opacity: 0.16; }
+  75% { transform: translate(10%, 3%) scale(1.03); opacity: 0.2; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3.2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.glow-dot { box-shadow: 0 0 0 4px var(--accent-soft); }
+
+/* --- Animated logo mark (opt-in via <Logo animated />) --- */
+@keyframes logoBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes logoSlashSheen {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora, .shimmer { animation: none; }
+}

@@ -77,6 +77,14 @@ Resume file: None
 
 ## Discussion Log
 
+### 2026-07-13 13:15 CST — 8plus Design System 現行設計改造啟動（Winston）
+
+- 使用者要求依 `8plus Design System/` 提供的 v2 CI design system 修改現行網站設計，並指定 `bmad-agent-architect`。
+- Winston 已啟動並完成 brownfield 初查：保留 Next.js、既有內容模型、雙語與路由；優先從全域設計語言、字級階層、版面節奏、共用元件四層收斂，不重啟新的視覺方向。
+- 已確認設計來源：IKB 藍 `#002FA7`、Pantone 橘 `#FE5000`、深夜色 `#0A0E1A`、Georgia／Outfit／JetBrains Mono、22px 卡片圓角、藍橘交替 Section、每頁單一 signature motion。
+- 注意：`8plus Design System/` 目前為未追蹤資料夾；實作時只讀取其規範與資產，不改動或覆寫使用者提供的來源資料。
+- 依 `bmad-architecture` 強制啟動門檻，待使用者選擇 Coaching／Fast path，並確認本輪交付目的與受眾後開始修改。
+
 ### 2026-07-09 CST — 打掉重練重新設計：Phase A–D 鎖定（Claude / Cowork）
 
 - 使用者定調：於 feature 分支打掉重練（設計/內容/CTA/商業/動畫/Logo），靠 Claude 產出完整 system design，Cowork 一階段一階段做。

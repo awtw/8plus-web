@@ -1,0 +1,24 @@
+<!-- @dsCard group="效果" viewport="700x160" name="深度與動效" subtitle="用細線環而非陰影；沉穩標準 ease；柔光噪點" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); }
+  .stage { position: relative; background: var(--color-dark); padding: 24px; display: flex; gap: 28px; align-items: center; overflow: hidden; }
+  .u { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; color: #fff; }
+  .n { font-size: 14px; font-weight: 500; }
+  .v { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.6); }
+  .dot { width: 44px; height: 10px; border-radius: 9999px; background: var(--color-orange); animation: slide 2.6s cubic-bezier(0.16,1,0.3,1) infinite alternate; }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(120px); } }
+</style>
+</head>
+<body>
+  <div class="stage noise-field">
+    <div class="u"><div class="n">Standard ease</div><div class="v">cubic-bezier(0.16, 1, 0.3, 1)</div><div class="dot"></div></div>
+    <div class="u"><div class="n">Timings</div><div class="v">fast 150ms · base 200ms · trans 0.35s</div></div>
+    <div class="u"><div class="n">Depth</div><div class="v">--elev-ring hairline · no drop shadow</div><div class="v">soft-light noise overlay</div></div>
+  </div>
+</body>
+</html>

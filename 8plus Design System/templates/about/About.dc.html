@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="關於 About" description="個人品牌關於頁 — 兩種版面（編年 / 檔案索引），交替色場、玻璃卡、簽名進場動效" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-body); background: var(--color-orange); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @keyframes sweepIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { [data-rise], [data-sweep] { animation: none !important; opacity: 1 !important; transform: none !important; } }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; overflow-x: hidden;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-soft); background: color-mix(in oklab, var(--color-dark), transparent 12%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div style="max-width: var(--container-max); margin: 0 auto; min-height: 4.5rem; padding: 0 clamp(24px, 4vw, 28px); display: flex; align-items: center; gap: 32px;">
+      <a href="#top" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <svg viewBox="0 0 100 100" width="26" height="26" role="img" aria-label="8plus" style="display: block; overflow: visible; flex: none;">
+          <circle cx="32" cy="29" r="18" fill="#ffffff"></circle>
+          <path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path>
+          <circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle>
+        </svg>
+        <span style="font-family: var(--font-body); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; color: var(--fg); line-height: 1;">8plus</span>
+      </a>
+      <nav style="display: flex; gap: 24px; margin-left: 4px; flex-wrap: wrap;">
+        <a href="#top" style="font-size: 14px; text-decoration: none; color: var(--fg); opacity: 1;">關於</a>
+        <a href="#" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">Lab</a>
+        <a href="#" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">歷程</a>
+        <a href="#" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">服務</a>
+        <a href="#" style="font-size: 14px; text-decoration: none; color: var(--fg-2); opacity: 0.72;" style-hover="opacity: 1;">預約</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+        <a href="#cta" style="display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 1.1rem; border-radius: var(--radius-pill); font-size: 13px; font-family: var(--font-body); color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">繁中 ▾</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ============ VERSION A — 編年 (Editorial chronicle) ============ -->
+  <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <!-- Hero: left masthead -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 104px) clamp(40px, 5vw, 64px);">
+        <div style="display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);" data-rise="" style2="">
+          <span>AUGUST WANG</span><span style="opacity: .5;">·</span><span>AWTW</span><span style="opacity: .5;">·</span><span>關於我</span>
+        </div>
+        <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.6rem, 6.5vw, 4.75rem); line-height: 1.02; letter-spacing: -0.04em; color: var(--fg); margin: 22px 0 0; max-width: 16ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">把混亂的需求<br>整理成可執行的系統</h1>
+        <p style="font-family: var(--font-body); font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--fg-2); margin: 26px 0 0; max-width: 60ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .08s both;" data-rise="">我是 August Wang，長期在前後端、雲端、資料與產品協作之間切換。我的強項不是只寫程式，而是把不清楚的問題整理成可以執行的系統方案，讓團隊知道下一步該怎麼做。</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .16s both;" data-rise="">
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); border: 1px solid var(--border-soft); background: color-mix(in oklab, var(--surface), var(--bg) 18%); border-radius: 9999px; padding: 6px 14px;">8+ 年實戰</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); border: 1px solid var(--border-soft); background: color-mix(in oklab, var(--surface), var(--bg) 18%); border-radius: 9999px; padding: 6px 14px;">台北</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); border: 1px solid var(--border-soft); background: color-mix(in oklab, var(--surface), var(--bg) 18%); border-radius: 9999px; padding: 6px 14px;">工程顧問</span>
+          <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); border: 1px solid var(--border-soft); background: color-mix(in oklab, var(--surface), var(--bg) 18%); border-radius: 9999px; padding: 6px 14px;">系統設計</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · 合作場景 (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start;">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 44px; font-weight: 600; color: var(--fg); line-height: 1;">01</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-top: 8px;">合作場景</div>
+          </div>
+          <div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch;">我可以幫你的，不只是一兩個固定項目</h2>
+            <p style="font-weight: 300; font-size: 16px; line-height: 1.7; color: var(--fg-2); margin: 16px 0 0; max-width: 64ch;">如果你的需求還沒完全定型，也沒關係。可以先從問題定義、架構風險、技術選型、效能瓶頸或交付流程開始，再一起收斂到真正需要做的事。</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 28px;">
+              <div class="gradient-border-card" style="padding: 22px;"><div style="display: flex; align-items: center; gap: 9px;"><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">架構設計</h3></div><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">適合需要重新整理技術結構、解耦舊系統、或定義新平台邊界的情境。</p></div>
+              <div class="gradient-border-card" style="padding: 22px;"><div style="display: flex; align-items: center; gap: 9px;"><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">技術選型</h3></div><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">當你卡在框架、部署、資料層或整合方案時，我可以一起把選擇縮小。</p></div>
+              <div class="gradient-border-card" style="padding: 22px;"><div style="display: flex; align-items: center; gap: 9px;"><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">Code Review</h3></div><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">檢查品質、可維護性、效能與交付風險，讓系統不只可以跑，還可以持續演進。</p></div>
+              <div class="gradient-border-card" style="padding: 22px;"><div style="display: flex; align-items: center; gap: 9px;"><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--accent);"></span><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">顧問陪跑</h3></div><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">如果你的需求還在模糊階段，我也能先幫你把問題定義、路線圖和優先順序釐清。</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · 心法 (orange) -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start;">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 44px; font-weight: 600; color: var(--fg); line-height: 1;">02</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-top: 8px;">工作心法</div>
+          </div>
+          <div>
+            <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0;">怎麼把事情做長</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 26px;">
+              <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">持續學習</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">我習慣把新東西整理成可複用的方法，而不是只停在看過。</p></div>
+              <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">系統視角</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">我關心的不只是單一功能，而是它怎麼跟整個產品與團隊流程互動。</p></div>
+              <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">生活靈感</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">電影、音樂、旅行與日常觀察，會一直回流到我的設計與判斷。</p></div>
+              <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">穩定節奏</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0;">保持輸出、休息與專注的節奏，對長期交付很重要。</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · 代表經驗 (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start;">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 44px; font-weight: 600; color: var(--fg); line-height: 1;">03</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-top: 8px;">代表經驗</div>
+          </div>
+          <div style="display: grid; gap: 0;">
+            <div style="display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--border-soft);"><h3 style="font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg);">企業系統</h3><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 0;">金融、零售與內部平台經驗，偏向穩定性與交付。</p></div>
+            <div style="display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--border-soft);"><h3 style="font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg);">AI 與平台</h3><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 0;">從架構到整合，專注於讓新能力能真的進入流程。</p></div>
+            <div style="display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);"><h3 style="font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg);">個人品牌</h3><p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 0;">把履歷、內容與諮詢入口整理成清楚的品牌站。</p></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px;">
+              <div style="flex: 1 1 240px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--surface), var(--bg) 8%); padding: 20px;"><div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);">2018 · 學歷</div><div style="font-size: 15px; font-weight: 500; margin-top: 8px; color: var(--fg);">NCTU 交通大學</div><div style="font-size: 13px; color: var(--fg-2); margin-top: 4px;">分子醫學與生物工程研究所</div></div>
+              <div style="flex: 1 1 240px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--surface), var(--bg) 8%); padding: 20px;"><div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);">2012 · 學歷</div><div style="font-size: 15px; font-weight: 500; margin-top: 8px; color: var(--fg);">NTOU 海洋大學</div><div style="font-size: 13px; color: var(--fg-2); margin-top: 4px;">食品科學系</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA (dark) -->
+    <section id="cta" class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(56px, 8vw, 96px);">
+        <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">下一步</div>
+        <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 18px 0 0; max-width: 24ch;">先把問題講清楚，再決定要不要做</h2>
+        <p style="font-weight: 300; font-size: 16px; line-height: 1.7; color: var(--fg-2); margin: 16px 0 0; max-width: 60ch;">如果你希望先把問題講清楚，再決定要不要做，我會比較適合。先約一個時段，我們把需求、限制與風險攤開來看。</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px;">
+          <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: var(--fg); color: var(--bg); text-decoration: none; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">預約諮詢 →</a>
+          <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-lg); padding: 0 2rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 18px; background: transparent; color: var(--fg); text-decoration: none; border: 1px solid var(--border); transition: var(--transition-base);" style-hover="background: var(--hover-bg); border-color: var(--hover-border);">看服務內容</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ VERSION B — 檔案索引 (Split index) ============ -->
+  <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <!-- Hero: centered -->
+    <section class="bg-orange noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: 960px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(64px, 9vw, 120px) clamp(40px, 5vw, 64px); text-align: center;">
+        <div style="display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);" data-rise="">AUGUST WANG · AWTW · 關於我</div>
+        <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(2.6rem, 6.5vw, 5rem); line-height: 1.03; letter-spacing: -0.04em; color: var(--fg); margin: 22px auto 0; max-width: 18ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) both;" data-rise="">把混亂的需求整理成可執行的系統</h1>
+        <p style="font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--fg-2); margin: 24px auto 0; max-width: 58ch; animation: riseIn .8s cubic-bezier(.16,1,.3,1) .08s both;" data-rise="">我是 August Wang，長期在前後端、雲端、資料與產品協作之間切換。我的強項不是只寫程式，而是把不清楚的問題整理成可以執行的系統方案，讓團隊知道下一步該怎麼做。</p>
+      </div>
+    </section>
+
+    <!-- Split body (blue) -->
+    <section class="bg-blue noise-field" style="position: relative; width: 100%;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin-inline: auto; padding-inline: clamp(24px, 4vw, 28px); padding-block: clamp(48px, 7vw, 80px);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(20px, 3vw, 40px); align-items: start;">
+          <!-- sticky index -->
+          <aside style="position: sticky; top: 96px; align-self: start;">
+            <div class="glass-card" style="padding: 24px;">
+              <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">PROFILE · INDEX</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                <span style="font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 12px;">8+ 年實戰</span>
+                <span style="font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 12px;">台北</span>
+                <span style="font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 12px;">工程顧問</span>
+                <span style="font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 5px 12px;">系統設計</span>
+              </div>
+              <div style="height: 1px; background: var(--border-soft); margin: 20px 0;"></div>
+              <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 12px;">
+                <li style="display: flex; gap: 10px; font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2);"><span style="color: var(--accent);">→</span>前端 / 後端 / 雲端 / 資料協作</li>
+                <li style="display: flex; gap: 10px; font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2);"><span style="color: var(--accent);">→</span>產品需求拆解與架構收斂</li>
+                <li style="display: flex; gap: 10px; font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--fg-2);"><span style="color: var(--accent);">→</span>效能優化、交付流程與團隊協作</li>
+              </ul>
+              <div style="height: 1px; background: var(--border-soft); margin: 20px 0;"></div>
+              <div style="display: grid; gap: 12px;">
+                <div><div style="font-size: 14px; font-weight: 500; color: var(--fg);">NCTU 交通大學</div><div style="font-size: 12px; color: var(--fg-2); margin-top: 2px;">分子醫學與生物工程研究所 · 2018</div></div>
+                <div><div style="font-size: 14px; font-weight: 500; color: var(--fg);">NTOU 海洋大學</div><div style="font-size: 12px; color: var(--fg-2); margin-top: 2px;">食品科學系 · 2012</div></div>
+              </div>
+            </div>
+          </aside>
+          <!-- main -->
+          <div style="display: grid; gap: 40px;">
+            <div>
+              <h2 style="display: inline-block; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; padding-bottom: 8px; position: relative;">合作場景<span data-sweep="" style="position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); transform-origin: left; animation: sweepIn .7s cubic-bezier(.16,1,.3,1) .2s both;"></span></h2>
+              <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 14px 0 0; max-width: 60ch;">如果你的需求還沒完全定型，也沒關係。可以先從問題定義、架構風險、技術選型、效能瓶頸或交付流程開始，再一起收斂到真正需要做的事。</p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 22px;">
+                <div class="gradient-border-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">架構設計</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">重新整理技術結構、解耦舊系統、定義新平台邊界。</p></div>
+                <div class="gradient-border-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">技術選型</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">卡在框架、部署、資料層或整合方案時，一起把選擇縮小。</p></div>
+                <div class="gradient-border-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">Code Review</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">品質、可維護性、效能與交付風險，讓系統可以持續演進。</p></div>
+                <div class="gradient-border-card" style="padding: 22px;"><h3 style="font-size: 16px; font-weight: 500; margin: 0; color: var(--fg);">顧問陪跑</h3><p style="font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 10px 0 0;">需求還模糊時，先幫你把問題定義、路線圖與優先順序釐清。</p></div>
+              </div>
+            </div>
+            <div>
+              <h2 style="display: inline-block; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; padding-bottom: 8px; position: relative;">工作心法<span data-sweep="" style="position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); transform-origin: left; animation: sweepIn .7s cubic-bezier(.16,1,.3,1) .2s both;"></span></h2>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-top: 20px;">
+                <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 20px;"><h3 style="font-size: 15px; font-weight: 500; margin: 0; color: var(--fg);">持續學習</h3><p style="font-weight: 300; font-size: 13.5px; line-height: 1.65; color: var(--fg-2); margin: 8px 0 0;">把新東西整理成可複用的方法，而不是只停在看過。</p></div>
+                <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 20px;"><h3 style="font-size: 15px; font-weight: 500; margin: 0; color: var(--fg);">系統視角</h3><p style="font-weight: 300; font-size: 13.5px; line-height: 1.65; color: var(--fg-2); margin: 8px 0 0;">不只看單一功能，而是它怎麼跟產品與團隊流程互動。</p></div>
+                <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 20px;"><h3 style="font-size: 15px; font-weight: 500; margin: 0; color: var(--fg);">生活靈感</h3><p style="font-weight: 300; font-size: 13.5px; line-height: 1.65; color: var(--fg-2); margin: 8px 0 0;">電影、音樂、旅行與日常觀察，回流到設計與判斷。</p></div>
+                <div style="border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); padding: 20px;"><h3 style="font-size: 15px; font-weight: 500; margin: 0; color: var(--fg);">穩定節奏</h3><p style="font-weight: 300; font-size: 13.5px; line-height: 1.65; color: var(--fg-2); margin: 8px 0 0;">保持輸出、休息與專注的節奏，對長期交付很重要。</p></div>
+              </div>
+            </div>
+            <div class="glass-card-strong" style="padding: 28px;">
+              <div style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta);">下一步</div>
+              <h2 style="font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: -0.03em; color: var(--fg); margin: 14px 0 0;">先把問題講清楚，再決定要不要做</h2>
+              <p style="font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0; max-width: 56ch;">先約一個時段，我們把需求、限制與風險攤開來看。</p>
+              <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; height: var(--control-md); padding: 0 1.6rem; border-radius: var(--radius-pill); font-family: var(--font-body); font-weight: 500; font-size: 16px; background: var(--fg); color: var(--bg); text-decoration: none; margin-top: 22px; transition: var(--transition-base);" style-hover="background: var(--accent); color: var(--accent-on); transform: translateY(-2px);">預約諮詢 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-dark noise-field" style="position: relative; width: 100%; border-top: 1px solid var(--border-soft);">
+    <div style="position: relative; z-index: 1; max-width: var(--container-max); margin: 0 auto; padding: 48px clamp(24px, 4vw, 28px); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 100 100" width="24" height="24" role="img" aria-label="8plus" style="display: block; overflow: visible;"><circle cx="32" cy="29" r="18" fill="#ffffff"></circle><path d="M53 9H68L36 91H21L53 9Z" fill="#ffffff"></path><circle cx="70" cy="64" r="28" fill="var(--color-orange)" stroke="rgba(255,255,255,.55)" stroke-width="2"></circle></svg>
+          <span style="font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg);">8plus</span>
+        </div>
+        <p style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--meta); margin: 14px 0 0;">架構驅動的技術夥伴</p>
+        <p style="font-size: 13px; color: var(--meta); margin: 8px 0 0;">© 2026 8plus · Made in Taiwan</p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div style="display: flex; gap: 18px; font-size: 14px;">
+          <a href="#" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">LINE</a>
+          <a href="#" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">Email</a>
+          <a href="#" style="color: var(--fg-2); text-decoration: none;" style-hover="color: var(--fg);">RSS</a>
+        </div>
+        <p style="font-size: 12px; color: var(--meta); margin: 0;">Next.js 15 · Velite · Vercel</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ VARIANT TOGGLE (prototype control) ============ -->
+  <div style="position: fixed; bottom: 18px; right: 18px; z-index: 60; display: inline-flex; gap: 4px; background: rgba(3,6,26,.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-soft); border-radius: 9999px; padding: 4px;">
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 A · 編年</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selA }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 A · 編年</button></sc-if>
+    <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: #ffffff; color: #0A0E1A;">版本 B · 索引</button></sc-if>
+    <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><button onClick="{{ selB }}" style="appearance: none; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 15px; border-radius: 9999px; transition: var(--transition-base); background: transparent; color: rgba(255,255,255,0.7);" style-hover="color: #ffffff;">版本 B · 索引</button></sc-if>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;variant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;default&quot;: &quot;A&quot;, &quot;tsType&quot;: &quot;\&quot;A\&quot; | \&quot;B\&quot;&quot;, &quot;section&quot;: &quot;版面版本&quot;}}">
+class Component extends DCLogic {
+  state = { variant: this.props.variant || "A" };
+
+  componentDidUpdate(prev) {
+    if (prev.variant !== this.props.variant && this.props.variant && this.props.variant !== this.state.variant) {
+      this.setState({ variant: this.props.variant });
+    }
+  }
+
+  renderVals() {
+    const v = this.state.variant;
+    const isA = v === "A";
+    const isB = v === "B";
+    return {
+      isA,
+      isB,
+      selA: () => this.setState({ variant: "A" }),
+      selB: () => this.setState({ variant: "B" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

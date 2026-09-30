@@ -1,0 +1,6 @@
+/* 8plus webfonts — v2 CI.
+   Display: Georgia (system serif) → Outfit fallback stack.
+   Body/UI: Outfit. Mono/eyebrow: JetBrains Mono.
+   Outfit + JetBrains Mono are exact matches to the source
+   (next/font/google in app/layout.tsx). Georgia is a system serif. */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');

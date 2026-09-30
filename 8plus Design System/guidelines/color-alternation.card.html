@@ -1,0 +1,30 @@
+<!-- @dsCard group="顏色" viewport="700x200" name="區塊交替" subtitle="藍底配橘 accent；橘底配藍 accent" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); padding: 0; }
+  .row { display: flex; height: 200px; }
+  .cell { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 24px; color: #fff; }
+  .eye { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .h { font-family: var(--font-display); font-size: 28px; letter-spacing: -0.02em; margin: 0; }
+  .pill { align-self: flex-start; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--accent-on); background: var(--accent); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="cell bg-blue">
+      <div class="eye">01 · Architecture</div>
+      <h2 class="h">Blue field</h2>
+      <span class="pill">Orange accent →</span>
+    </div>
+    <div class="cell bg-orange">
+      <div class="eye">02 · Delivery</div>
+      <h2 class="h">Orange field</h2>
+      <span class="pill">Blue accent →</span>
+    </div>
+  </div>
+</body>
+</html>

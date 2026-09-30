@@ -1,0 +1,220 @@
+<!-- @dsCard group="8plus.app" viewport="1280x760" name="8plus.app — 編輯風首頁" subtitle="v2 CI：雜誌式 hero ＋ 藍橘交替滾動區塊" -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>8plus.app</title>
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--color-blue); color: var(--fg); }
+  a { color: var(--accent); text-decoration: none; }
+  .mob-nav { display: none; }
+
+  /* --- hero: switchable backdrops (等距網格 / 流場線 / 浮動作品卡) --- */
+  .hv-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transition: opacity .5s ease; }
+  .hv-bg.on { opacity: 1; }
+  /* 隧道 (透視網格 + 橘色輝光) */
+  .ht-scene { position: absolute; inset: 0; perspective: 560px; perspective-origin: 50% 42%; overflow: hidden; }
+  .ht-plane { position: absolute; left: -60%; right: -60%; height: 170%;
+    background-image: linear-gradient(rgba(255,255,255,.34) 1.3px,transparent 1.3px), linear-gradient(90deg,rgba(255,255,255,.24) 1.3px,transparent 1.3px);
+    background-size: 60px 60px; animation: htFlow 2.3s linear infinite; }
+  .ht-floor { bottom: -30%; transform: rotateX(74deg); transform-origin: bottom center;
+    -webkit-mask-image: linear-gradient(transparent,#000 32%); mask-image: linear-gradient(transparent,#000 32%); }
+  .ht-ceil { top: -30%; transform: rotateX(-74deg); transform-origin: top center; opacity: .55;
+    -webkit-mask-image: linear-gradient(#000 68%,transparent); mask-image: linear-gradient(#000 68%,transparent); }
+  @keyframes htFlow { to { background-position: 0 60px; } }
+  .ht-glow { position: absolute; left: 0; right: 0; top: 24%; height: 52%;
+    background: radial-gradient(58% 100% at 50% 100%, rgba(254,80,0,.6), transparent 72%); filter: blur(26px); }
+  /* 流場線 */
+  .hv-flow canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* 浮動作品卡 */
+  .hv-cards { position: absolute; inset: 0; perspective: 1200px; }
+  .hv-cards .space { position: absolute; inset: 0; transform-style: preserve-3d; animation: hvRot 34s linear infinite; }
+  .hv-cards .card { position: absolute; left: 50%; top: 50%; width: 220px; height: 156px; margin: -78px 0 0 -110px; border-radius: 16px; padding: 17px 17px 15px;
+    background: linear-gradient(150deg, rgba(255,255,255,.13), rgba(255,255,255,.045)); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(6px);
+    box-shadow: 0 30px 70px -30px rgba(0,0,0,.7); display: flex; flex-direction: column; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .hv-cards .card .idx { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; color: #FE5000; }
+  .hv-cards .card .ttl { font-family: var(--font-body); font-weight: 500; font-size: 18px; color: #fff; margin-top: 8px; letter-spacing: -.01em; }
+  .hv-cards .card .en { font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; color: rgba(255,255,255,.5); margin-top: 3px; text-transform: uppercase; }
+  .hv-cards .card .stack { margin-top: auto; display: flex; flex-wrap: wrap; gap: 5px; }
+  .hv-cards .card .stack span { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .04em; color: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.22); border-radius: 9999px; padding: 2px 8px; }
+  @keyframes hvRot { from { transform: translateY(2%) rotateY(0deg); } to { transform: translateY(2%) rotateY(360deg); } }
+  .hv-cards .space { z-index: 2; }
+  /* 8+ 巨型字標 */
+  .hv-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .hv-logo .rays { position: absolute; left: 64%; top: 50%; transform: translate(-50%,-50%); width: min(64vh,560px); aspect-ratio: 1; }
+  .hv-logo .rays span { position: absolute; left: 50%; top: 50%; width: 50%; height: 1px; transform-origin: left center; background: linear-gradient(90deg, rgba(123,168,255,.4), transparent); }
+  .hv-logo .echo { position: absolute; left: 64%; top: 50%; transform: translate(-50%,-50%); border-radius: 50%; border: 1px solid rgba(159,192,255,.45); width: min(42vh,360px); aspect-ratio: 1; animation: hlEcho 4s ease-out infinite; }
+  @keyframes hlEcho { 0% { transform: translate(-50%,-50%) scale(.42); opacity: .7; border-color: rgba(159,192,255,.55); } 70% { opacity: .12; } 100% { transform: translate(-50%,-50%) scale(1.45); opacity: 0; border-color: rgba(254,80,0,.5); } }
+  /* logo 背後：緩慢低調的隧道線條 */
+  .hv-logo .lfield { position: absolute; inset: 0; overflow: hidden; opacity: .42; perspective: 620px; perspective-origin: 64% 50%; }
+  .hv-logo .lfield .lp { position: absolute; left: -40%; right: -40%; height: 150%;
+    background-image: linear-gradient(rgba(150,185,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(150,185,255,.22) 1px, transparent 1px);
+    background-size: 74px 74px; animation: lfFlow 6.5s linear infinite; }
+  .hv-logo .lfield .lfloor { bottom: -30%; transform: rotateX(74deg); transform-origin: bottom center; -webkit-mask-image: linear-gradient(transparent, #000 40%); mask-image: linear-gradient(transparent, #000 40%); }
+  .hv-logo .lfield .lceil { top: -30%; transform: rotateX(-74deg); transform-origin: top center; opacity: .55; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
+  @keyframes lfFlow { to { background-position: 0 74px; } }
+  .hv-logo .markwrap { position: absolute; left: 64%; top: 50%; transform: translate(-50%,-50%); width: min(46vh,400px); aspect-ratio: 1; filter: drop-shadow(0 0 70px rgba(47,102,255,.5)); }
+  .hv-logo .markwrap svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .hv-logo .c-sm { transform-box: fill-box; transform-origin: center; animation: asmSmall 1.6s cubic-bezier(.5,.05,.2,1) both; }
+  .hv-logo .slash { transform-box: fill-box; transform-origin: center; animation: asmSlash 1.6s cubic-bezier(.5,.05,.2,1) .12s both; }
+  .hv-logo .c-lg { transform-box: fill-box; transform-origin: center; animation: asmLarge 1.6s cubic-bezier(.5,.05,.2,1) both; }
+  /* 徑向內流的能量線 (填滿 logo 周圍) */
+  .hv-logo .llines { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .62; }
+  .hv-logo .llines .fl2 { fill: none; stroke-linecap: round; stroke-dasharray: 3 15; animation: hlIntake var(--dur,3s) linear infinite; }
+  @keyframes hlIntake { to { stroke-dashoffset: -36; } }
+  /* 各自飛入 → 組裝定位 (點 tab 觸發) */
+  @keyframes asmSmall {
+    0%   { transform: translate(-170%,-130%) rotate(-150deg) scale(.4); opacity: 0; }
+    60%  { opacity: 1; }
+    78%  { transform: translate(0,0) rotate(0) scale(1.08); }
+    100% { transform: translate(0,0) rotate(0) scale(1); opacity: 1; }
+  }
+  @keyframes asmSlash {
+    0%   { transform: translateY(190%) rotate(34deg) scale(.55); opacity: 0; }
+    60%  { opacity: 1; }
+    100% { transform: translateY(0) rotate(0) scale(1); opacity: 1; }
+  }
+  @keyframes asmLarge {
+    0%   { transform: translate(160%,130%) rotate(130deg) scale(.35); opacity: 0; }
+    60%  { opacity: 1; }
+    80%  { transform: translate(0,0) rotate(0) scale(1.07); }
+    100% { transform: translate(0,0) rotate(0) scale(1); opacity: 1; }
+  }
+  @keyframes hlBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes hlFloat { 0%,100% { transform: translate(-50%,-50%); } 50% { transform: translate(-50%,calc(-50% - 12px)); } }
+  /* 線流交會 → 3-5 條光條 (SVG polygon + 內部流光 + 螺旋) */
+  .hv-lines svg { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: 68% 47%; animation: beamSwirl 16s ease-in-out infinite; }
+  .hv-lines canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  @keyframes beamSwirl { 0% { transform: rotate(-14deg); } 50% { transform: rotate(-4deg); } 100% { transform: rotate(-14deg); } }
+  .hv-lines .beam { animation: beamIn .9s ease both; }
+  @keyframes beamIn { from { opacity: 0; } to { opacity: 1; } }
+  .hv-lines .fl { fill: none; stroke-linecap: round; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: hlDraw 2.2s ease forwards; }
+  @keyframes hlDraw { to { stroke-dashoffset: 0; } }
+  /* 往下滾動引導 */
+  .scrollcue { display: inline-flex; align-items: center; gap: 10px; }
+  .scrollcue .mouse { width: 20px; height: 32px; border: 1.5px solid var(--meta); border-radius: 12px; position: relative; flex: none; }
+  .scrollcue .mouse::after { content: ""; position: absolute; left: 50%; top: 6px; width: 3px; height: 6px; border-radius: 2px; background: #FE5000; transform: translateX(-50%); animation: cueWheel 1.8s ease-in-out infinite; }
+  @keyframes cueWheel { 0% { opacity: 0; transform: translate(-50%, 0); } 30% { opacity: 1; } 70% { opacity: 1; transform: translate(-50%, 10px); } 100% { opacity: 0; transform: translate(-50%, 10px); } }
+  .scrollcue .arw { display: inline-block; animation: cueBob 1.8s ease-in-out infinite; }
+  @keyframes cueBob { 0%,100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(5px); opacity: 1; } }
+  .hv-lines .spark { position: absolute; width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle,#fff,#FE5000 55%,transparent 72%); box-shadow: 0 0 40px 12px rgba(254,80,0,.6); opacity: 0; animation: hlSpark 2.6s ease-in-out 2.2s infinite; }
+  @keyframes hlSpark { 0% { opacity: 0; transform: scale(.4); } 30% { opacity: 1; } 50% { transform: scale(1.15); } 100% { opacity: 1; transform: scale(1.05); } }
+  /* 文字可讀性襯底：不論 25 種主視覺哪一個在播放，標題／CTA／支柱都要蓋在足夠對比的底色上 */
+  .hero-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .hero-scrim.corner { background: linear-gradient(100deg, rgba(0,18,60,.8) 0%, rgba(0,18,60,.6) 34%, rgba(0,18,60,.28) 54%, rgba(0,18,60,0) 70%); }
+  .hero-scrim.flat { background: radial-gradient(66% 82% at 50% 100%, rgba(0,18,60,.68) 0%, rgba(0,18,60,.38) 48%, rgba(0,18,60,0) 76%); }
+  @media (max-width: 820px) {
+    .hero-scrim.corner { background: linear-gradient(165deg, rgba(0,18,60,.62) 0%, rgba(0,18,60,.42) 55%, rgba(0,18,60,.2) 100%); }
+    .hero-scrim.flat { background: radial-gradient(88% 94% at 50% 100%, rgba(0,18,60,.58) 0%, rgba(0,18,60,.32) 55%, rgba(0,18,60,0) 78%); }
+  }
+
+  /* switcher — 隱藏式：右下角小圖示，點擊才展開單一面板（視覺＋文案）；點選項目不會關閉，只有再按圖示 / ✕ 才收合 */
+  .hv-switch { position: absolute; right: 18px; bottom: 18px; z-index: 25; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .hv-switch .trig { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(3,6,26,.4); border: 1px solid var(--border-soft); color: var(--meta); cursor: pointer; opacity: .32; transition: opacity .3s, color .2s, border-color .2s, background .2s; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .hv-switch .trig:hover, .hv-switch .trig:focus-visible { opacity: 1; color: #fff; border-color: rgba(255,255,255,.35); outline: none; }
+  .hv-switch.open .trig { opacity: 1; background: #FE5000; border-color: #FE5000; color: #fff; }
+  .hv-switch .panel { display: none; width: min(84vw, 320px); background: rgba(3,6,26,.9); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1px solid var(--border-soft); border-radius: 16px; padding: 14px; box-shadow: 0 30px 70px -30px rgba(0,0,0,.85); }
+  .hv-switch.open .panel { display: block; }
+  .hv-switch h4 { font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--meta); margin: 0 0 9px; }
+  .hv-switch h4.mt { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--border-soft); }
+  .hv-switch .x { background: transparent; border: 0; color: var(--meta); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px 6px; margin: -2px -4px 8px 0; border-radius: 6px; float: right; transition: .2s; }
+  .hv-switch .x:hover { color: #fff; }
+  .hv-switch .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; max-height: 32vh; overflow-x: hidden; overflow-y: auto; }
+  .hv-switch .col { display: flex; flex-direction: column; gap: 3px; }
+  .hv-switch button.opt { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .02em; line-height: 1.25; color: var(--meta); background: transparent; border: 0; cursor: pointer; padding: 6px 7px; border-radius: 8px; transition: .2s; white-space: normal; text-align: left; min-width: 0; }
+  .hv-switch button.opt > span { min-width: 0; overflow-wrap: anywhere; }
+  .hv-switch button.opt::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; opacity: .5; transition: .2s; }
+  .hv-switch button.opt:hover { color: #fff; background: rgba(255,255,255,.06); }
+  .hv-switch button.opt.on { color: #fff; }
+  .hv-switch button.opt.on::before { background: #FE5000; opacity: 1; box-shadow: 0 0 8px 2px rgba(254,80,0,.55); }
+  .hp-rise { opacity: 0; animation: hpRise .9s ease forwards; }
+  @keyframes hpRise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .hv-lines .fl, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-lines .fl { stroke-dashoffset: 0; } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hv-lines svg { transform: rotate(-14deg); } .hv-lines .fl { stroke-dashoffset: 0; animation: none; } .hv-lines .spark { opacity: 1; animation: none; } .hp-rise { opacity: 1; animation: none; } }
+
+  /* --- cal.com embed replica --- */
+  .cal-spin { animation: calspin .8s linear infinite; }
+  @keyframes calspin { to { transform: rotate(360deg); } }
+
+  /* (removed: old hero variant switcher styles) */
+
+  @media (max-width: 820px) {
+    .desk-nav { display: none !important; }
+    .mob-nav { display: block; }
+    .pillars { grid-template-columns: 1fr 1fr !important; gap: 12px !important; margin-top: 24px !important; padding-top: 16px !important; }
+    .pillars li { gap: 9px !important; }
+    .pillars li > span { width: 24px !important; height: 24px !important; font-size: 11px !important; }
+    .pillars li h2 { font-size: 14px !important; margin: 1px 0 2px !important; }
+    .pillars li p { font-size: 11.5px !important; line-height: 1.45 !important; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr !important; }
+    .path-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+    .cal-grid { grid-template-columns: 1fr !important; }
+    /* hero：直式空間吃緊 → 收緊留白、允許 CTA 換行 */
+    .hero-inner { padding: 36px 24px 24px !important; }
+    .hero-inner .scrollcue { margin-top: 20px !important; }
+    .pillars { margin-top: 20px !important; }
+    /* cal.com 疊直後拿掉左右分隔線改為底線 */
+    .cal-grid > div { border-left: none !important; border-right: none !important; border-bottom: 1px solid #E5E7EB; }
+    .cal-grid > div:last-child { border-bottom: none; }
+    /* 主視覺切換器縮小避免壓到內容 */
+    .hv-switch { right: 12px; bottom: 12px; }
+    .hv-switch .panel { width: min(80vw, 300px); }
+    .hv-switch .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 38vh; }
+  }
+
+  @media (max-width: 520px) {
+    .hero-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .pillars { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .contact-grid { grid-template-columns: 1fr !important; }
+    .hero-ctas a, .hero-ctas button { flex: 1 1 auto; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="Chrome.jsx"></script>
+<script type="text/babel" src="HeroBackdrops.jsx"></script>
+<script type="text/babel" src="HeroBackdrops2.jsx"></script>
+<script type="text/babel" src="Screens.jsx"></script>
+<script type="text/babel">
+  const { Header, Footer } = window.Site;
+  const { Home } = window.Screens;
+  function App() {
+    const [lang, setLang] = React.useState("zh");
+    const [scrolled, setScrolled] = React.useState(false);
+    React.useEffect(() => {
+      const el = document.getElementById("scroller");
+      const onScroll = () => setScrolled((el ? el.scrollTop : window.scrollY) > 64);
+      const target = el || window;
+      target.addEventListener("scroll", onScroll, { passive: true });
+      return () => target.removeEventListener("scroll", onScroll);
+    }, []);
+    const onNav = (key) => {
+      const el = document.getElementById("scroller");
+      const map = { hero: 0, services: 1, about: 2, lab: 3, path: 4, blog: 5, booking: 6 };
+      const all = el ? el.querySelectorAll("main section") : [];
+      const target = all[map[key]];
+      if (el && target) el.scrollTo({ top: target.offsetTop - 60, behavior: "smooth" });
+    };
+    return (
+      <div id="scroller" style={{ height: "100vh", overflowY: "auto", position: "relative" }}>
+        <Header lang={lang} setLang={setLang} scrolled={scrolled} onNav={onNav} />
+        <main>
+          <Home lang={lang} />
+        </main>
+        <Footer lang={lang} />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

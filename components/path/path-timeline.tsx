@@ -56,13 +56,30 @@ export function PathTimeline({ entries, labels }: { entries: PathEntry[]; labels
     const update = () => {
       raf = 0
       const items = list.querySelectorAll<HTMLElement>('.path-item')
-      if (items.length < 2) return
+      const nodes = list.querySelectorAll<HTMLElement>('.path-node')
+      if (items.length < 2 || nodes.length !== items.length) return
+      const center = window.innerHeight * 0.5
+
+      // desktop index: 0 at the first card's centre, 1 at the last card's centre
       const first = items[0].getBoundingClientRect()
       const last = items[items.length - 1].getBoundingClientRect()
       const a = first.top + first.height / 2
       const b = last.top + last.height / 2
-      const p = Math.min(Math.max((window.innerHeight * 0.5 - a) / Math.max(b - a, 1), 0), 1)
-      stage.style.setProperty('--p', p.toFixed(4))
+      stage.style.setProperty('--p', Math.min(Math.max((center - a) / Math.max(b - a, 1), 0), 1).toFixed(4))
+
+      // phones/tablets: the rail fills (in px) from the first node down to the viewport centre,
+      // and every node above the centre line is marked passed
+      const listTop = list.getBoundingClientRect().top
+      const n0 = nodes[0].getBoundingClientRect()
+      const n1 = nodes[nodes.length - 1].getBoundingClientRect()
+      const y0 = n0.top + n0.height / 2
+      const y1 = n1.top + n1.height / 2
+      list.style.setProperty('--start', `${(y0 - listTop).toFixed(1)}px`)
+      list.style.setProperty('--fill', `${Math.min(Math.max(center - y0, 0), y1 - y0).toFixed(1)}px`)
+      items.forEach((li, i) => {
+        const r = nodes[i].getBoundingClientRect()
+        li.classList.toggle('is-passed', r.top + r.height / 2 <= center)
+      })
     }
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update) }
     update()

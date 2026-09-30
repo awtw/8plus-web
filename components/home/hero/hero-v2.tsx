@@ -87,11 +87,7 @@ const HERO_CSS = `
     .hero-scrim.corner { background: linear-gradient(165deg, rgba(0,18,60,.62) 0%, rgba(0,18,60,.42) 55%, rgba(0,18,60,.2) 100%); }
     .hero-scrim.flat { background: radial-gradient(88% 94% at 50% 100%, rgba(0,18,60,.58) 0%, rgba(0,18,60,.32) 55%, rgba(0,18,60,0) 78%); }
   }
-  .hv-compare { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); z-index: 30; display: flex; gap: 4px; padding: 4px; border-radius: 9999px; background: rgba(3,6,26,.72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.22); }
-  .hv-compare button { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: rgba(255,255,255,.75); background: transparent; border: 0; border-radius: 9999px; min-height: 36px; padding: 0 14px; cursor: pointer; }
-  .hv-compare button b { color: #FE5000; margin-right: 4px; }
-  .hv-compare button.on { background: #fff; color: #0A0E1A; }
-  .hv-compare button:focus-visible { outline: 2px solid #FE5000; outline-offset: 2px; }
+  .hv-switch.hidden { display: none; }
   .hv-switch { position: absolute; right: 18px; bottom: 18px; z-index: 25; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .hv-switch .trig { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(3,6,26,.4); border: 1px solid var(--border-soft); color: var(--meta); cursor: pointer; opacity: .32; transition: opacity .3s, color .2s, border-color .2s, background .2s; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .hv-switch .trig:hover, .hv-switch .trig:focus-visible { opacity: 1; color: #fff; border-color: rgba(255,255,255,.35); outline: none; }
@@ -154,6 +150,15 @@ const HERO_CSS = `
     .hero-inner .scrollcue { margin-top: 20px !important; padding-bottom: 8px; }
   }
   @media (max-width: 820px) {
+    /* phones: CTAs stacked on the left (same width), the flow diagram large on their right, the step caption
+       tucked under the buttons (see hero-core phone layout) */
+    .hero-v-core .hero-inner { padding-top: 14px !important; padding-bottom: 260px !important; }
+    .hero-v-core .hero-inner > div:first-child { padding-top: 6px !important; padding-left: 0 !important; } /* the copy block's own inline top gap */
+    .hero-v-core .hero-sub { text-wrap: balance; margin-top: 16px !important; }
+    .hero-v-core .hero-ctas { flex-direction: column !important; flex-wrap: nowrap !important; align-items: flex-start !important; gap: 12px !important; width: auto; margin-top: 22px !important; }
+    .hero-v-core .hero-ctas .hv-cta, .hero-v-core .hero-ctas .hv-link { flex: 0 0 auto !important; width: 132px; height: 48px; justify-content: center; }
+    .hero-v-core .hero-ctas .hv-link { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.34); background: rgba(255,255,255,.07); border-radius: 9999px; padding: 0 12px; }
+    .hero-v-core .scrollcue { display: none !important; } /* the diagram below already invites the scroll */
     .hero-inner { padding: 36px 24px 24px !important; }
     .hero-inner .scrollcue { margin-top: 20px !important; }
     .pillars { grid-template-columns: 1fr 1fr !important; gap: 12px !important; margin-top: 20px !important; padding-top: 16px !important; }
@@ -168,7 +173,7 @@ const HERO_CSS = `
 
 // The header takes the hero's own top-edge colour (see tint() in site-header), then follows each section.
 // Sampled from the rendered scenes; variants not listed keep the CI blue.
-const HEADER_TONE = { core: '#010d36', gl: '#061640', liquid: '#021250', neural: '#010d36' }
+const HEADER_TONE = { core: '#010d36', neural: '#010d36' }
 
 const HERO_LABELS = {
   combo: '隧道 · 作品卡', flow: '流場線', logo: '8+ 字標', lines: '線流交會',
@@ -177,7 +182,7 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環', gl: '超立方核心', liquid: '液態玻璃', core: '推理核心 · 架構層', neural: '神經核心 3D',
+  eclipse: '日蝕光環', core: '推理核心 · 架構層', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
@@ -188,11 +193,23 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   // only Data Saver / no-WebGL fall back to the CSS-only 'combo' scene after mount
   const [variant, setVariant] = React.useState('core')
   const [swOpen, setSwOpen] = React.useState(false)
+  // the visual picker is a dev/design tool: hidden by default, Shift toggles it on the hero page
+  const [swShown, setSwShown] = React.useState(false)
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'Shift' || e.repeat) return
+      const t = e.target
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      setSwShown((v) => { if (v) setSwOpen(false); return !v })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
   const [logoTick, setLogoTick] = React.useState(0)
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
 
   React.useEffect(() => {
-    // signature hero: ray-marched 'liquid chrome' form (hero-gl) on desktop AND phones (fewer nodes / 30fps on phones);
+    // signature hero: 'Architected Intelligence' flow topology (hero-core) on desktop AND phones;
     // Data Saver / no-WebGL keep the light CSS-only 'combo' scene, which is touch-driven (drag effect below).
     // Other scenes are easter eggs: ?hero=<key> or ?hero=random.
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
@@ -208,13 +225,6 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   }, [])
 
   const setV = (v) => { setVariant(v); if (v === 'logo') setLogoTick((n) => n + 1) }
-  // design review: ?compare=1 shows an A/B/C bar to flip between the finalists live
-  const [compare, setCompare] = React.useState(false)
-  React.useEffect(() => { setCompare(new URLSearchParams(window.location.search).has('compare')) }, [])
-  const pickFinalist = (v) => {
-    setV(v)
-    const url = new URL(window.location.href); url.searchParams.set('hero', v); window.history.replaceState(null, '', url)
-  }
 
   const cards = [
     { t: '前後端串接', en: 'Full-stack Integration', s: ['Next.js', 'API', 'tRPC'] },
@@ -330,7 +340,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const ORDER = Object.keys(HERO_LABELS)
   // neural: editorial (copy left, sphere right) on wide screens, centred on phones
   const wide = typeof window !== 'undefined' && window.innerWidth >= 820
-  const corner = (variant === 'neural' && wide) || ['gl', 'core', 'liquid', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
+  const corner = (variant === 'neural' && wide) || ['core', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
   const flat = ['flow', 'lines', 'topo', 'dots', 'wave', 'bp', 'warp', 'ripple', 'radar', 'dna', 'terra', 'harmo', 'spiro', 'bars', 'flock', 'cells'].indexOf(variant) !== -1
 
   const onHeroClick = (e) => {
@@ -344,7 +354,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       ref={secRef}
       id="home-section-hero"
       data-header-color={HEADER_TONE[variant]}
-      className={'home-section bg-blue noise-field' + (corner ? ' hero-corner' : '')}
+      className={'home-section bg-blue noise-field hero-v-' + variant + (corner ? ' hero-corner' : '')}
       aria-labelledby="home-hero-headline"
       onClick={onHeroClick}
       style={{ position: 'relative', minHeight: 'calc(100svh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}
@@ -390,16 +400,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
 
       <div aria-hidden="true" className={'hero-scrim' + (corner ? ' corner' : ' flat')}></div>
 
-      {compare && (
-        <div className="hv-compare" role="group" aria-label="Hero compare">
-          {[['gl', 'A', '超立方核心'], ['core', 'B', '推理核心'], ['liquid', 'C', '液態玻璃']].map(([v, k, name]) => (
-            <button key={v} type="button" className={variant === v ? 'on' : ''} aria-pressed={variant === v} onClick={() => pickFinalist(v)}>
-              <b>{k}</b> {name}
-            </button>
-          ))}
-        </div>
-      )}
-      <div className={'hv-switch' + (swOpen ? ' open' : '')}>
+      <div className={'hv-switch' + (swOpen ? ' open' : '') + (swShown ? '' : ' hidden')}>
         <div className="panel" role="menu">
           <button className="x" onClick={() => setSwOpen(false)} aria-label="關閉">✕</button>
           <h4>主視覺 · VISUAL</h4>

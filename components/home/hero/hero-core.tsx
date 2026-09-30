@@ -7,9 +7,9 @@ import { shouldAnimate, startFrameLoop } from '@/lib/motion/frame-loop'
  * Hero — "Architected Intelligence" v3: a layered flow topology.
  *
  * A request (INPUT) enters, is shaped by three tiers of an AI build pipeline — system boundary →
- * stack selection → production — and leaves as a delivered system (OUTPUT). Tiers are flat hexagonal
- * plates joined by six struts (a hex prism); every step is a hexagonal badge; dependencies are S-curve
- * connectors like a flow diagram. The nodes are real AI-engineering steps (RAG, embeddings, evals, ...).
+ * stack selection → production — and leaves as a delivered system (OUTPUT). Tiers are rounded rectangular
+ * plates joined by four struts; every step is a square module; dependencies are orthogonal connectors
+ * (down, across, down) with rounded corners, like a real architecture diagram. The nodes are real AI-engineering steps (RAG, embeddings, evals, ...).
  *
  * "Untangling" is the motion idea:
  *  - intro: nodes start scattered with connectors crossing everywhere, then settle into the layered layout on
@@ -142,8 +142,8 @@ export default function HeroCore({ active }: { active: boolean }) {
     const animate = shouldAnimate()
 
     // ---- graph -------------------------------------------------------------------------------
-    const GAP = phone ? 0.5 : 0.82 // tier spacing: wide enough that each tier reads as its own plate
-    const IO = phone ? 0.92 : 1.36 // INPUT / OUTPUT terminals sit beyond the outer tiers
+    const GAP = phone ? 0.52 : 0.92 // tier spacing: wide enough that each tier reads as its own plate
+    const IO = phone ? 0.95 : 1.36 // INPUT / OUTPUT terminals sit beyond the outer tiers
     const TIER_Y = [GAP, 0, -GAP]
     const nodes: GNode[] = []
     const rnd = (a: number, b: number) => a + Math.random() * (b - a)
@@ -164,8 +164,12 @@ export default function HeroCore({ active }: { active: boolean }) {
       const members = TERMS.map((t, i) => [t, i] as const).filter(([t]) => t.tier === tier)
       const n = members.length
       members.forEach(([, i], m) => {
-        const x = -0.88 + (1.76 * m) / (n - 1)
-        const z = m % 2 ? 0.26 : -0.26 // staggered rows keep labels apart
+        // 3-column grid, two rows (far row first): modules spread over the plate instead of one line
+        const cols = 3
+        const row = Math.floor(m / cols), col = m % cols
+        const inRow = row === 0 ? Math.min(n, cols) : n - cols
+        const x = (col - (inRow - 1) / 2) * 0.52
+        const z = row === 0 ? -0.34 : 0.34
         termId[i] = nodes.length
         addNode(tier, i, [x, TIER_Y[tier], z])
       })
@@ -191,6 +195,8 @@ export default function HeroCore({ active }: { active: boolean }) {
       }
       return seen
     }
+    const edgeOf = new Map<string, number>()
+    edges.forEach(([a, b], ei) => edgeOf.set(`${a}>${b}`, ei))
     const upstream = nodes.map((_, i) => reach(i, inE, (e) => e[0]))
     const downstream = nodes.map((_, i) => reach(i, outE, (e) => e[1]))
 
@@ -228,8 +234,8 @@ export default function HeroCore({ active }: { active: boolean }) {
     window.addEventListener('heroTap', onTap)
 
     // ---- projection --------------------------------------------------------------------------
-    let yaw = -0.35
-    let pitch = 0.55
+    let yaw = -0.72
+    let pitch = 0.58
     let U = 500
     let CX = 0
     let CY = 0
@@ -246,13 +252,24 @@ export default function HeroCore({ active }: { active: boolean }) {
       const sc = 3.2 / d
       return [CX + x1 * sc * U, CY - y1 * sc * U + scrollS * H * (0.30 + 0.22 * kk)]
     }
-    // hexagon (flat, stretched) in model space, used for the tier plates and the scan plane
-    const HEX: Array<[number, number]> = [[1.18, 0], [0.62, 0.56], [-0.62, 0.56], [-1.18, 0], [-0.62, -0.56], [0.62, -0.56]]
-    const hexPath = (y: number, k: number, scale = 1) => {
-      HEX.forEach(([x, z], i) => {
-        const [sx, sy] = project(x * scale, y, z * scale, k)
-        if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy)
-      })
+    // rounded rectangle in model space: the tier plates, ground contours and scan plane share it
+    const RX = 0.74 // square plates: the three tiers stack into a cube-like volume
+    const RZ = 0.74
+    const RECT: Array<[number, number]> = [[RX, RZ], [RX, -RZ], [-RX, -RZ], [-RX, RZ]]
+    const rectPath = (y: number, k: number, scale = 1) => {
+      const rx = RX * scale, rz = RZ * scale, rr = 0.07 * scale
+      // corner centres in walking order (+,+) → (−,+) → (−,−) → (+,−), each with its start angle
+      const corners: Array<[number, number, number]> = [
+        [rx - rr, rz - rr, 0], [-(rx - rr), rz - rr, Math.PI / 2], [-(rx - rr), -(rz - rr), Math.PI], [rx - rr, -(rz - rr), (Math.PI * 3) / 2],
+      ]
+      let first = true
+      for (const [cx, cz, a0] of corners) {
+        for (let i = 0; i <= 5; i++) {
+          const th = a0 + (i / 5) * (Math.PI / 2)
+          const [sx, sy] = project(cx + Math.cos(th) * rr, y, cz + Math.sin(th) * rr, k)
+          if (first) { ctx.moveTo(sx, sy); first = false } else ctx.lineTo(sx, sy)
+        }
+      }
       ctx.closePath()
     }
 
@@ -264,14 +281,11 @@ export default function HeroCore({ active }: { active: boolean }) {
 
     const badge = (cx: number, cy: number, r: number) => {
       ctx.beginPath()
-      for (let i = 0; i < 6; i++) {
-        const a = (Math.PI / 3) * i + Math.PI / 6
-        const px = cx + Math.cos(a) * r, py = cy + Math.sin(a) * r
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py)
-      }
-      ctx.closePath()
+      ctx.roundRect(cx - r, cy - r, r * 2, r * 2, Math.max(2, r * 0.3))
     }
 
+    let phoneLeft = 0 // x where the phone diagram region starts
+    let phoneCardTop = 0 // y under the stacked CTAs, where the caption card sits
     let hovered = -1 // TERMS index
     let tourIdx = 0
     let tourAt = 0
@@ -287,14 +301,6 @@ export default function HeroCore({ active }: { active: boolean }) {
       }
       if (line) lines.push(line)
       return lines
-    }
-
-    const evalBez = (c: number[], u: number): [number, number] => {
-      const v = 1 - u
-      return [
-        v * v * v * c[0] + 3 * v * v * u * c[2] + 3 * v * u * u * c[4] + u * u * u * c[6],
-        v * v * v * c[1] + 3 * v * v * u * c[3] + 3 * v * u * u * c[5] + u * u * u * c[7],
-      ]
     }
 
     const frame = () => {
@@ -319,10 +325,34 @@ export default function HeroCore({ active }: { active: boolean }) {
       scrollS = scrollEase
       const fade = 1 - scrollS * 0.85
 
-      if (phone) { U = Math.min(W * 0.215, H * 0.109); CX = W * 0.5; CY = H * 0.643 }
-      else { U = Math.min(W * 0.16, H * 0.27); CX = W * 0.75; CY = H * 0.575 }
-      yaw = -0.35 + camX.x * 0.30 + Math.sin(t * 0.21) * 0.06
-      pitch = 0.55 + camY.x * 0.08
+      if (phone) {
+        // stacked CTAs sit on the left; the diagram takes everything to their right (from the first button's
+        // top down to the tab bar) and the step caption fills the space under the buttons. All measured from
+        // the real buttons so subtitle wrapping / viewport height never collide.
+        const primary = document.querySelector('.hv-cta.primary')
+        const second = document.querySelector('.hero-ctas .hv-link')
+        const cb = cv.getBoundingClientRect()
+        let topY = H * 0.45
+        let left = W * 0.42
+        phoneCardTop = H * 0.62
+        if (primary) {
+          const r = primary.getBoundingClientRect()
+          topY = r.top - cb.top - 4
+          left = r.right - cb.left + 2
+        }
+        if (second) phoneCardTop = second.getBoundingClientRect().bottom - cb.top + 14
+        phoneLeft = left
+        const right = W - 2
+        const bottomY = H - 76 // just above the tab bar
+        const availH = Math.max(bottomY - topY, 200)
+        const availW = Math.max(right - left, 140)
+        U = Math.min(Math.max((availH - 46) / 2.2, 52), availW / 2.0) // slight bleed at the edges is intended
+        CX = left + availW / 2
+        CY = topY + (2.2 * U + 46) / 2 + 4 // top of the diagram lines up with the first button
+      }
+      else { U = Math.min(W * 0.15, H * 0.225); CX = W * 0.76; CY = H * 0.56 }
+      yaw = -0.72 + camX.x * 0.30 + Math.sin(t * 0.21) * 0.05 // ~41° turn: the volume reads as a 3D block, not a flat sheet
+      pitch = 0.58 + camY.x * 0.07
 
       // ---- untangle: springs pull each node from the scatter into its place, tier by tier ----
       const since = animate ? (now - introStart) / 1000 : 99
@@ -357,19 +387,19 @@ export default function HeroCore({ active }: { active: boolean }) {
       for (let j = 0; j < 3; j++) {
         ctx.beginPath()
         ctx.setLineDash(j % 2 ? [2, 7] : [])
-        hexPath(-IO - 0.3 + tierLift(2), 2, 1.12 + j * 0.13)
+        rectPath(-IO - 0.3 + tierLift(2), 2, 1.1 + j * 0.12)
         ctx.strokeStyle = `rgba(${CYAN},${(0.15 - j * 0.04) * fade})`
         ctx.stroke()
       }
       ctx.setLineDash([])
 
-      // ---- hex prism: six struts tying the tier plates together ----
+      // ---- four struts tying the tier plates into one volume ----
       ctx.strokeStyle = `rgba(${CYAN},${0.16 * fade})`
       ctx.lineWidth = 1
-      for (let v = 0; v < 6; v++) {
+      for (let v = 0; v < 4; v++) {
         ctx.beginPath()
         for (let k = 0; k < 3; k++) {
-          const [sx, sy] = project(HEX[v][0], TIER_Y[k] + tierLift(k), HEX[v][1], k)
+          const [sx, sy] = project(RECT[v][0], TIER_Y[k] + tierLift(k), RECT[v][1], k)
           if (k === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy)
         }
         ctx.stroke()
@@ -390,9 +420,9 @@ export default function HeroCore({ active }: { active: boolean }) {
         const y = TIER_Y[k] + tierLift(k)
         const lay = fade * introFade
         ctx.beginPath()
-        hexPath(y, k)
-        const top = project(0, y, -0.56, k)[1]
-        const bot = project(0, y, 0.56, k)[1]
+        rectPath(y, k)
+        const top = project(0, y, -RZ, k)[1]
+        const bot = project(0, y, RZ, k)[1]
         const gg = ctx.createLinearGradient(0, Math.min(top, bot), 0, Math.max(top, bot))
         gg.addColorStop(0, `rgba(60,150,255,${0.05 * lay})`)
         gg.addColorStop(1, `rgba(20,90,230,${0.15 * lay})`)
@@ -402,12 +432,12 @@ export default function HeroCore({ active }: { active: boolean }) {
         ctx.lineWidth = 1.1
         ctx.stroke()
         ctx.fillStyle = `rgba(${ICE},${0.55 * lay})`
-        HEX.forEach(([x, z]) => {
+        RECT.forEach(([x, z]) => {
           const [sx, sy] = project(x, y, z, k)
-          ctx.fillRect(sx - 1.5, sy - 1.5, 3, 3)
+          ctx.fillRect(sx - 2, sy - 2, 4, 4)
         })
         if (!phone) {
-          const lp = project(-1.18, y, 0, k)
+          const lp = RECT.map(([x, z]) => project(x, y, z, k)).reduce((m, p) => (p[0] < m[0] ? p : m)) // left-most corner
           ctx.font = `10.5px ${FONT_MONO}`
           ctx.textAlign = 'right'
           ctx.fillStyle = `rgba(${ICE},${0.58 * lay})`
@@ -423,7 +453,7 @@ export default function HeroCore({ active }: { active: boolean }) {
       for (const yS of sweeps) {
         if (yS < -IO - 0.05 || yS > IO + 0.05) continue
         ctx.beginPath()
-        hexPath(yS, 1, 1.0)
+        rectPath(yS, 1, 1.0)
         ctx.strokeStyle = `rgba(${CYAN},${0.22 * fade})`
         ctx.lineWidth = 1
         ctx.setLineDash([4, 6])
@@ -450,25 +480,34 @@ export default function HeroCore({ active }: { active: boolean }) {
       const down = hoveredNode >= 0 ? downstream[hoveredNode] : null
       const edgeOn = (a: number, b: number) => (up ? up.has(a) && up.has(b) : false) || (down ? down.has(a) && down.has(b) : false)
 
-      // ---- connectors: S-curves that straighten as their endpoints settle ----
-      const curve = (a: number, b: number): number[] => {
+      // ---- connectors: orthogonal routes (down, across, down) with rounded corners ----
+      type Route = { pts: Array<[number, number]>; cum: number[] }
+      const routes: Route[] = edges.map(([a, b], ei) => {
         const [ax, ay] = sp[a], [bx, by] = sp[b]
-        const dy = by - ay
-        if (Math.abs(dy) < 22) { const my = Math.min(ay, by) - 26; return [ax, ay, ax + (bx - ax) * 0.25, my, bx - (bx - ax) * 0.25, my, bx, by] }
-        return [ax, ay, ax, ay + dy * 0.55, bx, by - dy * 0.55, bx, by]
+        const lane = (ei * 0.381966) % 1 // spreads the horizontal runs over different heights (bus look)
+        const my = Math.abs(by - ay) < 26 ? Math.min(ay, by) - 14 - lane * 10 : ay + (by - ay) * (0.3 + 0.4 * lane)
+        const pts: Array<[number, number]> = [[ax, ay], [ax, my], [bx, my], [bx, by]]
+        const cum = [0]
+        for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]))
+        return { pts, cum }
+      })
+      const tracePath = (r: Route, rad: number) => {
+        const p = r.pts
+        ctx.moveTo(p[0][0], p[0][1])
+        for (let i = 1; i < p.length - 1; i++) ctx.arcTo(p[i][0], p[i][1], p[i + 1][0], p[i + 1][1], rad)
+        ctx.lineTo(p[p.length - 1][0], p[p.length - 1][1])
       }
       ctx.lineCap = 'round'
-      edges.forEach(([a, b]) => {
-        const c = curve(a, b)
+      ctx.lineJoin = 'round'
+      edges.forEach(([a, b], ei) => {
         const settled = Math.min(orderP[a], orderP[b])
         const on = hoveredNode >= 0 && edgeOn(a, b)
         const dim = hoveredNode >= 0 && !on
-        const base = 0.10 + 0.22 * settled
-        ctx.strokeStyle = `rgba(${on ? ICE : CYAN},${(on ? 0.85 : dim ? base * 0.35 : base) * fade})`
+        const base = 0.10 + 0.24 * settled
+        ctx.strokeStyle = `rgba(${on ? ICE : CYAN},${(on ? 0.9 : dim ? base * 0.35 : base) * fade})`
         ctx.lineWidth = on ? 1.6 : 1
         ctx.beginPath()
-        ctx.moveTo(c[0], c[1])
-        ctx.bezierCurveTo(c[2], c[3], c[4], c[5], c[6], c[7])
+        tracePath(routes[ei], 9)
         ctx.stroke()
         if (on) {
           ctx.setLineDash([6, 10])
@@ -482,16 +521,29 @@ export default function HeroCore({ active }: { active: boolean }) {
 
       // ---- data pulses: ride the connector curves, speed breathes, tapered bloom trail ----
       ctx.globalCompositeOperation = 'lighter'
+      const routePoint = (r: Route, u: number): [number, number] => {
+        const d = u * (r.cum[r.cum.length - 1] || 1)
+        for (let i = 1; i < r.pts.length; i++) {
+          if (d <= r.cum[i] || i === r.pts.length - 1) {
+            const seg = r.cum[i] - r.cum[i - 1] || 1
+            const f = Math.min(Math.max((d - r.cum[i - 1]) / seg, 0), 1)
+            return [r.pts[i - 1][0] + (r.pts[i][0] - r.pts[i - 1][0]) * f, r.pts[i - 1][1] + (r.pts[i][1] - r.pts[i - 1][1]) * f]
+          }
+        }
+        return r.pts[r.pts.length - 1]
+      }
+      const routeOf = (pl: Pulse, i0: number) => routes[edgeOf.get(`${pl.path[i0]}>${pl.path[i0 + 1]}`)!]
       const pathPoint = (pl: Pulse, sv: number): [number, number] => {
         const s0 = Math.min(Math.max(sv, 0), pl.path.length - 1.0001)
         const i0 = Math.floor(s0)
-        return evalBez(curve(pl.path[i0], pl.path[i0 + 1]), s0 - i0)
+        return routePoint(routeOf(pl, i0), s0 - i0)
       }
       const pulsesOn = animate ? orderP.reduce((s, v) => s + v, 0) / nodes.length > 0.6 : true
       for (let i = pulses.length - 1; i >= 0 && pulsesOn; i--) {
         const p = pulses[i]
         const pace = 0.82 + 0.36 * Math.sin(t * 1.6 + p.speed * 3.1)
-        p.s += p.speed * pace * dt * (1 + glow * 0.8)
+        const curLen = routeOf(p, Math.min(Math.floor(p.s), p.path.length - 2)).cum.slice(-1)[0] || 120
+        p.s += p.speed * pace * dt * (1 + glow * 0.8) * (170 / Math.max(curLen, 90)) // ~constant on-screen speed
         if (p.s >= p.path.length - 1) {
           if (pulses.length > POP) { pulses.splice(i, 1); continue }
           Object.assign(p, makePulse())
@@ -503,7 +555,7 @@ export default function HeroCore({ active }: { active: boolean }) {
         let prev = head
         const STEPS = 14
         for (let m = 1; m <= STEPS; m++) {
-          const sv = p.s - m * 0.07
+          const sv = p.s - m * 0.05
           if (sv < 0) break
           const pt = pathPoint(p, sv)
           const w = 1 - m / STEPS
@@ -665,14 +717,14 @@ export default function HeroCore({ active }: { active: boolean }) {
         const tm = TERMS[cardIdx]
         const [sx, sy] = sp[termId[cardIdx]]
         const a = clamp01(cardA.x)
-        const w = phone ? W - 24 : 270
+        const w = phone ? Math.max(phoneLeft - 24, 132) : 270
         ctx.font = `13px ${FONT_SANS}`
         const lines = wrap(tm.desc, w - 28)
         const h = 18 + 18 + 8 + lines.length * 19 + 22
         let bx = sx + 24
         if (bx + w > W - 12) bx = sx - 24 - w
         if (phone) bx = 12
-        let by = phone ? H - 78 - h : sy - h / 2
+        let by = phone ? phoneCardTop : sy - h / 2
         by = phone ? by : Math.max(84, Math.min(H - h - 16, by))
         ctx.save()
         ctx.translate(0, (1 - a) * 10)

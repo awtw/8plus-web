@@ -494,3 +494,8 @@ Resume file: None
 - 移除非學經歷的專案項目（8plus 平台、Vue 3／Angular／互動式作品集，中英各 4 筆）；資料加 `kind: work|edu`，現為 6 段工作 + 2 個學位。
 - 桌機（≥1024px）新排版 `components/path/path-timeline.tsx`：左側 sticky 索引（隨捲動切換的大年份＋組織＋期間、可點擊迷你時間軸、進度線），右側同時只有當前卡片聚焦、其餘退後；工作／學歷分隔。手機／平板維持單欄直向時間軸。尊重 reduced-motion。
 - 移除舊 `path-era.tsx`。Hero 加統計徽章（段數、學位數，皆由資料計算）。
+- 2026-10-01 CST：Hero B v3b — 方正架構圖（矩形層板、方塊模組、直角連線、散亂→整理動畫、懸停追溯上下游脈絡）；紀錄於 `HERO-MOTION-DECISIONS-2026-10-01.md`。
+- 2026-10-01 CST：Hero B v3c 斜側等角立體方塊（見 HERO-MOTION-DECISIONS）。
+- 2026-10-01 CST：/path 手機／平板左側軸線改為進度條（橘色線隨捲動從第一個節點填到視窗中線；走過的節點變橘、目前節點發光；reduced-motion 關閉過渡）。
+- 2026-10-01 CST：手機版依標註重排（按鈕堆疊＋動畫置右）；清除 A／C 兩版與比較列。
+- 2026-10-01 CST：手機 hero 第二次編排（CTA 同列等寬、動畫全寬放大）；視覺選單改 Shift 顯示。

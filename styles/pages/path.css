@@ -226,3 +226,36 @@
   .path-card { transition: none; transform: none !important; }
   .path-index-list::after { transition: none; }
 }
+
+/* ═══ Phones / tablets: the rail is a progress bar ═══════════════════════════
+   The grey track stays; an accent line fills from the first node to the viewport centre as you scroll,
+   nodes above the centre line turn accent, and the node being read glows. */
+@media (max-width: 1023px) {
+  .path-list { position: relative; }
+  .path-list::after {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: var(--start, 1.7rem);
+    width: 2px;
+    height: var(--fill, 0px);
+    transform: translateX(-50%);
+    border-radius: 2px;
+    background: linear-gradient(to bottom, var(--accent), color-mix(in oklab, var(--accent), white 40%));
+    box-shadow: 0 0 10px color-mix(in oklab, var(--accent), transparent 45%);
+    transition: height 0.12s linear;
+    pointer-events: none;
+  }
+  .path-item .path-node { transition: background-color var(--motion-base) var(--ease-standard), border-color var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base); }
+  .path-item.is-passed .path-node { background: var(--accent); border-color: var(--accent); }
+  .path-item.is-active .path-node { background: var(--accent); border-color: var(--accent); transform: scale(1.3); box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent), transparent 72%); }
+  .path-item.is-passed .path-card { border-color: color-mix(in oklab, var(--accent), transparent 78%); }
+  .path-item.is-active .path-card { border-color: color-mix(in oklab, var(--accent), transparent 50%); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .path-list::after { left: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .path-list::after { transition: none; }
+  .path-item .path-node { transition: none; }
+}

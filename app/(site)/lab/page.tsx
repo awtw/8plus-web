@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/components/language-provider'
 import { PageSection } from '@/components/page/page-section'
@@ -23,10 +24,25 @@ export default function ProjectsPage() {
   const projects = getLocalizedProjects(locale)
   const featured = projects.filter((p) => p.featured)
 
-  const groups = LAB_GROUP_ORDER.map((key: LabGroupKey) => ({
+  // filter chip state, mirrored to ?g= so a filtered view can be shared
+  const [active, setActive] = useState<LabGroupKey | 'all'>('all')
+  useEffect(() => {
+    const g = new URLSearchParams(window.location.search).get('g')
+    if (g && (LAB_GROUP_ORDER as string[]).includes(g)) setActive(g as LabGroupKey)
+  }, [])
+  const choose = (next: LabGroupKey | 'all') => {
+    setActive(next)
+    const url = new URL(window.location.href)
+    if (next === 'all') url.searchParams.delete('g')
+    else url.searchParams.set('g', next)
+    window.history.replaceState(null, '', url)
+  }
+
+  const allGroups = LAB_GROUP_ORDER.map((key: LabGroupKey) => ({
     key,
     items: projects.filter((p) => (LAB_GROUP_OF[keyOf(p)] ?? 'other') === key),
   })).filter((g) => g.items.length > 0)
+  const groups = active === 'all' ? allGroups : allGroups.filter((g) => g.key === active)
 
   const card = (p: Project, isFeatured = false) => (
     <li key={`${p.slug}-${p.locale}`}>
@@ -56,7 +72,20 @@ export default function ProjectsPage() {
         </PageSection>
       ) : (
         <>
-          {featured.length > 0 && (
+          <PageSection field="blue" className="lab-filter-bar">
+            <div className="lab-filters" role="group" aria-label={c.eyebrow}>
+              <button type="button" className={`lab-filter${active === 'all' ? ' is-active' : ''}`} aria-pressed={active === 'all'} onClick={() => choose('all')}>
+                {locale === 'en' ? 'All' : '全部'} · {projects.length}
+              </button>
+              {allGroups.map((g) => (
+                <button key={g.key} type="button" className={`lab-filter${active === g.key ? ' is-active' : ''}`} aria-pressed={active === g.key} onClick={() => choose(g.key)}>
+                  {c.groups[g.key]} · {g.items.length}
+                </button>
+              ))}
+            </div>
+          </PageSection>
+
+          {active === 'all' && featured.length > 0 && (
             <PageSection field="orange">
               <div className="lab-section-head">
                 <h2 className="lab-section-title">{c.featured}</h2>

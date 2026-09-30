@@ -1494,18 +1494,6 @@ a {
   }
 }
 
-/* Option A (trial): dark-ink text on the orange field for AA contrast (5.8:1 vs 3.3:1 for white).
-   Enabled by <html data-orange="ink">; compare in the browser, then bake in or delete. */
-html[data-orange="ink"] .bg-orange {
-  --fg: #0A0E1A;
-  --fg-2: rgba(10, 14, 26, 0.9);
-  --muted: rgba(10, 14, 26, 0.78);
-  --meta: rgba(10, 14, 26, 0.72);
-  --border-soft: rgba(10, 14, 26, 0.22);
-  --border: rgba(10, 14, 26, 0.4);
-  color: var(--fg);
-}
-
 /* ── Mobile tab bar (thumb-zone nav, <768px) ─────────────────────────── */
 .mobile-tab-bar {
   display: none;
@@ -1585,3 +1573,65 @@ html[data-orange="ink"] .bg-orange {
     bottom: calc(var(--tab-bar-h) + 12px + env(safe-area-inset-bottom)) !important;
   }
 }
+
+/* Phones: Lab cards become a horizontal snap carousel (thumb-friendly, shows there is more) */
+@media (max-width: 767px) {
+  .home-lab-grid-v2 {
+    display: flex;
+    gap: 0.85rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin-inline: calc(var(--container-gutter-phone) * -1);
+    padding: 0.25rem var(--container-gutter-phone) 1rem;
+    scroll-padding-inline: var(--container-gutter-phone);
+    scrollbar-width: none;
+  }
+  .home-lab-grid-v2::-webkit-scrollbar { display: none; }
+  .home-lab-grid-v2 > li {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+}
+
+/* Route transitions (View Transitions API): quick cross-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--motion-slow);
+  animation-timing-function: var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Path scrub: rail fills and node lights up as each milestone passes the viewport centre */
+.home-path-rail::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--fg);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--motion-slow) var(--ease-out);
+}
+.home-path-item:first-child .home-path-rail::after { top: 0.65rem; }
+.home-path-item:last-child .home-path-rail::after { display: none; }
+.home-path-item.is-passed .home-path-rail::after { transform: scaleY(1); }
+.home-path-item .home-path-node { transition: background-color var(--motion-base) var(--ease-standard), border-color var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-out); }
+.home-path-item.is-passed .home-path-node { background: var(--fg); border-color: var(--fg); transform: scale(1.15); }
+.home-path-item-active.is-passed .home-path-node { background: var(--accent); border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  .home-path-rail::after { transition: none; }
+  .home-path-item .home-path-node { transition: none; }
+}
+
+/* Magnetic primary buttons (pointer devices only; see components/magnetic-fx.tsx) */
+.brand-button-primary, .hv-cta.primary { translate: var(--mx, 0px) var(--my, 0px); }
+.brand-button-primary, .hv-cta.primary { transition-property: translate, background-color, border-color, color, box-shadow, transform; transition-duration: var(--motion-base); transition-timing-function: var(--ease-out); }

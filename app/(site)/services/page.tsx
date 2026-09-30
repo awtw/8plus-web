@@ -11,6 +11,7 @@ import { Pipeline } from '@/components/services/pipeline'
 import { ProcessList } from '@/components/services/process-list'
 import { PricingGrid } from '@/components/services/pricing-grid'
 import { FaqList } from '@/components/services/faq-list'
+import { FaqJsonLd } from '@/components/faq-json-ld'
 
 export default function ServicesPage() {
   const { locale, t, tn } = useLanguage()
@@ -20,6 +21,7 @@ export default function ServicesPage() {
 
   return (
     <>
+      <FaqJsonLd items={faq} />
       <PageSection field="blue">
         <PageHeader
           className="services-rise"

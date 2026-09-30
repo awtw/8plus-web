@@ -105,12 +105,25 @@ const HERO_CSS = `
   .hv-switch button.opt.on::before { background: #FE5000; opacity: 1; box-shadow: 0 0 8px 2px rgba(254,80,0,.55); }
   .hp-rise { opacity: 0; animation: hpRise .9s ease forwards; }
   @keyframes hpRise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  /* kinetic headline: per-line mask reveal (transform only; text stays intact in DOM for a11y) */
+  .hk-line { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; }
+  .hk-line > span { display: block; transform: translateY(55%); animation: hkUp .95s cubic-bezier(.16,1,.3,1) forwards; }
+  @keyframes hkUp { to { transform: translateY(0); } }
+  /* touch drag layer for combo cards (phones) */
+  .hv-cards .rot { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+  /* scroll-driven hero exit (compositor, zero JS); unsupported browsers just scroll normally */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-inner { animation: heroExit linear both; animation-timeline: view(); animation-range: exit 0% exit 70%; }
+      @keyframes heroExit { to { opacity: .0; transform: translateY(-36px) scale(.97); filter: blur(6px); } }
+    }
+  }
   .hv-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 9999px; font-family: var(--font-body); font-size: 15px; font-weight: 500; cursor: pointer; transition: var(--transition-base); border: 1px solid transparent; }
   .hv-cta.primary { background: var(--accent); color: var(--accent-on); }
   .hv-cta.primary:hover { background: var(--accent-hover); }
   .hv-cta.secondary { background: rgba(255,255,255,.08); color: var(--fg); border-color: var(--border); }
   .hv-cta.secondary:hover { background: rgba(255,255,255,.15); border-color: var(--hover-border); }
-  @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
   /* phones: cards become quiet atmosphere behind the copy; headline sized so each authored line fits on one row (no orphan glyph) */
   @media (max-width: 768px) {
     .hv-cards { opacity: .32; }
@@ -140,7 +153,7 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環',
+  eclipse: '日蝕光環', gl: '3D 光球', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
@@ -150,16 +163,20 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const [variant, setVariant] = React.useState('combo')
   const [swOpen, setSwOpen] = React.useState(false)
   const [logoTick, setLogoTick] = React.useState(0)
-  const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null)
+  const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
 
   React.useEffect(() => {
-    // pick a fresh random main-visual on every page load / home entry
-    // phones / Data Saver keep the light CSS-only 'combo' scene (stable LCP, less GPU);
-    // desktop gets the random canvas scenes.
+    // signature hero: 3D 'neural' core on desktop AND phones (fewer nodes / 30fps on phones);
+    // Data Saver / no-WebGL keep the light CSS-only 'combo' scene, which is touch-driven (drag effect below).
+    // Other scenes are easter eggs: ?hero=<key> or ?hero=random.
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-    if (window.innerWidth < 768 || conn?.saveData) return
     const keys = Object.keys(HERO_LABELS)
-    const pick = keys[Math.floor(Math.random() * keys.length)]
+    const q = new URLSearchParams(window.location.search).get('hero')
+    let pick: string | null = null
+    if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
+    else if (q && keys.includes(q)) pick = q
+    else if (!conn?.saveData && window.WebGLRenderingContext) pick = 'neural'
+    if (!pick) return
     setVariant(pick)
     if (pick === 'logo') setLogoTick((n) => n + 1)
   }, [])
@@ -259,8 +276,28 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     window.addEventListener('mousemove', onM); return () => window.removeEventListener('mousemove', onM)
   }, [variant])
 
+  // touch devices: horizontal drag + page scroll steer the card ring (replaces mouse parallax)
+  React.useEffect(() => {
+    if (variant !== 'combo') return
+    const sec = secRef.current, rot = rotRef.current; if (!sec || !rot) return
+    if (!window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion:reduce)').matches) return
+    let drag = 0, vel = 0, sx = 0, last = 0, active = false, raf = 0
+    const paint = () => { rot.style.transform = 'rotateY(' + (drag + window.scrollY * 0.12) + 'deg)' }
+    const tick = () => { if (!active && Math.abs(vel) > 0.02) { drag += vel; vel *= 0.94; paint() } raf = requestAnimationFrame(tick) }
+    const down = (e: TouchEvent) => { active = true; sx = e.touches[0].clientX; last = sx; vel = 0 }
+    const move = (e: TouchEvent) => { if (!active) return; const x = e.touches[0].clientX; const d = (x - last) * 0.35; drag += d; vel = d; last = x; paint() }
+    const up = () => { active = false }
+    const onScroll = () => paint()
+    sec.addEventListener('touchstart', down, { passive: true }); sec.addEventListener('touchmove', move, { passive: true })
+    sec.addEventListener('touchend', up); window.addEventListener('scroll', onScroll, { passive: true })
+    raf = requestAnimationFrame(tick)
+    return () => { cancelAnimationFrame(raf); sec.removeEventListener('touchstart', down); sec.removeEventListener('touchmove', move); sec.removeEventListener('touchend', up); window.removeEventListener('scroll', onScroll); rot.style.transform = '' }
+  }, [variant])
+
   const ORDER = Object.keys(HERO_LABELS)
-  const corner = ['logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
+  // neural: editorial (copy left, sphere right) on wide screens, centred on phones
+  const wide = typeof window !== 'undefined' && window.innerWidth >= 820
+  const corner = (variant === 'neural' && wide) || ['gl', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
   const flat = ['flow', 'lines', 'topo', 'dots', 'wave', 'bp', 'warp', 'ripple', 'radar', 'dna', 'terra', 'harmo', 'spiro', 'bars', 'flock', 'cells'].indexOf(variant) !== -1
 
   const onHeroClick = (e) => {
@@ -285,7 +322,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         <div className={'hv-bg' + (variant === 'combo' ? ' on' : '')}>
           <div className="ht-scene"><div className="ht-plane ht-floor"></div><div className="ht-plane ht-ceil"></div></div>
           <div className="ht-glow"></div>
-          <div className="hv-cards"><div className="space">
+          <div className="hv-cards"><div className="rot" ref={rotRef}><div className="space">
             {cards.map((p, i) => (
               <div key={i} className="card" style={{ transform: 'rotateY(' + (i / cards.length * 360) + 'deg) translateZ(330px)' }}>
                 <span className="idx">{'SERVICE // ' + String(i + 1).padStart(2, '0')}</span>
@@ -294,7 +331,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
                 <span className="stack">{p.s.map((x2) => <span key={x2}>{x2}</span>)}</span>
               </div>
             ))}
-          </div></div>
+          </div></div></div>
         </div>
         <div className={'hv-bg hv-flow' + (variant === 'flow' ? ' on' : '')}><canvas ref={cvRef}></canvas></div>
         <div className={'hv-bg hv-logo' + (variant === 'logo' ? ' on' : '')}>
@@ -344,10 +381,10 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: corner ? 'flex-start' : 'flex-end', alignItems: corner ? 'flex-start' : 'center', textAlign: corner ? 'left' : 'center', paddingBottom: corner ? 0 : '6vh', paddingTop: corner ? 'clamp(40px, 10vh, 76px)' : (variant === 'lines' ? '4vh' : 0), paddingLeft: corner ? 10 : 0 }}>
           {corner && <p className="hp-rise" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 18px', animationDelay: '.1s' }}>{en ? 'Architecture-led · AI shipped' : '架構驅動 · AI 落地'}</p>}
-          <h1 id="home-hero-headline" className="hp-rise" style={corner
+          <h1 id="home-hero-headline" style={corner
             ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(1.7rem, 3vw, 2.7rem)', lineHeight: 1.2, letterSpacing: '-0.02em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '18ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
             : { fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 8.5vw, 4.75rem)', lineHeight: 1.06, letterSpacing: '-0.04em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '22ch', textShadow: '0 6px 50px rgba(0,10,50,.85)', animationDelay: '.15s' }}>
-            {c.hero.headline.map((line, i) => <span key={i} style={{ display: 'block' }}>{line}</span>)}
+            {c.hero.headline.map((line, i) => <span key={i} className="hk-line"><span style={{ animationDelay: (0.15 + i * 0.12) + 's' }}>{line}</span></span>)}
           </h1>
           <div className="hp-rise hero-ctas" style={{ display: 'flex', flexWrap: 'wrap', gap: 14, margin: corner ? '28px 0 0' : '34px 0 0', justifyContent: corner ? 'flex-start' : 'center', animationDelay: '.35s' }}>
             <button className="hv-cta primary" onClick={() => router.push('/booking')}>{en ? 'Book a call' : '預約諮詢'}</button>

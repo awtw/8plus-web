@@ -2,6 +2,7 @@
 const nextConfig = {
   transpilePackages: ["@8plus/ui"],
   experimental: {
+    viewTransition: true,
     optimizePackageImports: ["@phosphor-icons/react", "lucide-react", "framer-motion", "date-fns"],
   },
   async redirects() {

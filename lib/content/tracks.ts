@@ -47,7 +47,7 @@ const zh: TracksContent = {
   eyebrow: '04 · WHAT YOU NEED',
   title: '你是哪一種需求？',
   lead: '五種合作方式，從做出產品到帶人成長。',
-  quizCta: '不確定？先預約 30 分鐘初談',
+  quizCta: '不確定？做 3 分鐘需求診斷',
   items: [
     {
       key: 'build',
@@ -177,7 +177,7 @@ const en: TracksContent = {
   eyebrow: '04 · WHAT YOU NEED',
   title: 'What do you need?',
   lead: 'Five ways to work together — from shipping a product to growing people.',
-  quizCta: 'Not sure? Book a 30-minute intro',
+  quizCta: 'Not sure? Take the 3-minute needs check',
   items: [
     {
       key: 'build',

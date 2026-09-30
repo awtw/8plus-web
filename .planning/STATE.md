@@ -433,3 +433,10 @@ Resume file: None
 - ✅ B：手機底部 Tab Bar；手機 Hero 調整。✅ C'：五軌內容模型、首頁五卡、`/training`、`/career`。
 - 🧪 D6 試驗：`?orange=ink`（`html[data-orange="ink"]`）橘底改深墨字，白字 3.30→墨 5.83 對比；待使用者比較後決定，決定後刪除試驗碼或設為預設。
 - 待做：匿名 case study、Field Notes、Lab／Path 手機水平 snap、真機驗證；之後 D（⌘K、Lab 篩選、View Transitions）、E'（類 LLM Quiz）。
+- 2026-10-01 CST：D6 決定 — 橘底維持白字（深墨試驗比較後「沒有更清楚」）；試驗碼已移除。橘場白字 3.30 對比列為已知限制（標題大字符合 3:1；`check-contrast` 內標 KNOWN）。
+
+### 2026-10-01 CST 夜 — 階段 C3→G 全數完成（Claude）
+- D6 決定：橘底維持白字（已還原深墨試驗）。
+- ✅ Field Notes 與匿名案例版型；Lab 手機 snap；Lab 篩選；⌘K 搜尋；View Transitions；閱讀進度／目錄；`/check` 類 LLM 需求診斷；`llms.txt` + JSON-LD；Hero 3D（`?hero=gl`）；Path scrub；磁吸 CTA。
+- ⚠️ 待人工：Hero 3D 目視、View Transitions 目視、真機測試、真實案例／推薦語內容、Lab mini demo 素材。
+- ⚠️ 並行會話同時在改 `hero-v2.tsx`（kinetic 標題、`hero-neural.tsx`）與自動 commit；本會話僅將 kinetic 起始位移 108%→55% 以恢復 LCP。

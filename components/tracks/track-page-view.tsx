@@ -7,6 +7,7 @@ import { PageSection } from '@/components/page/page-section'
 import { PageHeader } from '@/components/page/page-header'
 import { SectionHead } from '@/components/services/section-head'
 import { FaqList } from '@/components/services/faq-list'
+import { FaqJsonLd } from '@/components/faq-json-ld'
 import type { TrackPage } from '@/lib/content/tracks'
 
 type CardItem = { title: string; desc: string }
@@ -30,6 +31,7 @@ function CardGrid({ items, wide }: { items: CardItem[]; wide?: boolean }) {
 export function TrackPageView({ page, secondaryHref }: { page: TrackPage; secondaryHref: string }) {
   return (
     <>
+      <FaqJsonLd items={page.faq.map((f) => ({ question: f.q, answer: f.a }))} />
       <PageSection field="blue">
         <PageHeader className="services-rise" eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
         <div className="services-actions">

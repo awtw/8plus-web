@@ -1,0 +1,33 @@
+/* Needs check — chat-style, rule-based. Tokens only. */
+.quiz { max-width: 44rem; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 16px; }
+.quiz-badge { align-self: flex-start; margin: 0; padding: 6px 14px; border: 1px solid var(--border); border-radius: 9999px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--meta); }
+.quiz-thread { display: flex; flex-direction: column; gap: 12px; min-height: 12rem; }
+.quiz-pair { display: contents; }
+.quiz-msg { max-width: 88%; padding: 12px 16px; border-radius: 20px; line-height: 1.6; font-size: 1rem; animation: quiz-in var(--motion-slow) var(--ease-out) both; }
+.quiz-bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--border-soft); border-bottom-left-radius: 6px; color: var(--fg); }
+.quiz-user { align-self: flex-end; background: var(--fg); color: var(--bg); border-bottom-right-radius: 6px; }
+.quiz-caret { display: inline-block; width: 2px; height: 1.1em; margin-left: 2px; vertical-align: -0.15em; background: currentColor; animation: quiz-blink 1s steps(1) infinite; }
+.quiz-dots { display: inline-flex; gap: 5px; align-items: center; padding-block: 16px; }
+.quiz-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--fg-2); animation: quiz-dot 1s ease-in-out infinite; }
+.quiz-dots span:nth-child(2) { animation-delay: .15s; } .quiz-dots span:nth-child(3) { animation-delay: .3s; }
+.quiz-options { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 10px; min-height: 9rem; } /* reserved so chips appearing never shift the page */
+.quiz-chip { min-height: 48px; padding: 10px 20px; border-radius: 9999px; border: 1px solid var(--border); background: transparent; color: var(--fg); font-size: 0.98rem; text-align: left; cursor: pointer; transition: background-color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard); animation: quiz-in var(--motion-slow) var(--ease-out) both; }
+.quiz-chip:hover { background: var(--hover-bg-strong, var(--hover-bg)); }
+.quiz-chip:active { transform: scale(.97); }
+.quiz-chip:focus-visible, .quiz-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.quiz-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--meta); }
+.quiz-link { background: none; border: 0; padding: 10px 0; min-height: 44px; color: var(--fg-2); cursor: pointer; font: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.quiz-result { display: grid; gap: 16px; padding: 22px; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border-soft); }
+.quiz-result-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 3.2vw, 1.9rem); letter-spacing: -0.02em; margin: 0; }
+.quiz-result-list, .quiz-result-block ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 6px; color: var(--fg-2); font-size: .95rem; }
+.quiz-result-block h3 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--meta); }
+.quiz-result-block p { margin: 0; color: var(--fg); line-height: 1.65; }
+.quiz-links { list-style: none !important; padding-left: 0 !important; }
+.quiz-links a { color: var(--accent); text-decoration: none; } .quiz-links a:hover { text-decoration: underline; }
+.quiz-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.quiz-privacy { margin: 0; font-size: .8rem; color: var(--muted); }
+.quiz-stream { animation: quiz-in .7s var(--ease-out) both; }
+@keyframes quiz-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes quiz-blink { 50% { opacity: 0; } }
+@keyframes quiz-dot { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .quiz-msg, .quiz-chip, .quiz-stream, .quiz-caret, .quiz-dots span { animation: none; } }

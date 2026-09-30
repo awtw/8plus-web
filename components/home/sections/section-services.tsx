@@ -55,7 +55,7 @@ export function SectionServices({ locale }: SectionServicesProps) {
           ))}
         </ul>
 
-        <Link href="/booking" className="brand-button-secondary track-quiz-link">
+        <Link href="/check" className="brand-button-secondary track-quiz-link">
           {tracks.quizCta}
         </Link>
       </div>

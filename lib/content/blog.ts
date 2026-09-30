@@ -11,6 +11,10 @@ export type BlogContent = {
   ctaPrimary: string;
   ctaSecondary: string;
   read: string;
+  filterAll: string;
+  filterArticle: string;
+  filterNote: string;
+  noteBadge: string;
 };
 
 export const blogContent: Record<Locale, BlogContent> = {
@@ -25,6 +29,10 @@ export const blogContent: Record<Locale, BlogContent> = {
     ctaPrimary: "預約諮詢",
     ctaSecondary: "看服務內容",
     read: "閱讀全文",
+    filterAll: "全部",
+    filterArticle: "文章",
+    filterNote: "近況筆記",
+    noteBadge: "FIELD NOTE",
   },
   en: {
     eyebrow: "04 · JOURNAL",
@@ -37,5 +45,9 @@ export const blogContent: Record<Locale, BlogContent> = {
     ctaPrimary: "Book a consultation",
     ctaSecondary: "See services",
     read: "Read article",
+    filterAll: "All",
+    filterArticle: "Articles",
+    filterNote: "Field Notes",
+    noteBadge: "FIELD NOTE",
   },
 };

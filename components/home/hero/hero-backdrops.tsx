@@ -6,6 +6,8 @@
 // loops run only while their variant is active.
 import React from 'react'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
+import HeroGl from './hero-gl'
+import HeroNeural from './hero-neural'
 
 const HB_CSS = `
   .hv-bg canvas.hb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -909,4 +911,6 @@ export const HERO_BACKDROPS = {
   topo: Topo, dots: Dots, orbit: Orbit, iso: Iso, wave: Wave, sphere: Sphere, tape: Tape, bp: Bp,
   warp: Warp, ripple: Ripple, radar: Radar, dna: Dna, terra: Terra, harmo: Harmo,
   spiro: Spiro, bars: Bars, atom: Atom, flock: Flock, cells: Cells, typo: Typo, eclipse: Eclipse,
+  gl: HeroGl,
+  neural: HeroNeural,
 }

@@ -13,6 +13,8 @@ const posts = defineCollection({
     thumbnail: s.string().optional(),
     published: s.boolean().default(true),
     protected: s.boolean().default(false),
+    // 'note' = short Field Note (status update); 'article' = long-form post
+    kind: s.enum(['article', 'note']).default('article'),
     slug: s.string(),
     locale: s.string().default('zh-Hant'),
     html: s.markdown()

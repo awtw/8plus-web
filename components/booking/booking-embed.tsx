@@ -9,6 +9,10 @@ const CAL_LINK = 'august-wang-113/30min'
 
 export function BookingEmbed({ loadingLabel }: { loadingLabel: string }) {
   const [isCalLoaded, setIsCalLoaded] = useState(false)
+  // ?notes= is set by the needs check so the booking form arrives pre-filled
+  const [notes] = useState(() =>
+    typeof window === 'undefined' ? '' : (new URLSearchParams(window.location.search).get('notes') ?? '').slice(0, 300),
+  )
 
   useEffect(() => {
     ;(async function () {
@@ -39,7 +43,7 @@ export function BookingEmbed({ loadingLabel }: { loadingLabel: string }) {
           namespace={CAL_NAMESPACE}
           calLink={CAL_LINK}
           style={{ width: '100%', height: 'clamp(520px, 70vh, 720px)', overflow: 'scroll' }}
-          config={{ layout: 'month_view' }}
+          config={{ layout: 'month_view', ...(notes ? { notes } : {}) }}
         />
       </div>
     </div>

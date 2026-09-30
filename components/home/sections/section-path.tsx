@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react'
 import type { HomeLocale } from '@/lib/content/home-sections'
@@ -12,6 +13,24 @@ type SectionPathProps = {
 export function SectionPath({ locale }: SectionPathProps) {
   const content = getHomeSectionContent(locale)
   const path = content.path
+  const listRef = useRef<HTMLOListElement>(null)
+
+  // timeline scrub: a node "fills" once it scrolls past the viewport centre (and un-fills when scrolled back)
+  useEffect(() => {
+    const items = listRef.current?.querySelectorAll<HTMLElement>('.home-path-item')
+    if (!items || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const above = e.boundingClientRect.top < window.innerHeight * 0.55
+          e.target.classList.toggle('is-passed', e.isIntersecting || above)
+        }
+      },
+      { rootMargin: '0px 0px -45% 0px' },
+    )
+    items.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [path.items.length])
 
   return (
     <section
@@ -35,7 +54,7 @@ export function SectionPath({ locale }: SectionPathProps) {
 
         <p className="scroll-lead home-path-lead">{path.lead}</p>
 
-        <ol className="home-path-timeline">
+        <ol className="home-path-timeline" ref={listRef}>
           {path.items.map((item) => (
             <li
               key={`${item.year}-${item.title}`}

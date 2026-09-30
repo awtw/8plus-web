@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { posts } from '.velite'
 import { PageSection } from '@/components/page/page-section'
@@ -12,14 +13,35 @@ import '@/styles/pages/blog.css'
 export function BlogList() {
   const { t, locale } = useLanguage()
   const c = blogContent[locale]
+  const [filter, setFilter] = useState<'all' | 'article' | 'note'>('all')
   const published = posts
     .filter((post) => post.published && post.locale === locale)
+    .filter((post) => filter === 'all' || post.kind === filter)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
     <>
       <PageSection field="blue">
         <PageHeader eyebrow={c.eyebrow} title={t('blog.title')} lead={t('blog.description')} />
+        <div className="blog-filters" role="group" aria-label="Filter">
+          {(
+            [
+              ['all', c.filterAll],
+              ['article', c.filterArticle],
+              ['note', c.filterNote],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              className={`blog-filter${filter === key ? ' is-active' : ''}`}
+              aria-pressed={filter === key}
+              onClick={() => setFilter(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <p className="blog-count">{c.count(published.length)}</p>
 
         {published.length === 0 ? (
@@ -30,6 +52,7 @@ export function BlogList() {
           <div className="blog-grid">
             {published.map((post) => (
               <Link key={post.slug} href={post.url} className="gradient-border-card blog-card">
+                {post.kind === 'note' && <span className="blog-note-badge">{c.noteBadge}</span>}
                 <time className="blog-meta" dateTime={post.date}>
                   {new Date(post.date).toLocaleDateString(locale === 'zh-TW' ? 'zh-TW' : 'en-US', {
                     year: 'numeric',

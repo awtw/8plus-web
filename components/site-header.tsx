@@ -1,5 +1,6 @@
 'use client'
 
+import { CommandPaletteTrigger } from "@/components/command-palette/command-palette-trigger";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
@@ -77,6 +78,7 @@ export default function SiteHeader() {
           </div>
 
           <nav className="flex items-center gap-2" aria-label="Utilities">
+            <CommandPaletteTrigger />
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>

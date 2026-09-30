@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import Cal, { getCalApi } from '@calcom/embed-react'
+import { EVENTS, bindCalTracking, track } from '@/lib/analytics'
 import { CalendarCheck, CaretDown } from '@phosphor-icons/react'
 import { useLanguage } from '@/components/language-provider'
 import { cn } from '@/lib/utils'
@@ -60,6 +61,8 @@ export function ShareBookingExpandable({
             },
           },
         })
+        bindCalTracking(cal, 'share_hub')
+        track(EVENTS.BOOKING_VIEW, { source: 'share_hub' })
         setCalReady(true)
       } catch (error) {
         console.error('Failed to load booking calendar:', error)

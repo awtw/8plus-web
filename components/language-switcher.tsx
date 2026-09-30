@@ -75,6 +75,9 @@ export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcher
               <button
                 key={lng}
                 role="menuitem"
+                data-track="lang_switch"
+                data-track-to={lng}
+                data-track-from={locale}
                 onClick={() => handleLocaleChange(lng)}
                 className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-[color:var(--hover-bg)] transition-colors ${
                   locale === lng ? 'bg-[color:var(--hover-bg-strong)] text-[color:var(--fg)]' : 'text-[color:var(--fg-2)]'

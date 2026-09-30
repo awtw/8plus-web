@@ -6,6 +6,7 @@ import { SkipToMain } from "@/components/skip-to-main";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { JsonLd } from "@/components/json-ld";
+import { Analytics } from "@/components/analytics/analytics";
 import { SITE } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <SiteFooter />
           </LanguageProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

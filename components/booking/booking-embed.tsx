@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Cal, { getCalApi } from '@calcom/embed-react'
+import { EVENTS, bindCalTracking, track } from '@/lib/analytics'
 
 const CAL_NAMESPACE = '30min'
 const CAL_LINK = 'august-wang-113/30min'
@@ -14,6 +15,8 @@ export function BookingEmbed({ loadingLabel }: { loadingLabel: string }) {
       try {
         const cal = await getCalApi({ namespace: CAL_NAMESPACE })
         cal('ui', { hideEventTypeDetails: false, layout: 'month_view' })
+        bindCalTracking(cal, 'booking_page')
+        track(EVENTS.BOOKING_VIEW, { source: 'booking_page' })
         setIsCalLoaded(true)
       } catch (error) {
         console.error('Failed to load booking calendar:', error)

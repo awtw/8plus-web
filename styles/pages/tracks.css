@@ -1,0 +1,45 @@
+/* Track pages (/training, /career) + home "What do you need?" cards — v2 CI. Tokens only. */
+.track-grid {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .track-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .track-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .track-grid > li { grid-column: span 2; } .track-grid > li:nth-child(n + 4) { grid-column: span 3; } }
+
+.track-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 11rem;
+  padding: 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-soft);
+  background: var(--surface);
+  color: var(--fg);
+  text-decoration: none;
+  transition: transform var(--motion-base) var(--ease-standard), border-color var(--motion-base) var(--ease-standard), background-color var(--motion-base) var(--ease-standard);
+}
+.track-card:hover { transform: translateY(-3px); border-color: var(--hover-border); background: var(--hover-bg); }
+.track-card:active { transform: scale(0.985); }
+.track-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.track-card-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);
+}
+.track-card-meta .track-mark { color: var(--accent); }
+.track-card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: -0.02em; margin: 0; }
+.track-card p { margin: 0; font-weight: 300; line-height: 1.6; color: var(--fg-2); font-size: 0.95rem; }
+.track-card .track-audience { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+.track-card .track-cta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+
+.track-quiz-link { display: inline-flex; margin-top: 1.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .track-card, .track-card:hover, .track-card:active { transition: none; transform: none; }
+}

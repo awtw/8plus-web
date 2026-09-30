@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@8plus/ui"],
+  experimental: {
+    optimizePackageImports: ["@phosphor-icons/react", "lucide-react", "framer-motion", "date-fns"],
+  },
   async redirects() {
     return [
       { source: "/contact", destination: "/booking", permanent: true },

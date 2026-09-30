@@ -1493,3 +1493,95 @@ a {
     color: var(--fg-2);
   }
 }
+
+/* Option A (trial): dark-ink text on the orange field for AA contrast (5.8:1 vs 3.3:1 for white).
+   Enabled by <html data-orange="ink">; compare in the browser, then bake in or delete. */
+html[data-orange="ink"] .bg-orange {
+  --fg: #0A0E1A;
+  --fg-2: rgba(10, 14, 26, 0.9);
+  --muted: rgba(10, 14, 26, 0.78);
+  --meta: rgba(10, 14, 26, 0.72);
+  --border-soft: rgba(10, 14, 26, 0.22);
+  --border: rgba(10, 14, 26, 0.4);
+  color: var(--fg);
+}
+
+/* ── Mobile tab bar (thumb-zone nav, <768px) ─────────────────────────── */
+.mobile-tab-bar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --tab-bar-h: 60px;
+  }
+
+  .mobile-tab-bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: color-mix(in srgb, var(--color-dark) 88%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    transition: transform var(--motion-slow) var(--ease-out);
+  }
+
+  .mobile-tab-bar--hidden {
+    transform: translateY(100%);
+  }
+
+  .mobile-tab-bar ul {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mobile-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: var(--tab-bar-h);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+    transition: color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .mobile-tab:active {
+    transform: scale(0.94);
+  }
+
+  .mobile-tab.is-active {
+    color: #fff;
+  }
+
+  .mobile-tab.is-primary {
+    color: var(--color-orange);
+    font-weight: 600;
+  }
+
+  .mobile-tab:focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: -4px;
+    border-radius: 12px;
+  }
+
+  /* keep page content and hero controls clear of the bar (only when the bar renders) */
+  body:has(.mobile-tab-bar) {
+    padding-bottom: calc(var(--tab-bar-h) + env(safe-area-inset-bottom));
+  }
+
+  .hv-switch {
+    bottom: calc(var(--tab-bar-h) + 12px + env(safe-area-inset-bottom)) !important;
+  }
+}

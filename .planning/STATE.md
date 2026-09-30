@@ -426,3 +426,10 @@ Resume file: None
 - ✅ Lab 縮圖 WebP（6.6MB→2.5MB）；✅ Hero CSS 改 SSR `<style>`（CLS 0.91→0、TBT 450→10ms）；首頁 mobile Perf 66→73~89。
 - ⏳ Cal.com 延後載入（BP 77 主因）、手機固定輕量 Hero（LCP 波動）。
 - ⚠️ 另一會話同時在改 analytics／booking-embed；動 Cal 前先協調。詳見 `.planning/redesign/BASELINE-2026-10-01.md`。
+
+### 2026-10-01 CST — A7 收尾 + B/C' 起手（Claude）
+- ✅ 首頁效能：真實節流 Perf 99／LCP 1.7s／CLS 0／BP 100；模擬 89。Cal 延後載入、GA lazyOnload、GSAP 改 IntersectionObserver（首頁 JS 342→299KB）。
+- ✅ 修：Hero「往下滾動」被裁切（height→min-height）。
+- ✅ B：手機底部 Tab Bar；手機 Hero 調整。✅ C'：五軌內容模型、首頁五卡、`/training`、`/career`。
+- 🧪 D6 試驗：`?orange=ink`（`html[data-orange="ink"]`）橘底改深墨字，白字 3.30→墨 5.83 對比；待使用者比較後決定，決定後刪除試驗碼或設為預設。
+- 待做：匿名 case study、Field Notes、Lab／Path 手機水平 snap、真機驗證；之後 D（⌘K、Lab 篩選、View Transitions）、E'（類 LLM Quiz）。

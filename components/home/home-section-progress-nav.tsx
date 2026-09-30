@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ensureGsapPlugins, ScrollTrigger } from '@/lib/motion/gsap-client'
 import { HOME_SECTION_IDS } from '@/lib/content/home-sections'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -23,23 +22,22 @@ export function HomeSectionProgressNav({
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    ensureGsapPlugins()
-
-    const triggers = sectionIds.map((id, index) => {
+    // A section is "active" while it crosses the viewport's vertical centre line.
+    const observers = sectionIds.map((id, index) => {
       const el = document.getElementById(`home-section-${id}`)
       if (!el) return null
-
-      return ScrollTrigger.create({
-        trigger: el,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => setActive(index),
-        onEnterBack: () => setActive(index),
-      })
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActive(index)
+        },
+        { rootMargin: '-50% 0px -50% 0px' },
+      )
+      io.observe(el)
+      return io
     })
 
     return () => {
-      triggers.forEach((t) => t?.kill())
+      observers.forEach((io) => io?.disconnect())
     }
   }, [sectionIds])
 

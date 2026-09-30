@@ -2,6 +2,7 @@
 import "./../styles/globals.css";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { SkipToMain } from "@/components/skip-to-main";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -53,6 +54,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <head>
         <JsonLd />
+        {/* Design trial: ?orange=ink switches orange fields to dark-ink text (WCAG AA). Remove once decided. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(new URLSearchParams(location.search).get('orange')==='ink')document.documentElement.setAttribute('data-orange','ink')}catch(e){}",
+          }}
+        />
       </head>
       <body className="h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>
@@ -61,6 +69,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <SiteHeader />
             <main id="main-content" className="flex-1 w-full min-w-0 overflow-x-clip">{children}</main>
             <SiteFooter />
+            <MobileTabBar />
           </LanguageProvider>
         </ThemeProvider>
         <Analytics />

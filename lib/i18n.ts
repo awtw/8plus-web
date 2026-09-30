@@ -8,6 +8,7 @@ export const translations = {
   'zh-TW': {
     // 導航
     nav: {
+      home: '首頁',
       lab: 'LAB',
       services: '服務',
       projects: 'LAB',
@@ -250,6 +251,7 @@ export const translations = {
   'en': {
     // Navigation
     nav: {
+      home: 'Home',
       lab: 'LAB',
       services: 'Services',
       projects: 'Lab',

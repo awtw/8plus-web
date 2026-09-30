@@ -1436,3 +1436,57 @@ a {
   line-height: 1.6;
   color: var(--muted);
 }
+
+/* ============================================================
+   v2 inner-page primitives (PageSection / PageHeader)
+   ============================================================ */
+@layer components {
+  .page-section {
+    position: relative;
+    width: 100%;
+  }
+
+  .page-section-inner {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--section-y-phone);
+  }
+
+  @media (min-width: 640px) {
+    .page-section-inner { padding-block: var(--section-y-tablet); }
+  }
+
+  @media (min-width: 1024px) {
+    .page-section-inner { padding-block: var(--section-y-desktop); }
+  }
+
+  .page-head {
+    max-width: 48rem;
+  }
+
+  .page-title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    color: var(--fg);
+  }
+
+  .page-title-sub {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .page-lead {
+    margin-top: 1.25rem;
+    max-width: 60ch;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--fg-2);
+  }
+}

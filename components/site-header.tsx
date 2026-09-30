@@ -2,7 +2,7 @@
 
 import { CommandPaletteTrigger } from "@/components/command-palette/command-palette-trigger";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { MobileNav } from "./mobile-nav";
 import { LogoHomeLink } from "./logo-home-link";
@@ -27,6 +27,7 @@ export default function SiteHeader() {
   const isSharePage = isShareHubPath(pathname);
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!isHomePage) {
@@ -40,6 +41,56 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHomePage]);
 
+  // publish the real header height so pinned sub-menus (.sticky-subnav) sit exactly below it
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const publish = () => root.style.setProperty("--header-h", `${el.offsetHeight}px`);
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(el);
+
+    // The header (and pinned sub-menus) take the colour of the field passing behind the header's
+    // centre line: blue over blue, orange over orange. Opaque, so content never shows through.
+    let lastColor = "";
+    let last = 0;
+    const tint = () => {
+      last = performance.now();
+      const y = Math.round(el.offsetHeight / 2);
+      const field = document
+        .elementsFromPoint(window.innerWidth / 2, y)
+        .find((n) => n.matches?.(".bg-blue, .bg-orange, .bg-dark"));
+      if (!field) return;
+      const color = getComputedStyle(field).backgroundColor;
+      if (color && color !== lastColor && color !== "rgba(0, 0, 0, 0)") {
+        lastColor = color;
+        root.style.setProperty("--header-bg", color);
+      }
+    };
+    // throttled (not rAF) so it also updates while the tab is backgrounded / in headless previews
+    let trailing = 0;
+    const onScroll = () => {
+      if (performance.now() - last > 40) {
+        tint();
+      } else {
+        window.clearTimeout(trailing); // trailing call so the final scroll position always wins
+        trailing = window.setTimeout(tint, 60);
+      }
+    };
+    tint();
+    const retry = window.setTimeout(tint, 400); // first paint: sections may not be laid out yet
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.clearTimeout(retry);
+      window.clearTimeout(trailing);
+    };
+  }, [isSharePage, pathname]);
+
   if (isSharePage) {
     return null;
   }
@@ -48,10 +99,10 @@ export default function SiteHeader() {
 
   const headerClass = isHeroOverlay
     ? "site-header site-header--hero sticky top-0 z-50 w-full border-b border-transparent bg-transparent"
-    : "sticky top-0 z-50 w-full border-b border-border/80 bg-background/88 backdrop-blur supports-[backdrop-filter]:bg-background/72";
+    : "site-header--solid sticky top-0 z-50 w-full border-b";
 
   return (
-    <header className={headerClass}>
+    <header ref={headerRef} className={headerClass}>
       <div className="section-shell flex min-h-[4.5rem] items-center justify-between gap-4 py-3">
         <div className="hidden md:flex items-center gap-8">
           <LogoHomeLink />

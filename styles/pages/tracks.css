@@ -33,7 +33,7 @@
   font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta);
 }
 .track-card-meta .track-mark { color: var(--accent); }
-.track-card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: -0.02em; margin: 0; }
+.track-card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.3rem; letter-spacing: -0.02em; margin: 0; }
 .track-card p { margin: 0; font-weight: 300; line-height: 1.6; color: var(--fg-2); font-size: 0.95rem; }
 .track-card .track-audience { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
 .track-card .track-cta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }

@@ -11,7 +11,7 @@
 }
 .services-h2 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   font-size: clamp(1.75rem, 3vw, 2.6rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
@@ -60,7 +60,7 @@
 }
 .services-card h3 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 1.25rem;
   letter-spacing: -0.02em;
   margin: 0;

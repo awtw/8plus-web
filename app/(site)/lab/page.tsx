@@ -72,7 +72,8 @@ export default function ProjectsPage() {
         </PageSection>
       ) : (
         <>
-          <PageSection field="blue" className="lab-filter-bar">
+          <div className="lab-filter-bar sticky-subnav">
+            <div className="section-shell">
             <div className="lab-filters" role="group" aria-label={c.eyebrow}>
               <button type="button" className={`lab-filter${active === 'all' ? ' is-active' : ''}`} aria-pressed={active === 'all'} onClick={() => choose('all')}>
                 {locale === 'en' ? 'All' : '全部'} · {projects.length}
@@ -83,7 +84,8 @@ export default function ProjectsPage() {
                 </button>
               ))}
             </div>
-          </PageSection>
+            </div>
+          </div>
 
           {active === 'all' && featured.length > 0 && (
             <PageSection field="orange">

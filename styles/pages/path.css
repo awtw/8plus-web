@@ -1,7 +1,7 @@
 .path-era-head { margin-bottom: 2rem; }
 .path-era-range {
   margin-top: 0.5rem;
-  font-family: Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -53,7 +53,7 @@
 }
 .path-title {
   margin-top: 0.5rem;
-  font-family: Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 400;
   letter-spacing: -0.01em;

@@ -1,7 +1,7 @@
 .about-index { display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start; }
 .about-num { font-family: var(--font-display); font-size: 44px; font-weight: 600; color: var(--fg); line-height: 1; }
 .about-num-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-top: 8px; }
-.about-h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch; }
+.about-h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch; }
 .about-p { font-weight: 300; font-size: 16px; line-height: 1.7; color: var(--fg-2); margin: 16px 0 0; max-width: 64ch; }
 .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; margin-top: 28px; }
 .about-card { padding: 22px; }
@@ -13,7 +13,7 @@
 .about-rows { display: grid; }
 .about-row { display: grid; grid-template-columns: minmax(0, 220px) 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--border-soft); }
 .about-row:last-child { border-bottom: 1px solid var(--border-soft); }
-.about-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg); }
+.about-row h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg); }
 .about-row p { font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 0; }
 .about-edu { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
 .about-edu > div { flex: 1 1 240px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--surface), var(--bg) 8%); padding: 20px; }

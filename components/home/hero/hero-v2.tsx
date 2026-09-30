@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
 import { HERO_BACKDROPS, HeroBackdropStyles } from './hero-backdrops'
+import { canUseWebGL } from './hero-gl'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 const HERO_CSS = `
@@ -153,7 +154,7 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環', gl: '3D 光球', neural: '神經核心 3D',
+  eclipse: '日蝕光環', gl: '液態金屬 3D', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
@@ -166,7 +167,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
 
   React.useEffect(() => {
-    // signature hero: 3D 'neural' core on desktop AND phones (fewer nodes / 30fps on phones);
+    // signature hero: ray-marched 'liquid chrome' form (hero-gl) on desktop AND phones (fewer nodes / 30fps on phones);
     // Data Saver / no-WebGL keep the light CSS-only 'combo' scene, which is touch-driven (drag effect below).
     // Other scenes are easter eggs: ?hero=<key> or ?hero=random.
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
@@ -175,7 +176,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     let pick: string | null = null
     if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
     else if (q && keys.includes(q)) pick = q
-    else if (!conn?.saveData && window.WebGLRenderingContext) pick = 'neural'
+    else if (!conn?.saveData && canUseWebGL()) pick = 'gl'
     if (!pick) return
     setVariant(pick)
     if (pick === 'logo') setLogoTick((n) => n + 1)
@@ -382,7 +383,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: corner ? 'flex-start' : 'flex-end', alignItems: corner ? 'flex-start' : 'center', textAlign: corner ? 'left' : 'center', paddingBottom: corner ? 0 : '6vh', paddingTop: corner ? 'clamp(40px, 10vh, 76px)' : (variant === 'lines' ? '4vh' : 0), paddingLeft: corner ? 10 : 0 }}>
           {corner && <p className="hp-rise" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 18px', animationDelay: '.1s' }}>{en ? 'Architecture-led · AI shipped' : '架構驅動 · AI 落地'}</p>}
           <h1 id="home-hero-headline" style={corner
-            ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(1.7rem, 3vw, 2.7rem)', lineHeight: 1.2, letterSpacing: '-0.02em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '18ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
+            ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', lineHeight: 1.18, letterSpacing: '-0.025em', fontWeight: 500, color: 'var(--fg)', margin: 0, maxWidth: '18ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
             : { fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 8.5vw, 4.75rem)', lineHeight: 1.06, letterSpacing: '-0.04em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '22ch', textShadow: '0 6px 50px rgba(0,10,50,.85)', animationDelay: '.15s' }}>
             {c.hero.headline.map((line, i) => <span key={i} className="hk-line"><span style={{ animationDelay: (0.15 + i * 0.12) + 's' }}>{line}</span></span>)}
           </h1>

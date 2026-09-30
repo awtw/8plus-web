@@ -10,7 +10,7 @@ type PageHeaderProps = {
   children?: ReactNode
 }
 
-/** Editorial page/section head: mono eyebrow, serif title, lead paragraph. */
+/** Editorial page/section head: mono eyebrow, sans display title, lead paragraph. */
 export function PageHeader({ eyebrow, title, lead, as: Tag = 'h1', className, children }: PageHeaderProps) {
   return (
     <header className={cn('page-head', className)}>

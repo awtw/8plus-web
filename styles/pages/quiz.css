@@ -18,7 +18,7 @@
 .quiz-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--meta); }
 .quiz-link { background: none; border: 0; padding: 10px 0; min-height: 44px; color: var(--fg-2); cursor: pointer; font: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .quiz-result { display: grid; gap: 16px; padding: 22px; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border-soft); }
-.quiz-result-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 3.2vw, 1.9rem); letter-spacing: -0.02em; margin: 0; }
+.quiz-result-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 3.2vw, 1.9rem); letter-spacing: -0.02em; margin: 0; }
 .quiz-result-list, .quiz-result-block ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 6px; color: var(--fg-2); font-size: .95rem; }
 .quiz-result-block h3 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--meta); }
 .quiz-result-block p { margin: 0; color: var(--fg); line-height: 1.65; }

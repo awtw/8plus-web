@@ -440,3 +440,25 @@ Resume file: None
 - ✅ Field Notes 與匿名案例版型；Lab 手機 snap；Lab 篩選；⌘K 搜尋；View Transitions；閱讀進度／目錄；`/check` 類 LLM 需求診斷；`llms.txt` + JSON-LD；Hero 3D（`?hero=gl`）；Path scrub；磁吸 CTA。
 - ⚠️ 待人工：Hero 3D 目視、View Transitions 目視、真機測試、真實案例／推薦語內容、Lab mini demo 素材。
 - ⚠️ 並行會話同時在改 `hero-v2.tsx`（kinetic 標題、`hero-neural.tsx`）與自動 commit；本會話僅將 kinetic 起始位移 108%→55% 以恢復 LCP。
+
+### 2026-10-01 CST 深夜 — 使用者回饋修正（Claude）
+- ✅ Logo 去藍底：header／footer 改 `variant="default"`（透明）。
+- ✅ 全站字體統一無襯線：`--font-display` 改 Outfit + Noto Sans TC / PingFang TC；移除 Georgia；display 標題 weight 400→500。
+- ✅ Lab 篩選列改為 `<main>` 直屬的 sticky（原本黏在單一 section 內，捲過就消失）。
+- ✅ Hero 預設改 **AI Liquid Core｜液態智慧核心**（`hero-gl.tsx`，取代 neural 粒子）：極慢呼吸、游標為引力拉扯、點擊一次波動、滑過 CTA 內部變亮、往下捲核心解構；無 WebGL／省流量退回 combo。
+- 2026-10-01 CST 深夜：Hero 再改為 **Cinematic AI Artifact**（黑色陶瓷＋鉻面三環陀螺儀＋陶瓷核心，橘色僅作邊緣光；游標傾斜、點擊加速旋轉、CTA 發光、捲動分離）。先前的藍色液態版因藍壓藍、與字體／CI 不協調而取代；波紋環面版因低解析度糊成蟲狀光斑而去掉波紋。
+- 橘場 About 區塊：藍色線條／圓點改為半透明白，代表成就改為反白焦點晶片；區段導覽點改深色玻璃（不再繼承藍色）。使用者回覆「更不好看」— 待確認指的是 Hero 還是此區塊，必要時還原此區塊 CSS（globals.css 末段 "Orange field refinement"）。
+
+### 2026-10-01 CST 凌晨 — Hero 重做為物理式液態玻璃（Claude）
+- 使用者回饋：陀螺儀環「更不好看」、液態感覺假 → 改以數學模擬真實光學：折射進入、內部步進量厚度、Beer-Lambert 吸收、每通道 IOR 色散、Schlick 菲涅爾、HDR 矩形柔光箱環境、ACES 色調映射、距離場 AO、輪廓反鋸齒、玻璃內發光橘色核心；背景壓深藍提高對比。`components/home/hero/hero-gl.tsx`。
+- 互動：游標引力拉扯、點擊波動、滑過 CTA 核心變亮、捲動解構；自適應解析度；手機移到下方並調暗避免壓標題。
+- 橘場：About 區塊藍邊線改半透明白、單一反白重點卡；右側分頁點改中性深色玻璃；橘場 `--fg-2/--muted/--meta` 提亮（內文對比提升，仍為已知 3.3:1 上限）。
+- 工具：無頭 Chrome + CDP 截圖腳本（scratchpad `shot.mjs`）可在預覽窗不顯示時目視驗證。
+
+### 2026-10-01 CST — Sticky 系統統一（Claude）
+- 根因：① `html, body {height:100%}` 讓 body 只有一個視窗高，sticky header 的包含區塊到此為止 → 捲過一屏 header 就跑掉，而 `<main>` 直屬的 Lab 篩選列仍黏住；② 非首頁 header 背景實為透明（`bg-background/72` 未生效，僅剩 blur）→ 文字穿透。
+- 修法：`body {min-height:100%}`；header 改 `.site-header--solid`（不透明深藍玻璃）；新增 `.sticky-subnav`（top: `var(--header-h)`，SiteHeader 以 ResizeObserver 量測高度）；Lab 篩選列改用 `.sticky-subnav`。之後任何頁面子選單：放在 `<main>` 直屬並加 `sticky-subnav`。
+- 驗證（1280×800）：捲至 0／600／2500／底部，header top=0、子選單 top=73、間距 0。
+- 橘場 About 區塊：藍色線條改白色半透明、重點 chip 反白、側邊圓點改深色玻璃。
+- ⚠️ `hero-gl.tsx` 被另一會話覆寫為「物理式液態玻璃核心」（折射＋Beer-Lambert）；本會話的「黑陶瓷／鉻面三環陀螺儀」版本未保留在磁碟上。
+- 2026-10-01 CST：Header 配色回到「跟隨色場」：`SiteHeader` 於頁首中線取樣 `elementsFromPoint` 命中的 `.bg-blue/.bg-orange/.bg-dark`，把其背景色寫入 `--header-bg`（header 與 `.sticky-subnav` 共用；不透明，無穿透；節流 + trailing，不依賴 rAF）。深藍玻璃版已撤除。

@@ -6,7 +6,7 @@
 .lab-hero .page-section-inner { padding-bottom: clamp(32px, 5vw, 52px); }
 
 .lab-section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-soft); }
-.lab-section-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2.1rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; }
+.lab-section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 2.6vw, 2.1rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; }
 .lab-section-meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--meta); }
 
 .lab-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
@@ -14,7 +14,7 @@
 .lab-card { display: flex; flex-direction: column; padding: 26px; text-decoration: none; color: var(--fg); min-height: 44px; height: 100%; }
 .lab-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .lab-card-arrow { color: var(--accent); font-size: 19px; }
-.lab-card-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.65rem); letter-spacing: -0.03em; color: var(--fg); margin: 18px 0 0; }
+.lab-card-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 2.2vw, 1.65rem); letter-spacing: -0.03em; color: var(--fg); margin: 18px 0 0; }
 .lab-card-summary { font-weight: 300; font-size: 14.5px; line-height: 1.7; color: var(--fg-2); margin: 11px 0 0; }
 .lab-card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .lab-card-cta { margin-top: auto; padding-top: 20px; font-size: 14px; font-weight: 500; color: var(--fg); }
@@ -38,7 +38,7 @@
 .lab-empty { padding: 24px; color: var(--fg-2); }
 
 /* CTA */
-.lab-cta-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 24ch; }
+.lab-cta-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 24ch; }
 .lab-cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .lab-cta-actions a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
 
@@ -62,7 +62,7 @@
 
 .lab-two-col { max-width: 60rem; margin-inline: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
 .lab-block { padding: 28px; }
-.lab-block-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.7rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; }
+.lab-block-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 2.2vw, 1.7rem); letter-spacing: -0.03em; color: var(--fg); margin: 0; }
 .lab-block-text { font-weight: 300; font-size: 15px; line-height: 1.75; color: var(--fg-2); margin: 16px 0 0; }
 
 .lab-body { max-width: 47.5rem; margin-inline: auto; }
@@ -76,7 +76,8 @@
 .lab-links-list a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
 
 /* Lab filter chips */
-.lab-filter-bar { padding-block: 16px; position: sticky; top: 4.5rem; z-index: 5; }
+/* sticky layer comes from .sticky-subnav (globals.css); keep it a direct child of <main> */
+.lab-filter-bar { padding-block: 12px; }
 .lab-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .lab-filters::-webkit-scrollbar { display: none; }
 .lab-filter {

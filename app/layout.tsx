@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <JsonLd />
       </head>
-      <body className="h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>
           <LanguageProvider>
             <SkipToMain />

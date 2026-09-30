@@ -18,7 +18,7 @@ export function LogoHomeLink({ compact = false, onNavigateHome }: LogoHomeLinkPr
     >
       <Logo
         size={compact ? 28 : 32}
-        variant="brand"
+        variant="default"
         className={compact ? 'h-7 w-7' : 'h-8 w-8'}
       />
       <span className={`${compact ? 'text-xl' : 'text-lg'} font-semibold tracking-[-0.02em]`}>

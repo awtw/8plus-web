@@ -36,8 +36,8 @@
   --danger: #ff5f56;
   --logo-mark: #ffffff;
   --logo-mark-inverse: var(--color-blue);
-  --font-display: "Georgia", var(--font-outfit, "Outfit"), -apple-system, system-ui, serif;
-  --font-body: var(--font-outfit, "Outfit"), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: var(--font-outfit, "Outfit"), "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body: var(--font-outfit, "Outfit"), "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: var(--font-jbmono, "JetBrains Mono"), "SFMono-Regular", monospace;
   --text-xs: 12px;
   --text-sm: 14px;
@@ -139,9 +139,14 @@
   background: var(--bg);
 }
 
-html,
-body {
+html {
   height: 100%;
+}
+
+/* body grows with content: `height: 100%` capped the containing block of the sticky header at one
+   viewport, so the header scrolled away while other sticky bars (sub-menus) stayed. */
+body {
+  min-height: 100%;
 }
 
 html {
@@ -964,7 +969,7 @@ a {
     max-width: 22ch;
     font-family: var(--font-display);
     font-size: clamp(1.5rem, 3.4vw, 2.5rem);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.24;
     letter-spacing: -0.02em;
     color: var(--fg);
@@ -1635,3 +1640,72 @@ a {
 /* Magnetic primary buttons (pointer devices only; see components/magnetic-fx.tsx) */
 .brand-button-primary, .hv-cta.primary { translate: var(--mx, 0px) var(--my, 0px); }
 .brand-button-primary, .hv-cta.primary { transition-property: translate, background-color, border-color, color, box-shadow, transform; transition-duration: var(--motion-base); transition-timing-function: var(--ease-out); }
+
+/* ── Orange field refinement ─────────────────────────────────────────────
+   Blue accents on the orange field vibrate (complementary hues). On orange, structure is drawn in
+   ONE consistent translucent-white treatment — same border alpha, same fill — so nothing reads as a
+   stray or half-faded outline; the single focal item (first highlight) is an inverted white chip.
+   Per-stage opacity ramps (inline styles) are neutralised on purpose. */
+.bg-orange .home-about-kicker { color: rgba(10, 14, 26, 0.78); }
+.bg-orange .home-about-spectrum-item,
+.bg-orange .home-about-highlight,
+.bg-orange .home-about-chip {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+}
+.bg-orange .home-about-spectrum-bar { display: none; }
+.bg-orange .home-about-spectrum-dot { opacity: 1 !important; background: #fff; box-shadow: none; }
+.bg-orange .home-about-spectrum-index,
+.bg-orange .home-about-spectrum-arrow { color: rgba(255, 255, 255, 0.9); }
+.bg-orange .home-about-spectrum-caption { color: rgba(255, 255, 255, 0.92); }
+.bg-orange .home-about-highlight-label { color: rgba(255, 255, 255, 0.92); }
+.bg-orange .home-about-highlight-lead { background: #fff; border-color: #fff; }
+.bg-orange .home-about-highlight-lead .home-about-highlight-label { color: rgba(10, 14, 26, 0.62); }
+.bg-orange .home-about-highlight-lead .home-about-highlight-value { color: #0A0E1A; font-weight: 600; }
+.bg-orange .home-about-chip { color: #fff; }
+
+/* Section dots: neutral dark glass so they sit well on blue, orange and dark fields alike
+   (they used to inherit the root blue and showed as blue discs on orange). */
+.home-section-nav-dot {
+  background: rgba(10, 14, 26, 0.55);
+  border-color: rgba(255, 255, 255, 0.32);
+  color: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.home-section-nav-dot:hover,
+.home-section-nav-dot-active {
+  background: #fff;
+  border-color: #fff;
+  color: #0A0E1A;
+}
+
+/* Orange field text: lift the secondary tones toward full white (they were 88% / 76%, which fell to 2.4–2.8:1). */
+.bg-orange {
+  --fg-2: #ffffff;
+  --muted: rgba(255, 255, 255, 0.94);
+  --meta: rgba(255, 255, 255, 0.92);
+}
+.bg-orange .home-about-summary { font-weight: 400; }
+
+/* ── Sticky stack (one system for every pinned menu) ───────────────────────
+   layer 1: site header (z 50)  ·  layer 2: page sub-menus (z 40) pinned directly below it.
+   Both are OPAQUE glass so content never shows through; --header-h is measured by SiteHeader. */
+:root {
+  --header-h: 73px;
+  --header-bg: #002FA7; /* default = CI blue; SiteHeader swaps it to the field behind the header */
+  --header-line: rgba(255, 255, 255, 0.14);
+}
+.site-header--solid {
+  background: var(--header-bg);
+  border-bottom-color: var(--header-line);
+  transition: background-color var(--motion-base) var(--ease-standard);
+}
+.sticky-subnav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 40;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-line);
+  transition: background-color var(--motion-base) var(--ease-standard);
+}

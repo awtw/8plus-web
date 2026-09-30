@@ -1,0 +1,34 @@
+.about-index { display: grid; grid-template-columns: 120px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start; }
+.about-num { font-family: var(--font-display); font-size: 44px; font-weight: 600; color: var(--fg); line-height: 1; }
+.about-num-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-top: 8px; }
+.about-h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--fg); margin: 0; max-width: 22ch; }
+.about-p { font-weight: 300; font-size: 16px; line-height: 1.7; color: var(--fg-2); margin: 16px 0 0; max-width: 64ch; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; margin-top: 28px; }
+.about-card { padding: 22px; }
+.about-card-h { display: flex; align-items: center; gap: 9px; }
+.about-dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--accent); flex: none; }
+.about-card h3 { font-size: 16px; font-weight: 500; margin: 0; color: var(--fg); }
+.about-card p { font-weight: 300; font-size: 14px; line-height: 1.7; color: var(--fg-2); margin: 12px 0 0; }
+.about-plain { border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--bg), white 1%); }
+.about-rows { display: grid; }
+.about-row { display: grid; grid-template-columns: minmax(0, 220px) 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--border-soft); }
+.about-row:last-child { border-bottom: 1px solid var(--border-soft); }
+.about-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; margin: 0; color: var(--fg); }
+.about-row p { font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--fg-2); margin: 0; }
+.about-edu { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
+.about-edu > div { flex: 1 1 240px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: color-mix(in oklab, var(--surface), var(--bg) 8%); padding: 20px; }
+.about-edu .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta); }
+.about-edu .s { font-size: 15px; font-weight: 500; margin-top: 8px; color: var(--fg); }
+.about-edu .d { font-size: 13px; color: var(--fg-2); margin-top: 4px; }
+.about-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.about-chip { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); border: 1px solid var(--border-soft); background: color-mix(in oklab, var(--surface), var(--bg) 18%); border-radius: 9999px; padding: 6px 14px; }
+.about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.about-actions a { min-height: 44px; display: inline-flex; align-items: center; }
+.about-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); }
+.about-rise { animation: about-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--d, 0s); }
+@keyframes about-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .about-rise { animation: none; } }
+@media (max-width: 720px) {
+  .about-index { grid-template-columns: 1fr; }
+  .about-row { grid-template-columns: 1fr; gap: 8px; }
+}

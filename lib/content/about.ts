@@ -20,6 +20,8 @@ export type AboutContent = {
   nextTitle: string;
   nextLead: string;
   bookCta: string;
+  servicesCta: string;
+  labels: { collaboration: string; principles: string; experience: string; next: string; principlesTitle: string; education: string };
 };
 
 export const aboutContent: Record<Locale, AboutContent> = {
@@ -55,7 +57,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
         desc: "如果你的需求還在模糊階段，我也能先幫你把問題定義、路線圖和優先順序釐清。",
       },
     ],
-    interestsTitle: "合作場景",
+    interestsTitle: "怎麼把事情做長",
     interests: [
       {
         icon: "book",
@@ -106,10 +108,12 @@ export const aboutContent: Record<Locale, AboutContent> = {
         year: "2012",
       },
     ],
-    nextTitle: "下一步",
+    nextTitle: "先把問題講清楚，再決定要不要做",
     nextLead:
       "如果你希望先把問題講清楚，再決定要不要做，我會比較適合。先約一個時段，我們把需求、限制與風險攤開來看。",
     bookCta: "預約諮詢",
+    servicesCta: "看服務內容",
+    labels: { collaboration: "合作場景", principles: "工作心法", experience: "代表經驗", next: "下一步", principlesTitle: "怎麼把事情做長", education: "學歷" },
   },
   en: {
     eyebrow: "About",
@@ -143,7 +147,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
         desc: "If the requirement is still fuzzy, I can help clarify problem definition, roadmap, and priorities first.",
       },
     ],
-    interestsTitle: "Ways to work together",
+    interestsTitle: "How to keep work durable",
     interests: [
       {
         icon: "book",
@@ -194,10 +198,12 @@ export const aboutContent: Record<Locale, AboutContent> = {
         year: "2012",
       },
     ],
-    nextTitle: "Next step",
+    nextTitle: "Clarify the problem before deciding what to build",
     nextLead:
       "If you want to clarify the problem before deciding what to build, I am a good fit. Book a slot and we will unpack requirements, constraints, and risk together.",
     bookCta: "Book a slot",
+    servicesCta: "View services",
+    labels: { collaboration: "Collaboration", principles: "Principles", experience: "Experience", next: "Next step", principlesTitle: "How to keep work durable", education: "Education" },
   },
 };
 

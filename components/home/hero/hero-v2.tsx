@@ -111,6 +111,15 @@ const HERO_CSS = `
   .hv-cta.secondary { background: rgba(255,255,255,.08); color: var(--fg); border-color: var(--border); }
   .hv-cta.secondary:hover { background: rgba(255,255,255,.15); border-color: var(--hover-border); }
   @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } }
+  /* phones: cards become quiet atmosphere behind the copy; headline sized so each authored line fits on one row (no orphan glyph) */
+  @media (max-width: 768px) {
+    .hv-cards { opacity: .32; }
+    #home-hero-headline { font-size: min(7.6vw, 2rem) !important; }
+  }
+  @media (max-height: 820px) {
+    .hero-inner .pillars { margin-top: 28px !important; padding-top: 18px !important; }
+    .hero-inner .scrollcue { margin-top: 20px !important; padding-bottom: 8px; }
+  }
   @media (max-width: 820px) {
     .hero-inner { padding: 36px 24px 24px !important; }
     .hero-inner .scrollcue { margin-top: 20px !important; }
@@ -145,6 +154,10 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
 
   React.useEffect(() => {
     // pick a fresh random main-visual on every page load / home entry
+    // phones / Data Saver keep the light CSS-only 'combo' scene (stable LCP, less GPU);
+    // desktop gets the random canvas scenes.
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+    if (window.innerWidth < 768 || conn?.saveData) return
     const keys = Object.keys(HERO_LABELS)
     const pick = keys[Math.floor(Math.random() * keys.length)]
     setVariant(pick)
@@ -231,7 +244,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   // section height = viewport minus site header
   React.useEffect(() => {
     const sec = secRef.current; if (!sec) return
-    const set = () => { const h = document.querySelector('header'); const hh = h ? h.getBoundingClientRect().height : 0; sec.style.height = (window.innerHeight - hh) + 'px' }
+    const set = () => { const h = document.querySelector('header'); const hh = h ? h.getBoundingClientRect().height : 0; sec.style.minHeight = (window.innerHeight - hh) + 'px' }
     set(); window.addEventListener('resize', set)
     return () => window.removeEventListener('resize', set)
   }, [])
@@ -263,7 +276,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       className={'home-section bg-blue noise-field' + (corner ? ' hero-corner' : '')}
       aria-labelledby="home-hero-headline"
       onClick={onHeroClick}
-      style={{ position: 'relative', height: 'calc(100vh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}
+      style={{ position: 'relative', minHeight: 'calc(100svh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}
     >
       {/* rendered in SSR HTML so the hero is styled on first paint (no CLS) */}
       <style id="hero-v2-css" dangerouslySetInnerHTML={{ __html: HERO_CSS }} />

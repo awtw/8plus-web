@@ -1,14 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import Cal, { getCalApi } from '@calcom/embed-react'
+import dynamic from 'next/dynamic'
 import { ArrowRight } from '@phosphor-icons/react'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
 
-const CAL_NAMESPACE = '30min'
-const CAL_LINK = 'august-wang-113/30min'
+// Cal.com is heavy (JS + fonts + third-party cookies): load it only when the
+// section is about to enter the viewport.
+const HomeCalInline = dynamic(() => import('@/components/booking/home-cal-inline'), { ssr: false })
 
 type SectionBookingProps = {
   locale: HomeLocale
@@ -18,19 +19,28 @@ export function SectionBooking({ locale }: SectionBookingProps) {
   const content = getHomeSectionContent(locale)
   const [isCalLoaded, setIsCalLoaded] = useState(false)
 
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
+  const onReady = useCallback(() => setIsCalLoaded(true), [])
+
   useEffect(() => {
-    ;(async function () {
-      try {
-        const cal = await getCalApi({ namespace: CAL_NAMESPACE })
-        cal('ui', {
-          hideEventTypeDetails: false,
-          layout: 'month_view',
-        })
-        setIsCalLoaded(true)
-      } catch (error) {
-        console.error('Failed to load booking calendar:', error)
-      }
-    })()
+    const el = wrapRef.current
+    if (!el) return
+    if (!('IntersectionObserver' in window)) {
+      setShouldLoad(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '400px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
   }, [])
 
   return (
@@ -48,7 +58,7 @@ export function SectionBooking({ locale }: SectionBookingProps) {
           <p className="scroll-lead">{content.booking.lead}</p>
         </header>
 
-        <div className="home-booking-cal-wrap">
+        <div className="home-booking-cal-wrap" ref={wrapRef}>
           {!isCalLoaded && (
             <div className="home-booking-loading" role="status">
               <div className="text-center">
@@ -59,18 +69,7 @@ export function SectionBooking({ locale }: SectionBookingProps) {
           )}
 
           <div className="home-booking-cal">
-            <Cal
-              namespace={CAL_NAMESPACE}
-              calLink={CAL_LINK}
-              style={{
-                width: '100%',
-                height: 'clamp(520px, 70vh, 720px)',
-                overflow: 'scroll',
-              }}
-              config={{
-                layout: 'month_view',
-              }}
-            />
+            {shouldLoad && <HomeCalInline onReady={onReady} />}
           </div>
         </div>
 

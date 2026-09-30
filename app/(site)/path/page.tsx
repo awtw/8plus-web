@@ -4,45 +4,35 @@ import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react'
 import { useLanguage } from '@/components/language-provider'
 import { getPathMilestones } from '@/lib/content/path-milestones'
-import { PageSection, type PageField } from '@/components/page/page-section'
+import { PageSection } from '@/components/page/page-section'
 import { PageHeader } from '@/components/page/page-header'
-import { PathEra } from '@/components/path/path-era'
+import { PathTimeline } from '@/components/path/path-timeline'
 import '@/styles/pages/path.css'
-
-const ERA_COUNT = 3
 
 export default function PathPage() {
   const { locale, t } = useLanguage()
   const data = getPathMilestones(locale)
   const zh = locale === 'zh-TW'
-  const size = Math.ceil(data.length / ERA_COUNT)
-  const eras = Array.from({ length: ERA_COUNT }, (_, i) => data.slice(i * size, (i + 1) * size)).filter(
-    (e) => e.length > 0,
-  )
-  const labels = zh ? ['近期', '中期', '早期'] : ['Recent', 'Middle', 'Early']
-  const fields: PageField[] = ['orange', 'blue', 'orange']
+  const works = data.filter((e) => e.kind === 'work')
+  const edus = data.filter((e) => e.kind === 'edu')
+  const years = data.flatMap((e) => e.year.match(/\d{4}/g) ?? []).map(Number)
+  const span = `${Math.min(...years)} — ${Math.max(...years)}`
 
   return (
     <>
       <PageSection field="blue" className="path-hero">
-        <PageHeader eyebrow={t('path.period')} title={t('path.title')} lead={t('path.lead')} />
+        <PageHeader eyebrow={span} title={t('path.title')} lead={t('path.lead')}>
+          <ul className="path-stats">
+            <li className="metric-chip">{zh ? `${works.length} 段工作經歷` : `${works.length} roles`}</li>
+            <li className="metric-chip">{zh ? `${edus.length} 個學位` : `${edus.length} degrees`}</li>
+          </ul>
+        </PageHeader>
       </PageSection>
 
-      {eras.map((entries, i) => {
-        const first = entries[0].year
-        const last = entries[entries.length - 1].year
-        return (
-          <PathEra
-            key={i}
-            index={i}
-            field={fields[i]}
-            label={labels[i]}
-            range={first === last ? first : `${last} — ${first}`}
-            entries={entries}
-            currentLabel={t('path.current')}
-          />
-        )
-      })}
+      <PathTimeline
+        entries={data}
+        labels={{ work: zh ? '工作經歷' : 'Experience', edu: zh ? '學歷' : 'Education', current: t('path.current') }}
+      />
 
       <PageSection field="blue" className="path-cta">
         <h2 className="page-title page-title-sub">{t('path.ctaTitle')}</h2>

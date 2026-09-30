@@ -483,3 +483,14 @@ Resume file: None
 - 新增 B「推理核心 · 架構層」`hero-core.tsx`（Canvas 2D，無粒子雲）：三層半透明架構（System Boundary → Stack Selection → Production）+ 沿網格流動的資料脈衝（到達 Production 轉橘）+ 底層運算核心（3.2s 固定節奏 + 掃描環）；游標使附近節點亮起、網格向游標偏折；滑過 CTA 時核心向按鈕射出光束；點擊＝掃描環＋脈衝群；往下捲三層分離下沉。
 - 比較：`/?compare=1` 顯示 A／B／C 切換列（A 超立方核心 `gl`＝另一工作階段；B 推理核心 `core`；C 液態玻璃 `liquid`＝另一工作階段在我原版上加了工程網格）。直連：`?hero=gl|core|liquid`。預設仍為 `gl`。
 - 待使用者決定：選定後刪除未採用版本與比較列。
+
+### 2026-10-01 CST — 使用者選定 Hero B，並優化（Claude）
+- 決定：Hero 採 **B「推理核心 · 架構層」**（`hero-core.tsx`），已設為預設（不需 `?hero=`）；A（`gl`）、C（`liquid`）程式仍在，僅 `?hero=` / `?compare=1` 可見，待使用者確認後刪除。
+- B 優化：長方體→**圓盤漏斗**（三層半徑遞減、極座標環+輻條圖）；節點改為 17 個真實 AI 開發流程術語（REQUIREMENTS／DATA CONTRACT／GUARDRAILS／ACCESS CONTROL／EVAL CRITERIA；LLM／EMBEDDINGS／VECTOR DB／RAG／PROMPT／TOOLS；EVALS／OBSERVABILITY／CACHING／COST／CI-CD／FALLBACK）；**滑鼠移到術語顯示說明卡**（此步對 AI 的作用）並點亮相連邊；觸控裝置可點選，閒置時自動導覽；標籤避讓；手機說明列固定在漏斗下方。
+- Header：Hero 以 `data-header-color` 宣告自身色（sampled `#010d36`），`tint()` 在 scrollY=0 時取 Header 下方第一個區塊；首頁頂端 Header 改為實色，隨捲動跟隨各區塊（藍／橘／深）；語言切換與手機選單鈕改透明玻璃。
+- 2026-10-01 CST：Hero B 動態微調（彈簧物理、曲線脈衝、漂浮、漣漪、聚光、編排入場）；決策紀錄 `.planning/redesign/HERO-MOTION-DECISIONS-2026-10-01.md`。
+
+### 2026-10-01 CST — /path 歷程頁重排（Claude）
+- 移除非學經歷的專案項目（8plus 平台、Vue 3／Angular／互動式作品集，中英各 4 筆）；資料加 `kind: work|edu`，現為 6 段工作 + 2 個學位。
+- 桌機（≥1024px）新排版 `components/path/path-timeline.tsx`：左側 sticky 索引（隨捲動切換的大年份＋組織＋期間、可點擊迷你時間軸、進度線），右側同時只有當前卡片聚焦、其餘退後；工作／學歷分隔。手機／平板維持單欄直向時間軸。尊重 reduced-motion。
+- 移除舊 `path-era.tsx`。Hero 加統計徽章（段數、學位數，皆由資料計算）。

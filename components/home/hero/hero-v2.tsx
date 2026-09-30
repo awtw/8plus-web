@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
 import { HERO_BACKDROPS, HeroBackdropStyles } from './hero-backdrops'
-import { canUseWebGL } from './hero-gl'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 const HERO_CSS = `
@@ -185,9 +184,9 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const c = getHomeSectionContent(locale)
   const en = locale === 'en'
   const router = useRouter()
-  // start on the final desktop/phone layout ('gl' = left-aligned copy) so hydration never moves the headline;
+  // start on the final desktop/phone layout ('core' = left-aligned copy) so hydration never moves the headline;
   // only Data Saver / no-WebGL fall back to the CSS-only 'combo' scene after mount
-  const [variant, setVariant] = React.useState('gl')
+  const [variant, setVariant] = React.useState('core')
   const [swOpen, setSwOpen] = React.useState(false)
   const [logoTick, setLogoTick] = React.useState(0)
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
@@ -202,7 +201,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     let pick: string | null = null
     if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
     else if (q && keys.includes(q)) pick = q
-    else if (!conn?.saveData && canUseWebGL()) pick = 'gl'
+    else if (!conn?.saveData) pick = 'core' // final pick: Architected Intelligence (Canvas 2D, no WebGL needed)
     else pick = 'combo'
     setVariant(pick)
     if (pick === 'logo') setLogoTick((n) => n + 1)

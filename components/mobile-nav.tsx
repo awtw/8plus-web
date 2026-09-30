@@ -25,7 +25,7 @@ export function MobileNav() {
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="mr-1 rounded-full border border-border/70 bg-background/80 px-3 text-base hover:border-[color:var(--hover-border)] hover:bg-[color:var(--hover-bg)] focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] md:hidden"
+          className="mr-1 rounded-full border border-border/70 bg-white/[0.06] px-3 text-base hover:border-[color:var(--hover-border)] hover:bg-[color:var(--hover-bg)] focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] md:hidden"
         >
           <Menu className="h-6 w-6" />
           <span className="sr-only">Toggle Menu</span>

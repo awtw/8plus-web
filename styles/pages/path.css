@@ -108,3 +108,121 @@
   .path-item { grid-template-columns: 2rem minmax(0, 1fr); gap: 1.5rem; }
   .path-card { padding: 1.6rem 1.9rem; }
 }
+
+/* ═══ Timeline v3 ═══════════════════════════════════════════════════════════
+   Phones / tablets keep the single vertical rail. Desktop gets a sticky index
+   (big year, organisation, clickable mini-timeline + progress) and one focused card at a time. */
+.path-stats { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.path-kind {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--meta);
+}
+.path-kind svg { width: 0.9rem; height: 0.9rem; }
+.path-divider {
+  grid-column: 1 / -1;
+  margin: 1.5rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent);
+}
+.path-index { display: none; }
+
+@media (min-width: 1024px) {
+  .path-timeline-section { padding-block: 6rem; }
+  .path-stage {
+    --p: 0;
+    display: grid;
+    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  /* sticky index */
+  .path-index {
+    position: sticky;
+    top: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    height: calc(100vh - 8.5rem);
+    min-height: 34rem;
+    padding-block: 0.25rem 0.5rem;
+  }
+  .path-index-kind { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+  .path-index-year {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(5.5rem, 9.5vw, 9rem);
+    font-weight: 600;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+    animation: path-year-in 0.55s var(--ease-out) both;
+  }
+  .path-index-org { margin-top: 1.1rem; font-family: var(--font-display); font-size: 1.35rem; font-weight: 500; letter-spacing: -0.01em; color: var(--fg); animation: path-year-in 0.55s 0.05s var(--ease-out) both; }
+  .path-index-period { margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; color: var(--meta); animation: path-year-in 0.55s 0.1s var(--ease-out) both; }
+  @keyframes path-year-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* mini-timeline with a progress line */
+  .path-index-list { position: relative; margin: 0; padding: 0; list-style: none; display: grid; gap: 0.15rem; }
+  .path-index-list::before, .path-index-list::after {
+    content: ''; position: absolute; left: 0.3rem; top: 0.9rem; bottom: 0.9rem; width: 1px; background: var(--border-soft);
+  }
+  .path-index-list::after { background: var(--accent); transform-origin: top; transform: scaleY(var(--p)); transition: transform 0.12s linear; }
+  .path-index-item {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 0.65rem 3rem minmax(0, 1fr); align-items: center; gap: 0.85rem;
+    width: 100%; min-height: 2.2rem; padding: 0.15rem 0;
+    background: none; border: 0; cursor: pointer; text-align: left;
+    color: var(--muted);
+    transition: color var(--motion-base) var(--ease-standard);
+  }
+  .path-index-item:hover { color: var(--fg); }
+  .path-index-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .path-index-dot { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: var(--color-dark, #0A0E1A); border: 1px solid var(--border); transition: background-color var(--motion-base), border-color var(--motion-base), transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base); }
+  .path-index-item.is-past .path-index-dot { border-color: var(--accent); background: color-mix(in oklab, var(--accent), transparent 55%); }
+  .path-index-item.is-active { color: var(--fg); }
+  .path-index-item.is-active .path-index-dot { background: var(--accent); border-color: var(--accent); transform: scale(1.35); box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent), transparent 78%); }
+  .path-index-item-year { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+  .path-index-item-name { font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* cards: one in focus at a time */
+  .path-list { gap: 1.5rem; }
+  .path-item { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .path-rail { display: none; }
+  .path-card {
+    margin: 0;
+    padding: 2.4rem 2.8rem 2.6rem;
+    border-radius: 28px;
+    animation: none;                     /* the scroll-timeline reveal would pin opacity at 1 */
+    opacity: 0.36;
+    transform: translateX(18px) scale(0.985);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), border-color 0.4s, background-color 0.4s;
+  }
+  .path-item.is-active .path-card {
+    opacity: 1;
+    transform: none;
+    border-color: color-mix(in oklab, var(--accent), transparent 55%);
+    background: color-mix(in oklab, var(--surface), white 4%);
+  }
+  .path-item .path-card:hover { opacity: 0.85; }
+  .path-item.is-active .path-card:hover { opacity: 1; }
+  .path-year { font-size: 1.05rem; }
+  .path-title { margin-top: 0.85rem; font-size: clamp(1.6rem, 2.2vw, 2.1rem); font-weight: 500; letter-spacing: -0.02em; }
+  .path-subtitle { margin-top: 0.35rem; font-size: 1rem; }
+  .path-points { margin-top: 1.4rem; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem 2.2rem; }
+  .path-points li { font-size: 0.96rem; line-height: 1.7; color: var(--fg-2); }
+  .path-tags { margin-top: 1.6rem; }
+  .path-tag { padding: 0.28rem 0.8rem; font-size: 0.74rem; }
+  .path-divider { margin: 2.5rem 0 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .path-index-year, .path-index-org, .path-index-period { animation: none; }
+  .path-card { transition: none; transform: none !important; }
+  .path-index-list::after { transition: none; }
+}

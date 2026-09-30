@@ -1396,7 +1396,7 @@ a {
 }
 .home-lab-card-v2-thumb {
   display: block;
-  height: 150px;
+  aspect-ratio: 16 / 10; /* bundled lab screenshots are ~960x600; a fixed short height cropped them to a strip */
   border-radius: 12px;
   margin-bottom: 0.9rem;
   border: 1px solid var(--border-soft);

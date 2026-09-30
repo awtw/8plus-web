@@ -338,7 +338,7 @@ export default function HeroCore({ active }: { active: boolean }) {
         if (primary) {
           const r = primary.getBoundingClientRect()
           topY = r.top - cb.top - 4
-          left = r.right - cb.left + 2
+          left = r.right - cb.left + 8
         }
         if (second) phoneCardTop = second.getBoundingClientRect().bottom - cb.top + 14
         phoneLeft = left
@@ -346,7 +346,7 @@ export default function HeroCore({ active }: { active: boolean }) {
         const bottomY = H - 76 // just above the tab bar
         const availH = Math.max(bottomY - topY, 200)
         const availW = Math.max(right - left, 140)
-        U = Math.min(Math.max((availH - 46) / 2.2, 52), availW / 2.0) // slight bleed at the edges is intended
+        U = Math.min(Math.max((availH - 46) / 2.2, 52), availW / 2.1) // near-full width, tiny bleed at the right edge is intended
         CX = left + availW / 2
         CY = topY + (2.2 * U + 46) / 2 + 4 // top of the diagram lines up with the first button
       }

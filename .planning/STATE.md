@@ -382,3 +382,9 @@ Resume file: None
 - 實作範圍：`components/logo.tsx`、`components/mobile-nav.tsx`、`components/site-footer.tsx`、`public/og/8plus.svg`。
 - 驗證：`pnpm typecheck` 通過；`pnpm build` 通過；以 Google Chrome headless fallback 截圖驗證桌機、手機與手機選單狀態。
 - 截圖證據：`.planning/logo-redesign-desktop-2026-06-15.png`、`.planning/logo-redesign-mobile-2026-06-15.png`、`.planning/logo-redesign-mobile-menu-2026-06-15.png`。
+
+### 2026-09-30 — Lab 新增 ckd2026 與 transcript-plus
+
+- 新增 `content/projects/{ckd2026,transcript-plus}{,-en}.mdx`（緣由、目的、做法、套件與模型），並於 `lib/content/lab.ts` 登錄分組與角色標籤（ckd2026→前端、transcript-plus→全端）。
+- ckd-2026 原始碼為私有 repo，僅放線上網站連結；transcript-plus 附 GitHub 連結。圖片沿用 `public/og/labs/` 既有截圖。
+- `pnpm build` 通過。

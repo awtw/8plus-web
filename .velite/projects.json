@@ -121,6 +121,54 @@
     "url": "/lab/b18"
   },
   {
+    "title": "Kidney Learning — Pediatric CKD Clinic",
+    "slug": "ckd2026",
+    "baseSlug": "ckd2026",
+    "role": "Frontend / Product design",
+    "stack": [
+      "Vue 3",
+      "TypeScript",
+      "Vite",
+      "Vitest",
+      "Vercel"
+    ],
+    "period": "2026",
+    "links": {
+      "website": "https://frontend-two-chi-30.vercel.app/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "A front-end-only learning site for pediatric chronic kidney disease (CKD) education, showing progress through pre/post tests and radar charts against historical score distributions.",
+    "published": true,
+    "locale": "en",
+    "html": "<h1>Kidney Learning — Pediatric CKD Clinic</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"Kidney Learning pediatric CKD clinic\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2>Why</h2>\n<p>Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether patients and families actually learned. The teaching clinic wanted a lightweight tool, usable in the clinic or at home, that makes learning outcomes visible and comparable.</p>\n<h2>Goals and intended effect</h2>\n<ul>\n<li>Pre/post tests across five CKD knowledge areas so users can see their own progress.</li>\n<li>A radar chart for per-area scores, plus a distribution chart placing the user against historical pre/post results.</li>\n<li>No sign-up: open the URL and practice, keeping the barrier low.</li>\n<li>A supporting teaching aid and outcome record, not a formal exam with anti-cheating requirements.</li>\n</ul>\n<h2>How it was built</h2>\n<ol>\n<li>Collected clinical guidelines and education-program references, then drafted the topics, five practice questions and candidate answers.</li>\n<li>Converted historical pre-test (166) and post-test (162) spreadsheets into <strong>anonymous statistics</strong> with a Python script: score distributions, mean and median only, with no names or per-answer data.</li>\n<li>Isolated scoring (2 points per question, completion rate, score rate, tied-score median percentile) in its own module, covered by Vitest.</li>\n<li>Answers and drafts live in browser localStorage with JSON backup download; the repository interface leaves room for a cloud adapter later.</li>\n<li>Hash routing and fully static deployment on Vercel: no env vars, no backend.</li>\n</ol>\n<h2>Packages and models</h2>\n<ul>\n<li>Framework: Vue 3 + TypeScript + Vite 7</li>\n<li>Charts: hand-built SVG radar and distribution components</li>\n<li>Icons: Lucide</li>\n<li>Testing: Vitest, vue-tsc type checking</li>\n<li>Data prep: Python + openpyxl (dev-time only)</li>\n<li>Hosting: Vercel static</li>\n<li>Models: <strong>no AI model at runtime</strong>; all scoring is deterministic code</li>\n</ul>\n<h2>Limitations</h2>\n<ul>\n<li>Records stay in that browser and origin; switching devices or clearing data loses them.</li>\n<li>Client-side answers and scoring are inspectable, so it is unsuitable for formal exams.</li>\n<li>Questions are a test version and need teacher approval before real use.</li>\n</ul>\n<h2>Links</h2>\n<ul>\n<li>Live site: <a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>Source: private repository (not public)</li>\n</ul>",
+    "url": "/lab/ckd2026"
+  },
+  {
+    "title": "腎入學習｜兒童 CKD 教學門診",
+    "slug": "ckd2026",
+    "baseSlug": "ckd2026",
+    "role": "前端 / 產品設計",
+    "stack": [
+      "Vue 3",
+      "TypeScript",
+      "Vite",
+      "Vitest",
+      "Vercel"
+    ],
+    "period": "2026",
+    "links": {
+      "website": "https://frontend-two-chi-30.vercel.app/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "協助兒童慢性腎臟病（CKD）衛教的純前端學習網站，以前後測與雷達圖呈現學習進步，並對照歷史成績分布。",
+    "published": true,
+    "locale": "zh-TW",
+    "html": "<h1>腎入學習 — 兒童 CKD 教學門診</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"腎入學習 兒童 CKD 教學門診\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2>緣由</h2>\n<p>兒童慢性腎臟病的衛教多半停留在紙本與口頭說明，門診時間有限，家屬與病童難以確認「學會了沒有」。教學門診希望有一個能在診間或回家後使用的輕量工具，讓衛教成效可以被看見、被比較，並能作為教學評比的佐證。</p>\n<h2>目的與預期效果</h2>\n<ul>\n<li>以 CKD 五大知識面向設計前後測，讓使用者了解自己的學習進步。</li>\n<li>用雷達圖呈現各面向得分，用分布圖把個人成績對照歷史前測／後測的中位百分位。</li>\n<li>不需註冊登入，開啟網址即可練習，降低診間使用門檻。</li>\n<li>作為教學門診的輔助教材與成效紀錄，而非有防作弊要求的正式考試。</li>\n</ul>\n<h2>如何做出來</h2>\n<ol>\n<li>整理臨床診療指引與衛教計畫等參考資料，擬定主題與五題練習題及候選答案。</li>\n<li>將歷史前測（166 筆）、後測（162 筆）Excel 以 Python 腳本轉為<strong>匿名統計</strong>（僅分數分布、平均、中位數），不含姓名與逐筆答案。</li>\n<li>計分邏輯獨立為 <code>scoring</code> 模組（每題 2 分、完成率、得分率、同分中位百分位），以 Vitest 撰寫測試。</li>\n<li>作答紀錄與草稿存於瀏覽器 localStorage，可下載 JSON 備份；儲存介面預留 adapter，日後可接雲端資料庫。</li>\n<li>路由採 hash，純靜態部署至 Vercel，不需環境變數或後端。</li>\n</ol>\n<h2>使用的套件與模型</h2>\n<ul>\n<li>框架：Vue 3 + TypeScript + Vite 7</li>\n<li>圖表：自繪 SVG 雷達圖與分布圖元件</li>\n<li>圖示：Lucide</li>\n<li>測試：Vitest、vue-tsc 型別檢查</li>\n<li>資料處理：Python + openpyxl（僅開發時轉檔）</li>\n<li>部署：Vercel 靜態託管</li>\n<li>模型：網站執行時<strong>不使用任何 AI 模型</strong>，所有計分皆為確定性程式邏輯</li>\n</ul>\n<h2>限制</h2>\n<ul>\n<li>紀錄僅存於該瀏覽器與網域，換裝置或清除資料不會帶走。</li>\n<li>純前端的答案與計分可被檢視，不適合正式考試。</li>\n<li>題目為測試版，正式使用前仍須教師核定。</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>線上網站：<a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>原始碼：私有儲存庫（未公開）</li>\n</ul>",
+    "url": "/lab/ckd2026"
+  },
+  {
     "title": "CRM Design Series",
     "slug": "crm-series",
     "baseSlug": "crm-series",
@@ -601,5 +649,57 @@
     "locale": "zh-TW",
     "html": "<h1>SmartCommunityBackEnd — 智慧社區後端</h1>\n<p><img src=\"/og/labs/smart-community-backend/web.png\" alt=\"SmartCommunityBackEnd Web\"></p>\n<p><strong>Tags</strong>: .NET, PostgreSQL, Redis, Message Queue, Docker</p>\n<p>面向智慧社區應用的後端服務，涵蓋住戶、設備、社區服務與事件通報等核心模組，強調可靠性與可觀測性。</p>\n<h2>核心模組</h2>\n<ul>\n<li>使用者/住戶/權限管理</li>\n<li>設備與感測資料收集</li>\n<li>通報與工作流程（任務分派、處理、回報）</li>\n<li>通知中心（Email/SMS/推播）</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>平台：.NET</li>\n<li>資料：PostgreSQL、Redis</li>\n<li>佇列：如 RabbitMQ/Kafka（視部署配置）</li>\n<li>佈署：Docker/docker-compose</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>GitHub：<a href=\"https://github.com/awtw/SmartCommunityBackEnd\">https://github.com/awtw/SmartCommunityBackEnd</a></li>\n</ul>",
     "url": "/lab/smart-community-backend"
+  },
+  {
+    "title": "Transcript Plus",
+    "slug": "transcript-plus",
+    "baseSlug": "transcript-plus",
+    "role": "Full-stack / Desktop",
+    "stack": [
+      "Tauri 2",
+      "React 19",
+      "TypeScript",
+      "Python",
+      "SQLite",
+      "faster-whisper",
+      "MLX Whisper"
+    ],
+    "period": "2026",
+    "links": {
+      "github": "https://github.com/awtw/transcript-plus"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "A local-first desktop app that turns recordings into editable transcripts, then subtitles and meeting notes, fully offline.",
+    "published": true,
+    "locale": "en",
+    "html": "<h1>Transcript Plus — Local Subtitle and Meeting Notes App</h1>\n<p><img src=\"/og/labs/transcript-plus/transcript-plus.png\" alt=\"Transcript Plus\"></p>\n<p><strong>Tags</strong>: Tauri, React, Python, SQLite, Whisper, Offline</p>\n<p>Currently a <strong>v0.1 development build</strong>: the desktop UI, local Python transcription core, SQLite storage, transcript editing and subtitle export are implemented. A macOS <code>.app</code> builds locally, but it is not a full MVP yet, and Windows hardware and public release are unverified.</p>\n<h2>Why</h2>\n<p>After building an internal speech-recognition platform (FABO ASR), the real time sink turned out to be the manual work between \"recognition finished\" and \"transcript ready\": proofreading, line-breaking and timing. Interviews, meetings and lessons also often contain sensitive material that should not go to the cloud. So the workflow became an installable single-machine app where data and inference never leave the computer.</p>\n<h2>Goals and intended effect</h2>\n<ul>\n<li>Take interviewers, podcasters, educators and meeting note-takers from a local media file to publishable subtitles.</li>\n<li>Cut proofreading time: the target is at least 30% lower median subtitle-prep time on the same material (a planning target, not yet validated).</li>\n<li>Work fully offline once models are in place, with no sign-up and no self-hosted server.</li>\n<li>One transcript dataset yields TXT, SRT, VTT and JSON, plus (planned) summaries and action items.</li>\n</ul>\n<h2>How it was built</h2>\n<ol>\n<li>Wrote the MVP requirements, acceptance metrics and architecture first, and assessed what could be ported from FABO ASR (inference adapter, timing validation, revision guards), borrowing functions and test ideas rather than copying the platform.</li>\n<li>Architecture: Tauri 2 shell, React front end, Python sidecar core packaged with PyInstaller so users need no dev environment.</li>\n<li>A structured Transcript / Word / Cue data contract at the center; SQLite is the single writable source of truth and subtitle files are derived output.</li>\n<li>Persistent job queue with stage state, cancel and retry, autosave and undo/redo; invalidated word timings are flagged for review rather than faked.</li>\n<li>Two-hour transcripts render through a virtual list to keep editing responsive.</li>\n</ol>\n<p>Done: media import and playback, local transcription with word timings, subtitle generation / split / merge / timing tweaks, TXT / SRT / VTT / JSON export.\nNot yet: automatic speaker diarization, local summaries and action items, video proxy, model download management, code signing and notarization.</p>\n<h2>Packages and models</h2>\n<ul>\n<li>Desktop: Tauri 2 (Rust), React 19, TypeScript, Vite, TanStack Virtual, Lucide</li>\n<li>Core: Python 3.12, SQLite, PyInstaller</li>\n<li>ASR: faster-whisper (CTranslate2, CPU INT8); MLX Whisper on Apple Silicon</li>\n<li>Models: Breeze ASR (tuned for Taiwanese Mandarin) or Whisper-family models, from a local folder the user picks; the app never downloads weights itself</li>\n<li>Planned: sherpa-onnx speaker diarization, local LLM summaries and action items</li>\n<li>Testing: pytest, Vitest, Testing Library</li>\n<li>Media: FFmpeg / ffprobe</li>\n</ul>\n<h2>Links</h2>\n<ul>\n<li>Source and README: <a href=\"https://github.com/awtw/transcript-plus\">https://github.com/awtw/transcript-plus</a></li>\n</ul>",
+    "url": "/lab/transcript-plus"
+  },
+  {
+    "title": "Transcript Plus",
+    "slug": "transcript-plus",
+    "baseSlug": "transcript-plus",
+    "role": "全端 / 桌面應用",
+    "stack": [
+      "Tauri 2",
+      "React 19",
+      "TypeScript",
+      "Python",
+      "SQLite",
+      "faster-whisper",
+      "MLX Whisper"
+    ],
+    "period": "2026",
+    "links": {
+      "github": "https://github.com/awtw/transcript-plus"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "以逐字稿為核心的本機字幕與會議整理桌面軟體，離線轉錄、校對並匯出 SRT／VTT。",
+    "published": true,
+    "locale": "zh-TW",
+    "html": "<h1>Transcript Plus — 本機字幕與會議整理軟體</h1>\n<p><img src=\"/og/labs/transcript-plus/transcript-plus.png\" alt=\"Transcript Plus\"></p>\n<p><strong>Tags</strong>: Tauri, React, Python, SQLite, Whisper, Offline</p>\n<p>目前為 <strong>v0.1 開發版</strong>：已實作桌面介面、Python 本機轉錄核心、SQLite 儲存、逐字稿校對與字幕匯出；macOS 已可建置 <code>.app</code>，尚非完整 MVP，Windows 實機與公開發行尚未驗收。</p>\n<h2>緣由</h2>\n<p>在企業內部的語音辨識平台（FABO ASR）累積經驗後，發現真正耗時的不是辨識本身，而是「辨識完成到整理完成」之間的人工校對、斷句與對時。同時，訪談、會議與課程錄音常含敏感內容，不適合上傳雲端。因此決定把流程做成可安裝的單機軟體，資料與推論都留在電腦。</p>\n<h2>目的與預期效果</h2>\n<ul>\n<li>讓訪談、Podcast、課程與會議整理者，從本機影音一路做到可發布字幕。</li>\n<li>縮短校對時間：目標是在相同素材下，字幕整理時間中位數減少 30% 以上（規劃目標，尚未達標驗證）。</li>\n<li>全程離線可用，模型備齊後可斷網工作，無註冊登入與自建伺服器。</li>\n<li>同一份逐字稿資料同時產出 TXT、SRT、VTT、JSON，以及（規劃中）摘要與待辦。</li>\n</ul>\n<h2>如何做出來</h2>\n<ol>\n<li>先撰寫 MVP 需求、驗收指標與架構文件，並評估既有 FABO ASR 可移植的部分（推論 adapter、時間驗證、revision 保護），只取函式與測試概念，不整包複製。</li>\n<li>架構採 Tauri 2 桌面外殼、React 前端、Python sidecar 核心，以 PyInstaller 封裝，使用者不需自備開發環境。</li>\n<li>以結構化 Transcript／Word／Cue 資料契約為核心，SQLite 為唯一可寫事實來源，字幕檔只是衍生輸出。</li>\n<li>持久化工作佇列與階段狀態，支援取消、重試、自動儲存與復原／重做；字詞時間失效時明示待核對，不假裝有效。</li>\n<li>2 小時逐字稿以虛擬清單呈現，維持編輯流暢度。</li>\n</ol>\n<p>已完成：影音匯入與播放、本機轉錄與詞時間、字幕生成／拆合／時間微調、TXT／SRT／VTT／JSON 匯出。\n尚未提供：自動講者分離、本機摘要與待辦、影片代理、模型下載管理、簽章與公證。</p>\n<h2>使用的套件與模型</h2>\n<ul>\n<li>桌面：Tauri 2（Rust）、React 19、TypeScript、Vite、TanStack Virtual、Lucide</li>\n<li>核心：Python 3.12、SQLite、PyInstaller</li>\n<li>語音辨識：faster-whisper（CTranslate2，CPU INT8）；Apple Silicon 另支援 MLX Whisper</li>\n<li>模型：Breeze ASR（台灣華語優化）／Whisper 系列，由使用者自行指定本機模型資料夾，程式不自動下載權重</li>\n<li>規劃中：sherpa-onnx 講者分離、本機 LLM 摘要與待辦</li>\n<li>測試：pytest、Vitest、Testing Library</li>\n<li>媒體處理：FFmpeg／ffprobe</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>原始碼與 README：<a href=\"https://github.com/awtw/transcript-plus\">https://github.com/awtw/transcript-plus</a></li>\n</ul>",
+    "url": "/lab/transcript-plus"
   }
 ]

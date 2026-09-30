@@ -1,0 +1,53 @@
+---
+title: "Transcript Plus"
+slug: "transcript-plus"
+baseSlug: "transcript-plus"
+summary: "以逐字稿為核心的本機字幕與會議整理桌面軟體，離線轉錄、校對並匯出 SRT／VTT。"
+published: true
+locale: "zh-TW"
+type: project
+role: "全端 / 桌面應用"
+stack: ["Tauri 2", "React 19", "TypeScript", "Python", "SQLite", "faster-whisper", "MLX Whisper"]
+period: "2026"
+links:
+  github: "https://github.com/awtw/transcript-plus"
+---
+
+# Transcript Plus — 本機字幕與會議整理軟體
+
+![Transcript Plus](/og/labs/transcript-plus/transcript-plus.png)
+
+**Tags**: Tauri, React, Python, SQLite, Whisper, Offline
+
+目前為 **v0.1 開發版**：已實作桌面介面、Python 本機轉錄核心、SQLite 儲存、逐字稿校對與字幕匯出；macOS 已可建置 `.app`，尚非完整 MVP，Windows 實機與公開發行尚未驗收。
+
+## 緣由
+在企業內部的語音辨識平台（FABO ASR）累積經驗後，發現真正耗時的不是辨識本身，而是「辨識完成到整理完成」之間的人工校對、斷句與對時。同時，訪談、會議與課程錄音常含敏感內容，不適合上傳雲端。因此決定把流程做成可安裝的單機軟體，資料與推論都留在電腦。
+
+## 目的與預期效果
+- 讓訪談、Podcast、課程與會議整理者，從本機影音一路做到可發布字幕。
+- 縮短校對時間：目標是在相同素材下，字幕整理時間中位數減少 30% 以上（規劃目標，尚未達標驗證）。
+- 全程離線可用，模型備齊後可斷網工作，無註冊登入與自建伺服器。
+- 同一份逐字稿資料同時產出 TXT、SRT、VTT、JSON，以及（規劃中）摘要與待辦。
+
+## 如何做出來
+1. 先撰寫 MVP 需求、驗收指標與架構文件，並評估既有 FABO ASR 可移植的部分（推論 adapter、時間驗證、revision 保護），只取函式與測試概念，不整包複製。
+2. 架構採 Tauri 2 桌面外殼、React 前端、Python sidecar 核心，以 PyInstaller 封裝，使用者不需自備開發環境。
+3. 以結構化 Transcript／Word／Cue 資料契約為核心，SQLite 為唯一可寫事實來源，字幕檔只是衍生輸出。
+4. 持久化工作佇列與階段狀態，支援取消、重試、自動儲存與復原／重做；字詞時間失效時明示待核對，不假裝有效。
+5. 2 小時逐字稿以虛擬清單呈現，維持編輯流暢度。
+
+已完成：影音匯入與播放、本機轉錄與詞時間、字幕生成／拆合／時間微調、TXT／SRT／VTT／JSON 匯出。
+尚未提供：自動講者分離、本機摘要與待辦、影片代理、模型下載管理、簽章與公證。
+
+## 使用的套件與模型
+- 桌面：Tauri 2（Rust）、React 19、TypeScript、Vite、TanStack Virtual、Lucide
+- 核心：Python 3.12、SQLite、PyInstaller
+- 語音辨識：faster-whisper（CTranslate2，CPU INT8）；Apple Silicon 另支援 MLX Whisper
+- 模型：Breeze ASR（台灣華語優化）／Whisper 系列，由使用者自行指定本機模型資料夾，程式不自動下載權重
+- 規劃中：sherpa-onnx 講者分離、本機 LLM 摘要與待辦
+- 測試：pytest、Vitest、Testing Library
+- 媒體處理：FFmpeg／ffprobe
+
+## 連結
+- 原始碼與 README：<https://github.com/awtw/transcript-plus>

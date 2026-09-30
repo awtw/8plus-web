@@ -1,0 +1,53 @@
+---
+title: "Transcript Plus"
+slug: "transcript-plus"
+baseSlug: "transcript-plus"
+summary: "A local-first desktop app that turns recordings into editable transcripts, then subtitles and meeting notes, fully offline."
+published: true
+locale: "en"
+type: project
+role: "Full-stack / Desktop"
+stack: ["Tauri 2", "React 19", "TypeScript", "Python", "SQLite", "faster-whisper", "MLX Whisper"]
+period: "2026"
+links:
+  github: "https://github.com/awtw/transcript-plus"
+---
+
+# Transcript Plus — Local Subtitle and Meeting Notes App
+
+![Transcript Plus](/og/labs/transcript-plus/transcript-plus.png)
+
+**Tags**: Tauri, React, Python, SQLite, Whisper, Offline
+
+Currently a **v0.1 development build**: the desktop UI, local Python transcription core, SQLite storage, transcript editing and subtitle export are implemented. A macOS `.app` builds locally, but it is not a full MVP yet, and Windows hardware and public release are unverified.
+
+## Why
+After building an internal speech-recognition platform (FABO ASR), the real time sink turned out to be the manual work between "recognition finished" and "transcript ready": proofreading, line-breaking and timing. Interviews, meetings and lessons also often contain sensitive material that should not go to the cloud. So the workflow became an installable single-machine app where data and inference never leave the computer.
+
+## Goals and intended effect
+- Take interviewers, podcasters, educators and meeting note-takers from a local media file to publishable subtitles.
+- Cut proofreading time: the target is at least 30% lower median subtitle-prep time on the same material (a planning target, not yet validated).
+- Work fully offline once models are in place, with no sign-up and no self-hosted server.
+- One transcript dataset yields TXT, SRT, VTT and JSON, plus (planned) summaries and action items.
+
+## How it was built
+1. Wrote the MVP requirements, acceptance metrics and architecture first, and assessed what could be ported from FABO ASR (inference adapter, timing validation, revision guards), borrowing functions and test ideas rather than copying the platform.
+2. Architecture: Tauri 2 shell, React front end, Python sidecar core packaged with PyInstaller so users need no dev environment.
+3. A structured Transcript / Word / Cue data contract at the center; SQLite is the single writable source of truth and subtitle files are derived output.
+4. Persistent job queue with stage state, cancel and retry, autosave and undo/redo; invalidated word timings are flagged for review rather than faked.
+5. Two-hour transcripts render through a virtual list to keep editing responsive.
+
+Done: media import and playback, local transcription with word timings, subtitle generation / split / merge / timing tweaks, TXT / SRT / VTT / JSON export.
+Not yet: automatic speaker diarization, local summaries and action items, video proxy, model download management, code signing and notarization.
+
+## Packages and models
+- Desktop: Tauri 2 (Rust), React 19, TypeScript, Vite, TanStack Virtual, Lucide
+- Core: Python 3.12, SQLite, PyInstaller
+- ASR: faster-whisper (CTranslate2, CPU INT8); MLX Whisper on Apple Silicon
+- Models: Breeze ASR (tuned for Taiwanese Mandarin) or Whisper-family models, from a local folder the user picks; the app never downloads weights itself
+- Planned: sherpa-onnx speaker diarization, local LLM summaries and action items
+- Testing: pytest, Vitest, Testing Library
+- Media: FFmpeg / ffprobe
+
+## Links
+- Source and README: <https://github.com/awtw/transcript-plus>

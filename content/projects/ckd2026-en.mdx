@@ -1,0 +1,54 @@
+---
+title: "Kidney Learning — Pediatric CKD Clinic"
+slug: "ckd2026"
+baseSlug: "ckd2026"
+summary: "A front-end-only learning site for pediatric chronic kidney disease (CKD) education, showing progress through pre/post tests and radar charts against historical score distributions."
+published: true
+locale: "en"
+type: project
+role: "Frontend / Product design"
+stack: ["Vue 3", "TypeScript", "Vite", "Vitest", "Vercel"]
+period: "2026"
+links:
+  website: "https://frontend-two-chi-30.vercel.app/"
+---
+
+# Kidney Learning — Pediatric CKD Clinic
+
+![Kidney Learning pediatric CKD clinic](/og/labs/ckd2026/ckd2026.png)
+
+**Tags**: Vue 3, TypeScript, Vite, Vitest, Vercel
+
+## Why
+Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether patients and families actually learned. The teaching clinic wanted a lightweight tool, usable in the clinic or at home, that makes learning outcomes visible and comparable.
+
+## Goals and intended effect
+- Pre/post tests across five CKD knowledge areas so users can see their own progress.
+- A radar chart for per-area scores, plus a distribution chart placing the user against historical pre/post results.
+- No sign-up: open the URL and practice, keeping the barrier low.
+- A supporting teaching aid and outcome record, not a formal exam with anti-cheating requirements.
+
+## How it was built
+1. Collected clinical guidelines and education-program references, then drafted the topics, five practice questions and candidate answers.
+2. Converted historical pre-test (166) and post-test (162) spreadsheets into **anonymous statistics** with a Python script: score distributions, mean and median only, with no names or per-answer data.
+3. Isolated scoring (2 points per question, completion rate, score rate, tied-score median percentile) in its own module, covered by Vitest.
+4. Answers and drafts live in browser localStorage with JSON backup download; the repository interface leaves room for a cloud adapter later.
+5. Hash routing and fully static deployment on Vercel: no env vars, no backend.
+
+## Packages and models
+- Framework: Vue 3 + TypeScript + Vite 7
+- Charts: hand-built SVG radar and distribution components
+- Icons: Lucide
+- Testing: Vitest, vue-tsc type checking
+- Data prep: Python + openpyxl (dev-time only)
+- Hosting: Vercel static
+- Models: **no AI model at runtime**; all scoring is deterministic code
+
+## Limitations
+- Records stay in that browser and origin; switching devices or clearing data loses them.
+- Client-side answers and scoring are inspectable, so it is unsuitable for formal exams.
+- Questions are a test version and need teacher approval before real use.
+
+## Links
+- Live site: <https://frontend-two-chi-30.vercel.app/>
+- Source: private repository (not public)

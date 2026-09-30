@@ -22,7 +22,7 @@ links:
 Currently a **v0.1 development build**: the desktop UI, local Python transcription core, SQLite storage, transcript editing and subtitle export are implemented. A macOS `.app` builds locally, but it is not a full MVP yet, and Windows hardware and public release are unverified.
 
 ## Why
-After building an internal speech-recognition platform (FABO ASR), the real time sink turned out to be the manual work between "recognition finished" and "transcript ready": proofreading, line-breaking and timing. Interviews, meetings and lessons also often contain sensitive material that should not go to the cloud. So the workflow became an installable single-machine app where data and inference never leave the computer.
+The idea came from speech-related development work: the real time sink turned out to be the manual work between "recognition finished" and "transcript ready": proofreading, line-breaking and timing, and few tools cover that whole stretch. Interviews, meetings and lessons also often contain sensitive material that should not go to the cloud. So I set out to try an installable single-machine app where data and inference never leave the computer.
 
 ## Goals and intended effect
 - Take interviewers, podcasters, educators and meeting note-takers from a local media file to publishable subtitles.
@@ -31,7 +31,7 @@ After building an internal speech-recognition platform (FABO ASR), the real time
 - One transcript dataset yields TXT, SRT, VTT and JSON, plus (planned) summaries and action items.
 
 ## How it was built
-1. Wrote the MVP requirements, acceptance metrics and architecture first, and assessed what could be ported from FABO ASR (inference adapter, timing validation, revision guards), borrowing functions and test ideas rather than copying the platform.
+1. Wrote the MVP requirements, acceptance metrics and architecture first to settle scope and tech choices, then built milestone by milestone.
 2. Architecture: Tauri 2 shell, React front end, Python sidecar core packaged with PyInstaller so users need no dev environment.
 3. A structured Transcript / Word / Cue data contract at the center; SQLite is the single writable source of truth and subtitle files are derived output.
 4. Persistent job queue with stage state, cancel and retry, autosave and undo/redo; invalidated word timings are flagged for review rather than faked.

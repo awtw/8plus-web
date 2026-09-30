@@ -167,6 +167,10 @@ const HERO_CSS = `
     .hero-ctas a, .hero-ctas button { flex: 1 1 auto; }
   }`
 
+// The header takes the hero's own top-edge colour (see tint() in site-header), then follows each section.
+// Sampled from the rendered scenes; variants not listed keep the CI blue.
+const HEADER_TONE = { core: '#010d36', gl: '#061640', liquid: '#021250', neural: '#010d36' }
+
 const HERO_LABELS = {
   combo: '隧道 · 作品卡', flow: '流場線', logo: '8+ 字標', lines: '線流交會',
   topo: '等高線地形', dots: '半調點陣', orbit: '軌道系統', iso: '架構堆疊',
@@ -340,6 +344,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     <section
       ref={secRef}
       id="home-section-hero"
+      data-header-color={HEADER_TONE[variant]}
       className={'home-section bg-blue noise-field' + (corner ? ' hero-corner' : '')}
       aria-labelledby="home-hero-headline"
       onClick={onHeroClick}

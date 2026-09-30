@@ -45,7 +45,7 @@ export default function LanguageSwitcher({ fullWidth = false }: LanguageSwitcher
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors rounded-full border border-border/70 bg-background/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] ${
+        className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors rounded-full border border-border/70 bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] ${
           fullWidth 
             ? 'w-full h-12 justify-center text-[color:var(--fg)] hover:bg-[color:var(--hover-bg)]' 
             : 'text-[color:var(--fg-2)] hover:text-[color:var(--hover-fg)] hover:bg-[color:var(--hover-bg)]'

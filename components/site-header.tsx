@@ -58,11 +58,16 @@ export default function SiteHeader() {
     const tint = () => {
       last = performance.now();
       const y = Math.round(el.offsetHeight / 2);
-      const field = document
-        .elementsFromPoint(window.innerWidth / 2, y)
-        .find((n) => n.matches?.(".bg-blue, .bg-orange, .bg-dark"));
+      const pick = (py: number) =>
+        document
+          .elementsFromPoint(window.innerWidth / 2, py)
+          .find((n) => n.matches?.("[data-header-color], .bg-blue, .bg-orange, .bg-dark"));
+      // at scrollY 0 nothing sits behind the header yet, so read the first field just below it
+      const field = pick(y) ?? pick(el.offsetHeight + 2);
       if (!field) return;
-      const color = getComputedStyle(field).backgroundColor;
+      // a section may declare its own tone (the home hero paints a gradient/canvas, so its computed
+      // background-color is transparent); otherwise use the computed field colour
+      const color = (field as HTMLElement).dataset.headerColor || getComputedStyle(field).backgroundColor;
       if (color && color !== lastColor && color !== "rgba(0, 0, 0, 0)") {
         lastColor = color;
         root.style.setProperty("--header-bg", color);
@@ -98,7 +103,7 @@ export default function SiteHeader() {
   const isHeroOverlay = isHomePage && !scrolled;
 
   const headerClass = isHeroOverlay
-    ? "site-header site-header--hero sticky top-0 z-50 w-full border-b border-transparent bg-transparent"
+    ? "site-header site-header--hero site-header--solid sticky top-0 z-50 w-full border-b"
     : "site-header--solid sticky top-0 z-50 w-full border-b";
 
   return (

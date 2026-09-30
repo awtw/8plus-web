@@ -1,18 +1,15 @@
 import { ArrowUpRight } from '@phosphor-icons/react'
 import { getLineAddFriendUrl, getLineBasicId } from '@/lib/line'
-import { BOOKING_EMAIL } from '@/lib/content/booking'
 
 type Props = {
   label: string
   lead: string
   lineAction: string
-  emailAction: string
 }
 
-export function BookingChannels({ label, lead, lineAction, emailAction }: Props) {
+export function BookingChannels({ label, lead, lineAction }: Props) {
   const channels = [
     { key: 'LINE', value: getLineBasicId(), action: lineAction, href: getLineAddFriendUrl(), external: true },
-    { key: 'EMAIL', value: BOOKING_EMAIL, action: emailAction, href: `mailto:${BOOKING_EMAIL}`, external: false },
   ]
   return (
     <div className="booking-channels">

@@ -1,7 +1,5 @@
 import type { Locale } from "@/lib/i18n";
 
-export const BOOKING_EMAIL = "alec.wang.tpe@gmail.com";
-
 export function getBookingContent(locale: Locale) {
   const en = locale === "en";
   return {
@@ -35,7 +33,5 @@ export function getBookingContent(locale: Locale) {
       : "題目還不明確時，可以先留訊息，我會在 1–2 個工作天內回覆。",
     lineName: "LINE",
     lineAction: en ? "Add on LINE" : "加入 LINE",
-    emailName: "Email",
-    emailAction: en ? "Send an email" : "寄送 Email",
   };
 }

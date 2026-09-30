@@ -54,7 +54,6 @@ export default function BookingPage() {
             label={c.altLabel}
             lead={c.altLead}
             lineAction={c.lineAction}
-            emailAction={c.emailAction}
           />
         </aside>
       </div>

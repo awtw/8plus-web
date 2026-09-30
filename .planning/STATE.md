@@ -77,6 +77,12 @@ Resume file: None
 
 ## Discussion Log
 
+### 2026-10-01 00:20 CST — 聯絡方式曝光政策（Claude）
+
+- 使用者決策：官網主要期待是用 Cal.com 日曆預約，其他聯絡方式盡量減少，可保留 GitHub 連結。`/booking` 已移除 email 與 LINE，改放 GitHub（`github.com/awtw`）。
+- `/sb`、`/sc` 是社群分享用的縮網址落地頁，**刻意保留** email / LINE / IG；已記錄於 `docs/SHARE_HUBS.md`，並在 `lib/site-paths.ts`、`lib/content/share-links.ts` 加註解，寫入專案記憶。
+
+
 ### 2026-09-30 23:59 CST — 重構前總整理 + 五步重構執行（Claude）
 
 - 使用者要求整理現階段 code 後重構；確認「按順序全部進行」。快照：`.planning/CODEBASE-SNAPSHOT-2026-09-30.md`。
@@ -388,3 +394,9 @@ Resume file: None
 - 新增 `content/projects/{ckd2026,transcript-plus}{,-en}.mdx`（緣由、目的、做法、套件與模型），並於 `lib/content/lab.ts` 登錄分組與角色標籤（ckd2026→前端、transcript-plus→全端）。
 - ckd-2026 原始碼為私有 repo，僅放線上網站連結；transcript-plus 附 GitHub 連結。圖片沿用 `public/og/labs/` 既有截圖。
 - `pnpm build` 通過。
+
+### 2026-09-30 CST — 前衛化評估與計畫（Claude）
+- 使用者要求：參考 2026 市場趨勢，評估如何讓官網更前衛、互動佳、手機體驗好、內容更符合主流需求。
+- 產出：`.planning/redesign/FUTURE-FORWARD-PLAN-2026-09-30.md`（現況診斷、趨勢適用度、設計方向 Editorial-Tech 2.0、15 項互動、內容缺口、手機專章、護欄、A–G 路線圖、6 項待決策）。
+- 結論：視覺已足夠大膽；缺口在互動深度、內容證據力、GEO、手機專屬體驗、效能/無障礙護欄。建議先 C（內容）+ B（手機）。
+- 狀態：DRAFT，待使用者回覆 §9 決策後進入 GSD phase 規劃。

@@ -53,7 +53,7 @@ export default function BookingPage() {
           <BookingChannels
             label={c.altLabel}
             lead={c.altLead}
-            lineAction={c.lineAction}
+            action={c.githubAction}
           />
         </aside>
       </div>

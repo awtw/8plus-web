@@ -1,3 +1,6 @@
+// Content for the /sb and /sc short-link share hubs (social-media link-in-bio pages).
+// These pages are the ONLY place where email / LINE / IG contact channels are exposed on purpose;
+// the main site (/booking etc.) prefers the Cal.com calendar and hides them. See docs/SHARE_HUBS.md
 import type { Locale } from "@/lib/i18n";
 
 export type ShareHubLink =

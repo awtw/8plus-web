@@ -59,8 +59,7 @@
 }
 
 .booking-covers-list,
-.booking-specs,
-.booking-channel-list {
+.booking-specs {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -113,11 +112,6 @@
   font-size: var(--text-sm);
   line-height: 1.6;
   color: var(--fg-2);
-}
-
-.booking-channel-list {
-  display: grid;
-  gap: var(--space-3);
 }
 
 .booking-channel {

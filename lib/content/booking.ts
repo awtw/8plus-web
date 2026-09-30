@@ -27,11 +27,10 @@ export function getBookingContent(locale: Locale) {
     specs: en
       ? ["30 minutes", "Cal Video", "Asia/Taipei (GMT+8)"]
       : ["30 分鐘", "Cal Video 視訊", "台北 GMT+8"],
-    altLabel: en ? "Prefer another channel?" : "偏好其他聯絡方式？",
+    altLabel: en ? "Want to see my work first?" : "想先看看我做過什麼？",
     altLead: en
-      ? "Message me first if the topic is still unclear. I reply within 1–2 business days."
-      : "題目還不明確時，可以先留訊息，我會在 1–2 個工作天內回覆。",
-    lineName: "LINE",
-    lineAction: en ? "Add on LINE" : "加入 LINE",
+      ? "Code and side projects are on GitHub."
+      : "程式碼與個人專案都放在 GitHub。",
+    githubAction: en ? "View on GitHub" : "前往 GitHub",
   };
 }

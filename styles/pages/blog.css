@@ -170,8 +170,8 @@
 /* Field Notes filter + badge */
 .blog-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
 .blog-filter {
-  min-height: 40px;
-  padding: 0 16px;
+  min-height: 44px;
+  padding: 0 18px;
   border-radius: 9999px;
   border: 1px solid var(--border);
   background: transparent;

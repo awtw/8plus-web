@@ -462,3 +462,24 @@ Resume file: None
 - 橘場 About 區塊：藍色線條改白色半透明、重點 chip 反白、側邊圓點改深色玻璃。
 - ⚠️ `hero-gl.tsx` 被另一會話覆寫為「物理式液態玻璃核心」（折射＋Beer-Lambert）；本會話的「黑陶瓷／鉻面三環陀螺儀」版本未保留在磁碟上。
 - 2026-10-01 CST：Header 配色回到「跟隨色場」：`SiteHeader` 於頁首中線取樣 `elementsFromPoint` 命中的 `.bg-blue/.bg-orange/.bg-dark`，把其背景色寫入 `--header-bg`（header 與 `.sticky-subnav` 共用；不透明，無穿透；節流 + trailing，不依賴 rAF）。深藍玻璃版已撤除。
+
+### 2026-10-01 CST — Hero 版面精簡（採納外部設計評論）（Claude）
+- 首屏只留：玻璃標籤 `01 // 系統架構與 AI 落地`、標題（「AI 沒有魔法」細體 + 「只有工程」粗體，去全形逗號）、一句副標、白色玻璃主按鈕（懸停極光邊框）+「探索作品 →」文字連結。移除頂部 meta 列、A/B/C 三點。
+- A/B/C 移至新第二屏 `SectionPrinciples`（bg-dark、三欄卡片）；右側數字圓鈕改為細刻度。
+- 3D：玻璃內加入「隱約透出」的經緯線網格與發光節點（有機外形 + 精密結構）；形體放大並略滲入文案區形成景深。
+- 未採納：Terminal/Command 視窗式替代版型（待使用者決定）。
+
+### 2026-10-01 CST — CTA 去浮動感（Claude）
+- 使用者回饋：「預約諮詢」按鈕浮動感有失專業。移除兩個來源：① 磁吸跟隨游標（刪除 `components/magnetic-fx.tsx` 與對應 CSS／layout 掛載）；② hover 時旋轉的模糊彩色光暈（`.hv-cta.primary::before` conic-gradient + blur）。
+- 現行：主按鈕為平面白色膠囊＋深墨字；hover 僅底色 #E6EDFF、active #D5E0FF；只過渡顏色（.15s）；focus 為 2px 白色外框。全站 `.brand-button-primary` 本來就無位移。
+
+### 2026-10-01 CST 凌晨 — Hero 改為「高維度超立方核心」（Claude）
+- 使用者提供評論：液態球像「孤立的玩具標本」、太軟爛，需與空間／游標／文字產生能量交換，並偏精準工程感（方案 A 超立方＋B 全域空間＋HUD）。
+- `hero-gl.tsx` 重寫：光線步進 tesseract 投影（黑曜石外框／鈦銀內框／8 根連桿／發光核心）；背景網格被「核心＋游標」雙引力井透鏡扭曲（扭曲延伸到左側文案）；核心每 4.5 秒與每次點擊釋放掃描光圈點亮網格；游標傾斜、CTA 懸停充能、捲動時內外框分離；色系黑＋鈦銀＋冰藍／紫外，橘色只留 CTA；物件放大錨定右下並衝出邊界。
+- HUD（十字準心、角括號、等寬讀數）只顯示真實數據（游標座標、執行秒數），不放捏造的遙測。
+- 液態玻璃版本保留為 `?hero=liquid`；神經粒子 `?hero=neural`。
+
+### 2026-10-01 CST — Hero 三版並存比較（Claude）
+- 新增 B「推理核心 · 架構層」`hero-core.tsx`（Canvas 2D，無粒子雲）：三層半透明架構（System Boundary → Stack Selection → Production）+ 沿網格流動的資料脈衝（到達 Production 轉橘）+ 底層運算核心（3.2s 固定節奏 + 掃描環）；游標使附近節點亮起、網格向游標偏折；滑過 CTA 時核心向按鈕射出光束；點擊＝掃描環＋脈衝群；往下捲三層分離下沉。
+- 比較：`/?compare=1` 顯示 A／B／C 切換列（A 超立方核心 `gl`＝另一工作階段；B 推理核心 `core`；C 液態玻璃 `liquid`＝另一工作階段在我原版上加了工程網格）。直連：`?hero=gl|core|liquid`。預設仍為 `gl`。
+- 待使用者決定：選定後刪除未採用版本與比較列。

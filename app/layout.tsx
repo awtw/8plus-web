@@ -4,7 +4,6 @@ import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { PageTransition } from "@/components/page-transition";
-import { MagneticFx } from "@/components/magnetic-fx";
 import { SkipToMain } from "@/components/skip-to-main";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -67,7 +66,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <MobileTabBar />
           </LanguageProvider>
         </ThemeProvider>
-        <MagneticFx />
         <Analytics />
       </body>
     </html>

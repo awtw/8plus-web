@@ -64,6 +64,18 @@ export default function ProjectsPage() {
           title={<span className="lab-hero-title">{t('projects.title')}</span>}
           lead={c.lead}
         />
+        {projects.length > 0 && (
+          <div className="lab-filters" role="group" aria-label={c.eyebrow}>
+            <button type="button" className={`lab-filter${active === 'all' ? ' is-active' : ''}`} aria-pressed={active === 'all'} onClick={() => choose('all')}>
+              {locale === 'en' ? 'All' : '全部'} · {projects.length}
+            </button>
+            {allGroups.map((g) => (
+              <button key={g.key} type="button" className={`lab-filter${active === g.key ? ' is-active' : ''}`} aria-pressed={active === g.key} onClick={() => choose(g.key)}>
+                {c.groups[g.key]} · {g.items.length}
+              </button>
+            ))}
+          </div>
+        )}
       </PageSection>
 
       {projects.length === 0 ? (
@@ -72,41 +84,26 @@ export default function ProjectsPage() {
         </PageSection>
       ) : (
         <>
-          <div className="lab-filter-bar sticky-subnav">
-            <div className="section-shell">
-            <div className="lab-filters" role="group" aria-label={c.eyebrow}>
-              <button type="button" className={`lab-filter${active === 'all' ? ' is-active' : ''}`} aria-pressed={active === 'all'} onClick={() => choose('all')}>
-                {locale === 'en' ? 'All' : '全部'} · {projects.length}
-              </button>
-              {allGroups.map((g) => (
-                <button key={g.key} type="button" className={`lab-filter${active === g.key ? ' is-active' : ''}`} aria-pressed={active === g.key} onClick={() => choose(g.key)}>
-                  {c.groups[g.key]} · {g.items.length}
-                </button>
-              ))}
-            </div>
-            </div>
-          </div>
-
           {active === 'all' && featured.length > 0 && (
             <PageSection field="orange">
-              <div className="lab-section-head">
+              <header className="lab-section-head">
+                <p className="lab-section-meta">
+                  {c.featuredMeta} · {String(featured.length).padStart(2, '0')}
+                </p>
                 <h2 className="lab-section-title">{c.featured}</h2>
-                <span className="lab-section-meta">
-                  {c.featuredMeta} · {featured.length}
-                </span>
-              </div>
+              </header>
               <ul className="lab-grid">{featured.map((p) => card(p, true))}</ul>
             </PageSection>
           )}
 
           {groups.map((g, i) => (
             <PageSection key={g.key} field={i % 2 === 0 ? 'blue' : 'orange'}>
-              <div className="lab-section-head">
-                <h2 className="lab-section-title">{c.groups[g.key]}</h2>
-                <span className="lab-section-meta">
+              <header className="lab-section-head">
+                <p className="lab-section-meta">
                   {String(g.items.length).padStart(2, '0')} {c.countLabel}
-                </span>
-              </div>
+                </p>
+                <h2 className="lab-section-title">{c.groups[g.key]}</h2>
+              </header>
               <ul className="lab-grid">{g.items.map((p) => card(p))}</ul>
             </PageSection>
           ))}

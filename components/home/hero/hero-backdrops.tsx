@@ -7,6 +7,8 @@
 import React from 'react'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 import HeroGl from './hero-gl'
+import HeroLiquid from './hero-liquid'
+import HeroCore from './hero-core'
 import HeroNeural from './hero-neural'
 
 const HB_CSS = `
@@ -912,5 +914,7 @@ export const HERO_BACKDROPS = {
   warp: Warp, ripple: Ripple, radar: Radar, dna: Dna, terra: Terra, harmo: Harmo,
   spiro: Spiro, bars: Bars, atom: Atom, flock: Flock, cells: Cells, typo: Typo, eclipse: Eclipse,
   gl: HeroGl,
+  liquid: HeroLiquid,
+  core: HeroCore,
   neural: HeroNeural,
 }

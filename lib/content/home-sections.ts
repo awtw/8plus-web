@@ -36,6 +36,8 @@ export type HomeSectionContent = {
     tag: string
     issueMark: string
     headline: string[]
+    subtitle: string
+    principlesTitle: string
     figureCaption: string
     scrollCue: string
     pillars: HomePillar[]
@@ -92,6 +94,8 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
       tag: '8PLUS.APP · TRUST001',
       issueMark: 'NO.01 — 2026',
       headline: ['AI 沒有魔法，只有工程', '對的架構，接住你的需求'],
+      subtitle: '從系統邊界、技術選型到生產級落地，打造可擴展的 AI 原生應用。',
+      principlesTitle: '我怎麼做事',
       figureCaption: 'FIG.01 — TRUST HANDSHAKE',
       scrollCue: '往下滾動，認識 8plus',
       pillars: [
@@ -234,6 +238,8 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
       tag: '8PLUS.APP · TRUST001',
       issueMark: 'NO.01 — 2026',
       headline: ['No magic in AI — just engineering', 'The right architecture catches every need'],
+      subtitle: 'From system boundaries and stack choices to production rollout — scalable, AI-native applications.',
+      principlesTitle: 'How I work',
       figureCaption: 'FIG.01 — TRUST HANDSHAKE',
       scrollCue: 'Scroll to meet 8plus',
       pillars: [
@@ -379,6 +385,7 @@ export function getHomeSectionContent(locale: HomeLocale): HomeSectionContent {
 
 export const HOME_SECTION_IDS = [
   'hero',
+  'principles',
   'about',
   'lab',
   'path',

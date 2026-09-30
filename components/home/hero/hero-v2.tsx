@@ -88,6 +88,11 @@ const HERO_CSS = `
     .hero-scrim.corner { background: linear-gradient(165deg, rgba(0,18,60,.62) 0%, rgba(0,18,60,.42) 55%, rgba(0,18,60,.2) 100%); }
     .hero-scrim.flat { background: radial-gradient(88% 94% at 50% 100%, rgba(0,18,60,.58) 0%, rgba(0,18,60,.32) 55%, rgba(0,18,60,0) 78%); }
   }
+  .hv-compare { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); z-index: 30; display: flex; gap: 4px; padding: 4px; border-radius: 9999px; background: rgba(3,6,26,.72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.22); }
+  .hv-compare button { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: rgba(255,255,255,.75); background: transparent; border: 0; border-radius: 9999px; min-height: 36px; padding: 0 14px; cursor: pointer; }
+  .hv-compare button b { color: #FE5000; margin-right: 4px; }
+  .hv-compare button.on { background: #fff; color: #0A0E1A; }
+  .hv-compare button:focus-visible { outline: 2px solid #FE5000; outline-offset: 2px; }
   .hv-switch { position: absolute; right: 18px; bottom: 18px; z-index: 25; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .hv-switch .trig { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(3,6,26,.4); border: 1px solid var(--border-soft); color: var(--meta); cursor: pointer; opacity: .32; transition: opacity .3s, color .2s, border-color .2s, background .2s; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .hv-switch .trig:hover, .hv-switch .trig:focus-visible { opacity: 1; color: #fff; border-color: rgba(255,255,255,.35); outline: none; }
@@ -119,11 +124,26 @@ const HERO_CSS = `
       @keyframes heroExit { to { opacity: .0; transform: translateY(-36px) scale(.97); filter: blur(6px); } }
     }
   }
-  .hv-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 9999px; font-family: var(--font-body); font-size: 15px; font-weight: 500; cursor: pointer; transition: var(--transition-base); border: 1px solid transparent; }
+  .hv-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 9999px; font-family: var(--font-body); font-size: 15px; font-weight: 500; cursor: pointer; transition: background-color .15s ease, border-color .15s ease, color .15s ease; border: 1px solid transparent; }
   .hv-cta.primary { background: var(--accent); color: var(--accent-on); }
   .hv-cta.primary:hover { background: var(--accent-hover); }
   .hv-cta.secondary { background: rgba(255,255,255,.08); color: var(--fg); border-color: var(--border); }
   .hv-cta.secondary:hover { background: rgba(255,255,255,.15); border-color: var(--hover-border); }
+  /* glass tag capsule, headline contrast, subtitle, glass CTA + text link */
+  .hero-tag { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; margin: 0 0 22px; border-radius: 9999px; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; color: rgba(255,255,255,.88); }
+  .hero-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #FE5000; box-shadow: 0 0 10px #FE5000; }
+  .hk-soft { font-weight: 400; color: rgba(255,255,255,.70); margin-right: .3em; }
+  .hk-strong { font-weight: 600; }
+  .hero-sub { margin: 22px 0 0; max-width: 34rem; font-size: clamp(1rem, 1.25vw, 1.15rem); line-height: 1.7; font-weight: 400; color: rgba(255,255,255,.80); }
+  /* primary CTA: flat white pill, colour-only hover, visible focus ring. No glow, lift or motion. */
+  .hv-cta.primary { background: #fff; color: #0A0E1A; font-weight: 600; }
+  .hv-cta.primary:hover { background: #E6EDFF; }
+  .hv-cta.primary:active { background: #D5E0FF; }
+  .hv-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .hv-link { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 4px; background: none; border: 0; color: rgba(255,255,255,.9); font-size: 1rem; cursor: pointer; }
+  .hv-link .arr { transition: transform .25s var(--ease-out); }
+  .hv-link:hover .arr { transform: translateX(5px); }
+  .hv-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
   @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
   /* phones: cards become quiet atmosphere behind the copy; headline sized so each authored line fits on one row (no orphan glyph) */
   @media (max-width: 768px) {
@@ -154,14 +174,16 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環', gl: '液態金屬 3D', neural: '神經核心 3D',
+  eclipse: '日蝕光環', gl: '超立方核心', liquid: '液態玻璃', core: '推理核心 · 架構層', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
   const c = getHomeSectionContent(locale)
   const en = locale === 'en'
   const router = useRouter()
-  const [variant, setVariant] = React.useState('combo')
+  // start on the final desktop/phone layout ('gl' = left-aligned copy) so hydration never moves the headline;
+  // only Data Saver / no-WebGL fall back to the CSS-only 'combo' scene after mount
+  const [variant, setVariant] = React.useState('gl')
   const [swOpen, setSwOpen] = React.useState(false)
   const [logoTick, setLogoTick] = React.useState(0)
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
@@ -177,12 +199,19 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
     else if (q && keys.includes(q)) pick = q
     else if (!conn?.saveData && canUseWebGL()) pick = 'gl'
-    if (!pick) return
+    else pick = 'combo'
     setVariant(pick)
     if (pick === 'logo') setLogoTick((n) => n + 1)
   }, [])
 
   const setV = (v) => { setVariant(v); if (v === 'logo') setLogoTick((n) => n + 1) }
+  // design review: ?compare=1 shows an A/B/C bar to flip between the finalists live
+  const [compare, setCompare] = React.useState(false)
+  React.useEffect(() => { setCompare(new URLSearchParams(window.location.search).has('compare')) }, [])
+  const pickFinalist = (v) => {
+    setV(v)
+    const url = new URL(window.location.href); url.searchParams.set('hero', v); window.history.replaceState(null, '', url)
+  }
 
   const cards = [
     { t: '前後端串接', en: 'Full-stack Integration', s: ['Next.js', 'API', 'tRPC'] },
@@ -298,7 +327,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const ORDER = Object.keys(HERO_LABELS)
   // neural: editorial (copy left, sphere right) on wide screens, centred on phones
   const wide = typeof window !== 'undefined' && window.innerWidth >= 820
-  const corner = (variant === 'neural' && wide) || ['gl', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
+  const corner = (variant === 'neural' && wide) || ['gl', 'core', 'liquid', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
   const flat = ['flow', 'lines', 'topo', 'dots', 'wave', 'bp', 'warp', 'ripple', 'radar', 'dna', 'terra', 'harmo', 'spiro', 'bars', 'flock', 'cells'].indexOf(variant) !== -1
 
   const onHeroClick = (e) => {
@@ -357,6 +386,15 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
 
       <div aria-hidden="true" className={'hero-scrim' + (corner ? ' corner' : ' flat')}></div>
 
+      {compare && (
+        <div className="hv-compare" role="group" aria-label="Hero compare">
+          {[['gl', 'A', '超立方核心'], ['core', 'B', '推理核心'], ['liquid', 'C', '液態玻璃']].map(([v, k, name]) => (
+            <button key={v} type="button" className={variant === v ? 'on' : ''} aria-pressed={variant === v} onClick={() => pickFinalist(v)}>
+              <b>{k}</b> {name}
+            </button>
+          ))}
+        </div>
+      )}
       <div className={'hv-switch' + (swOpen ? ' open' : '')}>
         <div className="panel" role="menu">
           <button className="x" onClick={() => setSwOpen(false)} aria-label="關閉">✕</button>
@@ -376,49 +414,20 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       </div>
 
       <div className="hero-inner home-hero-inner" style={{ position: 'relative', zIndex: 10, maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: '64px clamp(24px,4vw,28px)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-        <header style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--meta)', borderBottom: '1px solid var(--border-soft)', paddingBottom: 14 }}>
-          <span>{c.hero.tag}</span><span>{c.hero.issueMark}</span>
-        </header>
-
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: corner ? 'flex-start' : 'flex-end', alignItems: corner ? 'flex-start' : 'center', textAlign: corner ? 'left' : 'center', paddingBottom: corner ? 0 : '6vh', paddingTop: corner ? 'clamp(40px, 10vh, 76px)' : (variant === 'lines' ? '4vh' : 0), paddingLeft: corner ? 10 : 0 }}>
-          {corner && <p className="hp-rise" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 18px', animationDelay: '.1s' }}>{en ? 'Architecture-led · AI shipped' : '架構驅動 · AI 落地'}</p>}
+          <p className="hero-tag hp-slide" style={{ animationDelay: '.1s' }}>{en ? '01 // SYSTEM ARCHITECTURE · APPLIED AI' : '01 // 系統架構與 AI 落地'}</p>
           <h1 id="home-hero-headline" style={corner
-            ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', lineHeight: 1.18, letterSpacing: '-0.025em', fontWeight: 500, color: 'var(--fg)', margin: 0, maxWidth: '18ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
+            ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem, 4vw, 3.7rem)', lineHeight: 1.14, letterSpacing: '-0.03em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '20ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
             : { fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 8.5vw, 4.75rem)', lineHeight: 1.06, letterSpacing: '-0.04em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '22ch', textShadow: '0 6px 50px rgba(0,10,50,.85)', animationDelay: '.15s' }}>
-            {c.hero.headline.map((line, i) => <span key={i} className="hk-line"><span style={{ animationDelay: (0.15 + i * 0.12) + 's' }}>{line}</span></span>)}
+            {c.hero.headline.map((line, i) => { const parts = line.split(/[，,]\s*|\s+—\s+/); return <span key={i} className="hk-line"><span style={{ animationDelay: (0.15 + i * 0.12) + 's' }}>{i === 0 && parts.length === 2 ? <><span className="hk-soft">{parts[0]}</span><span className="hk-strong">{parts[1]}</span></> : line}</span></span> })}
           </h1>
-          <div className="hp-rise hero-ctas" style={{ display: 'flex', flexWrap: 'wrap', gap: 14, margin: corner ? '28px 0 0' : '34px 0 0', justifyContent: corner ? 'flex-start' : 'center', animationDelay: '.35s' }}>
+          <p className="hero-sub hp-slide" style={{ animationDelay: '.3s' }}>{c.hero.subtitle}</p>
+          <div className="hp-rise hero-ctas" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 18, margin: corner ? '30px 0 0' : '34px 0 0', justifyContent: corner ? 'flex-start' : 'center', animationDelay: '.4s' }}>
             <button className="hv-cta primary" onClick={() => router.push('/booking')}>{en ? 'Book a call' : '預約諮詢'}</button>
-            <button className="hv-cta secondary" onClick={() => router.push('/lab')}>{en ? 'See the work' : '看作品'}</button>
+            <button className="hv-link" onClick={() => router.push('/lab')}>{en ? 'Explore the work' : '探索作品'} <span className="arr" aria-hidden="true">→</span></button>
           </div>
-          {corner && (
-            <div className="hp-rise" style={{ margin: '40px 0 0', maxWidth: '40ch', borderTop: '1px solid var(--border-soft)', animationDelay: '.5s' }}>
-              {c.hero.pillars.map((p) => (
-                <div key={p.mark} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '15px 0', borderBottom: '1px solid var(--border-soft)' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 600, color: 'var(--accent)', border: '1px solid var(--accent)', borderRadius: '9999px', width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>{p.mark}</span>
-                  <div>
-                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 600, color: 'var(--fg)', letterSpacing: '-.01em' }}>{p.title}</div>
-                    <div style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.55, marginTop: 3 }}>{p.description}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
-        {!corner && (
-          <ul className="pillars hp-rise" style={{ listStyle: 'none', padding: '26px 0 0', margin: '52px 0 0', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, borderTop: '1px solid var(--border-soft)', animationDelay: '.55s' }}>
-            {c.hero.pillars.map((p) => (
-              <li key={p.mark} style={{ display: 'flex', gap: 14 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--accent)', border: '1px solid var(--border)', borderRadius: '9999px', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{p.mark}</span>
-                <div>
-                  <h2 style={{ fontFamily: 'var(--font-body)', fontSize: 18, fontWeight: 500, margin: '3px 0 4px', color: 'var(--fg)' }}>{p.title}</h2>
-                  <p style={{ fontSize: 14, color: 'var(--muted)', margin: 0, lineHeight: 1.5 }}>{p.description}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
         <p className="scrollcue" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--meta)', marginTop: 'clamp(32px, 5vh, 60px)', alignSelf: 'center' }}><span className="mouse"></span><span className="arw">↓</span> {c.hero.scrollCue}</p>
       </div>
     </section>

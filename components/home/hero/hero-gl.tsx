@@ -4,21 +4,20 @@ import { useEffect, useRef } from 'react'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 /**
- * Hero 3D backdrop — "AI Liquid Core", physically based.
+ * Hero 3D — "Dimensional Hyper-Core".
  *
- * A ray-marched liquid-glass body whose look comes from the maths rather than from tricks:
- *  - smooth-union implicit surface + low-frequency organic displacement (no bubbly metaball look)
- *  - refraction INTO the body, an interior march to measure thickness, Beer-Lambert absorption
- *    (thick = deep cobalt, thin = clear), then refraction OUT with per-channel IOR (real dispersion)
- *  - Schlick Fresnel blending the mirror reflection with the transmitted light
- *  - HDR studio environment built from rectangular soft-boxes (warm key-rim + cool key) so the
- *    highlights are the right shape and exceed 1.0, then ACES filmic tone mapping + sRGB encode
- *  - ambient occlusion from the distance field, thin-film tint only at grazing angles
- * Interaction: cursor pulls the gel toward it (gravity, eased), click sends one damped ripple,
- * CTA hover lights the core from inside, scrolling out of the hero pulls the blobs apart.
- * Cost control: bounding-sphere early-out, adaptive resolution (drops scale if frames run long),
- * 30fps cap on phones, paused off-screen / hidden tab, one static frame for reduced motion /
- * Data Saver (lib/motion/frame-loop).
+ * Not an object parked beside the copy: one scene that owns the whole hero.
+ *  - A ray-marched tesseract projection (obsidian-glass outer frame, titanium inner frame, eight
+ *    struts, emissive core) anchored bottom-right and bleeding off the viewport.
+ *  - The dark space behind it is a measurement grid that is lensed by two gravity wells — the core
+ *    and the cursor — so the warp reaches the headline on the left. The core emits a scan ring on
+ *    a fixed cadence (and on click) that lights the grid as it passes.
+ *  - Cursor tilts the assembly; hovering a CTA charges the core; scrolling out pulls the frames apart.
+ *  - Palette: black + titanium + ice-blue / UV rim. Orange is left to the CTA button.
+ * A DOM HUD (crosshairs, corner brackets, live cursor read-out) frames the canvas. The numbers are
+ * real (cursor position, runtime) — no invented telemetry.
+ * Cost control: bounding-sphere early-out, adaptive resolution, 30fps cap on phones, paused
+ * off-screen / hidden tab, one static frame for reduced motion / Data Saver (lib/motion/frame-loop).
  */
 const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`
 
@@ -32,161 +31,196 @@ uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;
 uniform float uPulse;  // seconds since last click (large = none)
 uniform float uGlow;   // 0..1 while a CTA is hovered
 uniform float uScroll; // 0..1 as the hero scrolls out
+uniform float uSpin;   // extra rotation from clicks (radians, eased in JS)
 
-vec3 C;   // body centre (set per aspect)
-float S;  // body scale
+vec3 C;   // core centre in world space
+float S;  // assembly scale
 
-float smin(float a, float b, float k){ float h = clamp(0.5 + 0.5 * (b - a) / k, 0., 1.); return mix(b, a, h) - k * h * (1. - h); }
+mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
-float map(vec3 wp){
-  vec3 p = (wp - C) / S;
-  float t = uTime * 0.32; // deliberately slow: the body "breathes"
-
-  // cursor gravity: the gel is drawn toward the pointer (displacement falls off with distance)
-  vec3 M = vec3(uMouse.x * 2.6, uMouse.y * 1.7, -0.5);
-  p += (M - p) * 0.26 * exp(-length(p - M) * 1.25);
-
-  float sp = 1.0 + uScroll * 1.7;           // scroll: lobes drift apart...
-  float k  = mix(0.46, 0.14, uScroll);      // ...and stop merging
-  float d = length(p - sp * vec3( sin(t*0.9)*0.66,  cos(t*0.7)*0.48,  sin(t*0.6+1.)*0.36)) - 0.60;
-  d = smin(d, length(p - sp * vec3( cos(t*0.8+2.)*0.74, sin(t*1.1)*0.52, cos(t*0.5)*0.40)) - 0.50, k);
-  d = smin(d, length(p - sp * vec3( sin(t*0.6+4.)*0.62, cos(t*0.9+1.)*0.66, sin(t*0.8+2.)*0.46)) - 0.46, k);
-  d = smin(d, length(p - sp * vec3( cos(t*1.2)*0.44,  sin(t*0.5+3.)*0.40, cos(t*0.7+1.)*0.52)) - 0.40, k);
-  d = smin(d, length(p - sp * vec3(-sin(t*0.7)*0.54, -cos(t*0.6+2.)*0.46, sin(t*0.9+5.)*0.34)) - 0.36, k);
-
-  // low-frequency organic surface relief (keeps normals smooth)
-  d += 0.085 * sin(p.x * 2.3 + t * 1.3) * sin(p.y * 2.1 - t) * sin(p.z * 2.6 + t * 0.7);
-  // click: one damped ripple travelling over the surface
-  d += 0.035 * sin(length(p) * 8. - uPulse * 7.) * exp(-uPulse * 2.4);
-  return d * S;
+float sdBoxFrame(vec3 p, vec3 b, float e){
+  p = abs(p) - b;
+  vec3 q = abs(p + e) - e;
+  return min(min(
+    length(max(vec3(p.x, q.y, q.z), 0.)) + min(max(p.x, max(q.y, q.z)), 0.),
+    length(max(vec3(q.x, p.y, q.z), 0.)) + min(max(q.x, max(p.y, q.z)), 0.)),
+    length(max(vec3(q.x, q.y, p.z), 0.)) + min(max(q.x, max(q.y, p.z)), 0.));
+}
+float sdCapsule(vec3 p, vec3 a, vec3 b, float r){
+  vec3 pa = p - a, ba = b - a;
+  float h = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.);
+  return length(pa - ba * h) - r;
 }
 
+// (distance, material): 1 obsidian outer frame, 2 titanium inner frame, 3 struts, 4 core
+vec2 mapId(vec3 wp){
+  float t = uTime;
+  vec3 p = (wp - C) / S;
+  // pointer leans the whole assembly (eased in JS); clicks add a decaying spin
+  p.xz *= rot(t * 0.22 + uSpin + uMouse.x * 0.9);
+  p.yz *= rot(0.55 + t * 0.15 - uMouse.y * 0.7);
+
+  float open = uScroll * 0.9;                   // scroll: the nested frames drift apart
+  float a = t * 0.31 + 0.6, b = -t * 0.23;      // inner frame rotates against the outer one
+
+  float d1 = sdBoxFrame(p, vec3(1.0), 0.030);
+
+  vec3 q = p;
+  q.xz *= rot(a); q.yz *= rot(b);
+  float d2 = sdBoxFrame(q, vec3(0.50 - open * 0.2), 0.024);
+
+  // eight struts joining matching vertices of the two cubes (the tesseract edges)
+  float d3 = 1e3;
+  for (int i = 0; i < 8; i++){
+    float fi = float(i);
+    vec3 c = vec3(mod(fi, 2.), mod(floor(fi * 0.5), 2.), floor(fi * 0.25)) * 2. - 1.;
+    vec3 inner = c * (0.50 - open * 0.2);
+    inner.yz *= rot(-b); inner.xz *= rot(-a);   // inverse of the inner-frame rotation, back into outer space
+    d3 = min(d3, sdCapsule(p, inner, c, 0.010));
+  }
+
+  float d4 = length(p) - (0.17 + 0.02 * sin(t * 2.0) + uGlow * 0.04);
+
+  vec2 r = vec2(d1, 1.);
+  if (d2 < r.x) r = vec2(d2, 2.);
+  if (d3 < r.x) r = vec2(d3, 3.);
+  if (d4 < r.x) r = vec2(d4, 4.);
+  r.x *= S;
+  return r;
+}
+float map(vec3 p){ return mapId(p).x; }
+
 vec3 normalAt(vec3 p){
-  const float e = 0.0018;
+  const float e = 0.0026;
   vec2 k = vec2(1., -1.);
   return normalize(k.xyy * map(p + k.xyy * e) + k.yyx * map(p + k.yyx * e) + k.yxy * map(p + k.yxy * e) + k.xxx * map(p + k.xxx * e));
 }
 
-// rectangular soft-box: N = facing direction, size = half extents in tangent units, soft = edge falloff
 float box(vec3 r, vec3 N, vec3 T, vec2 size, float soft){
   float f = dot(r, N);
   if (f < 0.05) return 0.;
   vec3 B = cross(N, T);
   vec2 uv = vec2(dot(r, T), dot(r, B)) / f;
   vec2 q = abs(uv) - size;
-  float sd = max(q.x, q.y);
-  return smoothstep(soft, -soft, sd);
+  return smoothstep(soft, -soft, max(q.x, q.y));
 }
 
-// HDR studio (linear): dark blue dome, horizon glow, cool key box, warm rim box, cyan fill strip, dark floor
+// cold studio (linear HDR): black dome, ice horizon, cool key box, UV-violet rim box
 vec3 env(vec3 r){
   float y = r.y;
-  vec3 col = mix(vec3(0.001, 0.002, 0.010), vec3(0.006, 0.020, 0.090), smoothstep(-0.3, 1.0, y));
-  col += vec3(0.04, 0.12, 0.50) * exp(-abs(y + 0.04) * 13.) * 0.55;
-  col += vec3(1.00, 0.96, 0.90) * box(r, normalize(vec3(-0.45, 0.65, -0.60)), normalize(vec3(0.8, 0.0, -0.6)), vec2(0.42, 0.20), 0.10) * 12.;
-  col += vec3(1.00, 0.34, 0.05) * box(r, normalize(vec3( 0.85, 0.05, -0.50)), vec3(0., 1., 0.), vec2(0.70, 0.11), 0.12) * 10.;
-  col += vec3(0.20, 0.55, 1.00) * box(r, normalize(vec3(-0.90, -0.15, -0.30)), vec3(0., 1., 0.), vec2(0.34, 0.08), 0.12) * 4.0;
-  col *= mix(0.30, 1.0, smoothstep(-0.45, 0.10, y));
+  vec3 col = mix(vec3(0.001, 0.002, 0.008), vec3(0.008, 0.022, 0.085), smoothstep(-0.3, 1., y));
+  col += vec3(0.10, 0.28, 0.75) * exp(-abs(y + 0.03) * 12.) * 0.6;
+  col += vec3(0.85, 0.95, 1.00) * box(r, normalize(vec3(-0.5, 0.7, -0.5)), normalize(vec3(0.8, 0., -0.6)), vec2(0.40, 0.18), 0.10) * 11.;
+  col += vec3(0.42, 0.30, 1.00) * box(r, normalize(vec3(0.85, 0.1, -0.5)), vec3(0., 1., 0.), vec2(0.70, 0.10), 0.12) * 8.;
+  col += vec3(0.30, 0.65, 1.00) * box(r, normalize(vec3(-0.9, -0.2, -0.3)), vec3(0., 1., 0.), vec2(0.30, 0.08), 0.12) * 3.;
+  col *= mix(0.30, 1., smoothstep(-0.4, 0.1, y));
   return col;
 }
 
 vec3 aces(vec3 x){ return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0., 1.); }
 
+// measurement grid: thin lines, brighter every 4th
+float gridLines(vec2 g, float w){
+  vec2 d = min(abs(fract(g + 0.5) - 0.5), vec2(1.));
+  float minor = 1. - smoothstep(0., w, min(d.x, d.y));
+  vec2 g4 = g / 4.;
+  vec2 d4 = abs(fract(g4 + 0.5) - 0.5) * 4.;
+  float major = 1. - smoothstep(0., w * 1.6, min(d4.x, d4.y));
+  return minor * 0.45 + major * 0.9;
+}
+
 void main(){
   float asp = uRes.x / uRes.y;
   vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
-  // framing: large, to the right of the copy on desktop; smaller and lifted above the copy on portrait
-  S = asp < 1.0 ? 0.42 : mix(0.46, 0.58, clamp((asp - 1.0) / 0.8, 0., 1.));
-  C = asp < 1.0 ? vec3(0.22, -0.42, 0.0) : vec3(0.40 * asp, 0.02, 0.0);
-  float dim = asp < 1.0 ? 0.72 : 1.0; // on phones the body sits behind/below the copy: keep it quieter
 
-  // background (linear): CI blue pooled behind the body, falling to deep navy for contrast
-  vec2 cuv = uv - C.xy * 0.53;
-  vec3 col = mix(vec3(0.0, 0.002, 0.030), vec3(0.0, 0.028, 0.20), smoothstep(1.25, 0.0, length(cuv)));
-  col += vec3(1.0, 0.28, 0.04) * exp(-6. * length(cuv - vec2(0.14, -0.24))) * 0.05;
+  // framing: big, anchored bottom-right and bleeding off the edge; smaller/lower on portrait
+  S = asp < 1.0 ? 0.46 : mix(0.46, 0.56, clamp((asp - 1.0) / 0.8, 0., 1.));
+  C = asp < 1.0 ? vec3(0.28, -0.58, 0.0) : vec3(0.47 * asp, -0.20, 0.0);
+  vec2 cs = C.xy * 0.533;                                   // core in screen space (camera z=-3, focal 1.6)
+  vec2 ms = vec2(uMouse.x * asp, uMouse.y);                 // cursor in screen space
 
-  vec3 bg0 = col;
+  // ---- space: two gravity wells (core + cursor) lens the grid, so the warp reaches the copy ----
+  vec2 d1 = uv - cs;
+  vec2 d2 = uv - ms;
+  vec2 uvw = uv - d1 * (0.030 / (dot(d1, d1) + 0.045)) - d2 * (0.010 / (dot(d2, d2) + 0.030));
+
+  float dist = length(d1);
+  // scan rings: one every 4.5s from the core, plus one per click
+  float rr = mod(uTime, 4.5) * 0.55;
+  float ring = exp(-pow((dist - rr) * 9., 2.)) * (1. - smoothstep(0.0, 2.6, rr));
+  float rc = uPulse * 1.25;
+  ring += exp(-pow((dist - rc) * 9., 2.)) * (1. - smoothstep(0.0, 2.6, rc)) * step(uPulse, 2.2);
+
+  vec3 bg = mix(vec3(0.0005, 0.0015, 0.008), vec3(0.002, 0.012, 0.06), smoothstep(1.7, 0., dist));
+  bg += vec3(0.05, 0.18, 0.60) * exp(-dist * 2.6) * 0.30;   // halo
+  float fade = exp(-dist * 0.85);
+  float gl = gridLines(uvw * 14., 14. * 1.3 / uRes.y);
+  bg += vec3(0.16, 0.42, 0.95) * gl * (0.018 + 0.075 * fade);
+  bg += vec3(0.30, 0.65, 1.00) * gl * ring * 1.1;           // the scan ring lights the grid it crosses
+  bg += vec3(0.30, 0.55, 1.00) * ring * 0.03;
+  vec3 col = bg;
+
   vec3 ro = vec3(0., 0., -3.0);
   vec3 rd = normalize(vec3(uv, 1.6));
 
+  // bloom from the core, independent of occlusion: closest approach of the ray to the core centre
+  float cd = length(cross(rd, C - ro));
+  float corona = exp(-cd * cd / (0.030 * S * S)) * (0.55 + uGlow * 1.2 + ring * 0.4);
+  col += vec3(0.35, 0.65, 1.0) * corona * 0.55;
+
+  vec3 bg0 = col;
   vec3 oc = ro - C;
   float b = dot(oc, rd);
-  float rb = 1.75 * S + 0.25;
+  float rb = 1.78 * S;
   float disc = b * b - (dot(oc, oc) - rb * rb);
   if (disc > 0.) {
     float sq = sqrt(disc);
     float t = max(-b - sq, 0.);
     float tmax = -b + sq;
     bool hit = false;
-    float mc = 1e3; // smallest distance-to-surface / ray-distance seen: how close a miss came (silhouette AA)
-    for (int i = 0; i < 72; i++){
+    float mc = 1e3;
+    for (int i = 0; i < 88; i++){
       float dm = map(ro + rd * t);
       mc = min(mc, dm / max(t, 0.5));
-      float d = dm * 0.85;
-      if (d < 0.0012){ hit = true; break; }
-      t += d;
+      float dd = dm * 0.9;
+      if (dd < 0.0013){ hit = true; break; }
+      t += dd;
       if (t > tmax) break;
     }
     if (!hit) {
-      // rays that graze the body cover part of the pixel: blend a rim colour by angular coverage
       float px = 1.0 / (uRes.y * 1.6);
-      float cov = 1. - smoothstep(0., px * 1.5, mc);
-      col = mix(col, vec3(0.16, 0.26, 0.62), cov * 0.85);
-    }
-    if (hit){
+      float cov = 1. - smoothstep(0., px * 1.4, mc);
+      col = mix(col, vec3(0.30, 0.50, 0.95) * 0.5, cov * 0.8);
+    } else {
       vec3 p = ro + rd * t;
       vec3 n = normalAt(p);
+      float id = mapId(p).y;
       float ndv = clamp(dot(n, -rd), 0., 1.);
+      float fres = pow(1. - ndv, 3.);
+      vec3 rf = reflect(rd, n);
+      vec3 disp = vec3(env(reflect(rd, normalize(n + vec3(0.04, 0., 0.)))).r, env(rf).g, env(reflect(rd, normalize(n - vec3(0.04, 0., 0.)))).b);
+      float ao = clamp(0.4 + 0.6 * map(p + n * 0.12) / 0.12, 0.3, 1.);
+      float spec = pow(max(dot(rf, normalize(vec3(-0.5, 0.7, -0.6))), 0.), 80.);
+      vec3 pl = (p - C) / S;
+      float flow = 0.5 + 0.5 * sin(uTime * 3.0 - length(pl) * 7.);   // energy travelling out along the frame
 
-      // Fresnel (Schlick). F0 a little above plain glass so the liquid keeps a glossy, metallic sheen.
-      float F = 0.07 + 0.93 * pow(1. - ndv, 4.);
-      vec3 refl = env(reflect(rd, n));
-
-      // --- transmission: refract in, march the interior for thickness, refract out (per-channel IOR) ---
-      vec3 tin = refract(rd, n, 1.0 / 1.48);
-      float th = 0.02;
-      for (int i = 0; i < 24; i++){
-        float d = -map(p + tin * th);
-        if (d < 0.004) break;
-        th += max(d, 0.02);
+      if (id < 1.5) {            // obsidian glass: almost black, cold fresnel rim, sharp reflections
+        col = vec3(0.003, 0.004, 0.012) + disp * (0.03 + 0.55 * fres) * ao + vec3(0.40, 0.68, 1.0) * fres * 0.55 + spec * 1.5;
+        col += vec3(0.35, 0.6, 1.0) * flow * 0.06 * (1. - fres);
+      } else if (id < 2.5) {     // titanium: cool silver metal
+        col = disp * vec3(0.78, 0.84, 0.95) * (0.42 + 0.5 * fres) * ao + spec * 1.2;
+      } else if (id < 3.5) {     // struts: dark metal with a travelling pulse
+        col = disp * vec3(0.6, 0.7, 0.9) * 0.45 * ao + vec3(0.30, 0.62, 1.0) * flow * (0.55 + uGlow);
+      } else {                   // emissive core
+        float lum = 1.1 + uGlow * 2.2 + ring * 1.6;
+        col = mix(vec3(0.10, 0.32, 0.95), vec3(0.70, 0.90, 1.0), pow(ndv, 1.6)) * lum * (0.85 + 0.15 * flow);
       }
-      vec3 pe = p + tin * th;
-      vec3 ne = normalAt(pe);                       // outward at the exit point
-      vec3 oR = refract(tin, -ne, 1.44);
-      vec3 oG = refract(tin, -ne, 1.48);
-      vec3 oB = refract(tin, -ne, 1.53);
-      vec3 inner = -ne;                             // total internal reflection fallback
-      if (dot(oG, oG) < 0.0001) { oR = oG = oB = reflect(tin, inner); }
-      vec3 through = vec3(env(oR).r, env(oG).g, env(oB).b);
-
-      // Beer-Lambert: thick regions absorb red/green first -> deep cobalt; thin regions stay clear
-      vec3 absorb = exp(-vec3(2.6, 1.7, 0.55) * th * 1.7);
-      // single-scatter glow so thick regions are luminous jelly rather than black
-      vec3 scatter = vec3(0.03, 0.14, 0.80) * (1. - exp(-th * 1.6)) * 0.30;
-      // luminous core: a warm emissive heart seen through the body. Distance from the core centre to the
-      // refracted ray picks how much of it is visible; absorption dims it with the depth it is seen through.
-      float cd = length(cross(tin, C - p));
-      vec3 core = (vec3(1.0, 0.40, 0.06) * 1.2 + vec3(1.0, 0.85, 0.6) * 0.7 * exp(-cd * cd * 110.)) * exp(-cd * cd * 30.) * (0.60 + uGlow * 1.6);
-      vec3 trans = through * absorb + scatter + core * exp(-vec3(1.4, 1.0, 0.5) * 0.6);
-
-      // ambient occlusion from the distance field (darkens creases where lobes merge)
-      float ao = clamp(0.35 + 0.65 * (map(p + n * 0.12) + map(p + n * 0.30) * 0.5) / 0.22, 0.30, 1.0);
-
-      // thin-film tint, only at grazing angles (oil-slick rim)
-      vec3 film = 0.5 + 0.5 * cos(6.2831 * (vec3(0.0, 0.33, 0.67) + ndv * 1.2 + uTime * 0.02));
-
-      vec3 body = mix(trans * ao, refl, F) + film * pow(1. - ndv, 3.) * 0.30;
-      // CTA hover: light the core from inside
-      body += vec3(0.20, 0.45, 1.0) * uGlow * 0.55 * (1. - exp(-th * 2.)) + vec3(1.0, 0.4, 0.1) * uGlow * 0.10 * (1. - ndv);
-      col = body;
     }
   }
+  col = mix(bg0, col, asp < 1.0 ? 0.85 : 1.0);
 
-  col = mix(bg0, col, dim);
-
-  // filmic tone map (HDR highlights roll off naturally), vignette, sRGB encode, grain
   col = aces(col * 1.05);
-  col *= 1.0 - 0.38 * smoothstep(0.55, 1.2, length(uv));
+  col *= 1.0 - 0.42 * smoothstep(0.55, 1.25, length(uv));
   col = pow(col, vec3(1. / 2.2));
   col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + uTime) * 43758.5453) - 0.5) * 0.010;
   gl_FragColor = vec4(col, 1.);
@@ -202,8 +236,12 @@ export function canUseWebGL(): boolean {
   }
 }
 
+const pad = (n: number, w = 2) => String(Math.floor(n)).padStart(w, '0')
+
 export default function HeroGl({ active }: { active: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null)
+  const cursorRef = useRef<HTMLSpanElement>(null)
+  const clockRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     if (!active) return
@@ -235,17 +273,14 @@ export default function HeroGl({ active }: { active: boolean }) {
     gl.enableVertexAttribArray(loc)
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
 
-    const uRes = gl.getUniformLocation(prog, 'uRes')
-    const uTime = gl.getUniformLocation(prog, 'uTime')
-    const uMouse = gl.getUniformLocation(prog, 'uMouse')
-    const uPulse = gl.getUniformLocation(prog, 'uPulse')
-    const uGlow = gl.getUniformLocation(prog, 'uGlow')
-    const uScroll = gl.getUniformLocation(prog, 'uScroll')
+    const U = (n: string) => gl.getUniformLocation(prog, n)
+    const uRes = U('uRes'), uTime = U('uTime'), uMouse = U('uMouse'), uPulse = U('uPulse')
+    const uGlow = U('uGlow'), uScroll = U('uScroll'), uSpin = U('uSpin')
     const section = cv.closest('section')
 
     // adaptive resolution: start sub-native, step down if frames run long on weaker GPUs
     const phone = window.innerWidth < 768
-    const maxScale = Math.min(window.devicePixelRatio || 1, 1.5) * (phone ? 0.5 : 0.85)
+    const maxScale = Math.min(window.devicePixelRatio || 1, 1.5) * (phone ? 0.65 : 0.85)
     let scale = maxScale
     const minScale = maxScale * 0.45
     const resize = () => {
@@ -264,9 +299,11 @@ export default function HeroGl({ active }: { active: boolean }) {
     }
     window.addEventListener('mousemove', onMove, { passive: true })
 
-    // click (hero dispatches 'heroTap') -> ripple; CTA hover -> core glow
+    // click (hero dispatches 'heroTap') -> scan ring + spin-up; CTA hover -> charge the core
     let clickAt = -1e9
-    const onTap = () => { clickAt = performance.now() }
+    let spin = 0
+    let spinVel = 0
+    const onTap = () => { clickAt = performance.now(); spinVel += 4 }
     let glowTarget = 0
     let glow = 0
     const onOver = (e: PointerEvent) => {
@@ -282,7 +319,6 @@ export default function HeroGl({ active }: { active: boolean }) {
       const now = performance.now()
       const dt = now - prev
       prev = now
-      // adaptive resolution: ~24 consecutive slow frames (>26ms) -> shrink 15%
       if (dt > 26 && dt < 400) slow++
       else slow = Math.max(0, slow - 1)
       if (slow > 24 && scale > minScale) {
@@ -290,18 +326,29 @@ export default function HeroGl({ active }: { active: boolean }) {
         slow = 0
         resize()
       }
-
+      const dts = Math.min(dt / 1000, 0.05)
+      spin += spinVel * dts
+      spinVel *= 0.94
       mouse.x += (mouse.tx - mouse.x) * 0.05
       mouse.y += (mouse.ty - mouse.y) * 0.05
       glow += (glowTarget - glow) * 0.08
       const r = section?.getBoundingClientRect()
+      const secs = (now - start) / 1000
       gl.uniform2f(uRes, cv.width, cv.height)
-      gl.uniform1f(uTime, (now - start) / 1000)
+      gl.uniform1f(uTime, secs)
       gl.uniform2f(uMouse, mouse.x, mouse.y)
       gl.uniform1f(uGlow, glow)
       gl.uniform1f(uPulse, Math.min((now - clickAt) / 1000, 99))
+      gl.uniform1f(uSpin, spin)
       gl.uniform1f(uScroll, r ? Math.min(Math.max(-r.top / (r.height * 0.8), 0), 1) : 0)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
+      // live HUD read-out: real cursor position and runtime, written straight to the DOM (no React re-render)
+      if (cursorRef.current) {
+        const sx = mouse.x >= 0 ? '+' : '-'
+        const sy = mouse.y >= 0 ? '+' : '-'
+        cursorRef.current.textContent = `X ${sx}${Math.abs(mouse.x).toFixed(2)}  Y ${sy}${Math.abs(mouse.y).toFixed(2)}`
+      }
+      if (clockRef.current) clockRef.current.textContent = `T+${pad(secs / 60)}:${pad(secs % 60)}.${pad((secs % 1) * 10, 1)}`
     }
     const stop = startFrameLoop({ host: cv.parentElement, frame: draw })
 
@@ -318,6 +365,19 @@ export default function HeroGl({ active }: { active: boolean }) {
   return (
     <div className={'hv-bg' + (active ? ' on' : '')}>
       <canvas ref={ref} className="hb-cv" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />
+      {/* HUD: framing marks + live read-out (decorative, no pointer events) */}
+      <div className="gl-hud" aria-hidden="true">
+        <i className="gl-cross" style={{ left: '56%', top: '24%' }} />
+        <i className="gl-cross" style={{ left: '91%', top: '46%' }} />
+        <i className="gl-cross" style={{ left: '63%', top: '86%' }} />
+        <i className="gl-br gl-br-tl" />
+        <i className="gl-br gl-br-br" />
+        <div className="gl-readout">
+          <span>SYS.STATUS: ONLINE // 2026.10</span>
+          <span ref={cursorRef}>X +0.00  Y +0.00</span>
+          <span ref={clockRef}>T+00:00.0</span>
+        </div>
+      </div>
     </div>
   )
 }

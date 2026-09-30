@@ -1637,10 +1637,6 @@ a {
   .home-path-item .home-path-node { transition: none; }
 }
 
-/* Magnetic primary buttons (pointer devices only; see components/magnetic-fx.tsx) */
-.brand-button-primary, .hv-cta.primary { translate: var(--mx, 0px) var(--my, 0px); }
-.brand-button-primary, .hv-cta.primary { transition-property: translate, background-color, border-color, color, box-shadow, transform; transition-duration: var(--motion-base); transition-timing-function: var(--ease-out); }
-
 /* ── Orange field refinement ─────────────────────────────────────────────
    Blue accents on the orange field vibrate (complementary hues). On orange, structure is drawn in
    ONE consistent translucent-white treatment — same border alpha, same fill — so nothing reads as a
@@ -1709,3 +1705,43 @@ a {
   border-bottom: 1px solid var(--header-line);
   transition: background-color var(--motion-base) var(--ease-standard);
 }
+
+/* Section indicator: hairline ticks instead of numbered discs (quieter, keeps the 3D hero clear) */
+.home-section-nav { gap: 0.1rem; }
+.home-section-nav-dot {
+  width: 30px; height: 20px; padding: 0; border: 0 !important; border-radius: 0;
+  background: transparent !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-size: 0; color: transparent !important; justify-content: flex-end;
+}
+.home-section-nav-dot::before {
+  content: ""; display: block; height: 2px; width: 10px; border-radius: 2px;
+  background: rgba(255, 255, 255, 0.42);
+  transition: width var(--motion-base) var(--ease-out), background-color var(--motion-base) var(--ease-standard);
+}
+.home-section-nav-dot:hover::before { width: 18px; background: #fff; }
+.home-section-nav-dot-active::before { width: 26px; background: #fff; }
+
+/* Principles (second screen) */
+.home-section-principles .home-section-inner { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.home-principles-grid { list-style: none; margin: 2.25rem 0 0; padding: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .home-principles-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.home-principles-card {
+  position: relative; padding: 26px; border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+}
+.home-principles-mark { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); font-family: var(--font-mono); font-size: 13px; color: #fff; }
+.home-principles-card h3 { margin: 18px 0 8px; font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; color: var(--fg); }
+.home-principles-card p { margin: 0; font-size: 0.95rem; line-height: 1.7; color: var(--fg-2); font-weight: 300; }
+
+/* Hero HUD (hero-gl): hairline crosshairs, corner brackets and a mono read-out. Decorative only. */
+.gl-hud { position: absolute; inset: 0; pointer-events: none; font-family: var(--font-mono); }
+.gl-cross { position: absolute; width: 13px; height: 13px; transform: translate(-50%, -50%); opacity: .55; }
+.gl-cross::before, .gl-cross::after { content: ""; position: absolute; background: rgba(170, 205, 255, .85); }
+.gl-cross::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.gl-cross::after { top: 50%; left: 0; right: 0; height: 1px; }
+.gl-br { position: absolute; width: 18px; height: 18px; opacity: .6; border: 0 solid rgba(170, 205, 255, .8); }
+.gl-br-tl { left: 50%; top: 17%; border-left-width: 1px; border-top-width: 1px; }
+.gl-br-br { right: 3%; bottom: 13%; border-right-width: 1px; border-bottom-width: 1px; }
+.gl-readout { position: absolute; right: clamp(16px, 3vw, 48px); bottom: clamp(56px, 9vh, 96px); display: grid; gap: 4px; text-align: right; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(170, 205, 255, .7); font-variant-numeric: tabular-nums; }
+@media (max-width: 767px) { .gl-cross, .gl-br-tl { display: none; } .gl-readout { bottom: calc(var(--tab-bar-h, 60px) + 14px); } .gl-readout span:nth-child(n+2) { display: none; } }

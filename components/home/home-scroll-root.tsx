@@ -4,6 +4,7 @@ import { useLanguage } from '@/components/language-provider'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { HomeSectionProgressNav } from '@/components/home/home-section-progress-nav'
 import { HeroV2 } from '@/components/home/hero/hero-v2'
+import { SectionPrinciples } from '@/components/home/sections/section-principles'
 import { SectionAbout } from '@/components/home/sections/section-about'
 import { SectionLab } from '@/components/home/sections/section-lab'
 import { SectionPath } from '@/components/home/sections/section-path'
@@ -22,6 +23,7 @@ export function HomeScrollRoot() {
     <div className="home-scroll-root">
       <HomeSectionProgressNav />
       <HeroV2 locale={homeLocale} />
+      <SectionPrinciples locale={homeLocale} />
       <SectionAbout locale={homeLocale} />
       <SectionLab locale={homeLocale} />
       <SectionPath locale={homeLocale} />

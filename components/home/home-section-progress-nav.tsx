@@ -5,6 +5,7 @@ import { HOME_SECTION_IDS } from '@/lib/content/home-sections'
 
 const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero',
+  principles: 'Principles',
   about: 'Story',
   lab: 'Lab',
   path: 'Path',

@@ -38,7 +38,7 @@ export default function ServicesPage() {
         <Link href="/about" className="brand-button-secondary inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)]">
           {t("services.aboutCta")}
         </Link>
-        <Link href="/pricing" className="ghost-action inline-flex items-center gap-2 px-4 py-2 text-sm">
+        <Link href="/services#pricing" className="ghost-action inline-flex items-center gap-2 px-4 py-2 text-sm">
           {t("nav.pricing")}
         </Link>
       </section>

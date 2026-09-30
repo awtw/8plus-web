@@ -5,7 +5,6 @@ const root = process.cwd()
 const files = [
   'app/(site)/page.tsx',
   'app/(site)/about/page.tsx',
-  'app/(site)/share/page.tsx',
   'app/(site)/path/page.tsx',
   'components/site-header.tsx',
   'components/mobile-nav.tsx',

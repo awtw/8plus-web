@@ -5,15 +5,14 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./logo";
 import { useLanguage } from "./language-provider";
 import { footerNavigation } from "@/lib/navigation";
-import { isDesignLabFullscreenPath, isShareHubPath } from "@/lib/site-paths";
+import { isShareHubPath } from "@/lib/site-paths";
 
 export default function SiteFooter() {
   const pathname = usePathname();
   const { t } = useLanguage();
   const isSharePage = isShareHubPath(pathname);
-  const isLabFullscreen = isDesignLabFullscreenPath(pathname);
 
-  if (isSharePage || isLabFullscreen) {
+  if (isSharePage) {
     return null;
   }
 

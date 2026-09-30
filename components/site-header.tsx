@@ -8,7 +8,7 @@ import { LogoHomeLink } from "./logo-home-link";
 import LanguageSwitcher from "./language-switcher";
 import { NavLink } from "./nav-link";
 import { siteNavigation } from "@/lib/navigation";
-import { isDesignLabFullscreenPath, isShareHubPath } from "@/lib/site-paths";
+import { isShareHubPath } from "@/lib/site-paths";
 
 const navLinkClass =
   "text-[color:var(--fg-2)] opacity-70 transition-opacity hover:opacity-100 hover:underline underline-offset-8 decoration-[color:var(--border)]";
@@ -24,7 +24,6 @@ export default function SiteHeader() {
   const { t } = useLanguage();
   const pathname = usePathname();
   const isSharePage = isShareHubPath(pathname);
-  const isLabFullscreen = isDesignLabFullscreenPath(pathname);
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
 
@@ -40,7 +39,7 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHomePage]);
 
-  if (isSharePage || isLabFullscreen) {
+  if (isSharePage) {
     return null;
   }
 

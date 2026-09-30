@@ -1,49 +1,87 @@
 'use client'
 
-import Link from "next/link";
-import { useLanguage } from "@/components/language-provider";
-import { getProcessPricingContent } from "@/lib/content/process-pricing";
-import { FaqSection } from "@/components/faq-section";
+import Link from 'next/link'
+import '@/styles/pages/services.css'
+import { useLanguage } from '@/components/language-provider'
+import { getProcessPricingContent } from '@/lib/content/process-pricing'
+import { PageSection } from '@/components/page/page-section'
+import { PageHeader } from '@/components/page/page-header'
+import { SectionHead } from '@/components/services/section-head'
+import { Pipeline } from '@/components/services/pipeline'
+import { ProcessList } from '@/components/services/process-list'
+import { PricingGrid } from '@/components/services/pricing-grid'
+import { FaqList } from '@/components/services/faq-list'
 
 export default function ServicesPage() {
-  const { locale, t, tn } = useLanguage();
-  const items = tn("services.items") as Array<{ title: string; desc: string }>;
-  const { faq } = getProcessPricingContent(locale);
+  const { locale, t, tn } = useLanguage()
+  const items = tn('services.items') as Array<{ title: string; desc: string }>
+  const { pipeline, process, pricing, faq, faqEyebrow, faqTitle, cta } = getProcessPricingContent(locale)
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F']
 
   return (
-    <div className="section-shell section-pad-y">
-      <section className="max-w-5xl">
-        <span className="eyebrow">{t("services.eyebrow")}</span>
-        <h1 className="display-title mt-5 text-[clamp(2.5rem,6vw,4.5rem)] tracking-[-0.04em]">
-          {t("services.headline")}
-        </h1>
-        <p className="body-lead mt-4 max-w-3xl">
-          {t("services.lead")}
-        </p>
-      </section>
+    <>
+      <PageSection field="blue">
+        <PageHeader
+          className="services-rise"
+          eyebrow={`04 · ${t('services.eyebrow').toUpperCase()}`}
+          title={t('services.headline')}
+          lead={t('services.lead')}
+        />
+      </PageSection>
 
-      <section className="mt-10 grid gap-4 md:grid-cols-2">
-        {items.map((item) => (
-          <article key={item.title} className="surface-card p-6">
-            <h2 className="text-xl font-semibold tracking-[-0.03em]">{item.title}</h2>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--fg-2)]">{item.desc}</p>
-          </article>
-        ))}
-      </section>
+      <PageSection field="orange" aria-labelledby="services-pipeline-title">
+        <SectionHead id="services-pipeline-title" eyebrow={pipeline.eyebrow} title={pipeline.title} lead={pipeline.lead} />
+        <Pipeline steps={pipeline.steps} />
+      </PageSection>
 
-      <section className="mt-8 flex flex-wrap items-center gap-3">
-        <Link href="/booking" className="brand-button-primary inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)]">
-          {t("services.bookCta")}
-        </Link>
-        <Link href="/about" className="brand-button-secondary inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)]">
-          {t("services.aboutCta")}
-        </Link>
-        <Link href="/services#pricing" className="ghost-action inline-flex items-center gap-2 px-4 py-2 text-sm">
-          {t("nav.pricing")}
-        </Link>
-      </section>
+      <PageSection field="blue" aria-labelledby="services-offer-title">
+        <SectionHead id="services-offer-title" eyebrow="SERVICES" title={t('services.title')} />
+        <ul className="services-grid services-grid-2">
+          {items.map((item, i) => (
+            <li key={item.title}>
+              <article className="gradient-border-card services-card">
+                <span className="services-card-meta">
+                  <span>{letters[i] ?? i + 1} · SERVICE</span>
+                  <span className="services-arrow" aria-hidden="true">↗</span>
+                </span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </PageSection>
 
-      <FaqSection items={faq} title={locale === "zh-TW" ? "常見問題" : "FAQ"} className="mt-14 max-w-3xl" />
-    </div>
-  );
+      <PageSection field="orange" id="process" className="services-anchor" aria-labelledby="services-process-title">
+        <SectionHead id="services-process-title" eyebrow={process.eyebrow} title={process.title} lead={process.lead} />
+        <ProcessList steps={process.steps} />
+        <div className="services-actions">
+          <Link href="/booking" className="brand-button-primary">{process.cta}</Link>
+        </div>
+      </PageSection>
+
+      <PageSection field="blue" id="pricing" className="services-anchor" aria-labelledby="services-pricing-title">
+        <SectionHead id="services-pricing-title" eyebrow={pricing.eyebrow} title={pricing.title} lead={pricing.lead} />
+        <PricingGrid tiers={pricing.tiers} />
+        <p className="services-note">{pricing.note}</p>
+        <div className="services-actions">
+          <Link href="/booking" className="brand-button-primary">{pricing.cta}</Link>
+        </div>
+      </PageSection>
+
+      <PageSection field="orange" aria-labelledby="services-faq-title">
+        <SectionHead id="services-faq-title" eyebrow={faqEyebrow} title={faqTitle} />
+        <FaqList items={faq} />
+      </PageSection>
+
+      <PageSection field="dark" aria-labelledby="services-cta-title">
+        <SectionHead id="services-cta-title" title={cta.title} />
+        <div className="services-actions">
+          <Link href="/booking" className="brand-button-primary">{cta.book} →</Link>
+          <Link href="/about" className="brand-button-secondary">{cta.about}</Link>
+          <Link href="#pricing" className="brand-button-secondary">{t('nav.pricing')}</Link>
+        </div>
+      </PageSection>
+    </>
+  )
 }

@@ -15,7 +15,22 @@ export type PricingTier = {
   features: string[];
 };
 
+export type PipelineStep = {
+  step: string;
+  title: string;
+  description: string;
+};
+
 export type ProcessPricingContent = {
+  pipeline: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    steps: PipelineStep[];
+  };
+  faqTitle: string;
+  faqEyebrow: string;
+  cta: { title: string; book: string; about: string };
   process: {
     eyebrow: string;
     title: string;
@@ -36,6 +51,21 @@ export type ProcessPricingContent = {
 
 export const processPricingContent: Record<Locale, ProcessPricingContent> = {
   "zh-TW": {
+    pipeline: {
+      eyebrow: "END-TO-END · 一條龍",
+      title: "從一張草圖到正式上線，交給同一個人",
+      lead: "重新設計、前後端架構、租借雲端主機、購買網域、部署上架 —— 你不用四處找不同廠商對接，整條產線由我一手串起來。",
+      steps: [
+        { step: "01", title: "重新設計", description: "品牌與介面重塑，先把「要給誰看、想達成什麼」講清楚。" },
+        { step: "02", title: "前後端架構", description: "從資料模型、API 到前端實作，一條線設計，不留接縫。" },
+        { step: "03", title: "雲端主機", description: "依流量與預算選型，租借並設定雲端伺服器與執行環境。" },
+        { step: "04", title: "網域申請", description: "選購網域、設定 DNS 與 HTTPS 憑證，門牌一次到位。" },
+        { step: "05", title: "部署上架", description: "CI/CD 部署、上線監控，交付一個真的能跑起來的網站。" },
+      ],
+    },
+    faqEyebrow: "FAQ",
+    faqTitle: "常見問題",
+    cta: { title: "準備好把問題做清楚了嗎？", book: "前往預約", about: "看更多背景" },
     process: {
       eyebrow: "合作流程",
       title: "從對談到可驗證交付",
@@ -118,6 +148,21 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
     ],
   },
   en: {
+    pipeline: {
+      eyebrow: "END-TO-END",
+      title: "From a sketch to production, with one person",
+      lead: "Redesign, front/back-end architecture, cloud hosting, domain, and deployment — no juggling vendors. The whole line is connected by one owner.",
+      steps: [
+        { step: "01", title: "Redesign", description: "Brand and interface reshaped, starting with who it is for and what it must achieve." },
+        { step: "02", title: "Front/back-end architecture", description: "From data model and API to front-end implementation, designed as one line with no seams." },
+        { step: "03", title: "Cloud hosting", description: "Sized to traffic and budget; servers and runtime environment provisioned and configured." },
+        { step: "04", title: "Domain", description: "Domain purchase, DNS, and HTTPS certificates, handled in one pass." },
+        { step: "05", title: "Deploy & launch", description: "CI/CD deployment and production monitoring — a site that actually runs." },
+      ],
+    },
+    faqEyebrow: "FAQ",
+    faqTitle: "FAQ",
+    cta: { title: "Ready to make the problem clear?", book: "Book a call", about: "Read the background" },
     process: {
       eyebrow: "Process",
       title: "From conversation to verified delivery",

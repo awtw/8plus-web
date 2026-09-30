@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** Phase 5.0 — **首頁六 Section Scroll**；Hero = Editorial Print 白底編輯誌（DRAFT，排除所有 design-lab 方向）
+**Current focus:** v2 CI 重構（分支 `feature/claude/2026-07-v3`）— 首頁 + 內頁（about/services/path/lab/blog）已套 v2；`/booking` 待確認 email 後 commit；next-intl 待決策。快照見 `.planning/CODEBASE-SNAPSHOT-2026-09-30.md`
 
 ## Current Position
 
@@ -76,6 +76,18 @@ Stopped at: Logo 已改為極簡現代版，建置與截圖驗證完成
 Resume file: None
 
 ## Discussion Log
+
+### 2026-09-30 23:59 CST — 重構前總整理 + 五步重構執行（Claude）
+
+- 使用者要求整理現階段 code 後重構；確認「按順序全部進行」。快照：`.planning/CODEBASE-SNAPSHOT-2026-09-30.md`。
+- **1 死碼清理** `8d1008f`：刪約 80 檔（舊 hero、scroll-story、three、lib/hero、lib/three），移除 `three`/`@react-three` 依賴。
+- **2 Token 收斂** `8674f04`：`globals.css` 10,194 → 約 1,440 行；刪 `design_system/*`；品牌 SVG 與 QR 工具改 v2 藍橘（`#002FA7`/`#FE5000`）。
+- **3 路由整理** `5b6d357`：projects 實作搬入 `/lab`；刪 `/share` `/contact` `/process` `/pricing` 頁面檔（301 保留）；移除 contact form / LINE notify。
+- **4 內頁 v2**：共用 `components/page/`（PageSection/PageHeader）；about `0f4d52b`、services `b3a5053`、path `2852197`、lab `1949db8`、blog `7e00d2c` 已 commit；booking 完成但**未 commit**（頁面公開 email `alec.wang.tpe@gmail.com`，待使用者確認）。
+- **5 next-intl/SSR 評估**：`.planning/I18N-SSR-EVALUATION-2026-09-30.md`，建議內頁 v2 後採 next-intl `[locale]` 路由。
+- 驗證：`pnpm typecheck`、`pnpm build` 通過；桌機 1280 目視各頁正常；390px 無橫向溢出。
+- 遺留：`components/ui/*`、`components/motion/*`、`lib/supabase.ts`、`mdx-components`、`locale-script` 目前無引用（保留待判斷）；untracked `public/og/labs/ckd2026/` 來源不明。
+
 
 ### 2026-07-13 13:15 CST — 8plus Design System 現行設計改造啟動（Winston）
 

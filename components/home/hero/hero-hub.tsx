@@ -122,7 +122,7 @@ export default function HeroHub({ active }: { active: boolean }) {
     let hovered = -1
     let tour = 0
     let tourAt = 0
-    let polys: Array<Array<[number, number]>> = SVCS.map(() => [])
+    const polys: Array<Array<[number, number]>> = SVCS.map(() => [])
     let lastNow = performance.now()
     const start = lastNow
     const R = phone ? 2.45 : 2.8 // plate ring radius

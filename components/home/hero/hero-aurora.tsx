@@ -32,14 +32,16 @@ const CSS = `
     border: 1px solid rgba(255,255,255,.26);
     -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.42), inset 0 -1px 0 rgba(255,255,255,.06), 0 24px 60px -24px rgba(0,10,60,.75);
-    transition: border-color .4s, box-shadow .4s, transform .5s cubic-bezier(.16,1,.3,1), background .4s;
+    transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0) perspective(700px) rotateX(var(--crx, 0deg)) rotateY(var(--cry, 0deg)) scale(var(--sc, 1));
+    transition: border-color .4s, box-shadow .4s, transform .22s ease-out, background .4s;
     animation: auIn .9s cubic-bezier(.16,1,.3,1) both, auFloat 7s ease-in-out infinite alternate; }
   .au-card:nth-child(1) { margin-left: 56px; animation-delay: .5s, 0s; }
   .au-card:nth-child(2) { margin-left: 28px; animation-delay: .65s, -2.3s; }
   .au-card:nth-child(3) { margin-left: 0; animation-delay: .8s, -4.6s; }
+  .au-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: var(--go, 0); background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255,255,255,.3), transparent 55%); }
   .au-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 66%); transform: translateX(-120%); }
   .au-card.hot { border-color: rgba(254,80,0,.85); background: linear-gradient(135deg, rgba(255,255,255,.24), rgba(255,255,255,.08));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 0 0 1px rgba(254,80,0,.35), 0 0 46px -6px rgba(254,80,0,.55), 0 24px 60px -24px rgba(0,10,60,.75); transform: scale(1.03); }
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 0 0 1px rgba(254,80,0,.35), 0 0 46px -6px rgba(254,80,0,.55), 0 24px 60px -24px rgba(0,10,60,.75); }
   .au-card.hot::before { transform: translateX(120%); transition: transform 1.1s ease; }
   .au-top { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; }
   .au-n { color: #FE5000; font-weight: 600; }
@@ -48,6 +50,10 @@ const CSS = `
   .hot .au-dot { background: #FE5000; box-shadow: 0 0 12px 3px rgba(254,80,0,.7); }
   .au-zh { margin-top: 8px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -.01em; }
   .au-d { margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.76); }
+  .au-hint { align-self: flex-end; margin-top: 4px; display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: rgba(255,255,255,.8); transition: opacity .6s; animation: auIn .9s .2s both; }
+  .au-hint i { width: 6px; height: 6px; border-radius: 50%; background: #FE5000; animation: auPing 1.6s ease-out infinite; }
+  .au-moved .au-hint { opacity: 0; }
+  @keyframes auPing { 0% { box-shadow: 0 0 0 0 rgba(254,80,0,.7); } 100% { box-shadow: 0 0 0 10px rgba(254,80,0,0); } }
   .au-meter { margin-top: 12px; height: 3px; border-radius: 3px; background: rgba(255,255,255,.14); overflow: hidden; }
   .au-meter b { display: block; height: 100%; width: 10%; border-radius: 3px; background: linear-gradient(90deg, #FE5000, #ffb48a); transition: width .5s ease; }
   .hot .au-meter b { width: 100%; transition: width 3s linear; }
@@ -60,39 +66,40 @@ const CSS = `
     .au-card:nth-child(n) { margin-left: 0; }
     .au-zh { margin-top: 4px; font-size: 18px; }
     .au-d { display: none; }
+    .au-hint { display: none; }
     .au-meter { margin-top: 9px; }
   }
   @media (prefers-reduced-motion: reduce) { .au-card { animation: none; } .au-card::before { display: none; } }
 `
 
-const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`
-const FRAG = `
+export const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`
+export const FRAG = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
 #else
 precision mediump float;
 #endif
-uniform vec2 uRes; uniform float uTime; uniform vec3 uLens; uniform float uAmt; uniform vec2 uPar;
-float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+uniform vec2 uRes; uniform float uTime; uniform vec3 uLens; uniform float uAmt; uniform vec2 uPar; uniform float uTone; uniform vec3 uRip;
+float hash(vec2 p){ vec3 q = fract(vec3(p.xyx) * .1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); } // stays stable for large inputs
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
   return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y); }
 float fbm(vec2 p){ float v = 0., a = .5; for (int i = 0; i < 3; i++) { v += a * noise(p); p = p * 2.03 + vec2(7.1, 3.7); a *= .5; } return v; }
 vec3 aurora(vec2 uv){
   float t = uTime;
-  vec2 p = uv * 1.15 + uPar * 0.06;
+  vec2 p = uv * 1.15 + uPar * 0.14;
   vec2 w = vec2(fbm(p * 1.4 + vec2(t * .05, 0.)), fbm(p * 1.4 + vec2(5.2, -t * .045)));
   p += (w - .5) * 0.9;
   vec3 col = mix(vec3(0., .04, .20), vec3(0., .18, .72), smoothstep(0., 1.1, uv.y * .6 + .3 + (w.x - .5) * .4));
   float y1 = .74 + .10 * sin(p.x * 1.7 + t * .28) + (w.y - .5) * .35;
-  float y2 = .46 + .12 * sin(p.x * 1.3 - t * .22 + 1.7) + (w.x - .5) * .35;
+  float y2 = .46 + (uTone - 1.) * .10 + .12 * sin(p.x * 1.3 - t * .22 + 1.7) + (w.x - .5) * .35;
   float y3 = .2 + .09 * sin(p.x * 2.1 + t * .31 + 3.1) + (w.y - .5) * .30;
   float f1 = .65 + .35 * noise(vec2(p.x * 7. + t * .2, (p.y - y1) * 30.));
   float f2 = .65 + .35 * noise(vec2(p.x * 6. - t * .18, (p.y - y2) * 26.));
   float r1 = exp(-pow((p.y - y1) * 6.5, 2.)) * f1;
   float r2 = exp(-pow((p.y - y2) * 7.5, 2.)) * f2;
   float r3 = exp(-pow((p.y - y3) * 7., 2.));
-  col += vec3(.08, .28, 1.) * r1 * .75;
-  col = mix(col, vec3(1.5, .5, .05), smoothstep(.12, .6, r2));
+  col += vec3(.08, .28, 1.) * r1 * mix(1., .55, clamp(uTone * .5, 0., 1.));
+  col = mix(col, vec3(1.5, .5, .05), smoothstep(.12, .6, r2) * mix(.45, 1., smoothstep(0., 1., clamp(uTone * .8, 0., 1.))));
   col = mix(col, vec3(1., .72, .48), pow(r2, 4.) * .65);
   col = mix(col, vec3(.55, .78, 1.), r3 * .55);
   col += vec3(.04, .14, .55) * fbm(p * 2. + t * .03) * .2;
@@ -100,7 +107,14 @@ vec3 aurora(vec2 uv){
 }
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes.y;
-  vec3 col = aurora(uv);
+  float rw = 0.;
+  float age = uTime - uRip.z;
+  if (age > 0. && age < 2.6) {
+    vec2 rd = uv - uRip.xy; float rl = length(rd); float f = rl - age * .55;
+    rw = sin(f * 38.) * exp(-f * f * 60.) * exp(-age * 1.6);
+    uv += rd / (rl + 1e-4) * rw * .018;
+  }
+  vec3 col = aurora(uv) + rw * .07;
   vec2 d = uv - uLens.xy; float l = length(d); float r = uLens.z;
   if (uAmt > .001 && l < r * 1.3) {
     float k = l / r;
@@ -154,7 +168,7 @@ export default function HeroAurora({ active }: { active: boolean }) {
     const loc = gl.getAttribLocation(prog, 'p')
     gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
     const U = (n: string) => gl.getUniformLocation(prog, n)
-    const uRes = U('uRes'), uTime = U('uTime'), uLens = U('uLens'), uAmt = U('uAmt'), uPar = U('uPar')
+    const uTone = U('uTone'), uRip = U('uRip'), uRes = U('uRes'), uTime = U('uTime'), uLens = U('uLens'), uAmt = U('uAmt'), uPar = U('uPar')
 
     const phone = window.innerWidth < 768
     const animate = shouldAnimate()
@@ -173,11 +187,13 @@ export default function HeroAurora({ active }: { active: boolean }) {
       const r = host.getBoundingClientRect()
       mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top
       mouse.nx = e.clientX / window.innerWidth - 0.5; mouse.ny = e.clientY / window.innerHeight - 0.5
-      mouse.last = performance.now() / 1000
+      mouse.last = (performance.now() - start) / 1000 + 4
+      host.classList.add('au-moved')
     }
     window.addEventListener('mousemove', onMove, { passive: true })
     let tap: { x: number; y: number; at: number } | null = null
-    const onTap = (e: Event) => { const d = (e as CustomEvent).detail as { x: number; y: number }; tap = { x: d.x, y: d.y, at: performance.now() / 1000 } }
+    let rip = { x: 0, y: 0, at: -99 }
+    const onTap = (e: Event) => { const d = (e as CustomEvent).detail as { x: number; y: number }; tap = { x: d.x, y: d.y, at: (performance.now() - start) / 1000 + 4 }; rip = { x: d.x, y: d.y, at: tap.at } }
     window.addEventListener('heroTap', onTap)
 
     const cards = Array.from(stack.querySelectorAll<HTMLElement>('.au-card'))
@@ -189,7 +205,7 @@ export default function HeroAurora({ active }: { active: boolean }) {
     let tourIdx = 0
     let tourAt = -99
     let hot = -1
-    let par = { x: 0, y: 0 }
+    const par = { x: 0, y: 0 }
     let lastNow = performance.now()
     const start = lastNow
 
@@ -197,7 +213,7 @@ export default function HeroAurora({ active }: { active: boolean }) {
       const now = performance.now()
       const dt = Math.min((now - lastNow) / 1000, 0.05) || 1 / 60
       lastNow = now
-      const t = animate ? now / 1000 : 11
+      const t = animate ? (now - start) / 1000 + 4 : 11 // relative to mount, so every visit to the page starts from the same look
       const it = animate ? (now - start) / 1000 : 9
 
       const cs = centers()
@@ -219,6 +235,23 @@ export default function HeroAurora({ active }: { active: boolean }) {
       cs.forEach((c, i) => { if (lens.x > c.l && lens.x < c.r && lens.y > c.t && lens.y < c.b) h = i })
       if (h !== hot) { cards.forEach((c, i) => c.classList.toggle('hot', i === h)); hot = h }
 
+      // every card leans toward the pointer (or the lens while it tours), wherever it is on the hero
+      const usePtr = !phone && t - mouse.last < 4 && mouse.x >= 0
+      const pxs = usePtr ? mouse.x : lens.x
+      const pys = usePtr ? mouse.y : lens.y
+      if (animate) cards.forEach((el, i) => {
+        const c = cs[i]
+        const dx = pxs - c.cx, dy = pys - c.cy
+        const near = Math.max(0, 1 - Math.hypot(dx, dy) / 650)
+        el.style.setProperty('--tx', Math.max(-14, Math.min(14, (dx / W) * 26)).toFixed(1) + 'px')
+        el.style.setProperty('--ty', Math.max(-10, Math.min(10, (dy / H) * 22)).toFixed(1) + 'px')
+        el.style.setProperty('--crx', Math.max(-9, Math.min(9, (-dy / H) * 16)).toFixed(2) + 'deg')
+        el.style.setProperty('--cry', Math.max(-11, Math.min(11, (dx / W) * 18)).toFixed(2) + 'deg')
+        el.style.setProperty('--gx', (((pxs - c.l) / (c.r - c.l)) * 100).toFixed(0) + '%')
+        el.style.setProperty('--gy', (((pys - c.t) / (c.b - c.t)) * 100).toFixed(0) + '%')
+        el.style.setProperty('--go', (near * 0.85).toFixed(2))
+        el.style.setProperty('--sc', i === hot ? '1.03' : '1')
+      })
       par.x += ((animate ? mouse.nx : 0) - par.x) * (1 - Math.exp(-dt * 3)); par.y += ((animate ? mouse.ny : 0) - par.y) * (1 - Math.exp(-dt * 3))
       if (!phone) { stack.style.setProperty('--rx', (-par.y * 5).toFixed(2) + 'deg'); stack.style.setProperty('--ry', (par.x * 7).toFixed(2) + 'deg') }
 
@@ -228,6 +261,8 @@ export default function HeroAurora({ active }: { active: boolean }) {
       gl.uniform3f(uLens, lens.x / H, (H - lens.y) / H, rPx / H)
       gl.uniform1f(uAmt, Math.min(1, Math.max(0, (it - 0.8) / 0.9)))
       gl.uniform2f(uPar, par.x, -par.y)
+      gl.uniform1f(uTone, 1.2)
+      gl.uniform3f(uRip, rip.x / H, (H - rip.y) / H, rip.at)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
 
@@ -237,7 +272,6 @@ export default function HeroAurora({ active }: { active: boolean }) {
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('heroTap', onTap)
-      gl.getExtension('WEBGL_lose_context')?.loseContext()
     }
   }, [active])
 
@@ -255,6 +289,7 @@ export default function HeroAurora({ active }: { active: boolean }) {
             <div className="au-meter"><b /></div>
           </div>
         ))}
+        <div className="au-hint"><i />移動游標 · 探索三個階段</div>
       </div>
     </div>
   )

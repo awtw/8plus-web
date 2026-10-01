@@ -12,7 +12,6 @@ import HeroHub from './hero-hub'
 import HeroPillar from './hero-pillar'
 import HeroOrb from './hero-orb'
 import HeroAgent from './hero-agent'
-import HeroAurora from './hero-aurora'
 
 const HB_CSS = `
   .hv-bg canvas.hb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -920,7 +919,6 @@ export const HERO_BACKDROPS = {
   pillar: HeroPillar,
   orb: HeroOrb,
   agent: HeroAgent,
-  aurora: HeroAurora,
   core: HeroCore,
   neural: HeroNeural,
 }

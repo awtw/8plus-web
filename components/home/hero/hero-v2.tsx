@@ -6,8 +6,12 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
-import { HERO_BACKDROPS, HeroBackdropStyles } from './hero-backdrops'
+import dynamic from 'next/dynamic'
+import HeroAurora from './hero-aurora'
+import HeroPocket from './hero-pocket'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
+
+const LegacyScene = dynamic(() => import('./hero-legacy-scene'), { ssr: false })
 
 const HERO_CSS = `
   .hv-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .5s ease, visibility 0s linear .5s; }
@@ -89,6 +93,8 @@ const HERO_CSS = `
     .hero-scrim.corner { background: linear-gradient(165deg, rgba(0,18,60,.62) 0%, rgba(0,18,60,.42) 55%, rgba(0,18,60,.2) 100%); }
     .hero-scrim.flat { background: radial-gradient(88% 94% at 50% 100%, rgba(0,18,60,.58) 0%, rgba(0,18,60,.32) 55%, rgba(0,18,60,0) 78%); }
   }
+  .hero-v-pocket .hero-inner { pointer-events: none; }
+  .hero-v-pocket .hero-inner button, .hero-v-pocket .hero-inner a { pointer-events: auto; }
   .hv-switch.hidden { display: none; }
   .hv-switch { position: absolute; right: 18px; bottom: 18px; z-index: 25; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .hv-switch .trig { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(3,6,26,.4); border: 1px solid var(--border-soft); color: var(--meta); cursor: pointer; opacity: .32; transition: opacity .3s, color .2s, border-color .2s, background .2s; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
@@ -131,7 +137,7 @@ const HERO_CSS = `
   .hero-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #FE5000; box-shadow: 0 0 10px #FE5000; }
   .hk-soft { font-weight: 400; color: rgba(255,255,255,.70); margin-right: .3em; }
   .hk-strong { font-weight: 600; }
-  .hero-v-aurora .hk-strong { background: linear-gradient(100deg, #fff 25%, #ffcfb2 45%, #fff 65%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hkShine 5s linear infinite; }
+  .hero-v-aurora .hk-strong, .hero-v-pocket .hk-strong { background: linear-gradient(100deg, #fff 25%, #ffcfb2 45%, #fff 65%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hkShine 5s linear infinite; }
   @keyframes hkShine { from { background-position: 160% 0; } to { background-position: -60% 0; } }
   .hero-sub { margin: 22px 0 0; max-width: 34rem; font-size: clamp(1rem, 1.25vw, 1.15rem); line-height: 1.7; font-weight: 400; color: rgba(255,255,255,.80); }
   /* primary CTA: flat white pill, colour-only hover, visible focus ring. No glow, lift or motion. */
@@ -143,7 +149,7 @@ const HERO_CSS = `
   .hv-link .arr { transition: transform .25s var(--ease-out); }
   .hv-link:hover .arr { transform: translateX(5px); }
   .hv-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
-  @media (prefers-reduced-motion: reduce) { .hero-v-aurora .hk-strong { animation: none; } .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero-v-aurora .hk-strong, .hero-v-pocket .hk-strong { animation: none; } .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
   /* phones: cards become quiet atmosphere behind the copy; headline sized so each authored line fits on one row (no orphan glyph) */
   @media (max-width: 768px) {
     .hv-cards { opacity: .32; }
@@ -177,7 +183,7 @@ const HERO_CSS = `
 
 // The header takes the hero's own top-edge colour (see tint() in site-header), then follows each section.
 // Sampled from the rendered scenes; variants not listed keep the CI blue.
-const HEADER_TONE = { aurora: '#001a66', hub: '#0a3fc4', core: '#010d36', neural: '#010d36' }
+const HEADER_TONE = { aurora: '#001a66', pocket: '#001a66', hub: '#0a3fc4', core: '#010d36', neural: '#010d36' }
 
 const HERO_LABELS = {
   combo: '隧道 · 作品卡', flow: '流場線', logo: '8+ 字標', lines: '線流交會',
@@ -186,7 +192,7 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環', hub: 'AI 樞紐 · 等角視圖', pillar: '單柱 · 等角極簡', orb: 'AI 助理 · 光環', agent: 'AI 工作台 · 產品導向', aurora: '極光 · 液態玻璃', core: '推理核心 · 架構層', neural: '神經核心 3D',
+  eclipse: '日蝕光環', hub: 'AI 樞紐 · 等角視圖', pillar: '單柱 · 等角極簡', orb: 'AI 助理 · 光環', agent: 'AI 工作台 · 產品導向', aurora: '極光 · 液態玻璃', pocket: '手機 · 觸控極光', core: '推理核心 · 架構層', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
@@ -212,20 +218,22 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const [logoTick, setLogoTick] = React.useState(0)
   const secRef = React.useRef(null), cvRef = React.useRef(null), sceneRef = React.useRef(null), fieldRef = React.useRef(null), logoLinesRef = React.useRef(null), rotRef = React.useRef(null)
 
-  React.useEffect(() => {
-    // signature hero: 'Architected Intelligence' flow topology (hero-core) on desktop AND phones;
-    // Data Saver / no-WebGL keep the light CSS-only 'combo' scene, which is touch-driven (drag effect below).
-    // Other scenes are easter eggs: ?hero=<key> or ?hero=random.
+  // Variant pick (no query): phones get the touch-first 'pocket', everything else the 'aurora' shader hero; both follow the
+  // viewport live (rotate / resize). Data Saver keeps the light CSS-only 'combo'. Other scenes: ?hero=<key> or ?hero=random.
+  // Layout effect so the switch lands before first paint (no aurora flash on phones).
+  React.useLayoutEffect(() => {
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
     const keys = Object.keys(HERO_LABELS)
     const q = new URLSearchParams(window.location.search).get('hero')
-    let pick: string | null = null
-    if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
-    else if (q && keys.includes(q)) pick = q
-    else if (!conn?.saveData) pick = 'aurora' // final pick: aurora shader + liquid glass (alternatives: ?hero=agent|hub|pillar|orb|core) (Canvas 2D, no WebGL needed)
-    else pick = 'combo'
-    setVariant(pick)
-    if (pick === 'logo') setLogoTick((n) => n + 1)
+    const forced = q === 'random' ? keys[Math.floor(Math.random() * keys.length)] : q && keys.includes(q) ? q : null
+    const mq = window.matchMedia('(max-width: 767px)')
+    const auto = () => (conn?.saveData ? 'combo' : mq.matches ? 'pocket' : 'aurora')
+    const apply = (v: string) => { setVariant(v); if (v === 'logo') setLogoTick((n) => n + 1) }
+    apply(forced || auto())
+    if (forced) return
+    const onChange = () => apply(auto())
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
   const setV = (v) => { setVariant(v); if (v === 'logo') setLogoTick((n) => n + 1) }
@@ -352,7 +360,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const ORDER = Object.keys(HERO_LABELS)
   // neural: editorial (copy left, sphere right) on wide screens, centred on phones
   const wide = typeof window !== 'undefined' && window.innerWidth >= 820
-  const corner = (variant === 'neural' && wide) || ['hub', 'pillar', 'orb', 'agent', 'aurora', 'core', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
+  const corner = (variant === 'neural' && wide) || ['hub', 'pillar', 'orb', 'agent', 'aurora', 'pocket', 'core', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
   const flat = ['flow', 'lines', 'topo', 'dots', 'wave', 'bp', 'warp', 'ripple', 'radar', 'dna', 'terra', 'harmo', 'spiro', 'bars', 'flock', 'cells'].indexOf(variant) !== -1
 
   const onHeroClick = (e) => {
@@ -366,14 +374,13 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       ref={secRef}
       id="home-section-hero"
       data-header-color={HEADER_TONE[variant]}
-      className={'home-section bg-blue noise-field hero-v-' + variant + (['hub', 'pillar', 'orb', 'agent', 'aurora'].includes(variant) ? ' hero-v-core' : '') + (corner ? ' hero-corner' : '')}
+      className={'home-section bg-blue noise-field hero-v-' + variant + (['hub', 'pillar', 'orb', 'agent', 'aurora', 'pocket'].includes(variant) ? ' hero-v-core' : '') + (corner ? ' hero-corner' : '')}
       aria-labelledby="home-hero-headline"
       onClick={onHeroClick}
       style={{ position: 'relative', minHeight: 'calc(100svh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}
     >
       {/* rendered in SSR HTML so the hero is styled on first paint (no CLS) */}
       <style id="hero-v2-css" dangerouslySetInnerHTML={{ __html: HERO_CSS }} />
-      <HeroBackdropStyles />
       <div ref={sceneRef} style={{ position: 'absolute', inset: 0, zIndex: 0, transition: 'transform .3s ease' }} aria-hidden="true">
         <div className={'hv-bg' + (variant === 'combo' ? ' on' : '')}>
           <div className="ht-scene"><div className="ht-plane ht-floor"></div><div className="ht-plane ht-ceil"></div></div>
@@ -407,7 +414,9 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         <div className={'hv-bg hv-lines' + (variant === 'lines' ? ' on' : '')}>
           <canvas ref={fieldRef}></canvas>
         </div>
-        {ORDER.map((v) => { const C = HERO_BACKDROPS[v]; return C ? <C key={v} active={variant === v} /> : null })}
+        {variant === 'aurora' && <HeroAurora active />}
+        {variant === 'pocket' && <HeroPocket active />}
+        {variant !== 'aurora' && variant !== 'pocket' && <LegacyScene variant={variant} order={ORDER} />}
       </div>
 
       <div aria-hidden="true" className={'hero-scrim' + (corner ? ' corner' : ' flat')}></div>

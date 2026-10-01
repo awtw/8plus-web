@@ -1585,6 +1585,8 @@ a {
     display: flex;
     gap: 0.85rem;
     overflow-x: auto;
+    overflow-y: hidden; /* single-axis scroller: iOS otherwise treats it as 2-D and can swallow horizontal swipes */
+    transform: translateZ(0); /* own compositing layer (iOS nested-scroller fix) */
     touch-action: pan-x pan-y pinch-zoom;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
@@ -1597,6 +1599,10 @@ a {
   .home-lab-grid-v2 > li {
     flex: 0 0 82%;
     scroll-snap-align: start;
+  }
+  .home-lab-grid-v2 a {
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
   }
 }
 

@@ -22,23 +22,23 @@ export const translations = {
     },
     // 主頁
     home: {
-      title: 'Engineering · UX · Consulting',
-      subtitle: '專注於前端工程、用戶體驗設計和技術諮詢。\n使用現代技術棧構建高品質的 Web 應用程序，\n並提供專業的技術指導和架構建議。',
-      heroTitle1: '以架構驅動',
-      heroTitle2: 'AI 與體驗落地',
+      title: 'AI 應用 · UIX · 顧問',
+      subtitle: '專注於 AI 應用架構、使用者體驗（UIX）與技術諮詢。\n從資料處理、檢索、評測到服務整合，確保資料正確與服務穩定，\n並讓介面看過就會用。',
+      heroTitle1: '完善 AI 應用',
+      heroTitle2: '資料正確，服務穩定',
       heroBadge: '開放預約諮詢',
       heroGreeting: '',
-      heroEditorialTag: '8PLUS × ENGINEERING',
-      heroVerticalRail: '8PLUS · ARCHITECTURE FIRST',
-      heroMastheadEn: 'ENGINEERING INTRODUCTION',
-      heroMastheadZh: '工程顧問介紹',
+      heroEditorialTag: '8PLUS × AI · UIX',
+      heroVerticalRail: '8PLUS · AI × UIX',
+      heroMastheadEn: 'AI & UIX INTRODUCTION',
+      heroMastheadZh: 'AI 與 UIX 顧問介紹',
       heroSectionDelivery: '交付證明',
       heroSectionAbout: '關於我們',
-      heroLead: '8plus 協助團隊把需求拆成可驗證的技術架構，導入 AI 到真實流程，並以優秀的使用者體驗把產品做成能交付、能維護、能被信任的系統。',
-      architectureLabel: '架構交付流',
-      architectureNodes: '需求|架構|AI|體驗|交付',
+      heroLead: '8plus 以 AI 架構師的角度完善 AI 應用：從資料處理、檢索、評測到服務整合，確保資料正確性與服務穩定性；善用 AI 輔助開發，貼近職場與使用者需求；體驗設計追求「看過就會用」，並以 GA 行為與轉換數據持續調整。',
+      architectureLabel: 'AI 應用流程',
+      architectureNodes: '需求|資料|RAG|體驗|驗證',
       deliveryPreview: '交付成果預覽',
-      floatingLabels: '架構先行|AI 工作流|Next.js|可驗證交付|Production',
+      floatingLabels: 'RAG|地端模型|資料品質|服務穩定|GA 分析',
       bookCall: '預約諮詢',
       viewProjects: '看專案',
       bookConsultation: '預約諮詢',
@@ -51,15 +51,15 @@ export const translations = {
       read: '閱讀',
       open: '查看',
       portfolioNote: '持續更新中的作品庫',
-      closingTitle: '如果你要的是能落地的技術夥伴，這裡可以直接開始。',
-      closingLead: '先從一次 30 分鐘的討論開始，我會幫你把需求、限制、風險、AI 可行性與使用者流程整理成可以執行的下一步。',
+      closingTitle: '想讓 AI 與介面真正被用起來，從這裡開始。',
+      closingLead: '先從一次 30 分鐘的討論開始，我會幫你把需求、使用者流程、AI 可行性與資料限制整理成可以執行的下一步。',
       bookNow: '預約',
       aboutMe: '認識我',
       available: '可洽詢',
-      role: '工程顧問 / 架構設計',
+      role: 'AI 應用 / UIX 顧問',
       checklist1: '把需求拆成可以執行的路線圖',
-      checklist2: '從架構、AI 到 UX 一起校準',
-      checklist3: '用可驗證交付取代空談',
+      checklist2: '從資料、AI 架構到 UIX 一起校準',
+      checklist3: '用使用者行為與轉換數據驗證成效',
       statYears: '實戰年資',
       statDomains: '專長場景',
       statBooking: '初步對談',
@@ -68,33 +68,33 @@ export const translations = {
       contactCta: '聯絡我',
       pillars: [
         {
-          title: '架構先行',
-          description: '先釐清資料流、權限、API、部署與維運邊界，讓需求從第一天就有可以演進的骨架。',
+          title: 'AI 架構與 RAG',
+          description: '規劃 RAG 與地端模型的資料流程、檢索與評測，確保資料正確、服務穩定，資料可留在自己的環境。',
           icon: 'cloud',
         },
         {
-          title: 'AI 導入',
-          description: '把 AI 放進真實工作流，而不是停在 demo：資料準備、提示設計、權限控管與人機協作一起規劃。',
+          title: 'AI 輔助開發',
+          description: '善用 AI 加速開發與驗證，做出貼近職場流程與使用者需求的 AI 應用，而不是停在 demo。',
           icon: 'code',
         },
         {
-          title: '體驗落地',
-          description: '從介面、內容、狀態回饋到交付節奏一起校準，讓使用者真的願意用，也讓團隊能持續交付。',
+          title: 'UIX 與數據',
+          description: '好的體驗是看過就會用、不必多說；兼顧無障礙與易讀字體，並以 GA 行為與轉換率持續調整。',
           icon: 'sparkle',
         },
       ],
       services: {
         frontend: {
-          title: '前端開發',
-          description: 'Next.js、React、TypeScript 等現代前端技術棧的專業開發服務'
+          title: 'AI 應用架構',
+          description: 'RAG、地端模型與服務整合，重視資料正確與服務穩定（服務層常用 Python / FastAPI、前端如 Next.js，僅作附註）'
         },
         architecture: {
-          title: '架構設計',
-          description: '系統架構設計、技術選型建議、代碼審查和性能優化'
+          title: 'UIX 設計與分析',
+          description: '無障礙設計、易讀字體，並以 GA 分析使用者行為與轉換率'
         },
         consulting: {
           title: '技術諮詢',
-          description: '一對一技術指導、團隊培訓、項目評估和改進建議'
+          description: '一對一技術指導、團隊培訓、專案評估與 AI 導入建議'
         }
       },
       learnMore: '了解更多',
@@ -106,7 +106,7 @@ export const translations = {
     // 項目頁面
     projects: {
       title: 'Lab',
-      description: '精選的技術 Lab 和客戶案例',
+      description: '精選的 AI 應用、系統與體驗實作紀錄',
       caseStudy: '案例研究',
       challenge: '挑戰',
       solution: '解法',
@@ -123,7 +123,7 @@ export const translations = {
     // 博客頁面
     blog: {
       title: '技術博客',
-      description: '分享前端技術、開發經驗和行業見解',
+      description: '分享 AI 應用、RAG、UIX 與開發實務的經驗',
       noPosts: '暫無文章',
       readMore: '閱讀更多',
     },
@@ -135,20 +135,20 @@ export const translations = {
       loading: '載入行事曆中…',
       services: [
         '需求釐清、問題定義與解法拆解',
-        '前端 / 後端 / API 架構設計與技術選型',
-        'Code Review、效能優化與交付流程',
-        '產品技術策略、團隊協作與顧問陪跑'
+        'AI 應用、RAG 與地端模型的可行性與架構',
+        'UIX 診斷、無障礙與 GA 數據分析',
+        'AI 輔助開發、團隊導入與顧問陪跑'
       ],
       cards: {
         ready: { title: '可直接預約', desc: '行事曆載入完成後，即可選擇時段。' },
-        topics: { title: '合作主題', desc: '從架構、Code Review 到產品交付流程皆可討論。' },
+        topics: { title: '合作主題', desc: '從 AI 應用、UIX 到數據分析皆可討論。' },
         clarify: { title: '先釐清再開始', desc: '我們可以先定義問題，再一起找解法。' },
       },
     },
     // 關於頁面
     about: {
       title: '關於我們',
-      content: '我們是專注於前端工程和技術諮詢的團隊...'
+      content: '我們專注於 AI 應用、UIX 與技術諮詢。'
     },
     // 聯繫頁面
     contact: {
@@ -180,15 +180,15 @@ export const translations = {
     // 服務頁面
     services: {
       title: '專業服務',
-      description: '提供全方位的前端開發和技術諮詢服務',
+      description: '提供 AI 應用、UIX 設計與技術諮詢服務',
       eyebrow: 'Services',
       headline: '服務不是菜單，而是一起把問題做清楚',
       lead: '我的協作範圍比頁面上列出的項目更廣。與其把服務寫成固定清單，不如把它理解成不同的合作模式，最後都回到同一件事：幫你把技術問題變得可以執行。',
       items: [
-        { title: 'Architecture & Delivery', desc: '適合要重新梳理架構、拆解舊系統、定義新平台邊界的合作情境。' },
-        { title: 'Frontend / Full-stack', desc: '從 UI、資料流到 API 與部署，把產品與實作拉成同一條線。' },
-        { title: 'Review & Optimization', desc: 'Code Review、效能優化、可靠性與交付流程上的實務建議。' },
-        { title: 'Consulting Support', desc: '如果需求還在模糊期，也可以先幫你把問題定義與優先順序整理出來。' },
+        { title: 'AI 架構與 RAG', desc: '規劃 RAG 與地端模型的資料流程、檢索與評測，確保資料正確性與服務穩定性。' },
+        { title: 'UIX 與無障礙設計', desc: '讓介面看過就會用，並兼顧無障礙與易讀字體。' },
+        { title: '數據分析與轉換優化', desc: '用 GA 分析使用者行為與轉換率，找出介面真正的卡點。' },
+        { title: 'AI 輔助開發與顧問', desc: '用 AI 加速開發、導入團隊流程，需求還模糊時也能先釐清問題與優先順序。' },
       ],
       bookCta: '前往預約',
       aboutCta: '看更多背景',
@@ -221,7 +221,7 @@ export const translations = {
     },
     // 頁腳
     footer: {
-      tagline: 'Engineering & Consulting',
+      tagline: 'AI · UIX · 顧問',
       builtWith: '使用 Next.js 15 + Velite 構建',
       metaphysics: 'Metaphysics & UIX longform at',
       madeIn: '台灣製造',
@@ -231,7 +231,7 @@ export const translations = {
     },
     shareHub: {
       businessName: '8plus',
-      businessLead: '架構驅動的軟體夥伴，從設計到上線一站交付。',
+      businessLead: 'AI 架構師：完善 AI 應用，確保資料正確與服務穩定，體驗做到看過就會用。',
       socialName: 'August',
       socialLead: '生活裡的片段、正在做的事。',
       copyEmail: '複製',
@@ -265,23 +265,23 @@ export const translations = {
     },
     // Home
     home: {
-      title: 'Engineering · UX · Consulting',
-      subtitle: 'Focused on frontend engineering, user experience design, and technical consulting.\nBuilding high-quality web applications with modern technology stacks,\nand providing professional technical guidance and architectural advice.',
-      heroTitle1: 'Architecture-led',
-      heroTitle2: 'AI and product experience',
+      title: 'AI Applications · UIX · Consulting',
+      subtitle: 'Focused on AI application architecture, user experience (UIX), and technical consulting.\nFrom data processing, retrieval and evaluation to service integration,\nkeeping data accurate and services stable, with interfaces that make sense at a glance.',
+      heroTitle1: 'Complete AI applications',
+      heroTitle2: 'Accurate data, stable service',
       heroBadge: 'Available for consulting',
       heroGreeting: 'Meet!',
-      heroEditorialTag: '8PLUS × ENGINEERING',
-      heroVerticalRail: '8PLUS · ARCHITECTURE FIRST',
-      heroMastheadEn: 'ENGINEERING INTRODUCTION',
-      heroMastheadZh: 'Engineering Introduction',
+      heroEditorialTag: '8PLUS × AI · UIX',
+      heroVerticalRail: '8PLUS · AI × UIX',
+      heroMastheadEn: 'AI & UIX INTRODUCTION',
+      heroMastheadZh: 'AI & UIX Introduction',
       heroSectionDelivery: 'Delivery Proof',
       heroSectionAbout: 'About Us',
-      heroLead: '8plus helps teams turn requirements into verifiable architecture, introduce AI into real workflows, and shape the product experience into systems that can be shipped, maintained, and trusted.',
-      architectureLabel: 'Architecture flow',
-      architectureNodes: 'Req|Arch|AI|UX|Ship',
+      heroLead: '8plus approaches AI applications as an AI architect: from data processing, retrieval and evaluation to service integration, ensuring data accuracy and service stability. AI-assisted development keeps solutions close to workplace and user needs, and experience design aims for interfaces that are understood at a glance, refined with GA behavior and conversion data.',
+      architectureLabel: 'AI application flow',
+      architectureNodes: 'Need|Data|RAG|UX|Verify',
       deliveryPreview: 'Delivery preview',
-      floatingLabels: 'Architecture|AI Workflow|Next.js|Verified Delivery|Production',
+      floatingLabels: 'RAG|On-prem LLM|Data quality|Service stability|GA insights',
       bookCall: 'Book a call',
       viewProjects: 'View projects',
       bookConsultation: 'Book Consultation',
@@ -294,15 +294,15 @@ export const translations = {
       read: 'Read',
       open: 'Open',
       portfolioNote: 'Continuously updated portfolio',
-      closingTitle: 'If you need a partner who can actually ship, this is a good place to start.',
-      closingLead: 'Start with a 30-minute conversation and we will turn needs, constraints, risks, AI feasibility, and user flows into executable next steps.',
+      closingTitle: 'If you want AI and interfaces people actually use, start here.',
+      closingLead: 'Start with a 30-minute conversation and we will turn needs, user flows, AI feasibility, and data constraints into executable next steps.',
       bookNow: 'Book now',
       aboutMe: 'About',
       available: 'Available',
-      role: 'Engineering consultant / architect',
+      role: 'AI application / UIX consultant',
       checklist1: 'Break requirements into a plan people can execute',
-      checklist2: 'Align architecture, AI, and UX in one pass',
-      checklist3: 'Replace vague strategy with verified delivery',
+      checklist2: 'Align data, AI architecture, and UIX in one pass',
+      checklist3: 'Verify results with user behavior and conversion data',
       statYears: 'Years in production',
       statDomains: 'Core domains',
       statBooking: 'Discovery Call',
@@ -311,33 +311,33 @@ export const translations = {
       contactCta: 'Contact',
       pillars: [
         {
-          title: 'Architecture First',
-          description: 'Clarify data flow, permissions, APIs, deployment, and operations so every requirement starts with a structure that can evolve.',
+          title: 'AI Architecture & RAG',
+          description: 'Design the data flow, retrieval and evaluation of RAG and on-prem models, keeping data accurate and services stable, with data staying in your own environment.',
           icon: 'cloud',
         },
         {
-          title: 'AI Integration',
-          description: 'Bring AI into real workflows, not just demos: data readiness, prompt design, access control, and human-in-the-loop operations planned together.',
+          title: 'AI-assisted Development',
+          description: 'Use AI to speed up building and verification, and ship AI applications that fit real workplace flows and user needs, not just demos.',
           icon: 'code',
         },
         {
-          title: 'Experience Delivery',
-          description: 'Align interface, content, feedback states, and delivery rhythm so people want to use the product and teams can keep shipping.',
+          title: 'UIX & Data',
+          description: 'Good experience is understood at a glance, with little need for explanation; accessible, readable, and refined by GA behavior and conversion rates.',
           icon: 'sparkle',
         },
       ],
       services: {
         frontend: {
-          title: 'Frontend Development',
-          description: 'Professional development services with modern frontend tech stack including Next.js, React, TypeScript'
+          title: 'AI Application Architecture',
+          description: 'RAG, on-prem models and service integration, focused on data accuracy and service stability (Python / FastAPI at the service layer and frontend such as Next.js are noted as stack only)'
         },
         architecture: {
-          title: 'Architecture Design',
-          description: 'System architecture design, technology selection advice, code review and performance optimization'
+          title: 'UIX Design & Analytics',
+          description: 'Accessible design, readable typography, and GA-based analysis of user behavior and conversion'
         },
         consulting: {
           title: 'Technical Consulting',
-          description: 'One-on-one technical guidance, team training, project assessment and improvement recommendations'
+          description: 'One-on-one technical guidance, team training, project assessment and AI adoption advice'
         }
       },
       learnMore: 'Learn More',
@@ -349,7 +349,7 @@ export const translations = {
     // Projects
     projects: {
       title: 'Lab',
-      description: 'Selected technical Lab and client cases',
+      description: 'Selected AI applications, systems and UX work',
       caseStudy: 'Case Study',
       challenge: 'Challenge',
       solution: 'Solution',
@@ -366,7 +366,7 @@ export const translations = {
     // Blog
     blog: {
       title: 'Tech Blog',
-      description: 'Sharing frontend technologies, development experience and industry insights',
+      description: 'Sharing experience on AI applications, RAG, UIX and development practice',
       noPosts: 'No posts available',
       readMore: 'Read More',
     },
@@ -378,20 +378,20 @@ export const translations = {
       loading: 'Loading calendar…',
       services: [
         'Problem framing, requirement clarification, and solution breakdown',
-        'Frontend / backend / API architecture and technology selection',
-        'Code review, performance optimization, and delivery flow',
-        'Product strategy, team collaboration, and consulting support'
+        'Feasibility and architecture for AI applications, RAG and on-prem models',
+        'UIX review, accessibility and GA data analysis',
+        'AI-assisted development, team adoption, and consulting support'
       ],
       cards: {
         ready: { title: 'Ready to book', desc: 'Pick a time slot once the calendar is loaded.' },
-        topics: { title: 'Topics', desc: 'From architecture and code review to product delivery flow.' },
+        topics: { title: 'Topics', desc: 'From AI applications and UIX to data analysis.' },
         clarify: { title: 'Clarify first', desc: 'We can define the problem before we define the solution.' },
       },
     },
     // About
     about: {
       title: 'About Us',
-      content: 'We are a team focused on frontend engineering and technical consulting...'
+      content: 'We focus on AI applications, UIX, and technical consulting.'
     },
     // Contact
     contact: {
@@ -423,15 +423,15 @@ export const translations = {
     // Services
     services: {
       title: 'Professional Services',
-      description: 'Providing comprehensive frontend development and technical consulting services',
+      description: 'AI applications, UIX design and technical consulting',
       eyebrow: 'Services',
       headline: 'Services are not a menu — they are a way to get the problem right',
       lead: 'My collaboration scope is broader than any list on this page. Rather than fixed packages, think of these as modes of working that all lead to the same outcome: making your technical problems executable.',
       items: [
-        { title: 'Architecture & Delivery', desc: 'For teams rethinking architecture, legacy migration, or new platform boundaries.' },
-        { title: 'Frontend / Full-stack', desc: 'From UI and data flow to APIs and deployment — one coherent line from product to implementation.' },
-        { title: 'Review & Optimization', desc: 'Code review, performance, reliability, and delivery process improvements.' },
-        { title: 'Consulting Support', desc: 'When requirements are still fuzzy, we can define the problem and priorities first.' },
+        { title: 'AI Architecture & RAG', desc: 'Design the data flow, retrieval and evaluation of RAG and on-prem models for accurate data and stable service.' },
+        { title: 'UIX & Accessible Design', desc: 'Interfaces understood at a glance, with accessibility and readable type built in.' },
+        { title: 'Analytics & Conversion', desc: 'Use GA to analyze behavior and conversion and find where the interface really gets stuck.' },
+        { title: 'AI-assisted Development & Advisory', desc: 'Speed up delivery with AI, adopt it in team workflows, and clarify the problem first when requirements are still fuzzy.' },
       ],
       bookCta: 'Book a call',
       aboutCta: 'More background',
@@ -462,7 +462,7 @@ export const translations = {
       current: 'Current',
     },
     footer: {
-      tagline: 'Engineering & Consulting',
+      tagline: 'AI · UIX · Consulting',
       builtWith: 'Built with Next.js 15 + Velite',
       metaphysics: 'Metaphysics & UIX longform at',
       madeIn: 'Made in Taiwan',
@@ -472,7 +472,7 @@ export const translations = {
     },
     shareHub: {
       businessName: '8plus',
-      businessLead: 'Architecture-driven software partner — design through shipped delivery.',
+      businessLead: 'AI architect: complete AI applications, accurate data, stable service, and an experience understood at a glance.',
       socialName: 'August',
       socialLead: 'Life snippets and work in progress.',
       copyEmail: 'Copy',

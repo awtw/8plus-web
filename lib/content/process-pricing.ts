@@ -53,14 +53,14 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
   "zh-TW": {
     pipeline: {
       eyebrow: "END-TO-END · 一條龍",
-      title: "從一張草圖到正式上線，交給同一個人",
-      lead: "重新設計、前後端架構、租借雲端主機、購買網域、部署上架 —— 你不用四處找不同廠商對接，整條產線由我一手串起來。",
+      title: "從一個想法到正式上線，交給同一個人",
+      lead: "需求釐清、AI 與資料、介面體驗、部署上線與數據追蹤 —— 你不用四處找不同廠商對接，整條流程由我一手串起來。",
       steps: [
-        { step: "01", title: "重新設計", description: "品牌與介面重塑，先把「要給誰看、想達成什麼」講清楚。" },
-        { step: "02", title: "前後端架構", description: "從資料模型、API 到前端實作，一條線設計，不留接縫。" },
-        { step: "03", title: "雲端主機", description: "依流量與預算選型，租借並設定雲端伺服器與執行環境。" },
-        { step: "04", title: "網域申請", description: "選購網域、設定 DNS 與 HTTPS 憑證，門牌一次到位。" },
-        { step: "05", title: "部署上架", description: "CI/CD 部署、上線監控，交付一個真的能跑起來的網站。" },
+        { step: "01", title: "需求與體驗設計", description: "先講清楚「給誰用、要達成什麼」，並把介面設計到看過就會用。" },
+        { step: "02", title: "AI 與資料", description: "規劃資料處理、檢索與地端模型，並以評測確認正確性。" },
+        { step: "03", title: "應用整合", description: "把 AI 接進實際流程與介面，並顧及權限、無障礙與易讀字體。" },
+        { step: "04", title: "部署上線", description: "依流量與資料安全要求選擇雲端或地端，完成部署與監控。" },
+        { step: "05", title: "數據追蹤", description: "以 GA 觀察使用者行為與轉換率，持續優化（前端框架等技術棧於提案時附註）。" },
       ],
     },
     faqEyebrow: "FAQ",
@@ -80,7 +80,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
         {
           step: "02",
           title: "Architecture Proposal",
-          description: "產出可執行路線圖：架構選型、里程碑、交付節奏與協作方式。",
+          description: "產出可執行路線圖：AI 方案、里程碑、體驗與衡量指標、協作方式。",
           duration: "1–2 週",
         },
         {
@@ -107,21 +107,21 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
         {
           name: "Advisory Retainer",
           range: "洽詢 / 月",
-          description: "架構顧問、Code Review、技術決策陪跑。",
-          bestFor: "已有工程團隊，需要資深架構視角",
-          features: ["每週固定 sync", "架構與 PR review", "Slack / 非同步支援"],
+          description: "AI 應用顧問、UIX 診斷、技術決策陪跑。",
+          bestFor: "已有團隊，需要 AI 與體驗的資深視角",
+          features: ["每週固定 sync", "AI 方案與體驗審查", "Slack / 非同步支援"],
         },
         {
           name: "Project Delivery",
           range: "洽詢 / 專案",
-          description: "從架構到上線的完整交付，含前後端與部署。",
-          bestFor: "新產品、重構、或需要端到端 ownership",
-          features: ["里程碑交付", "可驗證 demo", "文件與 handoff"],
+          description: "從 AI 方案、介面體驗到上線的完整交付，含部署與數據追蹤。",
+          bestFor: "新產品、AI 導入，或需要端到端 ownership",
+          features: ["里程碑交付", "可驗證 demo", "GA 追蹤與 handoff"],
         },
         {
           name: "Workshop",
           range: "洽詢 / 場",
-          description: "AI 導入、架構工作坊、團隊培訓。",
+          description: "AI 導入、UIX 工作坊、團隊培訓。",
           bestFor: "團隊對齊、技能提升、AI 落地規劃",
           features: ["客製議程", "實作練習", "產出 action items"],
         },
@@ -139,7 +139,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
       },
       {
         question: "AI 導入包含哪些？",
-        answer: "從資料準備、RAG/Agent 架構、權限控管到人機協作流程，依團隊成熟度分階段導入。",
+        answer: "從資料準備、RAG 與地端模型的資料流程、評測、權限控管到人機協作流程，依團隊成熟度分階段導入。",
       },
       {
         question: "如何開始？",
@@ -150,14 +150,14 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
   en: {
     pipeline: {
       eyebrow: "END-TO-END",
-      title: "From a sketch to production, with one person",
-      lead: "Redesign, front/back-end architecture, cloud hosting, domain, and deployment — no juggling vendors. The whole line is connected by one owner.",
+      title: "From an idea to production, with one person",
+      lead: "Requirements, AI and data, interface experience, deployment and analytics — no juggling vendors. The whole line is connected by one owner.",
       steps: [
-        { step: "01", title: "Redesign", description: "Brand and interface reshaped, starting with who it is for and what it must achieve." },
-        { step: "02", title: "Front/back-end architecture", description: "From data model and API to front-end implementation, designed as one line with no seams." },
-        { step: "03", title: "Cloud hosting", description: "Sized to traffic and budget; servers and runtime environment provisioned and configured." },
-        { step: "04", title: "Domain", description: "Domain purchase, DNS, and HTTPS certificates, handled in one pass." },
-        { step: "05", title: "Deploy & launch", description: "CI/CD deployment and production monitoring — a site that actually runs." },
+        { step: "01", title: "Needs & experience design", description: "Pin down who it is for and what it must achieve, and design an interface understood at a glance." },
+        { step: "02", title: "AI & data", description: "Plan data processing, retrieval and on-prem models, and confirm accuracy through evaluation." },
+        { step: "03", title: "Integration", description: "Wire AI into real workflows and interfaces, with access control, accessibility and readable type." },
+        { step: "04", title: "Deploy", description: "Cloud or on-prem depending on traffic and data security, with deployment and monitoring." },
+        { step: "05", title: "Analytics", description: "Track behavior and conversion in GA and keep improving (frontend and other stack noted in the proposal)." },
       ],
     },
     faqEyebrow: "FAQ",
@@ -177,7 +177,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
         {
           step: "02",
           title: "Architecture Proposal",
-          description: "An executable roadmap: stack choices, milestones, delivery rhythm, and collaboration model.",
+          description: "An executable roadmap: AI approach, milestones, experience and success metrics, and collaboration model.",
           duration: "1–2 weeks",
         },
         {
@@ -204,21 +204,21 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
         {
           name: "Advisory Retainer",
           range: "Inquire / month",
-          description: "Architecture advisory, code review, and technical decision support.",
-          bestFor: "Teams with engineers who need senior architecture perspective",
-          features: ["Weekly sync", "Architecture & PR review", "Async support"],
+          description: "AI application advisory, UIX review, and technical decision support.",
+          bestFor: "Teams that need a senior view on AI and experience",
+          features: ["Weekly sync", "AI approach & experience review", "Async support"],
         },
         {
           name: "Project Delivery",
           range: "Inquire / project",
-          description: "End-to-end delivery from architecture through launch, including full-stack and deployment.",
-          bestFor: "New products, rewrites, or end-to-end ownership needs",
-          features: ["Milestone delivery", "Verifiable demos", "Docs & handoff"],
+          description: "End-to-end delivery from AI approach and interface experience through launch, including deployment and analytics.",
+          bestFor: "New products, AI adoption, or end-to-end ownership needs",
+          features: ["Milestone delivery", "Verifiable demos", "GA tracking & handoff"],
         },
         {
           name: "Workshop",
           range: "Inquire / session",
-          description: "AI integration, architecture workshops, and team training.",
+          description: "AI integration, UIX workshops, and team training.",
           bestFor: "Team alignment, skill building, AI rollout planning",
           features: ["Custom agenda", "Hands-on exercises", "Action items"],
         },
@@ -236,7 +236,7 @@ export const processPricingContent: Record<Locale, ProcessPricingContent> = {
       },
       {
         question: "What does AI integration cover?",
-        answer: "From data readiness and RAG/Agent architecture to access control and human-in-the-loop workflows — phased by team maturity.",
+        answer: "From data readiness and the data flow of RAG and on-prem models to evaluation, access control and human-in-the-loop workflows — phased by team maturity.",
       },
       {
         question: "How do we start?",

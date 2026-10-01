@@ -1,10 +1,10 @@
 import { SITE } from "@/lib/seo";
 
 const SERVICES = [
-  ["Commissioned web and system development", "Websites, systems and internal tools from planning to launch and iteration."],
-  ["Technical consulting", "Architecture design, technology selection, code review and delivery workflow advice."],
-  ["Applied AI", "Assessment, prototyping and production rollout of AI in real workflows, with cost control."],
-  ["Training and workshops", "In-house programs on AI tooling, frontend engineering, architecture and collaboration."],
+  ["Commissioned AI application development", "AI applications, systems and internal tools from planning to launch and iteration."],
+  ["Technical consulting", "AI feasibility, architecture and technology selection, UIX and analytics advice."],
+  ["Applied AI", "AI architecture for RAG and on-prem model applications: data flow, evaluation, service integration, accurate data and stable service."],
+  ["Training and workshops", "In-house programs on AI-assisted development, RAG, UIX and analytics."],
   ["Career conversations", "One-on-one sessions on technical paths, career moves, portfolios and growth plans."],
 ] as const;
 
@@ -26,9 +26,9 @@ export function JsonLd() {
         "@id": `${SITE.url}/#person`,
         name: "August Wang",
         url: SITE.url,
-        jobTitle: "Independent engineer and consultant",
+        jobTitle: "AI application and UIX consultant",
         worksFor: { "@id": `${SITE.url}/#studio` },
-        knowsAbout: ["Software architecture", "Applied AI", "Next.js", "Frontend engineering", "Technical training"],
+        knowsAbout: ["Applied AI", "RAG", "On-prem LLM", "AI architecture", "User experience (UIX)", "Accessibility", "Google Analytics", "Technical training"],
       },
       {
         "@type": "ProfessionalService",

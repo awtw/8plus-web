@@ -129,9 +129,9 @@ export const TRACK_QUESTIONS: Record<TrackKey, QuizQuestion[]> = {
       prompt: bi('想學什麼主題？', 'Which topic?'),
       options: [
         { id: 'ai', label: bi('AI 工具與工作流', 'AI tools and workflow') },
-        { id: 'frontend', label: bi('前端工程與 Next.js', 'Frontend and Next.js') },
-        { id: 'arch', label: bi('架構與程式碼審查', 'Architecture and code review') },
-        { id: 'collab', label: bi('產品與協作方法', 'Product and collaboration') },
+        { id: 'frontend', label: bi('UIX 與無障礙設計', 'UIX and accessible design') },
+        { id: 'arch', label: bi('RAG 與地端模型', 'RAG and on-prem models') },
+        { id: 'collab', label: bi('數據分析與轉換', 'Analytics and conversion') },
       ],
     },
     {

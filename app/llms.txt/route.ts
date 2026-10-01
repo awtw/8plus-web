@@ -17,7 +17,7 @@ export function GET() {
   const lines = [
     '# 8plus',
     '',
-    '> Independent studio of August Wang (Taiwan). Commissioned builds, technical consulting, applied AI, training and career conversations. Site is bilingual (zh-TW / en).',
+    '> Independent studio of August Wang (Taiwan). AI architecture for applied AI (RAG and on-prem models: data flow, evaluation, accurate data and stable service), UIX and analytics, commissioned builds, consulting, training and career conversations. Site is bilingual (zh-TW / en).',
     '',
     '## Ways to work together',
     ...tracks.map((t) => `- [${t.title}](${abs(t.href)}): ${t.tagline}`),
@@ -25,7 +25,7 @@ export function GET() {
     '## Key pages',
     `- [Services](${abs('/services')}): Process, engagement models and FAQ`,
     `- [Lab](${abs('/lab')}): Selected projects and case studies`,
-    `- [About](${abs('/about')}): Background and capabilities`,
+    `- [About](${abs('/about')}): Background, AI and UIX approach`,
     `- [Path](${abs('/path')}): Career timeline`,
     `- [Needs check](${abs('/check')}): A rule-based guided questionnaire (not generative AI)`,
     `- [Book a 30-minute intro](${abs('/booking')})`,

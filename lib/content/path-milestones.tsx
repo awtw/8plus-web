@@ -17,7 +17,7 @@ const milestones = {
       color: "from-[color:var(--accent)] to-[color:var(--fg-2)]",
       descriptions: [
         "AI Platform 設計與架構規劃",
-        "RAG Flow 架構設計與實作",
+        "RAG Flow 與地端模型服務的設計與實作",
         "AI Agent 開發與協作流程設計",
         "知識工程與上下文工程系統設計",
         "整體 AI 服務串接與落地部署",
@@ -155,7 +155,7 @@ const milestones = {
       color: "from-[color:var(--accent)] to-[color:var(--fg-2)]",
       descriptions: [
         "AI Platform architecture & design",
-        "RAG Flow architecture design & implementation",
+        "RAG flow and on-prem model service design & implementation",
         "AI Agent development & orchestration",
         "Knowledge & Context Engineering system design",
         "End-to-end AI service integration & deployment",

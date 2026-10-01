@@ -16,10 +16,16 @@ import { shouldAnimate, startFrameLoop } from '@/lib/motion/frame-loop'
  * CSS-gradient fallback when WebGL is unavailable.
  */
 
-const TIERS = [
+const TIERS_ZH = [
   { n: '01', en: 'BOUNDARY', zh: '系統邊界', d: '先把需求、資料與權限講清楚，後面每一步才有依據。' },
   { n: '02', en: 'STACK', zh: '技術選型', d: '依品質、延遲與成本挑模型與架構，而不是只挑最貴的。' },
   { n: '03', en: 'PRODUCTION', zh: '生產落地', d: '評測、監控與灰度上線一起設計，穩定交付可擴展的 AI 系統。' },
+]
+
+const TIERS_EN = [
+  { n: '01', en: 'BOUNDARY', zh: 'System boundary', d: 'Clarify needs, data and permissions first, so every later step has a basis.' },
+  { n: '02', en: 'STACK', zh: 'Stack selection', d: 'Choose models and architecture by quality, latency and cost, not just the priciest.' },
+  { n: '03', en: 'PRODUCTION', zh: 'Production', d: 'Design evaluation, monitoring and staged rollout together for steady, scalable AI systems.' },
 ]
 
 const CSS = `
@@ -137,7 +143,8 @@ void main(){
 }
 `
 
-export default function HeroAurora({ active }: { active: boolean }) {
+export default function HeroAurora({ active, en = false }: { active: boolean; en?: boolean }) {
+  const TIERS = en ? TIERS_EN : TIERS_ZH
   const hostRef = useRef<HTMLDivElement>(null)
   const glRef = useRef<HTMLCanvasElement>(null)
   const stackRef = useRef<HTMLDivElement>(null)
@@ -289,7 +296,7 @@ export default function HeroAurora({ active }: { active: boolean }) {
             <div className="au-meter"><b /></div>
           </div>
         ))}
-        <div className="au-hint"><i />移動游標 · 探索三個階段</div>
+        <div className="au-hint"><i />{en ? 'Move your cursor · explore three stages' : '移動游標 · 探索三個階段'}</div>
       </div>
     </div>
   )

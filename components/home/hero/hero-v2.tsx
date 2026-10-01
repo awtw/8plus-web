@@ -414,8 +414,8 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
         <div className={'hv-bg hv-lines' + (variant === 'lines' ? ' on' : '')}>
           <canvas ref={fieldRef}></canvas>
         </div>
-        {variant === 'aurora' && <HeroAurora active />}
-        {variant === 'pocket' && <HeroPocket active />}
+        {variant === 'aurora' && <HeroAurora active en={en} />}
+        {variant === 'pocket' && <HeroPocket active en={en} />}
         {variant !== 'aurora' && variant !== 'pocket' && <LegacyScene variant={variant} order={ORDER} />}
       </div>
 
@@ -441,7 +441,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
 
       <div className="hero-inner home-hero-inner" style={{ position: 'relative', zIndex: 10, maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: '64px clamp(24px,4vw,28px)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: corner ? 'flex-start' : 'flex-end', alignItems: corner ? 'flex-start' : 'center', textAlign: corner ? 'left' : 'center', paddingBottom: corner ? 0 : '6vh', paddingTop: corner ? 'clamp(40px, 10vh, 76px)' : (variant === 'lines' ? '4vh' : 0), paddingLeft: corner ? 10 : 0 }}>
-          <p className="hero-tag hp-slide" style={{ animationDelay: '.1s' }}>{en ? '01 // SYSTEM ARCHITECTURE · APPLIED AI' : '01 // 系統架構與 AI 落地'}</p>
+          <p className="hero-tag hp-slide" style={{ animationDelay: '.1s' }}>{en ? '01 // AI ARCHITECT · APPLIED AI' : '01 // AI 架構師 · AI 應用'}</p>
           <h1 id="home-hero-headline" style={corner
             ? { fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem, 4vw, 3.7rem)', lineHeight: 1.14, letterSpacing: '-0.03em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '20ch', textShadow: '0 4px 30px rgba(0,10,50,.7)', animationDelay: '.2s' }
             : { fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 8.5vw, 4.75rem)', lineHeight: 1.06, letterSpacing: '-0.04em', fontWeight: 600, color: 'var(--fg)', margin: 0, maxWidth: '22ch', textShadow: '0 6px 50px rgba(0,10,50,.85)', animationDelay: '.15s' }}>

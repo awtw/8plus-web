@@ -19,10 +19,16 @@ import { FRAG, VERT } from './hero-aurora'
  * one settled frame for reduced motion / Data Saver.
  */
 
-const STAGES = [
+const STAGES_ZH = [
   { n: '01', en: 'BOUNDARY', zh: '系統邊界', d: '先把需求、資料與權限講清楚，後面每一步才有依據。', chips: ['需求', '資料', '權限'] },
   { n: '02', en: 'STACK', zh: '技術選型', d: '依品質、延遲與成本挑模型與架構，不只挑最貴的。', chips: ['LLM', 'RAG', 'Agent'] },
   { n: '03', en: 'PRODUCTION', zh: '生產落地', d: '評測、監控與灰度上線一起設計，穩定交付。', chips: ['評測', '監控', '上線'] },
+]
+
+const STAGES_EN = [
+  { n: '01', en: 'BOUNDARY', zh: 'System boundary', d: 'Clarify needs, data and permissions first, so every later step has a basis.', chips: ['Needs', 'Data', 'Access'] },
+  { n: '02', en: 'STACK', zh: 'Stack selection', d: 'Choose models and architecture by quality, latency and cost, not just the priciest.', chips: ['LLM', 'RAG', 'Agent'] },
+  { n: '03', en: 'PRODUCTION', zh: 'Production', d: 'Design evaluation, monitoring and staged rollout together for steady delivery.', chips: ['Eval', 'Monitor', 'Launch'] },
 ]
 
 const CSS = `
@@ -69,7 +75,8 @@ const CSS = `
   @media (prefers-reduced-motion: reduce) { .pk-card.on .pk-chip, .pk-card.on .pk-meter b, .pk-hint span { animation: none; } .pk-card.on .pk-meter b { width: 100%; } }
 `
 
-export default function HeroPocket({ active }: { active: boolean }) {
+export default function HeroPocket({ active, en = false }: { active: boolean; en?: boolean }) {
+  const STAGES = en ? STAGES_EN : STAGES_ZH
   const hostRef = useRef<HTMLDivElement>(null)
   const glRef = useRef<HTMLCanvasElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -260,7 +267,7 @@ export default function HeroPocket({ active }: { active: boolean }) {
         </div>
         <div className="pk-bar">
           <div className="pk-dots">{STAGES.map((s) => <i key={s.n} />)}</div>
-          <span className="pk-hint">滑動看下一階段 <span>→</span></span>
+          <span className="pk-hint">{en ? 'Swipe for next' : '滑動看下一階段'} <span>→</span></span>
         </div>
       </div>
     </div>

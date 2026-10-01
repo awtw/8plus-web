@@ -155,8 +155,8 @@ const HERO_CSS = `
     .hero-v-core .hero-inner { padding-top: 14px !important; padding-bottom: 260px !important; }
     .hero-v-core .hero-inner > div:first-child { padding-top: 6px !important; padding-left: 0 !important; } /* the copy block's own inline top gap */
     .hero-v-core .hero-sub { text-wrap: balance; margin-top: 16px !important; }
-    .hero-v-core .hero-ctas { flex-direction: column !important; flex-wrap: nowrap !important; align-items: flex-start !important; gap: 18px !important; width: auto; margin-top: 26px !important; }
-    .hero-v-core .hero-ctas .hv-cta, .hero-v-core .hero-ctas .hv-link { flex: 0 0 auto !important; width: 132px; height: 48px; justify-content: center; }
+    .hero-v-core .hero-ctas { flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; gap: 12px !important; width: auto; margin-top: 26px !important; }
+    .hero-v-core .hero-ctas .hv-cta, .hero-v-core .hero-ctas .hv-link { flex: 0 0 auto !important; width: auto; min-width: 132px; height: 48px; justify-content: center; }
     .hero-v-core .hero-ctas .hv-link { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.34); background: rgba(255,255,255,.07); border-radius: 9999px; padding: 0 12px; }
     .hero-v-core .scrollcue { display: none !important; } /* the diagram below already invites the scroll */
     .hero-inner { padding: 36px 24px 24px !important; }

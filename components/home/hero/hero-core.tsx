@@ -326,29 +326,22 @@ export default function HeroCore({ active }: { active: boolean }) {
       const fade = 1 - scrollS * 0.85
 
       if (phone) {
-        // stacked CTAs sit on the left; the diagram takes everything to their right (from the first button's
-        // top down to the tab bar) and the step caption fills the space under the buttons. All measured from
-        // the real buttons so subtitle wrapping / viewport height never collide.
-        const primary = document.querySelector('.hv-cta.primary')
+        // CTAs sit in one row; the diagram is centred in the full-width band under them and the step caption
+        // is docked above the tab bar. Measured from the real buttons so wrapping / viewport height never collide.
         const second = document.querySelector('.hero-ctas .hv-link')
         const cb = cv.getBoundingClientRect()
         let topY = H * 0.45
-        let left = W * 0.42
-        phoneCardTop = H * 0.62
-        if (primary) {
-          const r = primary.getBoundingClientRect()
-          topY = r.top - cb.top - 4
-          left = r.right - cb.left + 8
-        }
-        if (second) phoneCardTop = second.getBoundingClientRect().bottom - cb.top + 30
+        if (second) topY = second.getBoundingClientRect().bottom - cb.top + 14
+        const left = 12
+        const right = W - 12
+        const bottomY = H - 84 - 124 // above the caption card, which sits just over the tab bar
+        phoneCardTop = H - 84
         phoneLeft = left
-        const right = W - 2
-        const bottomY = H - 76 // just above the tab bar
-        const availH = Math.max(bottomY - topY, 200)
+        const availH = Math.max(bottomY - topY, 190)
         const availW = Math.max(right - left, 140)
-        U = Math.min(Math.max((availH - 46) / 2.2, 52), availW / 2.1) // near-full width, tiny bleed at the right edge is intended
+        U = Math.min(Math.max((availH - 46) / 2.2, 52), availW / 2.35)
         CX = left + availW / 2
-        CY = topY + (2.2 * U + 46) / 2 + 4 // top of the diagram lines up with the first button
+        CY = topY + availH / 2
       }
       else { U = Math.min(W * 0.15, H * 0.225); CX = W * 0.76; CY = H * 0.56 }
       yaw = -0.72 + camX.x * 0.30 + Math.sin(t * 0.21) * 0.05 // ~41° turn: the volume reads as a 3D block, not a flat sheet
@@ -717,14 +710,14 @@ export default function HeroCore({ active }: { active: boolean }) {
         const tm = TERMS[cardIdx]
         const [sx, sy] = sp[termId[cardIdx]]
         const a = clamp01(cardA.x)
-        const w = phone ? Math.max(phoneLeft - 24, 132) : 270
+        const w = phone ? W - 24 : 270
         ctx.font = `13px ${FONT_SANS}`
         const lines = wrap(tm.desc, w - 28)
         const h = 18 + 18 + 8 + lines.length * 19 + 22
         let bx = sx + 24
         if (bx + w > W - 12) bx = sx - 24 - w
         if (phone) bx = 12
-        let by = phone ? phoneCardTop : sy - h / 2
+        let by = phone ? phoneCardTop - h : sy - h / 2
         by = phone ? by : Math.max(84, Math.min(H - h - 16, by))
         ctx.save()
         ctx.translate(0, (1 - a) * 10)

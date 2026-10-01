@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from '@phosphor-icons/react'
+import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
 import { getLocalizedProjects, isCaseStudy } from '@/lib/projects'
@@ -50,7 +50,7 @@ export function SectionLab({ locale }: SectionLabProps) {
             const thumb = labThumb(key)
             return (
               <li key={project.slug}>
-                <Link href={project.url} className="home-lab-card-v2 gradient-border-card">
+                <article className="home-lab-card-v2 gradient-border-card">
                   <span
                     className="home-lab-card-v2-thumb"
                     style={thumb ? { backgroundImage: `url(${thumb})` } : undefined}
@@ -61,12 +61,18 @@ export function SectionLab({ locale }: SectionLabProps) {
                       <span className="home-lab-card-v2-tag">
                         {isCaseStudy(project) ? 'Case Study' : 'Lab'}
                       </span>
-                      <span className="home-lab-card-v2-arrow" aria-hidden="true">↗</span>
+                      <Link
+                        href={project.url}
+                        className="home-lab-card-v2-go"
+                        aria-label={project.title}
+                      >
+                        <ArrowUpRight className="h-4 w-4" weight="bold" aria-hidden="true" />
+                      </Link>
                     </span>
                     <span className="home-lab-card-v2-title">{project.title}</span>
                     <span className="home-lab-card-v2-summary">{project.summary}</span>
                   </span>
-                </Link>
+                </article>
               </li>
             )
           })}

@@ -1426,6 +1426,23 @@ a {
   padding: 0.25rem 0.6rem;
   background: color-mix(in oklab, var(--surface), var(--bg) 18%);
 }
+.home-lab-card-v2-go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: -0.55rem -0.55rem -0.55rem 0;
+  border-radius: 999px;
+  color: var(--accent);
+  border: 1px solid transparent;
+  transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard);
+}
+.home-lab-card-v2-go:hover,
+.home-lab-card-v2-go:focus-visible {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  border-color: var(--accent);
+}
 .home-lab-card-v2-arrow {
   color: var(--accent);
   font-family: var(--font-mono);
@@ -1600,10 +1617,29 @@ a {
     flex: 0 0 82%;
     scroll-snap-align: start;
   }
-  .home-lab-grid-v2 a {
+  /* Phones: the card body is inert (no hover/active/tap states) so a finger resting on it only ever scrolls;
+     the arrow button is the one tap target that navigates. */
+  .home-lab-grid-v2 .home-lab-card-v2 {
+    pointer-events: none;
     -webkit-touch-callout: none;
-    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
+  .home-lab-grid-v2 .home-lab-card-v2.gradient-border-card,
+  .home-lab-grid-v2 .home-lab-card-v2.gradient-border-card:hover {
+    transform: none;
+    transition: none;
+    border-color: var(--border-soft);
+    box-shadow: var(--elev-ring);
+  }
+  .home-lab-grid-v2 .home-lab-card-v2.gradient-border-card::before { display: none; }
+  .home-lab-grid-v2 .home-lab-card-v2-go {
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .home-lab-grid-v2 .home-lab-card-v2-go:hover { background: transparent; border-color: transparent; }
+  .home-lab-grid-v2 .home-lab-card-v2-go:active { background: color-mix(in oklab, var(--accent) 16%, transparent); }
 }
 
 /* Route transitions (View Transitions API): quick cross-fade */

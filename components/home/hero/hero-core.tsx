@@ -340,7 +340,7 @@ export default function HeroCore({ active }: { active: boolean }) {
           topY = r.top - cb.top - 4
           left = r.right - cb.left + 8
         }
-        if (second) phoneCardTop = second.getBoundingClientRect().bottom - cb.top + 14
+        if (second) phoneCardTop = second.getBoundingClientRect().bottom - cb.top + 30
         phoneLeft = left
         const right = W - 2
         const bottomY = H - 76 // just above the tab bar

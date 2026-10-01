@@ -31,13 +31,13 @@ export function MobileNav() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[300px] border-l border-border/70 bg-background sm:w-[350px]">
+      <SheetContent side="right" className="h-dvh w-[300px] overflow-y-auto border-l border-border/70 bg-background sm:w-[350px]">
         <SheetHeader>
           <SheetTitle className="text-left">
             <LogoHomeLink compact onNavigateHome={() => setOpen(false)} />
           </SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col h-full pt-4 pb-6">
+        <div className="flex min-h-[calc(100%-3rem)] flex-col pt-4 pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-6">
           <div className="flex-1 py-6">
             <nav className="flex flex-col space-y-4" aria-label="Main">
               {siteNavigation.map((item) => {

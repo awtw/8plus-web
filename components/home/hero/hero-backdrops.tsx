@@ -8,6 +8,11 @@ import React from 'react'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 import HeroCore from './hero-core'
 import HeroNeural from './hero-neural'
+import HeroHub from './hero-hub'
+import HeroPillar from './hero-pillar'
+import HeroOrb from './hero-orb'
+import HeroAgent from './hero-agent'
+import HeroAurora from './hero-aurora'
 
 const HB_CSS = `
   .hv-bg canvas.hb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -911,6 +916,11 @@ export const HERO_BACKDROPS = {
   topo: Topo, dots: Dots, orbit: Orbit, iso: Iso, wave: Wave, sphere: Sphere, tape: Tape, bp: Bp,
   warp: Warp, ripple: Ripple, radar: Radar, dna: Dna, terra: Terra, harmo: Harmo,
   spiro: Spiro, bars: Bars, atom: Atom, flock: Flock, cells: Cells, typo: Typo, eclipse: Eclipse,
+  hub: HeroHub,
+  pillar: HeroPillar,
+  orb: HeroOrb,
+  agent: HeroAgent,
+  aurora: HeroAurora,
   core: HeroCore,
   neural: HeroNeural,
 }

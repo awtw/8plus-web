@@ -131,6 +131,8 @@ const HERO_CSS = `
   .hero-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #FE5000; box-shadow: 0 0 10px #FE5000; }
   .hk-soft { font-weight: 400; color: rgba(255,255,255,.70); margin-right: .3em; }
   .hk-strong { font-weight: 600; }
+  .hero-v-aurora .hk-strong { background: linear-gradient(100deg, #fff 25%, #ffcfb2 45%, #fff 65%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hkShine 5s linear infinite; }
+  @keyframes hkShine { from { background-position: 160% 0; } to { background-position: -60% 0; } }
   .hero-sub { margin: 22px 0 0; max-width: 34rem; font-size: clamp(1rem, 1.25vw, 1.15rem); line-height: 1.7; font-weight: 400; color: rgba(255,255,255,.80); }
   /* primary CTA: flat white pill, colour-only hover, visible focus ring. No glow, lift or motion. */
   .hv-cta.primary { background: #fff; color: #0A0E1A; font-weight: 600; }
@@ -141,7 +143,7 @@ const HERO_CSS = `
   .hv-link .arr { transition: transform .25s var(--ease-out); }
   .hv-link:hover .arr { transform: translateX(5px); }
   .hv-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
-  @media (prefers-reduced-motion: reduce) { .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero-v-aurora .hk-strong { animation: none; } .ht-plane, .hv-cards .space, .hv-logo .echo, .hv-logo .lfield .lp, .hv-logo .llines .fl2, .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg, .hv-lines svg, .scrollcue .mouse::after, .scrollcue .arw { animation: none; } .hv-logo .llines .fl2 { stroke-dasharray: none; } .hv-lines svg { transform: rotate(-10deg); } .hv-cards .space { transform: translateY(2%); } .hv-logo .c-sm, .hv-logo .slash, .hv-logo .c-lg { opacity: 1; transform: none; } .hp-rise { opacity: 1; animation: none; } .hk-line > span { animation: none; transform: none; } }
   /* phones: cards become quiet atmosphere behind the copy; headline sized so each authored line fits on one row (no orphan glyph) */
   @media (max-width: 768px) {
     .hv-cards { opacity: .32; }
@@ -175,7 +177,7 @@ const HERO_CSS = `
 
 // The header takes the hero's own top-edge colour (see tint() in site-header), then follows each section.
 // Sampled from the rendered scenes; variants not listed keep the CI blue.
-const HEADER_TONE = { core: '#010d36', neural: '#010d36' }
+const HEADER_TONE = { aurora: '#001a66', hub: '#0a3fc4', core: '#010d36', neural: '#010d36' }
 
 const HERO_LABELS = {
   combo: '隧道 · 作品卡', flow: '流場線', logo: '8+ 字標', lines: '線流交會',
@@ -184,7 +186,7 @@ const HERO_LABELS = {
   warp: '星際穿越', ripple: '漣漪擴散', radar: '雷達掃描', dna: '雙螺旋',
   terra: '線框山脈', harmo: '諧波軌跡', spiro: '幾何旋層', bars: '頻譜柱列',
   atom: '電子軌道', flock: '群鳥飛行', cells: '方格脈衝', typo: '動態字牆',
-  eclipse: '日蝕光環', core: '推理核心 · 架構層', neural: '神經核心 3D',
+  eclipse: '日蝕光環', hub: 'AI 樞紐 · 等角視圖', pillar: '單柱 · 等角極簡', orb: 'AI 助理 · 光環', agent: 'AI 工作台 · 產品導向', aurora: '極光 · 液態玻璃', core: '推理核心 · 架構層', neural: '神經核心 3D',
 }
 
 export function HeroV2({ locale }: { locale: HomeLocale }) {
@@ -193,7 +195,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const router = useRouter()
   // start on the final desktop/phone layout ('core' = left-aligned copy) so hydration never moves the headline;
   // only Data Saver / no-WebGL fall back to the CSS-only 'combo' scene after mount
-  const [variant, setVariant] = React.useState('core')
+  const [variant, setVariant] = React.useState('aurora')
   const [swOpen, setSwOpen] = React.useState(false)
   // the visual picker is a dev/design tool: hidden by default, Shift toggles it on the hero page
   const [swShown, setSwShown] = React.useState(false)
@@ -220,7 +222,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     let pick: string | null = null
     if (q === 'random') pick = keys[Math.floor(Math.random() * keys.length)]
     else if (q && keys.includes(q)) pick = q
-    else if (!conn?.saveData) pick = 'core' // final pick: Architected Intelligence (Canvas 2D, no WebGL needed)
+    else if (!conn?.saveData) pick = 'aurora' // final pick: aurora shader + liquid glass (alternatives: ?hero=agent|hub|pillar|orb|core) (Canvas 2D, no WebGL needed)
     else pick = 'combo'
     setVariant(pick)
     if (pick === 'logo') setLogoTick((n) => n + 1)
@@ -350,7 +352,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
   const ORDER = Object.keys(HERO_LABELS)
   // neural: editorial (copy left, sphere right) on wide screens, centred on phones
   const wide = typeof window !== 'undefined' && window.innerWidth >= 820
-  const corner = (variant === 'neural' && wide) || ['core', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
+  const corner = (variant === 'neural' && wide) || ['hub', 'pillar', 'orb', 'agent', 'aurora', 'core', 'logo', 'lines', 'orbit', 'iso', 'sphere', 'tape', 'bp', 'radar', 'atom', 'eclipse', 'spiro', 'harmo'].indexOf(variant) !== -1
   const flat = ['flow', 'lines', 'topo', 'dots', 'wave', 'bp', 'warp', 'ripple', 'radar', 'dna', 'terra', 'harmo', 'spiro', 'bars', 'flock', 'cells'].indexOf(variant) !== -1
 
   const onHeroClick = (e) => {
@@ -364,7 +366,7 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
       ref={secRef}
       id="home-section-hero"
       data-header-color={HEADER_TONE[variant]}
-      className={'home-section bg-blue noise-field hero-v-' + variant + (corner ? ' hero-corner' : '')}
+      className={'home-section bg-blue noise-field hero-v-' + variant + (['hub', 'pillar', 'orb', 'agent', 'aurora'].includes(variant) ? ' hero-v-core' : '') + (corner ? ' hero-corner' : '')}
       aria-labelledby="home-hero-headline"
       onClick={onHeroClick}
       style={{ position: 'relative', minHeight: 'calc(100svh - 72px)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: flat ? '#002FA7' : 'radial-gradient(120% 120% at 50% 44%, #0a44d8, #002FA7 50%, #001a5c 92%)' }}

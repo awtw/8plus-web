@@ -27,6 +27,31 @@ export function MobileTabBar() {
   const { t } = useLanguage()
   const [hidden, setHidden] = useState(false)
   const lastY = useRef(0)
+  const pendingTop = useRef(false)
+
+  // Next only scrolls a new route to top when its first element is off-screen, so a tab tap
+  // from mid-page leaves the new page mid-scroll. Force an instant jump to the very top.
+  useEffect(() => {
+    if (!pendingTop.current) return
+    pendingTop.current = false
+    const root = document.documentElement
+    const prev = root.style.scrollBehavior
+    root.style.scrollBehavior = 'auto'
+    window.scrollTo(0, 0)
+    lastY.current = 0
+    setHidden(false)
+    requestAnimationFrame(() => {
+      root.style.scrollBehavior = prev
+    })
+  }, [pathname])
+
+  const handleTabClick = (href: string, active: boolean) => {
+    if (active && pathname === href) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    pendingTop.current = true
+  }
 
   useEffect(() => {
     lastY.current = window.scrollY
@@ -64,6 +89,7 @@ export function MobileTabBar() {
               <Link
                 href={href}
                 aria-current={active ? 'page' : undefined}
+                onClick={() => handleTabClick(href, active)}
                 className={cn('mobile-tab', active && 'is-active', primary && 'is-primary')}
               >
                 <Icon size={22} weight={active || primary ? 'fill' : 'regular'} aria-hidden="true" />

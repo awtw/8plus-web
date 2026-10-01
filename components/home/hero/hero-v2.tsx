@@ -10,8 +10,10 @@ import { HERO_BACKDROPS, HeroBackdropStyles } from './hero-backdrops'
 import { startFrameLoop } from '@/lib/motion/frame-loop'
 
 const HERO_CSS = `
-  .hv-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transition: opacity .5s ease; }
-  .hv-bg.on { opacity: 1; }
+  .hv-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .5s ease, visibility 0s linear .5s; }
+  .hv-bg.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+  /* inactive scenes and an off-screen hero must not keep animating (dozens of 3-D/blurred layers starve the compositor and make touch scrolling elsewhere janky) */
+  .hv-bg:not(.on), .hv-bg:not(.on) *, #home-section-hero[data-offscreen] *, #home-section-hero[data-offscreen] *::before, #home-section-hero[data-offscreen] *::after { animation-play-state: paused !important; }
   .ht-scene { position: absolute; inset: 0; perspective: 560px; perspective-origin: 50% 42%; overflow: hidden; }
   .ht-plane { position: absolute; left: -60%; right: -60%; height: 170%;
     background-image: linear-gradient(rgba(255,255,255,.34) 1.3px,transparent 1.3px), linear-gradient(90deg,rgba(255,255,255,.24) 1.3px,transparent 1.3px);
@@ -307,6 +309,14 @@ export function HeroV2({ locale }: { locale: HomeLocale }) {
     const set = () => { const h = document.querySelector('header'); const hh = h ? h.getBoundingClientRect().height : 0; sec.style.minHeight = (window.innerHeight - hh) + 'px' }
     set(); window.addEventListener('resize', set)
     return () => window.removeEventListener('resize', set)
+  }, [])
+
+  // flag the hero while it is scrolled out of view so its CSS animations pause (see HERO_CSS)
+  React.useEffect(() => {
+    const sec = secRef.current; if (!sec || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) sec.removeAttribute('data-offscreen'); else sec.setAttribute('data-offscreen', '') })
+    io.observe(sec)
+    return () => io.disconnect()
   }, [])
 
   // combo parallax

@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-hero-neural-field.md`
+Plan: `.planning/spec-hero-direction-preview.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 13:38 +08:00 — Hero 改為品牌粒子神經場，完成本機驗證
+Last activity: 2026-10-05 14:48 +08:00 — A/B Hero 動態原型完成，待選定正式方向
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 14:48 +08:00 — Hero A/B 原型**：獨立 `/hero-preview`，A 有機厚環與橘色內緣、B ASCII 堆疊雕塑與掃描揭露；共用中英文文案、預設 B、8 秒進場、重播暫停。原生 WebGL、無新依賴；支援 reduced-motion、SVG 備援與 context 恢復。桌面與 390px 中英文無水平溢出，鍵盤重播、GPU context 遺失／恢復實測通過。build/typecheck 通過，lint 0 errors／35 既有 warnings、改動檔零警告。三方審查補強資源配置失敗及卸載釋放。預覽 http://localhost:3200/hero-preview；noindex、不列 sitemap；正式首頁未替換、未部署。
 
 - ✅ **2026-10-05 13:38 +08:00 — Hero 互動粒子神經場**：移除透明層板，改為 2.8 秒聚合的藍白兩圓與橘斜槓、三條資料弧線、游標局部回應、重播與暫停。桌機 2,360／窄螢幕 1,205 粒子，跨尺寸重新降載；離屏／隱藏停止、reduced-motion 靜態、Canvas 失效 SVG 備援與恢復。pnpm build、typecheck 通過；lint 0 errors／35 既有 warnings，改動檔零警告。1280px／390px 中英文無橫向溢出，暫停與 reduced-motion 截圖像素穩定，contextlost/restored 模擬通過，browser 無 error。三方審查已處理尺寸降載與 context 恢復；未部署。預覽 http://localhost:3100。
 
@@ -88,6 +90,13 @@ Stopped at: 首頁與節目入口第一版完成；pnpm build、typecheck、chec
 Resume file: .planning/spec-brand-show-launch.md
 
 ## Discussion Log
+
+### 2026-10-05 14:31 +08:00 — Hero 再次探索（未定案）
+
+- 使用者仍不滿意粒子聚合，要求重新找靈感與建議；本輪不修改網站程式碼。
+- 判讀：目前主體偏淡、材質與遮擋層次弱，聚合後缺少有意義的變化；下一輪應先比較不同藝術方向的短動畫，避免直接繼續微調點數與速度。
+- 新參考：Lusion Devin AI（產品敘事）；Codrops 2026-09-04 Shape-Aware ASCII（字元立體材質）；2026-09-08 Infinite Liquid Glass Grid（折射）；Unseen 2025-09-11 Cellular Technology（有機碰撞）。來源為官方案例／作者技術文章，不宣稱流行度排名。
+- 提案：A 有機數位材質、B 字元生成結構、C 任務執行敘事；等使用者偏好再定藝術方向。Synthetic Humans 直接網站在內嵌瀏覽器崩潰，僅以作者案例說明作參考，不作已完成互動觀察的證據。
 
 ### 2026-10-05 13:24 +08:00 — Hero AI 動態方向分析
 

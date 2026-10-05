@@ -3,7 +3,7 @@
 import { useLanguage } from '@/components/language-provider'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { HomeSectionProgressNav } from '@/components/home/home-section-progress-nav'
-import { HeroDelivery } from '@/components/home/hero/hero-delivery'
+import { HeroFocusStudio } from '@/components/home/hero/hero-focus-studio'
 import { SectionPrinciples } from '@/components/home/sections/section-principles'
 import { SectionAbout } from '@/components/home/sections/section-about'
 import { SectionLab } from '@/components/home/sections/section-lab'
@@ -22,7 +22,7 @@ export function HomeScrollRoot() {
   return (
     <div className="home-scroll-root">
       <HomeSectionProgressNav />
-      <HeroDelivery locale={homeLocale} />
+      <HeroFocusStudio locale={homeLocale} />
       <SectionLab locale={homeLocale} />
       <SectionServices locale={homeLocale} />
       <SectionPrinciples locale={homeLocale} />

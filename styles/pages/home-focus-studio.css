@@ -1,0 +1,99 @@
+/* 2026-10-05 — Production focus studio; isolated from the comparison lab. */
+.focus-studio {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #070909;
+  color: #f3eee4;
+}
+.focus-studio * { box-sizing: border-box; }
+.focus-studio-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  min-height: max(720px, calc(100svh - var(--header-h, 74px)));
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.focus-studio-copy {
+  position: relative;
+  z-index: 2;
+  padding: 40px 35px 40px 0;
+  background: linear-gradient(90deg, #070909 82%, #07090900);
+}
+.focus-studio-eyebrow { margin: 0 0 32px; font-size: 11px; letter-spacing: .14em; color: #bec3b9; }
+.focus-studio h1 { margin: 0 0 28px; color: inherit; font-size: clamp(32px, 3.55vw, 58px); line-height: 1.3; font-weight: 500; letter-spacing: -.055em; }
+.focus-studio h1 span { display: block; }
+.focus-studio-lead { max-width: 460px; font-size: 15px; line-height: 1.9; color: #b8bdb5; margin: 0 0 30px; }
+.focus-studio-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.focus-studio-actions a { display: inline-flex; align-items: center; min-height: 48px; padding: 13px 18px; font-size: 13px; text-decoration: none; }
+.focus-studio-primary { background: #f3eee4; color: #171c18; border: 1px solid #f3eee4; }
+.focus-studio-primary:hover { background: #e7ffac; border-color: #e7ffac; }
+.focus-studio-secondary { color: #f3eee4; }
+.focus-studio-secondary:hover { color: #e7ffac; }
+.focus-studio-footnote { margin: 34px 0 0; font-size: 10px; line-height: 1.8; letter-spacing: .04em; color: #a4ada0; }
+.focus-studio-visual { position: relative; min-width: 0; }
+.focus-studio-art { position: relative; height: 540px; margin-left: -100px; }
+.focus-studio-collage { position: absolute; inset: 12% -3% 14% 12%; filter: blur(5px); transform: scale(1.08); transition: filter .65s ease, transform .65s ease; }
+.focus-studio-drift { position: absolute; inset: 0; animation: focus-studio-sway 18s ease-in-out infinite alternate; }
+.focus-studio-card { position: absolute; width: 65%; }
+.focus-studio-card:nth-child(1) { left: 0; top: 0; transform: rotate(-12deg); }
+.focus-studio-card:nth-child(2) { left: 35%; top: 25%; }
+.focus-studio-card:nth-child(3) { left: 8%; top: 55%; transform: rotate(12deg); }
+.focus-studio-card-inner { padding: 8px; background: #efeee4; color: #222; animation: focus-studio-float 12s ease-in-out infinite alternate; }
+.focus-studio-card:nth-child(2) .focus-studio-card-inner { animation-delay: -4s; }
+.focus-studio-card:nth-child(3) .focus-studio-card-inner { animation-delay: -8s; }
+.focus-studio-card img { display: block; width: 100%; height: auto; }
+.focus-studio-card span { display: block; font-size: 11px; padding: 10px; }
+.focus-studio-frame { position: absolute; inset: 12% 5% 23% 17%; border: 1px solid #ffffff50; }
+.focus-studio-frame i { position: absolute; width: 20px; height: 20px; border: 2px solid #e7ffac; }
+.focus-studio-frame i:nth-child(1) { left: -2px; top: -2px; border-right: 0; border-bottom: 0; }
+.focus-studio-frame i:nth-child(2) { right: -2px; top: -2px; border-left: 0; border-bottom: 0; }
+.focus-studio-frame i:nth-child(3) { left: -2px; bottom: -2px; border-right: 0; border-top: 0; }
+.focus-studio-frame i:nth-child(4) { right: -2px; bottom: -2px; border-left: 0; border-top: 0; }
+.focus-studio-frame > span { position: absolute; bottom: -32px; font-size: 10px; color: #e7ffac; white-space: nowrap; }
+.focus-studio-art > strong { position: absolute; right: 4%; bottom: 3%; font-size: clamp(54px, 6.5vw, 104px); line-height: 1.1; letter-spacing: -.07em; font-weight: 600; color: #e7ffac; }
+.focus-studio-controls { position: relative; z-index: 3; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; padding-top: 20px; }
+.focus-studio-controls button { min-height: 44px; padding: 10px 14px; border: 1px solid #78816f; color: #e7ffac; background: #070909; cursor: pointer; font-size: 12px; touch-action: manipulation; }
+.focus-studio-controls button[aria-pressed="true"] { background: #e7ffac; color: #171c18; border-color: #e7ffac; }
+.focus-studio-controls button:disabled { color: #a4ada0; cursor: default; }
+.focus-studio button:focus-visible, .focus-studio a:focus-visible { outline: 2px solid #e7ffac; outline-offset: 5px; }
+.focus-studio[data-focused="true"] .focus-studio-collage { filter: blur(0); transform: scale(.9); }
+.focus-studio .focus-studio-drift, .focus-studio .focus-studio-card-inner { animation-play-state: paused; }
+.focus-studio[data-active="true"][data-paused="false"][data-focused="false"] .focus-studio-drift,
+.focus-studio[data-active="true"][data-paused="false"][data-focused="false"] .focus-studio-card-inner { animation-play-state: running; }
+@keyframes focus-studio-float { from { transform: translateY(-16px); } to { transform: translateY(16px); } }
+@keyframes focus-studio-sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@media (max-width: 1000px) {
+  .focus-studio-layout { min-height: 690px; grid-template-columns: 1.15fr 1fr; }
+  .focus-studio-copy { padding-right: 12px; }
+  .focus-studio h1 { font-size: 34px; }
+  .focus-studio-art { height: 460px; margin-left: -65px; }
+  .focus-studio-card { width: 70%; }
+}
+@media (max-width: 700px) {
+  .focus-studio-layout { display: flex; flex-direction: column; align-items: stretch; min-height: 0; padding-top: 38px; padding-bottom: 80px; }
+  .focus-studio-copy { padding: 0; background: none; }
+  .focus-studio-eyebrow { margin-bottom: 24px; font-size: 9px; }
+  .focus-studio h1 { font-size: clamp(27px, 7.2vw, 40px); margin-bottom: 20px; }
+  .focus-studio-lead { font-size: 13px; margin-bottom: 22px; }
+  .focus-studio-actions { gap: 5px; }
+  .focus-studio-actions a { font-size: 12px; padding: 12px; }
+  .focus-studio-footnote { margin-top: 22px; font-size: 9px; }
+  .focus-studio-art { height: 290px; margin: 24px -10px 0; }
+  .focus-studio-collage { inset: 7% 5% 13%; }
+  .focus-studio-card { width: 57%; }
+  .focus-studio-card:nth-child(3) { top: 49%; }
+  .focus-studio-card-inner { padding: 5px; }
+  .focus-studio-card span { font-size: 8px; padding: 5px; }
+  .focus-studio-frame { inset: 8% 12% 24%; }
+  .focus-studio-frame > span { font-size: 8px; bottom: -25px; }
+  .focus-studio-art > strong { font-size: 54px; right: 9%; bottom: 2%; }
+  .focus-studio-controls { justify-content: center; padding-top: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .focus-studio .focus-studio-drift, .focus-studio .focus-studio-card-inner { animation: none; }
+  .focus-studio .focus-studio-collage { transition: none; }
+  .focus-studio[data-focus-choice="auto"] .focus-studio-collage { filter: blur(0); transform: scale(.9); }
+}

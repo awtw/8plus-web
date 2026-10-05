@@ -73,3 +73,8 @@ locale 使用 `zh-TW` / `en`，舊 `zh-Hant` 正規化為 `zh-TW`。公開入口
 ### 十種 Hero 研究測試台
 
 2026-10-05 15:38 +08:00：新增 `/hero-lab?mode=pixels|type|magnetic|split|focus|grain|loupe|editorial|product|world`，每次掛載一種本地輕量原型。來源資料於 `lib/content/hero-motion-studies.ts`；主文案沿用雙語首頁，操作與研究說明使用中文。noindex/nofollow、不列 sitemap；不是全網熱度排行。真實作品截圖僅用現有本地資產，不新增內容集合；研究紀錄見 `docs/design/hero-motion-references-2026-10-05.md`。
+
+
+### 正式首頁：對焦工作室
+
+2026-10-05 15:44 +0800：使用者選定十版中的 05「對焦工作室」。首頁採用獨立 `HeroFocusStudio`，墨黑底、真實作品拼貼、模糊／清晰對焦與淡綠取景框；保留中英首頁文案、預約與作品錨點。提供鍵盤／觸控對焦、暫停與減少動態靜態版。`/hero-lab` 與 `/hero-preview` 保留供比較；正式首頁不載入研究介面或其他九版場景。作品資料仍由本地既有資產呈現，內容發布模型不變。尚未部署。

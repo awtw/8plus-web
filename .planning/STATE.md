@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-hero-motion-lab.md`
+Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 15:38 +08:00 — 十種 Hero 研究測試台完成，待使用者試選方向
+Last activity: 2026-10-05 15:49 +0800 — 首頁採用使用者選定的對焦工作室
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 15:49 +0800 — 首頁採用對焦工作室**：使用者選定05，新增獨立 HeroFocusStudio 與隔離CSS；墨黑、真實作品拼貼、淡綠框、鍵盤／觸控對焦、CSS漂移及暫停。保留首頁中英文案、預約與作品錨點；reduced首屏清晰且靜態，離屏與隱藏停播並清理監聽。build/typecheck/target lint 通過，三方審查無具體缺陷；桌機/390px中英、對焦、暫停穩定、reduced和作品CTA驗證。比較頁保留，預覽 http://localhost:3500/；未部署。
 
 - ✅ **2026-10-05 15:38 +08:00 — 十種 Hero 研究測試台**：新增 `/hero-lab`，十筆 2026 作者／獎項曝光參考、來源日期与本地轉譯分開呈現；非流量排名。像素、字體、磁性曲面、分割、對焦、材質、放大鏡、作品編排、系統拆解、工作地圖各有操作控制。URL mode、暫停重播、reduced、離屏／隱藏停止；noindex、不列 sitemap。桌機及 390px 中英十版、主要控制、暫停/reduced 穩定與網址恢復驗證；三方審查修正筆觸座標、透鏡取樣和作品按鈕；目視修正 grid 定位與手機卡片／拆解。build/typecheck 通過，lint 0 errors／35 既有 warnings。測試 http://localhost:3400/hero-lab；正式首頁及 hero-preview 未改，未部署。
 

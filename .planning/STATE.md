@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-home-visual-refinement.md`
+Plan: `.planning/spec-hero-neural-field.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 12:54 +08:00 — 首頁作品集改為四筆，完成桌機 2 × 2
+Last activity: 2026-10-05 13:38 +08:00 — Hero 改為品牌粒子神經場，完成本機驗證
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 13:38 +08:00 — Hero 互動粒子神經場**：移除透明層板，改為 2.8 秒聚合的藍白兩圓與橘斜槓、三條資料弧線、游標局部回應、重播與暫停。桌機 2,360／窄螢幕 1,205 粒子，跨尺寸重新降載；離屏／隱藏停止、reduced-motion 靜態、Canvas 失效 SVG 備援與恢復。pnpm build、typecheck 通過；lint 0 errors／35 既有 warnings，改動檔零警告。1280px／390px 中英文無橫向溢出，暫停與 reduced-motion 截圖像素穩定，contextlost/restored 模擬通過，browser 無 error。三方審查已處理尺寸降載與 context 恢復；未部署。預覽 http://localhost:3100。
 
 - ✅ **2026-10-05 12:54 +08:00 — 作品集補滿四格**：首頁精選上限由 3 改為 4，保留 featured 優先及原有手機橫向捲動。中英第四筆皆為 1914 品牌官網，縮圖與內容存在；瀏覽器確認四筆、兩欄兩列，pnpm build 通過。
 
@@ -86,6 +88,13 @@ Stopped at: 首頁與節目入口第一版完成；pnpm build、typecheck、chec
 Resume file: .planning/spec-brand-show-launch.md
 
 ## Discussion Log
+
+### 2026-10-05 13:24 +08:00 — Hero AI 動態方向分析
+
+- 使用者對 Hero 動畫仍不滿意，提供 Four by Erik 參考，要求研究近期吸睛且更有 AI 感的方向。
+- 已讀取現行 HeroDelivery / DeliveryScene：SVG 分層組裝、訊號流、展開與暫停。Four 作者說明為自訂 WebGL 神經場、資料封包與游標回應；另參考 Oryzo AI（CSSDA 2026 年 4 月月獎）、Jamie McKaye 粒子場與 Howard Yam Hologram shader 案例。案例非全市場熱度排名。
+- 建議方向（尚未定案）：藍橘品牌色的互動粒子場，從散點聚合為品牌符號，再呈現少量資料路徑；主文案與 CTA 維持立即可用。避免繼續堆疊裝飾光球或多種特效。
+- 本輪僅分析，未修改網站程式碼。localhost:3000 回傳舊流程內容且樣式未正常載入，與工作區原始碼不一致，因此現況判讀以原始碼為準，未視為最新版視覺驗證。
 
 ### 2026-10-01 00:20 CST — 聯絡方式曝光政策（Claude）
 

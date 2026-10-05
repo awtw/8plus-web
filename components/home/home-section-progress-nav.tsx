@@ -8,7 +8,7 @@ const SECTION_LABELS: Record<string, string> = {
   principles: 'Principles',
   about: 'Story',
   lab: 'Lab',
-  path: 'Path',
+  journal: 'Journal / LING8',
   services: 'Service',
   booking: 'Book',
 }
@@ -44,7 +44,7 @@ export function HomeSectionProgressNav({
 
   const scrollToSection = (id: string) => {
     document.getElementById(`home-section-${id}`)?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       block: 'start',
     })
   }

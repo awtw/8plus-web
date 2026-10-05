@@ -37,6 +37,7 @@ export function SectionAbout({ locale }: SectionAboutProps) {
         <p className="home-about-kicker">{about.kicker}</p>
         <p className="home-about-lead">{about.lead}</p>
         <p className="home-about-summary">{about.summary}</p>
+        <Link href="/path" className="home-path-link">{locale === "en" ? "Explore the full career path" : "查看完整學職涯歷程"} →</Link>
 
         <p className="scroll-eyebrow home-about-spectrum-eyebrow">{about.spectrumEyebrow}</p>
         <ol className="home-about-spectrum">

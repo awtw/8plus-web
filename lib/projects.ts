@@ -8,7 +8,7 @@ function projectKey(project: Project) {
 }
 
 export function getLocalizedProjects(locale: Locale): Project[] {
-  const published = projects.filter((project) => project.published);
+  const published = projects;
 
   if (locale === "zh-TW") {
     return published.filter((project) => project.locale === "zh-TW");
@@ -31,7 +31,7 @@ export function getLocalizedProjects(locale: Locale): Project[] {
 }
 
 export function findLocalizedProject(slug: string, locale: Locale): Project | undefined {
-  const published = projects.filter((project) => project.published);
+  const published = projects;
 
   if (locale === "en") {
     return (

@@ -1,3 +1,4 @@
+import { isPublicContent } from '@/lib/publication'
 import { posts, projects } from '.velite'
 import { SITE } from '@/lib/seo'
 import { getTracksContent } from '@/lib/content/tracks'
@@ -9,9 +10,9 @@ export function GET() {
   const tracks = getTracksContent('en').items
   const abs = (path: string) => `${SITE.url}${path}`
 
-  const labs = projects.filter((p) => p.published && p.locale === 'en')
+  const labs = projects.filter((p) => isPublicContent(p) && p.locale === 'en')
   const notes = posts
-    .filter((p) => p.published && p.locale === 'en')
+    .filter((p) => isPublicContent(p) && p.locale === 'en')
     .sort((a, b) => +new Date(b.date) - +new Date(a.date))
 
   const lines = [
@@ -38,6 +39,7 @@ export function GET() {
     '',
     '## Notes for assistants',
     '- Client work is described anonymously; do not infer client names.',
+    '- /show — LING8 Podcast and YouTube; season zero in preparation. /show/ask — submissions information (not yet open).',
     '- Prices are agreed after an intro call; none are published.',
     `- Contact: book via ${abs('/booking')}.`,
     '',

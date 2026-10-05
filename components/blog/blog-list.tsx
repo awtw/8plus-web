@@ -15,7 +15,7 @@ export function BlogList() {
   const c = blogContent[locale]
   const [filter, setFilter] = useState<'all' | 'article' | 'note'>('all')
   const published = posts
-    .filter((post) => post.published && post.locale === locale)
+    .filter((post) => post.locale === locale)
     .filter((post) => filter === 'all' || post.kind === filter)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 

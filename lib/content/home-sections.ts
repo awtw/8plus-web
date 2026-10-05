@@ -93,8 +93,8 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
     hero: {
       tag: '8PLUS.APP · TRUST001',
       issueMark: 'NO.01 — 2026',
-      headline: ['完善 AI 應用', '資料正確，服務穩定'],
-      subtitle: '以 AI 架構師的角度，從資料處理、檢索、評測到服務整合，確保資料正確與服務穩定；體驗設計追求看過就會用。',
+      headline: ['把 AI 想法，做成', '團隊真的能用的系統。'],
+      subtitle: '從需求釐清、資料與權限，到評測和系統整合。陪你把想法拆成可驗證、可交付、能持續維護的下一步。',
       principlesTitle: '我怎麼做事',
       figureCaption: 'FIG.01 — TRUST HANDSHAKE',
       scrollCue: '往下滾動，認識 8plus',
@@ -142,7 +142,7 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
     lab: {
       eyebrow: '02 · LAB',
       title: '作品集',
-      arc: '從青澀無框架 → 設計感動畫 → 商業電商／品牌形象',
+      arc: '從商業系統到產品介面，看問題如何落地成作品。',
       moreCta: '查看全部作品',
     },
     path: {
@@ -237,8 +237,8 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
     hero: {
       tag: '8PLUS.APP · TRUST001',
       issueMark: 'NO.01 — 2026',
-      headline: ['Complete AI applications', 'Accurate data, stable service'],
-      subtitle: 'As an AI architect: from data processing, retrieval and evaluation to service integration, keeping data accurate and services stable, with an experience understood at a glance.',
+      headline: ['Turn AI ideas into', 'systems your team can use.'],
+      subtitle: 'From requirements and data access to evaluation and integration. Turn the idea into something testable, deliverable and maintainable.',
       principlesTitle: 'How I work',
       figureCaption: 'FIG.01 — TRUST HANDSHAKE',
       scrollCue: 'Scroll to meet 8plus',
@@ -286,7 +286,7 @@ const copy: Record<HomeLocale, HomeSectionContent> = {
     lab: {
       eyebrow: '02 · LAB',
       title: 'Selected work',
-      arc: 'From raw HTML → motion craft → brand commerce',
+      arc: 'From business systems to product interfaces — see the work in practice.',
       moreCta: 'View all projects',
     },
     path: {
@@ -385,11 +385,11 @@ export function getHomeSectionContent(locale: HomeLocale): HomeSectionContent {
 
 export const HOME_SECTION_IDS = [
   'hero',
+  'lab',
+  'services',
   'principles',
   'about',
-  'lab',
-  'path',
-  'services',
+  'journal',
   'booking',
 ] as const
 

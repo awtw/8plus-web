@@ -3,11 +3,11 @@
 import { useLanguage } from '@/components/language-provider'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { HomeSectionProgressNav } from '@/components/home/home-section-progress-nav'
-import { HeroV2 } from '@/components/home/hero/hero-v2'
+import { HeroDelivery } from '@/components/home/hero/hero-delivery'
 import { SectionPrinciples } from '@/components/home/sections/section-principles'
 import { SectionAbout } from '@/components/home/sections/section-about'
 import { SectionLab } from '@/components/home/sections/section-lab'
-import { SectionPath } from '@/components/home/sections/section-path'
+import { SectionJournal } from '@/components/home/sections/section-journal'
 import { SectionServices } from '@/components/home/sections/section-services'
 import { SectionBooking } from '@/components/home/sections/section-booking'
 
@@ -22,12 +22,12 @@ export function HomeScrollRoot() {
   return (
     <div className="home-scroll-root">
       <HomeSectionProgressNav />
-      <HeroV2 locale={homeLocale} />
+      <HeroDelivery locale={homeLocale} />
+      <SectionLab locale={homeLocale} />
+      <SectionServices locale={homeLocale} />
       <SectionPrinciples locale={homeLocale} />
       <SectionAbout locale={homeLocale} />
-      <SectionLab locale={homeLocale} />
-      <SectionPath locale={homeLocale} />
-      <SectionServices locale={homeLocale} />
+      <SectionJournal locale={homeLocale} />
       <SectionBooking locale={homeLocale} />
     </div>
   )

@@ -10,6 +10,7 @@
     "featured": false,
     "summary": "An essential oil brand website and customer automation Lab combining brand design, fragrance formulation, and LINE/Messenger chatbot flows.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>1914 Essential Oil Brand Website</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/1914/web.png\" alt=\"1914 Web\">\n<img src=\"/og/labs/1914/line.png\" alt=\"1914 Line Bot\"></p>\n<p><strong>Tags</strong>: VanillaJS, LINE Chatbot, Messenger Chatbot, Google Dialogflow API, Heroku, AI, Photoshop, UI/UX Design</p>\n<h2>Brand Overview</h2>\n<p>1914 is an essential oil brand I created during alternative military service. I handled the full process independently: naming, logo and visual identity, packaging design, fragrance formulation, and customer service automation. The Lab combines biochemistry, design, and engineering into one coherent brand experience.</p>\n<h2>Product &#x26; Experience</h2>\n<ul>\n<li>Develop fragrance formulas with a scientific approach, emphasizing stability and safety</li>\n<li>Create a consistent visual system: logo, packaging, and marketing materials</li>\n<li>Build 24/7 customer service flows with LINE and Messenger chatbots</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: VanillaJS</li>\n<li>Chatbot: LINE, Messenger + Google Dialogflow for semantic understanding</li>\n<li>Deployment: Heroku</li>\n<li>Design: UI/UX, branding, and graphic design with Photoshop</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li>Website Demo: <a href=\"https://1914.augustwang.com/\">https://1914.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/1914"
@@ -24,6 +25,7 @@
     "featured": false,
     "summary": "自創精油品牌官網與客服自動化 Lab，整合品牌設計、香氛配方與 LINE/Messenger Chatbot。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>1914 精油品牌官網</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/1914/web.png\" alt=\"1914 Web\">\n<img src=\"/og/labs/1914/line.png\" alt=\"1914 Line Bot\"></p>\n<p><strong>Tags</strong>: VanillaJS, LINE Chatbot, Messenger Chatbot, Google Dialogflow API, Heroku, AI, Photoshop, UI/UX Design</p>\n<h2>品牌簡介</h2>\n<p>1914 為替代役期間自創的精油品牌，從品牌命名、Logo 與視覺、包裝設計、配方研發到客服自動化，全流程獨立完成，將生物化學背景與設計、工程能力整合為一致的品牌體驗。</p>\n<h2>產品與體驗</h2>\n<ul>\n<li>以科學方法開發香氛配方，強調穩定與安全</li>\n<li>設計一致的視覺系統（Logo、包裝、行銷素材）</li>\n<li>以聊天機器人建立 24/7 客服流程（LINE、Messenger）</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端：VanillaJS</li>\n<li>Chatbot：LINE、Messenger + Google Dialogflow（語意辨識）</li>\n<li>佈署：Heroku</li>\n<li>設計：UI/UX、品牌與平面視覺（PS）</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>官網（Demo）：<a href=\"https://1914.augustwang.com/\">https://1914.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/1914"
@@ -39,6 +41,7 @@
     "featured": false,
     "summary": "A career and technical consulting booking platform integrating Google Calendar and a conversion-focused consultation flow.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>8plus Consulting Platform</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/8plus/web.png\" alt=\"8plus Web\">\n<img src=\"/og/labs/8plus/content.png\" alt=\"8plus Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2>Overview</h2>\n<p>Built from years of product and engineering experience, 8plus is a booking-first consulting platform for deeper conversations around career planning and software development. It combines analytics thinking with practical engineering experience to help users identify strengths and map actionable next steps.</p>\n<h2>Highlights</h2>\n<ul>\n<li>Systematic booking flow with Google Calendar integration</li>\n<li>Goal-centered consulting framework and question prompts</li>\n<li>Minimal, clear interface designed to reduce friction and increase completion rate</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Integration: Google Calendar API</li>\n<li>Design: UI/UX and interaction polish</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li>Demo: <a href=\"https://8plus.app/\">https://8plus.app/</a></li>\n</ul>",
     "url": "/lab/8plus"
@@ -53,6 +56,7 @@
     "featured": false,
     "summary": "結合職涯與技術諮詢的預約平台，整合 Google Calendar 並聚焦高轉換的諮詢流程。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>8plus 諮詢平台</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/8plus/web.png\" alt=\"8plus Web\">\n<img src=\"/og/labs/8plus/content.png\" alt=\"8plus 內容\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2>簡介</h2>\n<p>結合多年產品與開發經驗，打造一個能夠快速預約的諮詢平台，協助使用者就職涯與程式開發相關議題進行深度討論。透過資料分析背景與長期實務經驗，聚焦於挖掘每位使用者的能力特點，並給出具體可行的規劃路徑。</p>\n<h2>特色亮點</h2>\n<ul>\n<li>系統化的預約流程，與 Google Calendar 無縫整合</li>\n<li>以使用者目標為中心的諮詢框架與問題引導</li>\n<li>極簡清晰的介面，降低學習成本，提升完成率</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端框架：Next.js</li>\n<li>佈署平台：Vercel</li>\n<li>外部整合：Google Calendar API</li>\n<li>設計：UI/UX 設計與互動細節優化</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>Demo：<a href=\"https://8plus.app/\">https://8plus.app/</a></li>\n</ul>",
     "url": "/lab/8plus"
@@ -85,6 +89,7 @@
     ],
     "summary": "A brand website for an emerging fashion designer, integrating visual language, brand storytelling, and social conversion paths.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>B18 Brand Website</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2>Overview</h2>\n<p>This Lab is a brand website for an emerging clothing designer, focused on visual language, brand storytelling, and social touchpoints that guide users toward interaction and conversion.</p>\n<h2>Design &#x26; Experience</h2>\n<ul>\n<li>Use layout and whitespace to highlight product texture and brand positioning</li>\n<li>Guide users from brand discovery to social and purchase flows</li>\n<li>Keep a consistent design system and reusable components</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Social integration: Instagram embed / traffic routing</li>\n</ul>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></li>\n</ul>",
     "url": "/lab/b18"
@@ -116,6 +121,7 @@
     ],
     "summary": "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>B18 品牌官網</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2>專案簡介</h2>\n<p>為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。</p>\n<h2>設計與體驗</h2>\n<ul>\n<li>以版型與留白凸顯產品質感與品牌定位</li>\n<li>以導購節點導流至社群與購買流程</li>\n<li>具一致性的設計系統與元件</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端：Next.js</li>\n<li>佈署：Vercel</li>\n<li>社群整合：Instagram 嵌入/導流</li>\n</ul>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></li>\n</ul>",
     "url": "/lab/b18"
@@ -140,6 +146,7 @@
     "featured": false,
     "summary": "A front-end-only learning site for pediatric chronic kidney disease (CKD) education, showing progress through pre/post tests and radar charts against historical score distributions.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Kidney Learning — Pediatric CKD Clinic</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"Kidney Learning pediatric CKD clinic\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2>Why</h2>\n<p>Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether patients and families actually learned. The teaching clinic wanted a lightweight tool, usable in the clinic or at home, that makes learning outcomes visible and comparable.</p>\n<h2>Goals and intended effect</h2>\n<ul>\n<li>Pre/post tests across five CKD knowledge areas so users can see their own progress.</li>\n<li>A radar chart for per-area scores, plus a distribution chart placing the user against historical pre/post results.</li>\n<li>No sign-up: open the URL and practice, keeping the barrier low.</li>\n<li>A supporting teaching aid and outcome record, not a formal exam with anti-cheating requirements.</li>\n</ul>\n<h2>How it was built</h2>\n<ol>\n<li>Collected clinical guidelines and education-program references, then drafted the topics, five practice questions and candidate answers.</li>\n<li>Converted historical pre-test (166) and post-test (162) spreadsheets into <strong>anonymous statistics</strong> with a Python script: score distributions, mean and median only, with no names or per-answer data.</li>\n<li>Isolated scoring (2 points per question, completion rate, score rate, tied-score median percentile) in its own module, covered by Vitest.</li>\n<li>Answers and drafts live in browser localStorage with JSON backup download; the repository interface leaves room for a cloud adapter later.</li>\n<li>Hash routing and fully static deployment on Vercel: no env vars, no backend.</li>\n</ol>\n<h2>Packages and models</h2>\n<ul>\n<li>Framework: Vue 3 + TypeScript + Vite 7</li>\n<li>Charts: hand-built SVG radar and distribution components</li>\n<li>Icons: Lucide</li>\n<li>Testing: Vitest, vue-tsc type checking</li>\n<li>Data prep: Python + openpyxl (dev-time only)</li>\n<li>Hosting: Vercel static</li>\n<li>Models: <strong>no AI model at runtime</strong>; all scoring is deterministic code</li>\n</ul>\n<h2>Limitations</h2>\n<ul>\n<li>Records stay in that browser and origin; switching devices or clearing data loses them.</li>\n<li>Client-side answers and scoring are inspectable, so it is unsuitable for formal exams.</li>\n<li>Questions are a test version and need teacher approval before real use.</li>\n</ul>\n<h2>Links</h2>\n<ul>\n<li>Live site: <a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>Source: private repository (not public)</li>\n</ul>",
     "url": "/lab/ckd2026"
@@ -164,6 +171,7 @@
     "featured": false,
     "summary": "協助兒童慢性腎臟病（CKD）衛教的純前端學習網站，以前後測與雷達圖呈現學習進步，並對照歷史成績分布。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>腎入學習 — 兒童 CKD 教學門診</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"腎入學習 兒童 CKD 教學門診\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2>緣由</h2>\n<p>兒童慢性腎臟病的衛教多半停留在紙本與口頭說明，門診時間有限，家屬與病童難以確認「學會了沒有」。教學門診希望有一個能在診間或回家後使用的輕量工具，讓衛教成效可以被看見、被比較，並能作為教學評比的佐證。</p>\n<h2>目的與預期效果</h2>\n<ul>\n<li>以 CKD 五大知識面向設計前後測，讓使用者了解自己的學習進步。</li>\n<li>用雷達圖呈現各面向得分，用分布圖把個人成績對照歷史前測／後測的中位百分位。</li>\n<li>不需註冊登入，開啟網址即可練習，降低診間使用門檻。</li>\n<li>作為教學門診的輔助教材與成效紀錄，而非有防作弊要求的正式考試。</li>\n</ul>\n<h2>如何做出來</h2>\n<ol>\n<li>整理臨床診療指引與衛教計畫等參考資料，擬定主題與五題練習題及候選答案。</li>\n<li>將歷史前測（166 筆）、後測（162 筆）Excel 以 Python 腳本轉為<strong>匿名統計</strong>（僅分數分布、平均、中位數），不含姓名與逐筆答案。</li>\n<li>計分邏輯獨立為 <code>scoring</code> 模組（每題 2 分、完成率、得分率、同分中位百分位），以 Vitest 撰寫測試。</li>\n<li>作答紀錄與草稿存於瀏覽器 localStorage，可下載 JSON 備份；儲存介面預留 adapter，日後可接雲端資料庫。</li>\n<li>路由採 hash，純靜態部署至 Vercel，不需環境變數或後端。</li>\n</ol>\n<h2>使用的套件與模型</h2>\n<ul>\n<li>框架：Vue 3 + TypeScript + Vite 7</li>\n<li>圖表：自繪 SVG 雷達圖與分布圖元件</li>\n<li>圖示：Lucide</li>\n<li>測試：Vitest、vue-tsc 型別檢查</li>\n<li>資料處理：Python + openpyxl（僅開發時轉檔）</li>\n<li>部署：Vercel 靜態託管</li>\n<li>模型：網站執行時<strong>不使用任何 AI 模型</strong>，所有計分皆為確定性程式邏輯</li>\n</ul>\n<h2>限制</h2>\n<ul>\n<li>紀錄僅存於該瀏覽器與網域，換裝置或清除資料不會帶走。</li>\n<li>純前端的答案與計分可被檢視，不適合正式考試。</li>\n<li>題目為測試版，正式使用前仍須教師核定。</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>線上網站：<a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>原始碼：私有儲存庫（未公開）</li>\n</ul>",
     "url": "/lab/ckd2026"
@@ -199,6 +207,7 @@
     ],
     "summary": "A series of CRM prototypes covering login, permissions, list search, form editing, and guided workflows, with a focus on information architecture and interaction flow.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>CRM Design Series</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2>Scope</h2>\n<p>This Lab explores multiple CRM prototype directions across common back-office modules: authentication, role-based access, list search, form editing, and guided onboarding workflows.</p>\n<h2>Design Focus</h2>\n<ul>\n<li>Consistent visual language and reusable component patterns</li>\n<li>Task-oriented page flows and interaction paths</li>\n<li>Scalable list and form structures with permissions and state variations</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: VanillaJS, Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Design: UI/UX design, component thinking</li>\n</ul>\n<h2>Links</h2>\n<ul>\n<li><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></li>\n<li><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
     "url": "/lab/crm-series"
@@ -233,6 +242,7 @@
     ],
     "summary": "針對登入、權限、清單、表單與流程引導設計的 CRM 原型系列，聚焦資訊架構與操作動線。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>CRM 設計系列</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2>目的與範疇</h2>\n<p>針對不同情境設計多版 CRM 原型，涵蓋登入/權限、清單檢索、表單編輯、流程引導等常見功能模組，強調資訊架構與操作動線的清晰性。</p>\n<h2>設計重點</h2>\n<ul>\n<li>一致的設計語言與元件系統</li>\n<li>以任務為導向的頁面與操作流</li>\n<li>可擴充的列表/表單架構，支援權限與狀態變化</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端：VanillaJS、Next.js</li>\n<li>佈署：Vercel</li>\n<li>設計：UI/UX 設計、元件化思維</li>\n</ul>\n<h2>相關連結</h2>\n<ul>\n<li><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></li>\n<li><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
     "url": "/lab/crm-series"
@@ -248,6 +258,7 @@
     "featured": false,
     "summary": "A disaster-response collaboration platform for Hualien Guangfu, focused on information integration, resource matching, and rapid community coordination.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Guangfu Collaboration Platform (e-cooperative)</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2>Background</h2>\n<p>On 2025/09/23, the Matai'an Creek barrier lake disaster affected the Guangfu area in Hualien. This Lab prototypes a collaboration platform that connects social networks and volunteers to integrate information, improve communication efficiency, and support resource matching.</p>\n<h2>Goals &#x26; Value</h2>\n<ul>\n<li>Integrate disaster information from multiple sources into a standardized data model</li>\n<li>Support mutual aid and resource matching between volunteers and residents</li>\n<li>Launch and iterate quickly with a lightweight, maintainable architecture</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: Next.js deployed on Vercel</li>\n<li>Backend: Python Flask API</li>\n<li>Design: UI/UX design and information architecture</li>\n</ul>\n<h2>Screenshot</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></li>\n</ul>",
     "url": "/lab/e-cooperative"
@@ -262,6 +273,7 @@
     "featured": false,
     "summary": "為花蓮光復災害協作打造的資訊整合與資源媒合平台，聚焦快速上線與社群協作。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>光復協作平台（e-cooperative）</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2>專案背景</h2>\n<p>2025/09/23 花蓮光復區發生馬太鞍溪堰塞湖災害。透過社群與志工串聯，啟動協作平台的設計與原型開發，目標為整合資訊、提升溝通效率、並協助資源媒合。</p>\n<h2>目標與價值</h2>\n<ul>\n<li>整合多來源災情資訊，建立標準化資料模型</li>\n<li>提供志工與居民的互助與媒合機制</li>\n<li>以輕量可維護為前提，快速上線與迭代</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端：Next.js（Vercel 佈署）</li>\n<li>後端：Python Flask API</li>\n<li>設計：UI/UX 設計與資訊架構</li>\n</ul>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></li>\n</ul>",
     "url": "/lab/e-cooperative"
@@ -295,6 +307,7 @@
     "summary": "A modern management dashboard for small and medium e-commerce businesses, integrating order management, inventory control, and data analytics.",
     "thumbnail": "/og/ecommerce-dashboard.png",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>E-commerce Management Dashboard</h1>\n<h2>Project Background</h2>\n<p>With the rapid development of e-commerce business, traditional management methods can no longer meet the needs of modern enterprises. This project aims to provide a complete management solution for small and medium-sized e-commerce businesses.</p>\n<h2>Core Challenges</h2>\n<h3>1. Data Fragmentation</h3>\n<ul>\n<li>Order, inventory, and customer data scattered across different systems</li>\n<li>Lack of unified data view</li>\n<li>Insufficient decision-making basis</li>\n</ul>\n<h3>2. Efficiency Bottlenecks</h3>\n<ul>\n<li>Manual order processing is time-consuming and error-prone</li>\n<li>Lack of inventory management automation</li>\n<li>Missing real-time notification mechanisms</li>\n</ul>\n<h3>3. Scalability Limitations</h3>\n<ul>\n<li>Existing systems cannot support business growth</li>\n<li>Multi-store management difficulties</li>\n<li>Complex third-party integrations</li>\n</ul>\n<h2>Solution</h2>\n<h3>Technical Architecture</h3>\n<pre><code>Frontend (Next.js 15)\n├── App Router\n├── Server Components\n├── Client Components\n└── API Routes\n\nBackend (Prisma + PostgreSQL)\n├── Multi-tenant data model\n├── Real-time data synchronization\n├── Automated workflows\n└── RESTful API\n\nUI/UX (Tailwind + Shadcn/ui)\n├── Responsive design\n├── Accessibility support\n├── Dark mode\n└── Component-based architecture\n</code></pre>\n<h3>Core Feature Modules</h3>\n<h4>📊 Data Dashboard</h4>\n<ul>\n<li>Real-time sales data visualization</li>\n<li>Multi-dimensional data analysis</li>\n<li>Custom report generation</li>\n<li>Trend prediction analysis</li>\n</ul>\n<h4>📦 Order Management System</h4>\n<ul>\n<li>Automated order processing workflow</li>\n<li>Batch operation support</li>\n<li>Status tracking and notifications</li>\n<li>Return and exchange management</li>\n</ul>\n<h4>🏪 Inventory Control Center</h4>\n<ul>\n<li>Real-time inventory monitoring</li>\n<li>Automatic restock alerts</li>\n<li>Multi-warehouse management</li>\n<li>Inventory warning system</li>\n</ul>\n<h4>👥 Customer Relationship Management</h4>\n<ul>\n<li>Customer data integration</li>\n<li>Purchase behavior analysis</li>\n<li>Personalized recommendations</li>\n<li>Customer service ticketing system</li>\n</ul>\n<h2>Technical Highlights</h2>\n<h3>1. Performance Optimization</h3>\n<ul>\n<li><strong>Server Components</strong>: Reduced client-side JavaScript load</li>\n<li><strong>Incremental Static Regeneration</strong>: Ensured data freshness</li>\n<li><strong>Image Optimization</strong>: Automatic WebP conversion and lazy loading</li>\n<li><strong>Code Splitting</strong>: On-demand loading to reduce initial load time</li>\n</ul>\n<h3>2. User Experience</h3>\n<ul>\n<li><strong>Intuitive Interface</strong>: UI design based on user research</li>\n<li><strong>Fast Response</strong>: Optimistic updates and local state management</li>\n<li><strong>Accessible Design</strong>: WCAG 2.1 compliant</li>\n<li><strong>Multi-language Support</strong>: i18n internationalization implementation</li>\n</ul>\n<h3>3. System Reliability</h3>\n<ul>\n<li><strong>Error Boundaries</strong>: Graceful error handling mechanisms</li>\n<li><strong>Data Backup</strong>: Automated backup strategies</li>\n<li><strong>Monitoring &#x26; Alerts</strong>: System health monitoring</li>\n<li><strong>Security Protection</strong>: JWT authentication and RBAC permission control</li>\n</ul>\n<h2>Development Process</h2>\n<h3>1. Requirements Analysis Phase (2 weeks)</h3>\n<ul>\n<li>User interviews and requirement gathering</li>\n<li>Competitive analysis and market research</li>\n<li>Technical solution evaluation</li>\n<li>Project planning</li>\n</ul>\n<h3>2. Design Phase (3 weeks)</h3>\n<ul>\n<li>User experience design</li>\n<li>System architecture design</li>\n<li>Database design</li>\n<li>API interface design</li>\n</ul>\n<h3>3. Development Phase (8 weeks)</h3>\n<ul>\n<li>Core feature development</li>\n<li>Frontend-backend integration</li>\n<li>Third-party service integration</li>\n<li>Performance optimization</li>\n</ul>\n<h3>4. Testing &#x26; Deployment Phase (3 weeks)</h3>\n<ul>\n<li>Unit testing and integration testing</li>\n<li>User acceptance testing</li>\n<li>Performance testing</li>\n<li>Production environment deployment</li>\n</ul>\n<h2>Project Results</h2>\n<h3>Quantitative Metrics</h3>\n<ul>\n<li><strong>Order Processing Efficiency</strong>: Improved by 45%</li>\n<li><strong>Inventory Error Rate</strong>: Reduced by 60%</li>\n<li><strong>User Satisfaction</strong>: Improved to 4.8/5.0</li>\n<li><strong>System Response Time</strong>: &#x3C; 200ms</li>\n</ul>\n<h3>Business Value</h3>\n<ul>\n<li><strong>Cost Savings</strong>: 30% monthly labor cost reduction</li>\n<li><strong>Revenue Growth</strong>: 25% increase in average order value</li>\n<li><strong>Operational Efficiency</strong>: 40% overall efficiency improvement</li>\n<li><strong>Customer Retention</strong>: 35% improvement in retention rate</li>\n</ul>\n<h2>Technical Challenges &#x26; Solutions</h2>\n<h3>Challenge 1: Real-time Processing of Large Data Volumes</h3>\n<p><strong>Solution</strong>:</p>\n<ul>\n<li>Used PostgreSQL's LISTEN/NOTIFY mechanism</li>\n<li>Implemented WebSocket connections for real-time data push</li>\n<li>Adopted pagination and virtual scrolling for large list rendering optimization</li>\n</ul>\n<h3>Challenge 2: Multi-tenant Data Isolation</h3>\n<p><strong>Solution</strong>:</p>\n<ul>\n<li>Designed Row-Level Security (RLS) policies</li>\n<li>Implemented tenant-level data encryption</li>\n<li>Established comprehensive permission management system</li>\n</ul>\n<h3>Challenge 3: Third-party Service Integration</h3>\n<p><strong>Solution</strong>:</p>\n<ul>\n<li>Built unified API Gateway</li>\n<li>Implemented retry mechanisms and circuit breaker patterns</li>\n<li>Designed flexible configuration management system</li>\n</ul>\n<h2>Future Planning</h2>\n<h3>Phase 2: AI Intelligence</h3>\n<ul>\n<li>Intelligent inventory forecasting</li>\n<li>Personalized recommendation engine</li>\n<li>Automated customer service chatbot</li>\n<li>Anomaly detection system</li>\n</ul>\n<h3>Phase 3: Ecosystem Expansion</h3>\n<ul>\n<li>Mobile app development</li>\n<li>Open API platform</li>\n<li>Third-party plugin marketplace</li>\n<li>Multi-channel integration</li>\n</ul>\n<h2>Learning &#x26; Insights</h2>\n<p>This project gave me deep understanding of:</p>\n<ul>\n<li><strong>Full-stack Development Complexity</strong>: Comprehensive consideration from user experience to system architecture</li>\n<li><strong>Performance Optimization Importance</strong>: Optimization strategies in big data scenarios</li>\n<li><strong>User-Centered Design</strong>: Product design thinking that truly solves user pain points</li>\n<li><strong>Team Collaboration</strong>: Communication and collaboration skills in cross-functional teams</li>\n</ul>\n<hr>\n<p><em>Want to learn more technical details or discuss implementation solutions for similar projects? Feel free to book a technical consultation.</em></p>",
     "url": "/lab/ecommerce-dashboard"
@@ -328,6 +341,7 @@
     "summary": "為中小型電商企業打造的現代化管理後台，整合訂單管理、庫存控制與數據分析。",
     "thumbnail": "/og/ecommerce-dashboard.png",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>電商管理後台系統</h1>\n<h2>專案背景</h2>\n<p>隨著電商業務的快速發展，傳統的管理方式已無法滿足現代企業的需求。本專案旨在為中小型電商企業提供一套完整的管理解決方案。</p>\n<h2>核心挑戰</h2>\n<h3>1. 數據分散問題</h3>\n<ul>\n<li>訂單、庫存、客戶數據散落在不同系統</li>\n<li>缺乏統一的數據視圖</li>\n<li>決策依據不足</li>\n</ul>\n<h3>2. 效率瓶頸</h3>\n<ul>\n<li>手動處理訂單耗時且容易出錯</li>\n<li>庫存管理缺乏自動化</li>\n<li>缺乏即時通知機制</li>\n</ul>\n<h3>3. 擴展性限制</h3>\n<ul>\n<li>現有系統無法支撐業務增長</li>\n<li>多店鋪管理困難</li>\n<li>第三方整合複雜</li>\n</ul>\n<h2>解決方案</h2>\n<h3>技術架構</h3>\n<pre><code>Frontend (Next.js 15)\n├── App Router\n├── Server Components\n├── Client Components\n└── API Routes\n\nBackend (Prisma + PostgreSQL)\n├── 多租戶數據模型\n├── 即時數據同步\n├── 自動化工作流程\n└── RESTful API\n\nUI/UX (Tailwind + Shadcn/ui)\n├── 響應式設計\n├── 無障礙支援\n├── 深色模式\n└── 元件化架構\n</code></pre>\n<h3>核心功能模組</h3>\n<h4>📊 數據儀表板</h4>\n<ul>\n<li>即時銷售數據視覺化</li>\n<li>多維度數據分析</li>\n<li>自定義報表生成</li>\n<li>趨勢預測分析</li>\n</ul>\n<h4>📦 訂單管理系統</h4>\n<ul>\n<li>自動化訂單處理流程</li>\n<li>批量操作支援</li>\n<li>狀態追蹤與通知</li>\n<li>退換貨管理</li>\n</ul>\n<h4>🏪 庫存控制中心</h4>\n<ul>\n<li>即時庫存監控</li>\n<li>自動補貨提醒</li>\n<li>多倉庫管理</li>\n<li>庫存預警系統</li>\n</ul>\n<h4>👥 客戶關係管理</h4>\n<ul>\n<li>客戶資料整合</li>\n<li>購買行為分析</li>\n<li>個性化推薦</li>\n<li>客服工單系統</li>\n</ul>\n<h2>技術亮點</h2>\n<h3>1. 效能優化</h3>\n<ul>\n<li><strong>Server Components</strong>: 減少客戶端 JavaScript 負載</li>\n<li><strong>增量靜態再生</strong>: 確保數據即時性</li>\n<li><strong>圖片優化</strong>: 自動 WebP 轉換和延遲載入</li>\n<li><strong>程式碼分割</strong>: 按需載入減少初始載入時間</li>\n</ul>\n<h3>2. 使用者體驗</h3>\n<ul>\n<li><strong>直觀的操作介面</strong>: 基於使用者研究的 UI 設計</li>\n<li><strong>快速響應</strong>: 樂觀更新和本地狀態管理</li>\n<li><strong>無障礙設計</strong>: 符合 WCAG 2.1 標準</li>\n<li><strong>多語言支援</strong>: i18n 國際化實現</li>\n</ul>\n<h3>3. 系統可靠性</h3>\n<ul>\n<li><strong>錯誤邊界</strong>: 優雅的錯誤處理機制</li>\n<li><strong>數據備份</strong>: 自動化備份策略</li>\n<li><strong>監控告警</strong>: 系統健康狀態監控</li>\n<li><strong>安全防護</strong>: JWT 認證和 RBAC 權限控制</li>\n</ul>\n<h2>開發流程</h2>\n<h3>1. 需求分析階段 (2週)</h3>\n<ul>\n<li>使用者訪談和需求收集</li>\n<li>競品分析和市場調研</li>\n<li>技術方案評估</li>\n<li>專案計劃制定</li>\n</ul>\n<h3>2. 設計階段 (3週)</h3>\n<ul>\n<li>使用者體驗設計</li>\n<li>系統架構設計</li>\n<li>資料庫設計</li>\n<li>API 介面設計</li>\n</ul>\n<h3>3. 開發階段 (8週)</h3>\n<ul>\n<li>核心功能開發</li>\n<li>前後端整合</li>\n<li>第三方服務整合</li>\n<li>效能優化</li>\n</ul>\n<h3>4. 測試部署階段 (3週)</h3>\n<ul>\n<li>單元測試和整合測試</li>\n<li>使用者驗收測試</li>\n<li>效能測試</li>\n<li>生產環境部署</li>\n</ul>\n<h2>專案成果</h2>\n<h3>量化指標</h3>\n<ul>\n<li><strong>訂單處理效率</strong>: 提升 45%</li>\n<li><strong>庫存錯誤率</strong>: 降低 60%</li>\n<li><strong>使用者滿意度</strong>: 提升至 4.8/5.0</li>\n<li><strong>系統響應時間</strong>: &#x3C; 200ms</li>\n</ul>\n<h3>業務價值</h3>\n<ul>\n<li><strong>成本節約</strong>: 每月節省人力成本 30%</li>\n<li><strong>收入增長</strong>: 平均訂單價值提升 25%</li>\n<li><strong>營運效率</strong>: 整體營運效率提升 40%</li>\n<li><strong>客戶留存</strong>: 客戶留存率提升 35%</li>\n</ul>\n<h2>技術挑戰與解決</h2>\n<h3>挑戰 1: 大量數據的即時處理</h3>\n<p><strong>解決方案</strong>:</p>\n<ul>\n<li>使用 PostgreSQL 的 LISTEN/NOTIFY 機制</li>\n<li>實現 WebSocket 連接進行即時數據推送</li>\n<li>採用分頁和虛擬捲動優化大列表渲染</li>\n</ul>\n<h3>挑戰 2: 多租戶數據隔離</h3>\n<p><strong>解決方案</strong>:</p>\n<ul>\n<li>設計 Row-Level Security (RLS) 策略</li>\n<li>實現租戶級別的數據加密</li>\n<li>建立完善的權限管理體系</li>\n</ul>\n<h3>挑戰 3: 第三方服務整合</h3>\n<p><strong>解決方案</strong>:</p>\n<ul>\n<li>建立統一的 API Gateway</li>\n<li>實現重試機制和熔斷器模式</li>\n<li>設計靈活的配置管理系統</li>\n</ul>\n<h2>後續規劃</h2>\n<h3>Phase 2: AI 智慧化</h3>\n<ul>\n<li>智慧庫存預測</li>\n<li>個性化推薦引擎</li>\n<li>自動化客服機器人</li>\n<li>異常檢測系統</li>\n</ul>\n<h3>Phase 3: 生態擴展</h3>\n<ul>\n<li>行動端 App 開發</li>\n<li>開放 API 平台</li>\n<li>第三方外掛市場</li>\n<li>多渠道整合</li>\n</ul>\n<h2>學習與收穫</h2>\n<p>這個專案讓我深入理解了：</p>\n<ul>\n<li><strong>全端開發的複雜性</strong>: 從使用者體驗到系統架構的全方位考量</li>\n<li><strong>效能優化的重要性</strong>: 在大數據量場景下的優化策略</li>\n<li><strong>使用者導向設計</strong>: 真正解決使用者痛點的產品設計思維</li>\n<li><strong>團隊協作</strong>: 跨職能團隊的溝通與協作技巧</li>\n</ul>\n<hr>\n<p><em>想了解更多技術細節或討論類似專案的實現方案？歡迎預約技術諮詢。</em></p>",
     "url": "/lab/ecommerce-dashboard"
@@ -343,6 +357,7 @@
     "featured": false,
     "summary": "A medical research prototype platform that helps physicians build early prediction models, visualize indicators, and export research reports.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>ExperimentLab — Medical Analysis Prototype Platform</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab Analysis\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2>Overview</h2>\n<p>ExperimentLab is a prototype platform designed to help physicians prepare research proposals. It uses indicator data such as dialysis-related metrics and gene expression signals to build early prediction models and evaluate disease progression or recovery trends.</p>\n<h2>Feature Focus</h2>\n<ul>\n<li>Visualize indicator data and track trend changes</li>\n<li>Build baseline model estimates with adjustable parameters</li>\n<li>Record and export reports for research workflows</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Frontend: Vue 3</li>\n<li>Design: UI/UX design, data visualization</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></li>\n</ul>",
     "url": "/lab/experimentlab"
@@ -357,6 +372,7 @@
     "featured": false,
     "summary": "協助醫師建立研究原型與基礎預測模型的醫學分析平台，支援指標視覺化與研究報表匯出。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>ExperimentLab — 醫學分析原型平台</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab 分析\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2>專案簡介</h2>\n<p>協助醫師在申請研究計畫時使用的原型平台，透過指標數據（例如覆膜透析程度、基因表現）建立初步預測模型，評估疾病惡化或好轉的風險趨勢。</p>\n<h2>功能重點</h2>\n<ul>\n<li>指標資料視覺化呈現與趨勢追蹤</li>\n<li>基礎模型推估與可調參數</li>\n<li>記錄與匯出研究用報表</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>前端：Vue 3</li>\n<li>設計：UI/UX 設計、資料視覺化</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></li>\n</ul>",
     "url": "/lab/experimentlab"
@@ -372,6 +388,7 @@
     "featured": false,
     "summary": "A backend API designed for high-concurrency flash-sale scenarios, using locking, queues, and caching to prevent overselling and preserve system stability.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Flash Sale API — High-Concurrency Limited Stock Backend</h1>\n<h2>Screenshot</h2>\n<p><img src=\"/og/labs/flash-sale-api/web.png\" alt=\"Flash Sale API Web\"></p>\n<p><strong>Tags</strong>: NestJS, PostgreSQL, Redis, RabbitMQ, Jest</p>\n<p>This Lab focuses on limited-stock flash-sale flows under extreme traffic. The system prevents overselling while keeping inventory consistency and service stability.</p>\n<h2>Core Design</h2>\n<ul>\n<li>Row-level locking with <code>SELECT ... FOR UPDATE</code> to handle race conditions</li>\n<li>RabbitMQ queue buffering to protect the database from traffic spikes</li>\n<li>Redis caching to accelerate reads and reduce DB pressure</li>\n<li>Rate limiting to control malicious or abnormal traffic</li>\n</ul>\n<h2>API Examples</h2>\n<ul>\n<li><code>POST /purchase</code>: place an order while guaranteeing no overselling</li>\n<li><code>GET /products/:id</code>: query product inventory</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Framework: NestJS modular architecture</li>\n<li>Database: PostgreSQL with TypeORM</li>\n<li>Queue: RabbitMQ with amqplib</li>\n<li>Cache: Redis</li>\n<li>Testing: Jest</li>\n</ul>\n<h2>Source</h2>\n<ul>\n<li>GitHub: <a href=\"https://github.com/awtw/flash-sale-api\">https://github.com/awtw/flash-sale-api</a></li>\n</ul>",
     "url": "/lab/flash-sale-api"
@@ -386,6 +403,7 @@
     "featured": false,
     "summary": "面向高併發限量搶購場景的後端 API，透過鎖、佇列與快取避免超賣並維持系統穩定。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Flash Sale API — 高併發限量搶購後端</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/flash-sale-api/web.png\" alt=\"Flash Sale API Web\"></p>\n<p><strong>Tags</strong>: NestJS, PostgreSQL, Redis, RabbitMQ, Jest</p>\n<p>本專案針對「高併發限量搶購」設計，確保在極端流量情況下不超賣，並維持庫存一致性與系統穩定性。</p>\n<h2>核心設計</h2>\n<ul>\n<li>以行鎖（<code>SELECT ... FOR UPDATE</code>）處理競態條件</li>\n<li>以 RabbitMQ 佇列削峰，保護資料庫</li>\n<li>以 Redis 快取加速讀取，降低 DB 壓力</li>\n<li>Rate Limiting 限制惡意或異常流量</li>\n</ul>\n<h2>API 範例</h2>\n<ul>\n<li><code>POST /purchase</code>：下單購買（保證不超賣）</li>\n<li><code>GET /products/:id</code>：查詢商品庫存</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>框架：NestJS（模組化架構）</li>\n<li>資料庫：PostgreSQL（TypeORM）</li>\n<li>佇列：RabbitMQ（amqplib）</li>\n<li>快取：Redis</li>\n<li>測試：Jest</li>\n</ul>\n<h2>原始碼</h2>\n<ul>\n<li>GitHub：<a href=\"https://github.com/awtw/flash-sale-api\">https://github.com/awtw/flash-sale-api</a></li>\n</ul>",
     "url": "/lab/flash-sale-api"
@@ -398,6 +416,7 @@
     "featured": false,
     "summary": "A Python and Power BI analysis Lab exploring possible relationships between market, employment, and disease data through interactive dashboards.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Power BI — Market &#x26; Disease Relationship Exploration</h1>\n<p><strong>Tags</strong>: Python, Power BI</p>\n<p>Based on public datasets, this Lab explores possible relationships between stock market movement, employment market changes, and specific disease patterns. Python handles data processing and feature engineering, while Power BI provides the interactive dashboard layer.</p>\n<h2>Focus</h2>\n<ul>\n<li>Data cleaning and feature engineering workflow</li>\n<li>Indicator and time-series visualization</li>\n<li>Filtering and interactive analysis</li>\n</ul>",
     "url": "/lab/power-bi"
@@ -409,6 +428,7 @@
     "featured": false,
     "summary": "以 Python 與 Power BI 探索市場、就業與疾病資料的潛在關聯，建立互動式分析儀表板。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Power BI — 市場與疾病關聯探索</h1>\n<h1><strong>Tags</strong>: Python, Power BI</h1>\n<p>以公開資料為基礎，探索股市與就業市場變化與特定疾病之間的潛在關聯。以 Python 進行資料處理與特徵工程，並以 Power BI 建立互動式儀表板。</p>\n<h2>重點</h2>\n<ul>\n<li>資料清理與特徵工程流程</li>\n<li>指標與時間序列視覺化</li>\n<li>篩選與交互分析</li>\n</ul>",
     "url": "/lab/power-bi"
@@ -424,6 +444,7 @@
     "featured": false,
     "summary": "An R-based analysis Lab exploring how shopping cart button design influences purchase conversion, with interactive VanillaJS visualization.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>R Analysis — Shopping Cart Button Impact Analysis</h1>\n<h2>Screenshot</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>This Lab uses R to build an analysis model exploring how shopping cart button design affects purchase conversion. VanillaJS powers the interactive visualization layer for decision support and iteration.</p>\n<h2>Focus</h2>\n<ul>\n<li>Model assumptions and variable selection</li>\n<li>Experiment design and A/B comparison</li>\n<li>Visualization and insight presentation</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
     "url": "/lab/r-analysis"
@@ -438,6 +459,7 @@
     "featured": false,
     "summary": "以 R 建立購物車按鍵影響因素分析模型，搭配 VanillaJS 呈現互動式洞察。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>R Analysis — 購物車按鍵影響因素分析</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>利用 R 建立分析模型，探討購物車按鍵設計對購買轉換的影響，並配合 VanillaJS 進行互動式視覺化，輔助決策與迭代。</p>\n<h2>重點</h2>\n<ul>\n<li>模型假設與變數選擇</li>\n<li>實驗設計與 A/B 比較</li>\n<li>視覺化呈現與洞察整理</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
     "url": "/lab/r-analysis"
@@ -453,6 +475,7 @@
     "featured": false,
     "summary": "An early motion-focused portfolio built with VanillaJS and CSS animations, exploring interaction details and dynamic presentation.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Resume 2019 — Motion Portfolio</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/resume-2019/web.png\" alt=\"Resume 2019 Web\">\n<img src=\"/og/labs/resume-2019/content.png\" alt=\"Resume 2019 Content\"></p>\n<p><strong>Tags</strong>: VanillaJS, CSS Animation, UI/UX Design, Sass, Gulp</p>\n<p>Built during graduate school, this portfolio explored JS/CSS animation techniques, interaction details, and the balance between information structure and motion.</p>\n<h2>Technical Focus</h2>\n<ul>\n<li>CSS animations and transitions</li>\n<li>Task-oriented interaction design</li>\n<li>Frontend build workflow with Sass and Gulp</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://resume.2019.augustwang.com/\">https://resume.2019.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2019"
@@ -467,6 +490,7 @@
     "featured": false,
     "summary": "以 VanillaJS 與 CSS 動效打造的早期作品集，聚焦互動細節與動態資訊呈現。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Resume 2019 — 動效作品集</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/resume-2019/web.png\" alt=\"Resume 2019 Web\">\n<img src=\"/og/labs/resume-2019/content.png\" alt=\"Resume 2019 Content\"></p>\n<p><strong>Tags</strong>: VanillaJS, CSS Animation, UI/UX Design, Sass, Gulp</p>\n<p>在碩班期間以多種 JS/CSS 動畫技巧實作的作品集，聚焦互動細節與動態呈現，探索資訊與動態之間的平衡。</p>\n<h2>技術重點</h2>\n<ul>\n<li>CSS 動畫與轉場效果</li>\n<li>任務導向的互動設計</li>\n<li>前端建構流程（Sass、Gulp）</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://resume.2019.augustwang.com/\">https://resume.2019.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2019"
@@ -482,6 +506,7 @@
     "featured": false,
     "summary": "An Angular skill-focused portfolio documenting modular frontend design, PayPal integration, and Sass styling practices.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Resume 2021 — Skill-Focused Portfolio</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/resume-2021/web.png\" alt=\"Resume 2021 Web\">\n<img src=\"/og/labs/resume-2021/content.png\" alt=\"Resume 2021 Content\"></p>\n<p><strong>Tags</strong>: Angular, JS Function, UI/UX Design, Sass, PayPal</p>\n<p>Built during my AURORA Group period, this portfolio organized my technical and design experience into a skill-focused presentation. It includes modular frontend design, PayPal payment flow integration, and styling engineering practices.</p>\n<h2>Technical Focus</h2>\n<ul>\n<li>Angular component architecture and state handling</li>\n<li>PayPal payment integration flow</li>\n<li>Sass-based styling workflow</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://resume.2021.augustwang.com/\">https://resume.2021.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2021"
@@ -496,6 +521,7 @@
     "featured": false,
     "summary": "Angular 技能導向作品集，整理前端模組化、PayPal 串接與 Sass 樣式工程化經驗。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Resume 2021 — 技能導向作品集</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/resume-2021/web.png\" alt=\"Resume 2021 Web\">\n<img src=\"/og/labs/resume-2021/content.png\" alt=\"Resume 2021 Content\"></p>\n<p><strong>Tags</strong>: Angular, JS Function, UI/UX Design, Sass, PayPal</p>\n<p>在震旦集團任職期間累積的技術與設計經驗，整理為技能導向的作品集，包含前端模組化設計、支付流程（PayPal）與樣式工程化實務。</p>\n<h2>技術重點</h2>\n<ul>\n<li>Angular 元件化與狀態管理</li>\n<li>支付串接流程（PayPal）</li>\n<li>樣式工程（Sass）</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://resume.2021.augustwang.com/\">https://resume.2021.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2021"
@@ -511,6 +537,7 @@
     "featured": false,
     "summary": "A Vue 3 business-style portfolio focused on brand cohesion, project value presentation, information hierarchy, and conversion flow.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Resume 2024 — Business-Style Portfolio</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>A business-oriented portfolio design focused on brand cohesion, project value presentation, information hierarchy, visual rhythm, and conversion paths.</p>\n<h2>Technical Focus</h2>\n<ul>\n<li>Vue 3 component structure and routing</li>\n<li>Business-style visual and layout system</li>\n<li>Maintainable design and code structure</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2024"
@@ -525,6 +552,7 @@
     "featured": false,
     "summary": "Vue 3 商業風格作品集，強調品牌凝聚力、專案價值呈現與轉換動線。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Resume 2024 — 商業風格作品集</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>以商業導向為主的作品集設計，強調品牌凝聚力與專案價值呈現，注重資訊階層、視覺節奏與轉換動線。</p>\n<h2>技術重點</h2>\n<ul>\n<li>Vue 3 元件化與路由規劃</li>\n<li>商業風格視覺與版面系統</li>\n<li>可維護的設計與代碼結構</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2024"
@@ -540,6 +568,7 @@
     "featured": false,
     "summary": "A Next.js 15 personal portfolio and consulting entry point, integrating Google Calendar booking and modern UIX direction.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Resume 2025 — Personal Portfolio</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2>Overview</h2>\n<p>This is a new-generation personal portfolio built quickly by combining years of experience with a modern design language. It integrates a Google Calendar booking flow so people interested in consulting can book directly online and reduce conversion friction.</p>\n<h2>Highlights</h2>\n<ul>\n<li>Clear information architecture that emphasizes Lab value and role contribution</li>\n<li>Layout and motion details centered around readability</li>\n<li>Built-in booking entry point with Google Calendar</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Framework: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Integration: Google Calendar API</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></li>\n</ul>",
     "url": "/lab/resume-2025"
@@ -554,6 +583,7 @@
     "featured": false,
     "summary": "Next.js 15 個人作品集與諮詢入口，整合 Google Calendar 預約流程與現代 UIX。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Resume 2025 — 個人作品集</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2>簡介</h2>\n<p>整合多年經驗與設計語彙，快速完成的新一代個人作品集。導入 Google Calendar 預約流程，讓對諮詢有興趣的使用者可直接線上預約，提升轉換效率。</p>\n<h2>特色亮點</h2>\n<ul>\n<li>明快的資訊架構，突顯專案價值與角色貢獻</li>\n<li>以可讀性為核心的版面與動態細節</li>\n<li>內建預約入口（Google Calendar）</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>框架：Next.js</li>\n<li>佈署：Vercel</li>\n<li>整合：Google Calendar API</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></li>\n</ul>",
     "url": "/lab/resume-2025"
@@ -569,6 +599,7 @@
     "featured": false,
     "summary": "A portfolio and commission entry point for a design freelance brand, focused on visual polish, service presentation, and conversion flow.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>shuyan_art Design Freelance Platform</h1>\n<h2>Screenshots</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<h2>Overview</h2>\n<p>This Lab presents a design freelance brand through a refined portfolio experience, clear service positioning, and a lightweight path for potential clients to understand the work and start a conversation.</p>\n<h2>Link</h2>\n<ul>\n<li><a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></li>\n</ul>",
     "url": "/lab/shuyan-art"
@@ -583,6 +614,7 @@
     "featured": false,
     "summary": "為設計接案品牌打造的作品展示與接案入口，聚焦視覺質感、服務呈現與轉換動線。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>shuyan_art 設計接案平台</h1>\n<h2>截圖</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<p>連結：<a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></p>",
     "url": "/lab/shuyan-art"
@@ -615,6 +647,7 @@
     ],
     "summary": "A .NET backend service for smart community applications, covering residents, devices, incident reporting, workflows, and notification modules.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>SmartCommunityBackEnd — Smart Community Backend</h1>\n<p><img src=\"/og/labs/smart-community-backend/web.png\" alt=\"SmartCommunityBackEnd Web\"></p>\n<p><strong>Tags</strong>: .NET, PostgreSQL, Redis, Message Queue, Docker</p>\n<p>A backend service for smart community applications, covering residents, devices, community services, and incident reporting. The system emphasizes reliability and observability.</p>\n<h2>Core Modules</h2>\n<ul>\n<li>User / resident / permission management</li>\n<li>Device and sensor data collection</li>\n<li>Incident reporting and workflow: task assignment, processing, and reporting</li>\n<li>Notification center: email, SMS, and push notifications</li>\n</ul>\n<h2>Stack</h2>\n<ul>\n<li>Platform: .NET</li>\n<li>Data: PostgreSQL, Redis</li>\n<li>Queue: RabbitMQ / Kafka depending on deployment setup</li>\n<li>Deployment: Docker / docker-compose</li>\n</ul>\n<h2>Link</h2>\n<ul>\n<li>GitHub: <a href=\"https://github.com/awtw/SmartCommunityBackEnd\">https://github.com/awtw/SmartCommunityBackEnd</a></li>\n</ul>",
     "url": "/lab/smart-community-backend"
@@ -646,6 +679,7 @@
     ],
     "summary": "面向智慧社區應用的 .NET 後端服務，涵蓋住戶、設備、事件通報與通知中心。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>SmartCommunityBackEnd — 智慧社區後端</h1>\n<p><img src=\"/og/labs/smart-community-backend/web.png\" alt=\"SmartCommunityBackEnd Web\"></p>\n<p><strong>Tags</strong>: .NET, PostgreSQL, Redis, Message Queue, Docker</p>\n<p>面向智慧社區應用的後端服務，涵蓋住戶、設備、社區服務與事件通報等核心模組，強調可靠性與可觀測性。</p>\n<h2>核心模組</h2>\n<ul>\n<li>使用者/住戶/權限管理</li>\n<li>設備與感測資料收集</li>\n<li>通報與工作流程（任務分派、處理、回報）</li>\n<li>通知中心（Email/SMS/推播）</li>\n</ul>\n<h2>技術棧</h2>\n<ul>\n<li>平台：.NET</li>\n<li>資料：PostgreSQL、Redis</li>\n<li>佇列：如 RabbitMQ/Kafka（視部署配置）</li>\n<li>佈署：Docker/docker-compose</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>GitHub：<a href=\"https://github.com/awtw/SmartCommunityBackEnd\">https://github.com/awtw/SmartCommunityBackEnd</a></li>\n</ul>",
     "url": "/lab/smart-community-backend"
@@ -672,6 +706,7 @@
     "featured": false,
     "summary": "A local-first desktop app that turns recordings into editable transcripts, then subtitles and meeting notes, fully offline.",
     "published": true,
+    "protected": false,
     "locale": "en",
     "html": "<h1>Transcript Plus — Local Subtitle and Meeting Notes App</h1>\n<p><img src=\"/og/labs/transcript-plus/transcript-plus.png\" alt=\"Transcript Plus\"></p>\n<p><strong>Tags</strong>: Tauri, React, Python, SQLite, Whisper, Offline</p>\n<p>Currently a <strong>v0.1 development build</strong>: the desktop UI, local Python transcription core, SQLite storage, transcript editing and subtitle export are implemented. A macOS <code>.app</code> builds locally, but it is not a full MVP yet, and Windows hardware and public release are unverified.</p>\n<h2>Why</h2>\n<p>The idea came from speech-related development work: the real time sink turned out to be the manual work between \"recognition finished\" and \"transcript ready\": proofreading, line-breaking and timing, and few tools cover that whole stretch. Interviews, meetings and lessons also often contain sensitive material that should not go to the cloud. So I set out to try an installable single-machine app where data and inference never leave the computer.</p>\n<h2>Goals and intended effect</h2>\n<ul>\n<li>Take interviewers, podcasters, educators and meeting note-takers from a local media file to publishable subtitles.</li>\n<li>Cut proofreading time: the target is at least 30% lower median subtitle-prep time on the same material (a planning target, not yet validated).</li>\n<li>Work fully offline once models are in place, with no sign-up and no self-hosted server.</li>\n<li>One transcript dataset yields TXT, SRT, VTT and JSON, plus (planned) summaries and action items.</li>\n</ul>\n<h2>How it was built</h2>\n<ol>\n<li>Wrote the MVP requirements, acceptance metrics and architecture first to settle scope and tech choices, then built milestone by milestone.</li>\n<li>Architecture: Tauri 2 shell, React front end, Python sidecar core packaged with PyInstaller so users need no dev environment.</li>\n<li>A structured Transcript / Word / Cue data contract at the center; SQLite is the single writable source of truth and subtitle files are derived output.</li>\n<li>Persistent job queue with stage state, cancel and retry, autosave and undo/redo; invalidated word timings are flagged for review rather than faked.</li>\n<li>Two-hour transcripts render through a virtual list to keep editing responsive.</li>\n</ol>\n<p>Done: media import and playback, local transcription with word timings, subtitle generation / split / merge / timing tweaks, TXT / SRT / VTT / JSON export.\nNot yet: automatic speaker diarization, local summaries and action items, video proxy, model download management, code signing and notarization.</p>\n<h2>Packages and models</h2>\n<ul>\n<li>Desktop: Tauri 2 (Rust), React 19, TypeScript, Vite, TanStack Virtual, Lucide</li>\n<li>Core: Python 3.12, SQLite, PyInstaller</li>\n<li>ASR: faster-whisper (CTranslate2, CPU INT8); MLX Whisper on Apple Silicon</li>\n<li>Models: Breeze ASR (tuned for Taiwanese Mandarin) or Whisper-family models, from a local folder the user picks; the app never downloads weights itself</li>\n<li>Planned: sherpa-onnx speaker diarization, local LLM summaries and action items</li>\n<li>Testing: pytest, Vitest, Testing Library</li>\n<li>Media: FFmpeg / ffprobe</li>\n</ul>\n<h2>Links</h2>\n<ul>\n<li>Source and README: <a href=\"https://github.com/awtw/transcript-plus\">https://github.com/awtw/transcript-plus</a></li>\n</ul>",
     "url": "/lab/transcript-plus"
@@ -698,6 +733,7 @@
     "featured": false,
     "summary": "以逐字稿為核心的本機字幕與會議整理桌面軟體，離線轉錄、校對並匯出 SRT／VTT。",
     "published": true,
+    "protected": false,
     "locale": "zh-TW",
     "html": "<h1>Transcript Plus — 本機字幕與會議整理軟體</h1>\n<p><img src=\"/og/labs/transcript-plus/transcript-plus.png\" alt=\"Transcript Plus\"></p>\n<p><strong>Tags</strong>: Tauri, React, Python, SQLite, Whisper, Offline</p>\n<p>目前為 <strong>v0.1 開發版</strong>：已實作桌面介面、Python 本機轉錄核心、SQLite 儲存、逐字稿校對與字幕匯出；macOS 已可建置 <code>.app</code>，尚非完整 MVP，Windows 實機與公開發行尚未驗收。</p>\n<h2>緣由</h2>\n<p>靈感來自工作上開發語音相關功能的經驗：發現真正耗時的不是辨識本身，而是「辨識完成到整理完成」之間的人工校對、斷句與對時，市面上也少有能完整銜接這段流程的工具。同時，訪談、會議與課程錄音常含敏感內容，不適合上傳雲端。因此決定自己嘗試做成可安裝的單機軟體，資料與推論都留在電腦。</p>\n<h2>目的與預期效果</h2>\n<ul>\n<li>讓訪談、Podcast、課程與會議整理者，從本機影音一路做到可發布字幕。</li>\n<li>縮短校對時間：目標是在相同素材下，字幕整理時間中位數減少 30% 以上（規劃目標，尚未達標驗證）。</li>\n<li>全程離線可用，模型備齊後可斷網工作，無註冊登入與自建伺服器。</li>\n<li>同一份逐字稿資料同時產出 TXT、SRT、VTT、JSON，以及（規劃中）摘要與待辦。</li>\n</ul>\n<h2>如何做出來</h2>\n<ol>\n<li>先撰寫 MVP 需求、驗收指標與架構文件，釐清範圍與技術選型，再依里程碑逐步實作。</li>\n<li>架構採 Tauri 2 桌面外殼、React 前端、Python sidecar 核心，以 PyInstaller 封裝，使用者不需自備開發環境。</li>\n<li>以結構化 Transcript／Word／Cue 資料契約為核心，SQLite 為唯一可寫事實來源，字幕檔只是衍生輸出。</li>\n<li>持久化工作佇列與階段狀態，支援取消、重試、自動儲存與復原／重做；字詞時間失效時明示待核對，不假裝有效。</li>\n<li>2 小時逐字稿以虛擬清單呈現，維持編輯流暢度。</li>\n</ol>\n<p>已完成：影音匯入與播放、本機轉錄與詞時間、字幕生成／拆合／時間微調、TXT／SRT／VTT／JSON 匯出。\n尚未提供：自動講者分離、本機摘要與待辦、影片代理、模型下載管理、簽章與公證。</p>\n<h2>使用的套件與模型</h2>\n<ul>\n<li>桌面：Tauri 2（Rust）、React 19、TypeScript、Vite、TanStack Virtual、Lucide</li>\n<li>核心：Python 3.12、SQLite、PyInstaller</li>\n<li>語音辨識：faster-whisper（CTranslate2，CPU INT8）；Apple Silicon 另支援 MLX Whisper</li>\n<li>模型：Breeze ASR（台灣華語優化）／Whisper 系列，由使用者自行指定本機模型資料夾，程式不自動下載權重</li>\n<li>規劃中：sherpa-onnx 講者分離、本機 LLM 摘要與待辦</li>\n<li>測試：pytest、Vitest、Testing Library</li>\n<li>媒體處理：FFmpeg／ffprobe</li>\n</ul>\n<h2>連結</h2>\n<ul>\n<li>原始碼與 README：<a href=\"https://github.com/awtw/transcript-plus\">https://github.com/awtw/transcript-plus</a></li>\n</ul>",
     "url": "/lab/transcript-plus"

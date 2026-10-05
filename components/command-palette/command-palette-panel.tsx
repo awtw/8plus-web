@@ -44,7 +44,7 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
       haystack: norm(`${p.title} ${p.summary} ${(p.stack ?? []).join(' ')} ${p.role ?? ''}`),
     }))
     const blog: Entry[] = posts
-      .filter((p) => p.published && p.locale === (locale === 'en' ? 'en' : 'zh-TW'))
+      .filter((p) => p.locale === (locale === 'en' ? 'en' : 'zh-TW'))
       .map((p) => ({ id: `b-${p.slug}`, group: 'post', title: p.title, hint: p.summary, href: p.url, haystack: norm(`${p.title} ${p.summary} ${(p.tags ?? []).join(' ')}`) }))
     return [...pages, ...labs, ...blog]
   }, [locale, t])

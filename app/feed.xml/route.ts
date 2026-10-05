@@ -1,3 +1,4 @@
+import { isPublicContent } from '@/lib/publication'
 import { posts } from ".velite";
 import { SITE } from "@/lib/seo";
 
@@ -12,7 +13,7 @@ function escapeXml(value: string) {
 
 export async function GET() {
   const published = posts
-    .filter((post) => post.published)
+    .filter((post) => isPublicContent(post))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 20);
 

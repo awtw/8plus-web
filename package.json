@@ -13,7 +13,8 @@
     "check:quiz": "npx --yes tsx ./scripts/check-quiz.ts",
     "validate:content": "node ./scripts/validate-content.mjs",
     "generate:avatar-layers": "node ./scripts/generate-avatar-layers.mjs",
-    "postinstall": "shx mkdir -p public/og || true"
+    "postinstall": "shx mkdir -p public/og || true",
+    "check:publication": "node scripts/check-publication.mjs"
   },
   "dependencies": {
     "@8plus/ui": "workspace:*",

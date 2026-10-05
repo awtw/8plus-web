@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
-import { posts } from ".velite";
+import { posts as allPosts } from ".velite";
+import { publicContent } from "@/lib/publication";
+const posts = publicContent(allPosts);
 import { PageSection } from "@/components/page/page-section";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogProtectedNote } from "@/components/blog/blog-protected-note";

@@ -9,3 +9,6 @@ export declare const posts: Post[]
 
 export type Project = Collections['projects']['schema']['_output']
 export declare const projects: Project[]
+
+export type Episode = Collections['episodes']['schema']['_output']
+export declare const episodes: Episode[]

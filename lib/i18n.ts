@@ -14,6 +14,7 @@ export const translations = {
       projects: 'LAB',
       blog: '博客',
       booking: '預約',
+      show: '靈機8動',
       about: '關於',
       path: '歷程',
       process: '流程',
@@ -223,7 +224,7 @@ export const translations = {
     footer: {
       tagline: 'AI · UIX · 顧問',
       builtWith: '使用 Next.js 15 + Velite 構建',
-      metaphysics: 'Metaphysics & UIX longform at',
+      metaphysics: '視覺設計與創作作品',
       madeIn: '台灣製造',
       poweredBy: '由 Vercel 提供支持',
       navLabel: '站內連結',
@@ -257,6 +258,7 @@ export const translations = {
       projects: 'Lab',
       blog: 'Blog',
       booking: 'Booking',
+      show: 'LING8',
       about: 'About',
       path: 'Path',
       process: 'Process',
@@ -464,7 +466,7 @@ export const translations = {
     footer: {
       tagline: 'AI · UIX · Consulting',
       builtWith: 'Built with Next.js 15 + Velite',
-      metaphysics: 'Metaphysics & UIX longform at',
+      metaphysics: 'Visual design & creative work at',
       madeIn: 'Made in Taiwan',
       poweredBy: 'Powered by Vercel',
       navLabel: 'Site links',

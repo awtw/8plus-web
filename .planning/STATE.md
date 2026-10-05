@@ -5,19 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-06-15)
 
 **Core value:** 展示專業能力、累積技術內容、預約諮詢的個人品牌網站
-**Current focus:** v2 CI 重構（分支 `feature/claude/2026-07-v3`）— 首頁 + 內頁（about/services/path/lab/blog）已套 v2；`/booking` 待確認 email 後 commit；next-intl 待決策。快照見 `.planning/CODEBASE-SNAPSHOT-2026-09-30.md`
+**Current focus:** 接案首頁與《靈機8動》入口第一版已完成；分支 `feature/august/2026-10-update`。待補真實節目平台／單集與投稿服務，下一階段再落地 shuyan.art 創作分站。
 
 ## Current Position
 
-Phase: **5.0** 首頁 Scroll 敘事重規劃（承接 Phase 4.0 資產）
-Plan: PLANNING — `5.0-HOMEPAGE-SCROLL-PLAN.md`
-Status: W1 **DRAFT 上線** — `section-hero` = 白底雜誌封面 → 圖框擴張滿版 → 三柱定格；design-lab 全數排除不沿用
-Last activity: 2026-07-06 12:27 CST — Hero Editorial Print 實作（`HERO-HOME-EDITORIAL-SPEC.md`）
-Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實作
-
-作業記錄：`.planning/HERO-DESIGN-LAB-LOG.md`
+Phase: 品牌與節目入口第一階段
+Plan: `.planning/spec-brand-show-launch.md`
+Status: DONE — 本機實作、審查與驗證完成；尚未部署
+Last activity: 2026-10-05 11:22 +08:00 — 完成首頁、節目路由與內容發布隔離
+Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 11:06:18 +08:00 — 工程接案與靈機8動入口實作**：新增交付流程 Hero、首頁案例／服務提前、文章與節目入口；完成雙語 `/show`、`/show/ask` 與真實單集模板。Episode schema 已備妥，未建立假集數或表單。Velite 寫檔前隔離未發布、未來與 protected 內容，避免進入 browser bundle；sentinel fixture 建置確認無洩漏。研究草稿維持未公開，未改 we-media / shuyan_art。狀態：桌機／手機、中英切換與 reduced-motion 瀏覽器審查完成；內容發布操作見 `docs/CONTENT_MODEL.md`。
+
+- ✅ **2026-10-05 10:24 +08:00 — 個人品牌／雙網站／靈機8動整合研究**：完成 `docs/strategy/2026-10-05/README.md` 與五份策略文件、三篇 MDX 部落格草稿。讀取 reference 新版品牌文件、we-media 舊企劃及 shuyan_art，並查閱公開趨勢來源與線上 8plus 首頁。推薦 8plus 工程接案＋`/show` 節目入口、shuyan 視覺創作分站；皆為提案，尚未實作或定案。確認目前 Hero 預設為 `aurora`，與舊紀錄的 B 核心不同；blog 詳情未過濾 published，因此草稿存於 docs、未進入 Velite 發布目錄。後續順序與待核實項目見策略文件。
 
 - ✅ **2026-10-01 CST — ESLint 修復 + GA4 追蹤擴充**: 新增 `eslint.config.mjs`（flat config，`eslint-config-next` core-web-vitals + typescript；`.planning`/`docs`/`_bmad` 等排除）；4 條舊碼規則（`no-explicit-any`、`ban-ts-comment`、`no-require-imports`、`set-state-in-effect`）暫降為 warn，`pnpm lint` 0 error / 25 warn。GA 擴充：每事件自帶 `page_type`/`content_slug`/`device_type`/`site_locale`/`visitor_type`/`visit_count`/session 進度；轉換事件帶 `cta_location`/`pages_before_conversion`/`seconds_to_convert`；新事件 `content_view`/`content_read`/`copy_text`/`web_vital`/`not_found`/`js_error`/`session_summary`。`pnpm typecheck` 通過，尚未 DebugView 實測。
 - ✅ **2026-10-01 CST — GA4 埋碼 + 動線事件 + 轉換追蹤**: 新 property `G-KF309NTS2D`（`8plus.app`）；`lib/analytics.ts`（`track`/`EVENTS`/Cal 綁定）+ `components/analytics/analytics.tsx`（僅 production 載入，全站點擊委派、scroll/section/engaged、`entry_source` 首觸來源）；Cal `bookingSuccessful` → `booking_complete`；QR/語言切換用 `data-track`；文件 `docs/ANALYTICS.md`。`pnpm typecheck` 通過；待 DebugView 實測 + GA4 後台標 Key events/自訂維度。
@@ -57,6 +59,8 @@ Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實
 
 ## Accumulated Context
 
+2026-10-05（Asia/Taipei）研究交付驗證：文件本地連結與草稿欄位檢查、`git diff --check`、`pnpm build` 通過；目前實際建置 Next.js 16.2.9。無網站功能變更或發布。
+
 ### Key Decisions
 
 | Decision | Rationale | Outcome |
@@ -73,9 +77,9 @@ Progress: [█████░░░░░] W0 完成；W1 DRAFT；W2–W5 待實
 
 ## Session Continuity
 
-Last session: 2026-06-15 15:58 CST
-Stopped at: Logo 已改為極簡現代版，建置與截圖驗證完成
-Resume file: None
+Last session: 2026-10-05 11:22 +08:00
+Stopped at: 首頁與節目入口第一版完成；pnpm build、typecheck、check:publication 通過，lint 0 errors／35 既有 warnings。真實 schema fixture 隔離及重複 slug 驗證通過，fixture 已移除。
+Resume file: .planning/spec-brand-show-launch.md
 
 ## Discussion Log
 

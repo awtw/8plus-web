@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-hero-direction-preview.md`
+Plan: `.planning/spec-hero-signal-formation.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 14:48 +08:00 — A/B Hero 動態原型完成，待選定正式方向
+Last activity: 2026-10-05 15:04 +08:00 — 訊號成形原型完成，已替換預覽頁
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 15:04 +08:00 — 訊號成形 Hero**：使用者否決 ASCII 雕塑後接受全幅品牌構圖。`/hero-preview` 改單一方案，超大 8plus、18 條 Canvas 曲線於 4.5 秒收束、橘色訊號、局部游標牽引；移除 A/B 切換。手機品牌於第一屏，中英文無橫向溢出，鍵盤重播、暫停與 reduced-motion 截圖穩定、contextlost/restored 事件備援通過。三方審查修正進度 rounding 導致完成態未回報。build/typecheck 通過；lint 0 errors／35 既有 warnings，新程式零警告。首次 build 字型解析暫時失敗，重跑成功。預覽 http://localhost:3300/hero-preview；正式首頁未替換、未部署。
 
 - ✅ **2026-10-05 14:48 +08:00 — Hero A/B 原型**：獨立 `/hero-preview`，A 有機厚環與橘色內緣、B ASCII 堆疊雕塑與掃描揭露；共用中英文文案、預設 B、8 秒進場、重播暫停。原生 WebGL、無新依賴；支援 reduced-motion、SVG 備援與 context 恢復。桌面與 390px 中英文無水平溢出，鍵盤重播、GPU context 遺失／恢復實測通過。build/typecheck 通過，lint 0 errors／35 既有 warnings、改動檔零警告。三方審查補強資源配置失敗及卸載釋放。預覽 http://localhost:3200/hero-preview；noindex、不列 sitemap；正式首頁未替換、未部署。
 

@@ -20,7 +20,7 @@ function labThumb(key: string): string | null {
 
 export function SectionLab({ locale }: SectionLabProps) {
   const content = getHomeSectionContent(locale)
-  const projects = getLocalizedProjects(locale).sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, 3)
+  const projects = getLocalizedProjects(locale).sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, 4)
 
   return (
     <section

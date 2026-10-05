@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-visual-refinement.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 11:45 +08:00 — 修正 Notes 排版並重製立體系統組裝 Hero
+Last activity: 2026-10-05 12:54 +08:00 — 首頁作品集改為四筆，完成桌機 2 × 2
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 12:54 +08:00 — 作品集補滿四格**：首頁精選上限由 3 改為 4，保留 featured 優先及原有手機橫向捲動。中英第四筆皆為 1914 品牌官網，縮圖與內容存在；瀏覽器確認四筆、兩欄兩列，pnpm build 通過。
 
 - ✅ **2026-10-05 11:45 +08:00 — 首頁視覺修正**：Notes 標題間距桌機 42px／手機 34px、深色 lime 文案與底部 CTA 對齊；Hero 改為 SVG 立體組裝、透明板／橘色核心、訊號流、展開與暫停控制，離屏與 reduced-motion 支援。桌機／390px、中英、控制與 reduced-motion 檢查通過；build 通過，lint 0 errors／35 既有 warnings。參考與驗收見 spec-home-visual-refinement.md。
 

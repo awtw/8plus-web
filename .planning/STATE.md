@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-hero-signal-formation.md`
+Plan: `.planning/spec-hero-motion-lab.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 15:04 +08:00 — 訊號成形原型完成，已替換預覽頁
+Last activity: 2026-10-05 15:38 +08:00 — 十種 Hero 研究測試台完成，待使用者試選方向
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 15:38 +08:00 — 十種 Hero 研究測試台**：新增 `/hero-lab`，十筆 2026 作者／獎項曝光參考、來源日期与本地轉譯分開呈現；非流量排名。像素、字體、磁性曲面、分割、對焦、材質、放大鏡、作品編排、系統拆解、工作地圖各有操作控制。URL mode、暫停重播、reduced、離屏／隱藏停止；noindex、不列 sitemap。桌機及 390px 中英十版、主要控制、暫停/reduced 穩定與網址恢復驗證；三方審查修正筆觸座標、透鏡取樣和作品按鈕；目視修正 grid 定位與手機卡片／拆解。build/typecheck 通過，lint 0 errors／35 既有 warnings。測試 http://localhost:3400/hero-lab；正式首頁及 hero-preview 未改，未部署。
 
 - ✅ **2026-10-05 15:04 +08:00 — 訊號成形 Hero**：使用者否決 ASCII 雕塑後接受全幅品牌構圖。`/hero-preview` 改單一方案，超大 8plus、18 條 Canvas 曲線於 4.5 秒收束、橘色訊號、局部游標牽引；移除 A/B 切換。手機品牌於第一屏，中英文無橫向溢出，鍵盤重播、暫停與 reduced-motion 截圖穩定、contextlost/restored 事件備援通過。三方審查修正進度 rounding 導致完成態未回報。build/typecheck 通過；lint 0 errors／35 既有 warnings，新程式零警告。首次 build 字型解析暫時失敗，重跑成功。預覽 http://localhost:3300/hero-preview；正式首頁未替換、未部署。
 

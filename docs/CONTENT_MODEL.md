@@ -68,3 +68,8 @@ locale 使用 `zh-TW` / `en`，舊 `zh-Hant` 正規化為 `zh-TW`。公開入口
 2026-10-05 14:48 +08:00：`/hero-preview` 僅供 A 有機數位材質與 B 字元生成結構比較，沿用首頁雙語主文案及真實 CTA，預設 B。頁面為 noindex/nofollow、不列入 sitemap，沒有新增內容集合或改動發布規則。正式首頁仍使用品牌粒子版本，方向尚未定案。
 
 2026-10-05 15:04 +08:00 更新：使用者否決 A/B 雕塑後，`/hero-preview` 已替換為單一「訊號成形」：巨大 8plus 品牌文字與全幅曲線背景，4.5 秒收束後持續慢流動。沿用既有雙語主文案與 CTA；保留 noindex/nofollow 及 sitemap 排除。首頁仍使用粒子版本。
+
+
+### 十種 Hero 研究測試台
+
+2026-10-05 15:38 +08:00：新增 `/hero-lab?mode=pixels|type|magnetic|split|focus|grain|loupe|editorial|product|world`，每次掛載一種本地輕量原型。來源資料於 `lib/content/hero-motion-studies.ts`；主文案沿用雙語首頁，操作與研究說明使用中文。noindex/nofollow、不列 sitemap；不是全網熱度排行。真實作品截圖僅用現有本地資產，不新增內容集合；研究紀錄見 `docs/design/hero-motion-references-2026-10-05.md`。

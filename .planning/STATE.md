@@ -10,12 +10,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 ## Current Position
 
 Phase: 品牌與節目入口第一階段
-Plan: `.planning/spec-brand-show-launch.md`
+Plan: `.planning/spec-home-visual-refinement.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 11:22 +08:00 — 完成首頁、節目路由與內容發布隔離
+Last activity: 2026-10-05 11:45 +08:00 — 修正 Notes 排版並重製立體系統組裝 Hero
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-05 11:45 +08:00 — 首頁視覺修正**：Notes 標題間距桌機 42px／手機 34px、深色 lime 文案與底部 CTA 對齊；Hero 改為 SVG 立體組裝、透明板／橘色核心、訊號流、展開與暫停控制，離屏與 reduced-motion 支援。桌機／390px、中英、控制與 reduced-motion 檢查通過；build 通過，lint 0 errors／35 既有 warnings。參考與驗收見 spec-home-visual-refinement.md。
 
 - ✅ **2026-10-05 11:06:18 +08:00 — 工程接案與靈機8動入口實作**：新增交付流程 Hero、首頁案例／服務提前、文章與節目入口；完成雙語 `/show`、`/show/ask` 與真實單集模板。Episode schema 已備妥，未建立假集數或表單。Velite 寫檔前隔離未發布、未來與 protected 內容，避免進入 browser bundle；sentinel fixture 建置確認無洩漏。研究草稿維持未公開，未改 we-media / shuyan_art。狀態：桌機／手機、中英切換與 reduced-motion 瀏覽器審查完成；內容發布操作見 `docs/CONTENT_MODEL.md`。
 

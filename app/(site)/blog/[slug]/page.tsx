@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { posts as allPosts } from ".velite";
 import { publicContent } from "@/lib/publication";
-const posts = publicContent(allPosts);
+// Evaluate per call: Workers freeze Date.now() at 0 during module init
+const getPosts = () => publicContent(allPosts);
 import { PageSection } from "@/components/page/page-section";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogProtectedNote } from "@/components/blog/blog-protected-note";
@@ -18,14 +19,14 @@ interface PostPageProps {
 }
 
 export async function generateStaticParams() {
-  return posts.map(post => ({
+  return getPosts().map(post => ({
     slug: post.slug
   }));
 }
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { slug } = await params;
-  const post = posts.find(p => p.slug === slug);
+  const post = getPosts().find(p => p.slug === slug);
 
   if (!post) {
     return {};
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: PostPageProps) {
 
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
-  const post = posts.find(p => p.slug === slug);
+  const post = getPosts().find(p => p.slug === slug);
 
   if (!post) {
     notFound();

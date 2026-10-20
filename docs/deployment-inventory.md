@@ -81,7 +81,7 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 
 - **正式站 SEO**：`https://www.8plus.app/robots.txt` 與 `sitemap.xml` 輸出 `http://localhost:3000`。原因：Vercel 未設定 `NEXT_PUBLIC_SITE_URL`。Cloudflare build 已預設 `https://www.8plus.app`；Vercel 端建議同步補上。
 - **`/secret` 閘門**：`SECRET_PASS` 未設定時，`cookie === process.env.SECRET_PASS` 兩邊都是 `undefined`，閘門會放行（目前因無 `/secret` 頁面而 404）。
-- 全站 `<title>` 皆為 `8plus`，個別頁面 metadata 未覆寫 title（Next.js 與 vinext 結果相同）。
+- `/about`、`/services`、`/blog`、`/lab` 等頁面 `<title>` 皆為 `8plus`，未覆寫 title（Next.js 與 vinext 結果相同；blog 文章頁有正確 title）。
 
 ## 8. 驗證
 
@@ -89,3 +89,11 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 |---|---|---|---|
 | Smoke（29 項） | `BASE_URL=… pnpm test:smoke` | 全過 | 全過 |
 | SEO | `BASE_URL=… pnpm test:seo` | 需帶 `NEXT_PUBLIC_SITE_URL` | 全過 |
+
+## 9. Cloudflare Preview
+
+- URL：https://8plus-web.delicate-truth-7cd5.workers.dev
+- 首次部署：2026-10-20，Version `f7de34d4-a80a-4a4a-91fb-3bd020d6ab5e`
+- 部署指令：`pnpm build:vinext && npx vinext-cloudflare deploy --skip-build`
+- 對 Preview URL 執行 smoke、SEO 測試：全過
+- 尚未綁定正式網域；Vercel 仍為正式站源站

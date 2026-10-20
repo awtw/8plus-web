@@ -14,7 +14,13 @@
     "validate:content": "node ./scripts/validate-content.mjs",
     "generate:avatar-layers": "node ./scripts/generate-avatar-layers.mjs",
     "postinstall": "shx mkdir -p public/og || true",
-    "check:publication": "node scripts/check-publication.mjs"
+    "check:publication": "node scripts/check-publication.mjs",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "pnpm validate:content && velite && NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://www.8plus.app} vite build",
+    "start:vinext": "vite preview",
+    "deploy:vinext": "vinext-cloudflare deploy",
+    "test:smoke": "node tests/smoke/routes.mjs",
+    "test:seo": "node tests/seo/metadata.mjs"
   },
   "dependencies": {
     "@8plus/ui": "workspace:*",
@@ -26,6 +32,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "2.45.4",
+    "@vinext/cloudflare": "^1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "3.6.0",
@@ -36,28 +43,36 @@
     "next": "16.2.9",
     "next-themes": "0.3.0",
     "qrcode": "^1.5.4",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-server-dom-webpack": "^19.3.1",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "velite": "^0.3.0"
+    "velite": "^0.3.0",
+    "vinext": "^1.2.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "2.0.0-beta.v.2",
     "@tailwindcss/typography": "^0.5.16",
     "@types/mdx": "^2.0.13",
     "@types/node": "20.12.12",
     "@types/qrcode": "^1.5.6",
     "@types/react": "19.2.17",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-rsc": "^0.5.38",
     "autoprefixer": "10.4.19",
+    "cf": "1.0.0-beta.18",
     "eslint": "9.8.0",
     "eslint-config-next": "16.2.9",
     "postcss": "8.4.41",
     "sharp": "^0.34.5",
     "shx": "0.3.4",
     "tailwindcss": "3.4.7",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vite": "8.3.0"
   },
-  "packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa"
+  "packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa",
+  "type": "module"
 }

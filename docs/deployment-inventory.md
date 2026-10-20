@@ -96,4 +96,5 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 - 首次部署：2026-10-20，Version `f7de34d4-a80a-4a4a-91fb-3bd020d6ab5e`
 - 部署指令：`pnpm build:vinext && npx vinext-cloudflare deploy --skip-build`
 - 對 Preview URL 執行 smoke、SEO 測試：全過
-- 尚未綁定正式網域；Vercel 仍為正式站源站
+- 2026-10-20：Worker Route `www.8plus.app/*` 上線（Version `89dd5fb9-b747-495a-b9ee-710d978148b8`），smoke、SEO 測試對 `https://www.8plus.app` 全過
+- apex `8plus.app` 仍由 Vercel 308 → www；DNS 未變更，Vercel 保留為回滾源站

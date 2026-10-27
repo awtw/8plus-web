@@ -1,0 +1,79 @@
+---
+title: "Next.js 16.4 and the October security update: patch first, then Cache Components"
+date: "2026-10-27"
+summary: "October brought a new Next.js minor and two critical RCE fixes in the same week. Who is affected, which version to move to, and what in 16.4 actually matters for teams."
+slug: "nextjs-16-4-upgrade-and-security-en"
+published: true
+protected: false
+kind: "article"
+tags: ["Next.js", "security", "upgrades", "AI agents"]
+locale: "en"
+---
+
+# Next.js 16.4 and the October security update
+
+In October 2026 Next.js shipped [16.4](https://nextjs.org/blog/next-16-4) (Oct 6) and an [out-of-band security update](https://nextjs.org/blog/nextjs-security-update-october-14-2026) (Oct 14) within about a week. The new features are worth a look, but the order matters: **patch first, plan the upgrade second**.
+
+## 1. First: the October 14 security update
+
+Three issues were fixed. Two are critical, unauthenticated remote code execution:
+
+| Issue | Severity | Who is affected |
+|-------|----------|-----------------|
+| RCE when a `use cache` function returns multiple typed arrays | Critical | App Router + Cache Components, 16.0.0–16.4.0 |
+| RCE in Image Optimization with SVG (upstream `sharp`) | Critical | Image optimization running on glibc-based Linux |
+| CPU-exhaustion DoS via Server Actions | High | App Router with at least one Server Action |
+
+The patched releases are **16.4.1** (Active LTS) and **15.5.28** (Maintenance LTS). The first issue has no workaround, and the Next.js team recommends upgrading even if your app has no similar functions. For the image issue, the interim fix is making sure `sharp` is 0.35.5 or later.
+
+```bash
+pnpm add next@16.4.1   # 16.x
+pnpm add next@15.5.28  # projects still on 15.5
+```
+
+### How I would prioritise
+
+1. **Inventory, don't guess.** Write down the version, whether `cacheComponents` is on, whether there is any `'use server'`, and where image optimisation runs. It takes ten minutes and tells you whether this is a today fix or a next-sprint fix.
+2. **Anything public-facing gets patched the same day.** A patch or minor bump is far less risky than leaving it.
+3. **Run a short smoke test before shipping.** Routes, metadata, forms, images — a few representative pages are enough.
+
+Take this site as an example: no Server Actions, no `use cache`, only local images, and on Workers it does not go through `sharp`. The exposure is small, but it still goes on the upgrade list. "Not used today" does not mean "not used next month".
+
+## 2. Three things in 16.4 that actually matter
+
+### 1. Cache Components is now the recommendation
+
+From 16.4, the Next.js team **recommends Cache Components for every app**. `create-next-app` enables it by default, and it is slated to become the default in Next.js 17. The idea is to declare caching at the component level with `'use cache'`, replacing the implicit caching of earlier App Router versions.
+
+For existing projects: **don't bundle the rewrite with the version bump**. Get to 16.4.x for the security fixes, then plan the Cache Components migration as its own piece of work.
+
+### 2. `ensureStatic`: make "this page must be static" a rule
+
+Useful for marketing pages, blogs and storefront listings. Declare it on a route or layout:
+
+```tsx
+export const ensureStatic = 'navigation';
+```
+
+If someone accidentally adds a dynamic component to that page, **the build fails**. A performance and hosting-cost agreement becomes something CI enforces instead of something people remember.
+
+### 3. Upgrade tooling designed for AI agents
+
+This is the part I find most telling about where things are going:
+
+- `next upgrade --agent` prepares version-specific migration guides, codemods and verification steps for your coding agent.
+- `experimental.agentUpgrade` defaults to nudging you during `next dev` / `next build` about **releases that fix known vulnerabilities**.
+- Agent feedback lets an agent draft reports on framework problems, **which you review before anything is sent**.
+
+The framework now assumes the one running the upgrade may be an agent, while keeping a human confirmation at every step. That matches the principle from [AI Integration in Practice](/blog/ai-workflow-integration-en): automation can do the execution, but permissions and sign-off stay with people.
+
+## 3. An upgrade checklist for teams
+
+- [ ] Check your version and whether it falls in 16.0.0–16.4.0
+- [ ] Search for `'use cache'`, `'use server'` and `next/image`
+- [ ] Move to 16.4.1 or 15.5.28 and confirm `sharp` ≥ 0.35.5
+- [ ] Run build, smoke and SEO checks, then ship
+- [ ] Open a separate task to evaluate Cache Components and `ensureStatic`
+- [ ] Consider `agentUpgrade: 'security'` so future security releases surface on their own
+
+Frameworks are moving faster than ever. What teams need is not to chase every feature, but a steady, repeatable upgrade rhythm. If you want help taking inventory or planning an upgrade, [book a 30-minute intro](/booking).

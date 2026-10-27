@@ -1,0 +1,79 @@
+---
+title: "Next.js 16.4 與 10 月安全更新：先補洞，再談 Cache Components"
+date: "2026-10-27"
+summary: "10 月 Next.js 一口氣出了新版本與兩個 Critical 等級的 RCE 修補。整理哪些網站受影響、該升到哪一版，以及 16.4 對團隊真正有意義的變化。"
+slug: "nextjs-16-4-upgrade-and-security"
+published: true
+protected: false
+kind: "article"
+tags: ["Next.js", "資安", "升級", "AI Agent"]
+locale: "zh-TW"
+---
+
+# Next.js 16.4 與 10 月安全更新
+
+2026 年 10 月，Next.js 在一週內先後發布了 [16.4](https://nextjs.org/blog/next-16-4)（10/6）與一次[非例行安全更新](https://nextjs.org/blog/nextjs-security-update-october-14-2026)（10/14）。新功能值得看，但順序很重要：**先補洞，再規劃升級**。
+
+## 一、先處理：10/14 安全更新
+
+這次修補了三個問題，其中兩個是 Critical 等級的「未經驗證遠端程式碼執行」：
+
+| 問題 | 等級 | 誰會受影響 |
+|------|------|-----------|
+| `use cache` 函式回傳多個 typed array 時的 RCE | Critical | App Router + Cache Components，16.0.0–16.4.0 |
+| Image Optimization 處理 SVG 時的 RCE（上游 `sharp`） | Critical | 在 glibc Linux 上執行 Next.js 的圖片最佳化 |
+| Server Actions 造成 CPU 卡死的 DoS | High | App Router 且有至少一個 Server Action |
+
+官方修補版本是 **16.4.1**（Active LTS）與 **15.5.28**（Maintenance LTS）。第一個問題沒有替代方案，官方建議即使你「看起來沒用到類似寫法」也直接升級；圖片問題的暫時解法是確保 `sharp` ≥ 0.35.5。
+
+```bash
+pnpm add next@16.4.1   # 16.x
+pnpm add next@15.5.28  # 仍在 15.5 的專案
+```
+
+### 我會怎麼排優先順序
+
+1. **先盤點，不要先猜。** 列出版本、是否啟用 `cacheComponents`、是否有 `'use server'`、圖片最佳化跑在哪裡。這份清單十分鐘就能做完，卻決定這是「今天要修」還是「下個 sprint」。
+2. **有對外服務的專案當天升版。** 補丁版本只升 patch / minor，風險遠低於放著不管。
+3. **升完跑一輪 smoke test 再上線。** 路由、metadata、表單、圖片，各抓幾個代表頁就好。
+
+以這個網站為例：沒有 Server Actions、沒有 `use cache`，圖片都是本地檔案、部署在 Workers 上不走 `sharp`，暴露面很小——但依然排進升級清單。「目前沒用到」不代表下個月也不會用到。
+
+## 二、16.4 真正值得注意的三件事
+
+### 1. Cache Components 成為官方推薦
+
+16.4 起，官方**建議所有 Next.js 專案採用 Cache Components**，`create-next-app` 也預設開啟，並預告在 Next.js 17 成為預設。核心概念是用 `'use cache'` 在元件層級宣告快取，取代舊 App Router 那套隱性快取行為。
+
+對既有專案，我的建議是：**不要跟著版本一起大改**。先升到 16.4.x 拿到安全修補，再獨立規劃 Cache Components 遷移。
+
+### 2. `ensureStatic`：把「這頁一定要靜態」寫成規則
+
+對行銷頁、部落格、電商列表這類網站很實用。在 route 或 layout 宣告：
+
+```tsx
+export const ensureStatic = 'navigation';
+```
+
+只要有人不小心把動態元件放進這頁，**build 會直接失敗**。這是把效能與主機成本的約定，從口頭提醒變成 CI 會擋的規則。
+
+### 3. 官方開始為 AI Agent 設計升級流程
+
+這是我認為最有趨勢意義的部分：
+
+- `next upgrade --agent`：替你的 coding agent 準備版本對應的遷移指南、codemod 與驗證步驟。
+- `experimental.agentUpgrade`：預設在 `next dev` / `next build` 時提醒**有資安修補的版本**。
+- Agent feedback：agent 遇到框架問題時起草回報，**由你審閱後才送出**。
+
+框架開始假設「升級的執行者可能是 agent」，但每一步仍保留人類確認。這跟我在[AI 導入實戰](/blog/ai-workflow-integration)提到的原則一致：自動化可以做執行，但權限與驗收要留在人手上。
+
+## 三、給團隊的升級清單
+
+- [ ] 確認目前版本與是否落在 16.0.0–16.4.0
+- [ ] 搜尋 `'use cache'`、`'use server'`、`next/image` 的使用位置
+- [ ] 升到 16.4.1 或 15.5.28，確認 `sharp` ≥ 0.35.5
+- [ ] 跑 build、smoke、SEO 檢查後上線
+- [ ] 另開工作項目評估 Cache Components 與 `ensureStatic`
+- [ ] 視需要啟用 `agentUpgrade: 'security'`，讓之後的資安版本自動提醒
+
+框架更新越來越快，團隊需要的不是追每個新功能，而是一套固定、可重複的升級節奏。如果你的專案需要協助盤點或規劃升級，可以[預約 30 分鐘初談](/booking)。

@@ -6,7 +6,7 @@
 
 | 項目 | 現況 |
 |---|---|
-| Next.js | 16.2.9（App Router） |
+| Next.js | 16.4.1（App Router；2026-10-27 由 16.2.9 升級，修補 10/14 安全公告） |
 | React | 19.3.1（vinext init 從 19.2.7 升級） |
 | Node（本機） | v23.11.0 |
 | 套件管理 | pnpm 10.18.0（workspace：`.` + `packages/*`） |
@@ -84,6 +84,8 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 - `/about`、`/services`、`/blog`、`/lab` 等頁面 `<title>` 皆為 `8plus`，未覆寫 title（Next.js 與 vinext 結果相同；blog 文章頁有正確 title）。
 
 ## 8. 驗證
+
+2026-10-27 升級 next 16.4.1 / eslint-config-next 16.4.1 / sharp ^0.35.5 後重跑：Next.js（需 build 時帶 `NEXT_PUBLIC_SITE_URL`）與 vinext 的 smoke、SEO 全過。`velite@0.3.0` 仍自帶 `sharp@0.34.5`，僅建置期處理 repo 內圖片，不在公告攻擊面。
 
 | 測試 | 指令 | Next.js | vinext（本機 workerd） |
 |---|---|---|---|

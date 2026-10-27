@@ -16,7 +16,10 @@ const nextConfig = {
     ]
   },
   async rewrites() {
-    return [{ source: "/tool/qrcode", destination: "/tool/qrcode.html" }]
+    // beforeFiles: vinext resolves public files only before afterFiles rewrites
+    return {
+      beforeFiles: [{ source: "/tool/qrcode", destination: "/tool/qrcode.html" }],
+    }
   },
 }
 

@@ -1,0 +1,46 @@
+---
+title: "Field Note｜把 8plus 搬上 Cloudflare Workers：vinext 實測與三個踩坑"
+date: "2026-10-27"
+summary: "Cloudflare 用 Vite 重新實作 Next.js API 的 vinext 已進入 beta。這是我把自己的網站平行部署上去的過程、改了哪幾行，以及為什麼保留 Vercel 當退路。"
+slug: "vinext-cloudflare-field-note"
+published: true
+protected: false
+kind: "note"
+tags: ["近況", "Cloudflare", "Next.js", "部署"]
+locale: "zh-TW"
+---
+
+# 把 8plus 搬上 Cloudflare Workers
+
+今年 2 月，Cloudflare 發表 [vinext](https://blog.cloudflare.com/vinext)：用 Vite 重新實作 Next.js 的 API，可以一行指令部署到 Workers。它從「AI 一週重寫 Next.js」的實驗，到了今年已[進入 beta](https://www.itwriting.com/blog/?p=12442)。框架與部署平台開始脫鉤，是今年前端最值得觀察的趨勢之一。
+
+與其只看新聞，我拿自己的網站實測。
+
+## 原則：平行部署，不是替換
+
+- **保留 Next.js 原始碼與建置流程**，另加一條 `vite build` 給 Workers。
+- **Vercel 繼續當回滾源站**，DNS 不先動。
+- 先用 `*.workers.dev` 預覽，跑完 smoke 與 SEO 測試，才把 `www.8plus.app/*` 掛上 Worker Route。
+
+## 盤點結果
+
+這個站是 App Router + Velite 的內容站：沒有 Server Actions、ISR、API Routes，也沒有用到 Vercel 專屬服務。這類網站正是 vinext 最好上手的情境。唯一明顯差異是 React 的 `ViewTransition` 目前只是 passthrough，換頁轉場不會動畫。
+
+## 三個踩坑
+
+1. **模組初始化時 `Date.now()` 是 0。** Workers 在載入模組的階段時鐘不前進，我把「過濾已發布文章」寫在模組頂層，結果所有文章都被判定為未來日期而 404。改成每次請求時計算就解決，Next.js 行為不變。
+2. **rewrite 到靜態檔的階段不同。** vinext 在 `afterFiles` rewrite 之前就檢查 `public/`，導致 `/tool/qrcode` → `qrcode.html` 失效。改放 `beforeFiles` 即可。
+3. **工具鏈型別互相打架。** Next.js 的型別檢查會掃到 Vite 8 的設定檔而失敗，需要在 `tsconfig` 排除 `vite.config.ts` 與 `cloudflare.config.ts`。
+
+三個都是小改，但如果沒有逐頁測試，第一個問題會讓整個部落格默默消失。
+
+## 順手抓到的既有問題
+
+搬家最大的收穫之一，是被迫把網站重新看一遍：正式站的 `robots.txt` 與 `sitemap.xml` 輸出成 `localhost`，原因是部署環境少設了一個網站網址的變數。這跟搬遷無關，卻是放了很久沒人發現的 SEO 漏洞。
+
+## 現況與下一步
+
+- `www.8plus.app` 已由 Worker 提供，29 項 smoke 與 SEO 測試全過。
+- apex 網域仍由 Vercel 轉址；觀察穩定後再切換 DNS，並演練回滾。
+
+如果你也在評估「離開某個平台」或「降低主機成本」，我的建議是：先做一份功能盤點表，再決定框架。想討論你的情況，可以[預約 30 分鐘初談](/booking)。

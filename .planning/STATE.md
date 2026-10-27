@@ -17,6 +17,12 @@ Progress: [██████████] 本階段完成；後續內容與跨�
 
 ## What Was Done
 
+- ✅ **2026-10-27 13:14 +0800 — Worker 正式部署**：Version `171aa65b-6073-4c20-b99f-a9d5221a5339`（含 Next.js 16.4.1 與四篇 10 月文章）；`www.8plus.app` 與 workers.dev smoke／SEO 全過，新文章 200、RSS／sitemap 收錄，瀏覽器檢視無 console error。回滾目標 `89dd5fb9`。Vercel（apex 轉址源站）仍跑舊版，需合併 main 才會更新。
+
+- ✅ **2026-10-27 +0800 — Next.js 升級 16.4.1（10/14 安全公告）**：next、eslint-config-next 16.2.9→16.4.1，sharp ^0.34.5→^0.35.5。`pnpm build`、`build:vinext`、typecheck 通過；Next.js 與 vinext 本機 smoke／SEO 全過（Next.js 需 build 時帶 `NEXT_PUBLIC_SITE_URL`，既有限制），四篇新文章兩邊皆 200。lint 修正：新版 eslint-config-next 不對 `.cjs` 註冊 plugin → 覆寫規則限定檔案範圍、`.cjs` 允許 require、ignore `.cloudflare/`、`dist/`；0 errors／33 warnings。`next build` 會重寫 `next-env.d.ts` 移除 vinext 型別 import，已手動補回。velite 仍帶 sharp 0.34.5（建置期）。已 commit；未部署（www Worker 與 Vercel apex 皆需重新部署才生效）。
+
+- ✅ **2026-10-27 +0800 — 10 月趨勢文章（中英各二）**：`content/posts/2026-10-27-*`。①Next.js 16.4 與 10/14 安全更新（Cache Components 推薦、`ensureStatic`、agent 升級工具；RCE 修補版 16.4.1／15.5.28）②vinext 搬上 Workers Field Note（平行部署、三個踩坑、robots/sitemap localhost 問題）。來源為 nextjs.org 官方部落格與 Cloudflare 公告。`published: true`、已 commit、未部署；`pnpm build` 通過。本站 next 已另於同日升級至 16.4.1。
+
 - ✅ **2026-10-05 15:49 +0800 — 首頁採用對焦工作室**：使用者選定05，新增獨立 HeroFocusStudio 與隔離CSS；墨黑、真實作品拼貼、淡綠框、鍵盤／觸控對焦、CSS漂移及暫停。保留首頁中英文案、預約與作品錨點；reduced首屏清晰且靜態，離屏與隱藏停播並清理監聽。build/typecheck/target lint 通過，三方審查無具體缺陷；桌機/390px中英、對焦、暫停穩定、reduced和作品CTA驗證。比較頁保留，預覽 http://localhost:3500/；未部署。
 
 - ✅ **2026-10-05 15:38 +08:00 — 十種 Hero 研究測試台**：新增 `/hero-lab`，十筆 2026 作者／獎項曝光參考、來源日期与本地轉譯分開呈現；非流量排名。像素、字體、磁性曲面、分割、對焦、材質、放大鏡、作品編排、系統拆解、工作地圖各有操作控制。URL mode、暫停重播、reduced、離屏／隱藏停止；noindex、不列 sitemap。桌機及 390px 中英十版、主要控制、暫停/reduced 穩定與網址恢復驗證；三方審查修正筆觸座標、透鏡取樣和作品按鈕；目視修正 grid 定位與手機卡片／拆解。build/typecheck 通過，lint 0 errors／35 既有 warnings。測試 http://localhost:3400/hero-lab；正式首頁及 hero-preview 未改，未部署。

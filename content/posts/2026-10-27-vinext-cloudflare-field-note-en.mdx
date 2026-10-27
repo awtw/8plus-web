@@ -1,0 +1,46 @@
+---
+title: "Field Note | Moving 8plus to Cloudflare Workers: vinext in practice and three gotchas"
+date: "2026-10-27"
+summary: "vinext, Cloudflare's Vite-based reimplementation of the Next.js API, is now in beta. How I deployed my own site to it in parallel, which lines changed, and why Vercel stays as the fallback."
+slug: "vinext-cloudflare-field-note-en"
+published: true
+protected: false
+kind: "note"
+tags: ["update", "Cloudflare", "Next.js", "deployment"]
+locale: "en"
+---
+
+# Moving 8plus to Cloudflare Workers
+
+In February, Cloudflare announced [vinext](https://blog.cloudflare.com/vinext): the Next.js API reimplemented on Vite, deployable to Workers with one command. It started as an "AI rebuilt Next.js in a week" experiment and has since [reached beta](https://www.itwriting.com/blog/?p=12442). Frameworks decoupling from their hosting platforms is one of the front-end trends I'm watching most closely this year.
+
+Rather than just read about it, I tried it on my own site.
+
+## Principle: run in parallel, don't replace
+
+- **Keep the Next.js source and build as they are**, and add a separate `vite build` for Workers.
+- **Vercel stays as the rollback origin**; DNS is not touched first.
+- Preview on `*.workers.dev`, pass the smoke and SEO tests, and only then attach `www.8plus.app/*` as a Worker Route.
+
+## What the inventory showed
+
+This site is an App Router + Velite content site: no Server Actions, ISR or API Routes, and no Vercel-only services. That is exactly the kind of site where vinext is easiest to adopt. The one visible difference is that React's `ViewTransition` is currently a passthrough, so page transitions don't animate.
+
+## Three gotchas
+
+1. **`Date.now()` is 0 during module initialisation.** On Workers the clock doesn't advance while modules load. I filtered published posts at module top level, so every post looked future-dated and returned 404. Computing it per request fixed it, with no change to Next.js behaviour.
+2. **Rewrites to static files run at a different phase.** vinext checks `public/` before `afterFiles` rewrites, which broke `/tool/qrcode` → `qrcode.html`. Moving it to `beforeFiles` solved it.
+3. **Toolchain types collide.** The Next.js type check picked up the Vite 8 config files and failed, so `vite.config.ts` and `cloudflare.config.ts` are excluded in `tsconfig`.
+
+All three were small changes, but without page-by-page testing the first one would have made the whole blog quietly disappear.
+
+## An existing bug found along the way
+
+One of the best side effects of a migration is being forced to look at the whole site again. The production `robots.txt` and `sitemap.xml` were pointing at `localhost`, because the deployment was missing the site-URL variable. Unrelated to the move, but an SEO gap that had gone unnoticed for a long time.
+
+## Status and next steps
+
+- `www.8plus.app` is now served by the Worker, and all 29 smoke checks plus the SEO tests pass.
+- The apex domain still redirects via Vercel; once things are stable I'll switch DNS and rehearse the rollback.
+
+If you're thinking about leaving a platform or cutting hosting costs, my advice is to build a feature inventory first and pick the framework second. To talk through your situation, [book a 30-minute intro](/booking).

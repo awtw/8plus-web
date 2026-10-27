@@ -17,6 +17,8 @@ Progress: [██████████] 本階段完成；後續內容與跨�
 
 ## What Was Done
 
+- ✅ **2026-10-27 13:14 +0800 — Worker 正式部署**：Version `171aa65b-6073-4c20-b99f-a9d5221a5339`（含 Next.js 16.4.1 與四篇 10 月文章）；`www.8plus.app` 與 workers.dev smoke／SEO 全過，新文章 200、RSS／sitemap 收錄，瀏覽器檢視無 console error。回滾目標 `89dd5fb9`。Vercel（apex 轉址源站）仍跑舊版，需合併 main 才會更新。
+
 - ✅ **2026-10-27 +0800 — Next.js 升級 16.4.1（10/14 安全公告）**：next、eslint-config-next 16.2.9→16.4.1，sharp ^0.34.5→^0.35.5。`pnpm build`、`build:vinext`、typecheck 通過；Next.js 與 vinext 本機 smoke／SEO 全過（Next.js 需 build 時帶 `NEXT_PUBLIC_SITE_URL`，既有限制），四篇新文章兩邊皆 200。lint 修正：新版 eslint-config-next 不對 `.cjs` 註冊 plugin → 覆寫規則限定檔案範圍、`.cjs` 允許 require、ignore `.cloudflare/`、`dist/`；0 errors／33 warnings。`next build` 會重寫 `next-env.d.ts` 移除 vinext 型別 import，已手動補回。velite 仍帶 sharp 0.34.5（建置期）。已 commit；未部署（www Worker 與 Vercel apex 皆需重新部署才生效）。
 
 - ✅ **2026-10-27 +0800 — 10 月趨勢文章（中英各二）**：`content/posts/2026-10-27-*`。①Next.js 16.4 與 10/14 安全更新（Cache Components 推薦、`ensureStatic`、agent 升級工具；RCE 修補版 16.4.1／15.5.28）②vinext 搬上 Workers Field Note（平行部署、三個踩坑、robots/sitemap localhost 問題）。來源為 nextjs.org 官方部落格與 Cloudflare 公告。`published: true`、已 commit、未部署；`pnpm build` 通過。本站 next 已另於同日升級至 16.4.1。

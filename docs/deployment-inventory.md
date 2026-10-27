@@ -100,3 +100,4 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 - 對 Preview URL 執行 smoke、SEO 測試：全過
 - 2026-10-20：Worker Route `www.8plus.app/*` 上線（Version `89dd5fb9-b747-495a-b9ee-710d978148b8`），smoke、SEO 測試對 `https://www.8plus.app` 全過
 - apex `8plus.app` 仍由 Vercel 308 → www；DNS 未變更，Vercel 保留為回滾源站
+- 2026-10-27 13:14 +0800：部署 Next.js 16.4.1 升級與 10 月文章（commit `5887320`），Version `171aa65b-6073-4c20-b99f-a9d5221a5339`；回滾目標 `89dd5fb9-…`。smoke、SEO 對 `https://www.8plus.app` 與 workers.dev 全過，四篇新文章 200、RSS／sitemap 已收錄

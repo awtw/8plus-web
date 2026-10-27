@@ -6,6 +6,7 @@
 
 - DNS 已由 Cloudflare 託管（NS：`arely` / `lynn.ns.cloudflare.com`），`8plus.app` 與 `www.8plus.app` 目前 proxied 到 **Vercel**。
 - 2026-10-20 起 `www.8plus.app/*` 由 Worker `8plus-web` 回應（Worker Route，Version `89dd5fb9-b747-495a-b9ee-710d978148b8`）；`*.workers.dev` 預覽仍啟用。
+- 2026-10-27 部署 Version `171aa65b-6073-4c20-b99f-a9d5221a5339`（Next.js 16.4.1）。Worker 版本回滾：`npx wrangler rollback 89dd5fb9-b747-495a-b9ee-710d978148b8 --name 8plus-web`。
 - 在正式切換完成並驗收前，Vercel 專案與其網域設定保持不動，仍是 `www` CNAME 的源站。
 
 ## DNS 備份（2026-10-20 切換前，`cf dns records list -z 8plus.app`）

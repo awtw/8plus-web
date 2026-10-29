@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  body { background: radial-gradient(ellipse 60% 50% at 50% 52%, #1a1f17 0%, var(--ink) 70%); color: var(--cream); }
+  .world { position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 48%; }
+  .hall { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; }
+  .s { position: absolute; width: 760px; height: 470px; margin: -235px 0 0 -380px; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(243,238,228,.12), 0 30px 80px rgba(0,0,0,.6); }
+  .s .shot { width: 100%; height: 100%; }
+  .s::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7,9,9,0), rgba(7,9,9,.25)); }
+  .l { transform: translateX(-760px) rotateY(62deg); }
+  .r { transform: translateX(760px) rotateY(-62deg); }
+  .floor { position: absolute; left: -1600px; top: 300px; width: 3200px; height: 3200px; transform: rotateX(90deg) translateZ(0); transform-origin: top; background: repeating-linear-gradient(90deg, rgba(120,129,111,.18) 0 2px, transparent 2px 160px), repeating-linear-gradient(0deg, rgba(120,129,111,.18) 0 2px, transparent 2px 160px); }
+  .end { position: absolute; padding: 48px 64px; background: radial-gradient(closest-side, rgba(7,9,9,.92), rgba(7,9,9,.75) 70%, rgba(7,9,9,0)); left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .end svg { width: 96px; height: 96px; filter: drop-shadow(0 0 40px rgba(231,255,172,.35)); }
+  .end h2 { margin-top: 26px; font-size: 60px; line-height: 1.25; white-space: nowrap; font-weight: 600; letter-spacing: -.01em; }
+  .end p { margin-top: 14px; font-size: 26px; color: var(--muted); }
+  .end p b { color: var(--lime); font-weight: 600; }
+  .hud { position: absolute; left: 96px; right: 96px; top: 72px; display: flex; justify-content: space-between; font-size: 20px; color: var(--line); }
+</style></head>
+<body>
+  <div class="world"><div class="hall">
+    <div class="floor"></div>
+    <div class="s l" style="transform: translate3d(-1060px,0,-200px) rotateY(64deg)"><img class="shot" src="../assets/img/transcript-plus.jpg"></div>
+    <div class="s l" style="transform: translate3d(-1060px,0,-1100px) rotateY(64deg)"><img class="shot" src="../assets/img/ckd2026.jpg"></div>
+    <div class="s l" style="transform: translate3d(-1060px,0,-2000px) rotateY(64deg)"><img class="shot" src="../assets/img/powerbi.jpg"></div>
+    <div class="s r" style="transform: translate3d(1060px,0,-200px) rotateY(-64deg)"><img class="shot" src="../assets/img/e-cooperative.jpg"></div>
+    <div class="s r" style="transform: translate3d(1060px,0,-1100px) rotateY(-64deg)"><img class="shot" src="../assets/img/1914.jpg"></div>
+    <div class="s r" style="transform: translate3d(1060px,0,-2000px) rotateY(-64deg)"><img class="shot" src="../assets/img/experimentlab.jpg"></div>
+  </div></div>
+  <div class="end">
+    <svg viewBox="0 0 100 100"><g fill="#e7ffac"><circle cx="32" cy="29" r="18"/><path d="M53 9H68L36 91H21L53 9Z"/><circle cx="70" cy="64" r="28"/></g></svg>
+    <h2>把 AI 想法，<br>做成團隊真的能用的系統。</h2>
+    <p>AI 架構 · RAG · 地端模型　/　<b>預約 30 分鐘諮詢</b></p>
+  </div>
+  <div class="hud mono"><span>8plus / Works in space</span><span>12 projects</span></div>
+</body></html>

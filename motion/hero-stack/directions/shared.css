@@ -1,0 +1,12 @@
+@font-face { font-family: "Outfit"; src: url("../assets/fonts/Outfit.woff2") format("woff2"); font-weight: 300 700; }
+@font-face { font-family: "JetBrains Mono"; src: url("../assets/fonts/JetBrainsMono.woff2") format("woff2"); font-weight: 100 800; }
+
+:root {
+  --ground: #070909; --ink: #f3eee4; --muted: #b8bdb5; --line: #78816f;
+  --accent: #e7ffac; --paper: #efeee4;
+}
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--ground); }
+#film { position: relative; width: 1080px; height: 1080px; overflow: hidden; background: var(--ground); color: var(--ink); font-family: "Outfit", sans-serif; }
+.mono { font-family: "JetBrains Mono", monospace; }
+.shot { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.eyebrow { font: 500 15px/1 "JetBrains Mono", monospace; letter-spacing: .14em; color: var(--muted); }

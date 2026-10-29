@@ -12,10 +12,20 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-05 15:49 +0800 — 首頁採用使用者選定的對焦工作室
+Last activity: 2026-10-29 13:30 +0800 — 首頁主視覺改為 20 秒品牌廣告片（宣言式字體，中英兩版）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-29 14:50 +0800 — 品牌片改為網頁即時執行**：依使用者要求，不再播放影片檔。`motion/hero-brand/tools/make-web.sh` 把組成本身複製到 `public/hero/film/`（GSAP、om.js MIT、字型、7 張 2400px WebP、AAC 配樂，共 1.2MB；配樂只在開聲音時才下載）。首頁用 iframe 載入 `index.html?live=1&lang=zh|en&format=wide|tall`，live 模式負責 cover 縮放、無限循環，並用 postMessage 接收播放、暫停與聲音指令。配樂以畫面為時鐘，偏差超過 0.2 秒就拉回；渲染器不受影響。中文改用自帶的 Noto Sans TC 子集（400/600，各約 17KB），所以 Windows 和 Android 也是同一個字型；海報與靜態幀已用新字型重出。影片準備好之前顯示海報，減少動態模式下顯示靜態幀。舊的 `brand-*.webm/mp4` 已刪除。om check 0 errors。在瀏覽器確認：桌機中文、手機 375 中英直式版都即時播放，暫停／繼續正常；真實點擊開聲音後音軌有播放。專案內沒有 X-Frame-Options 或 CSP 會擋同網域 iframe。瀏覽器面板隱藏時載入較慢、截圖不可靠，所以實際聽感和舊手機效能未驗證。typecheck 和 eslint 通過；因為使用者的 dev server 在跑，未執行 `pnpm build`。未 commit。
+
+- ✅ **2026-10-29 14:20 +0800 — 手機版改播 4:5 直式影片**：直式版沿用同一份組成（`motion/hero-brand/index.html`），依根節點尺寸自動切換 `.tall` 版面：場景上下堆疊，長句改兩行，作品截圖改卡片顯示。`motion/hero-brand/tools/make-tall.sh` 會產生 `motion/hero-brand-tall`（1080×1350），兩邊時間軸與配樂相同。網頁檔是 `public/hero/brand-{zh,en}-tall.{webm,mp4}` 加海報與靜態幀（864×1080，每支約 1.1MB）。`HeroFocusStudio` 在 `max-width: 700px` 時改用直式片，影片高度為 `min(125vw, 100svh − header)`。om check 0 errors，兩語言的 om qa 都確認無縫循環。375 寬度驗證：載入中英直式片、375×469、沒有橫向溢出；桌機 1024 載入 16:9 片。瀏覽器面板隱藏時，即時縮放視窗不會切換影片，重新整理後正常。typecheck 和 eslint 通過；因為使用者的 dev server 在跑，未執行 `pnpm build`。未 commit。
+
+- ✅ **2026-10-29 13:55 +0800 — 品牌影片改滿版**：依使用者要求移除「8plus 品牌影片 · 20 秒」說明文字。影片移出 `section-shell`，改為滿版寬度，高度取 `min(56.25vw, 100svh − header)`、object-fit cover，所以桌機剛好填滿第一屏；比 16:9 更寬的螢幕會裁掉片中上下的 HUD，主文字區不受影響。開聲音和暫停按鈕放在影片下方靠右，手機版按鈕縮小。驗證過 1024、1680×820 和 375 寬度：滿版、沒有橫向溢出，手機版影片是 375×211。typecheck 和 eslint 通過；因為使用者自己的 dev server 正在跑，這次沒跑 `pnpm build`，避免兩邊同時寫 `.next`。未 commit。
+
+- ✅ **2026-10-29 13:30 +0800 — 首頁主視覺改為品牌廣告片（宣言式字體）**：使用者否決 Liquid Glass，要「像廣告行銷宣傳片、用程式做出來、介紹品牌／價值／能力」，並指定不放人像與貓咪。三個方向（A 宣言式字體／B 作品蒙太奇／C 作品長廊 3D）中選定 A。用 huashu-motion 製作 20 秒 16:9 循環片，結構是 idea → value（看過就會用、可驗證／可交付／可維護、資料正確／服務穩定）→ capability（三大能力，搭配 7 個真實作品快切）→ proof（千萬級推播 · 30 分鐘送達）→ 8plus logo 與 CTA。文案全部取自 `home-sections.ts`，畫面不放公司名稱；logo 斜線橘當母題，最後掃場接回第 0 幀。配樂自寫（UK garage、F 小調、120 BPM），`lang` 變數分別輸出中文版與英文版。原始碼在 `motion/hero-brand`（index.html、treatment.md、materials.md、directions/；out/ 不進版控）。網頁檔是 `public/hero/brand-{zh,en}.{webm,mp4}` 含音軌，加上海報與靜態幀，共約 6.5MB。`HeroFocusStudio` 改為寬版影片在上、文案和 CTA 在下，有「開啟聲音」與「暫停」按鈕；`<video>` 以語言 key 重建，切換語言時載入對應影片。舊的 `public/hero/fullstack-ai*` 已刪，`motion/hero-stack` 保留作參考。om check 0 errors（剩下的 text-clipped 警告經目視確認是誤報）；om qa 兩版都確認無縫循環，結尾卡停 3 秒是刻意的。`pnpm build` 通過。在瀏覽器確認：桌機中文自動播放、開聲音、暫停／繼續、375 寬無溢出；英文頁載入 en 影片。瀏覽器面板隱藏時 IntersectionObserver 不觸發，所以英文與手機的自動播放未實測，reduced-motion 也未實測。未 commit、未部署。
+
+- ⏹ **2026-10-29 10:48 +0800 — 首頁主視覺改為 Liquid Glass 動畫**（已被 13:30 品牌廣告片取代）：用 huashu-motion 製作 18 秒、1080² 的無縫循環片，內容依序是前端 → 後端 → 資料庫 → 架構 → AI → Agent → AI 應用。使用者否決第一輪（系統圖、對焦框、3D 堆疊）和第二輪的 A/B，選了 C 液態玻璃；完成後也被否決。原始碼保留在 `motion/hero-stack`，網頁檔 `public/hero/fullstack-ai*` 已刪除。
 
 - ✅ **2026-10-27 13:14 +0800 — Worker 正式部署**：Version `171aa65b-6073-4c20-b99f-a9d5221a5339`（含 Next.js 16.4.1 與四篇 10 月文章）；`www.8plus.app` 與 workers.dev smoke／SEO 全過，新文章 200、RSS／sitemap 收錄，瀏覽器檢視無 console error。回滾目標 `89dd5fb9`。Vercel（apex 轉址源站）仍跑舊版，需合併 main 才會更新。
 

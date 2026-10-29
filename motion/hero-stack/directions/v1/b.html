@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>B · One frame, seven lives</title>
+<script src="../../vendor/gsap.min.js"></script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+  .card { position: absolute; left: 150px; top: 200px; width: 780px; height: 510px; background: var(--paper); padding: 12px; box-sizing: border-box; box-shadow: 0 50px 90px -40px #000; }
+  .card .bar { height: 34px; display: flex; align-items: center; justify-content: space-between; padding: 0 6px 0 4px; color: #171c18; font: 500 15px "JetBrains Mono", monospace; }
+  .card .view { height: calc(100% - 34px); overflow: hidden; }
+  /* the brand's own focus frame (home hero): lime corners around the thing in focus */
+  .frame { position: absolute; left: 110px; top: 160px; width: 860px; height: 590px; border: 1px solid #ffffff40; }
+  .frame i { position: absolute; width: 30px; height: 30px; border: 3px solid var(--accent); }
+  .frame i:nth-child(1) { left: -3px; top: -3px; border-right: 0; border-bottom: 0; }
+  .frame i:nth-child(2) { right: -3px; top: -3px; border-left: 0; border-bottom: 0; }
+  .frame i:nth-child(3) { left: -3px; bottom: -3px; border-right: 0; border-top: 0; }
+  .frame i:nth-child(4) { right: -3px; bottom: -3px; border-left: 0; border-top: 0; }
+  .frame span { position: absolute; left: 0; bottom: -34px; font: 500 15px "JetBrains Mono", monospace; color: var(--accent); letter-spacing: .06em; }
+  .ghost { position: absolute; border: 1px dashed #ffffff26; }
+  .word { position: absolute; right: 72px; bottom: 150px; font-size: 168px; line-height: 1; letter-spacing: -.07em; font-weight: 600; color: var(--accent); }
+  .track { position: absolute; left: 72px; right: 72px; bottom: 64px; display: flex; justify-content: space-between; font: 500 15px "JetBrains Mono", monospace; color: var(--line); }
+  .track span.done { color: var(--muted); }
+  .track span.cur { color: #171c18; background: var(--accent); padding: 0 8px; margin: 0 -8px; }
+  .rail { position: absolute; left: 72px; right: 72px; bottom: 96px; height: 2px; background: #ffffff1c; }
+  .rail i { position: absolute; left: 0; top: 0; height: 2px; width: 66%; background: var(--accent); }
+  .cursor { position: absolute; left: 780px; top: 600px; width: 34px; filter: drop-shadow(0 8px 10px #0008); }
+  .head { position: absolute; left: 72px; top: 64px; }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="film" data-width="1080" data-height="1080">
+  <div class="head eyebrow">8PLUS / ENGINEERING &amp; AI</div>
+  <!-- the shapes the frame was a moment ago: a pill (API), a table (DB) -->
+  <div class="ghost" style="left:300px;top:420px;width:480px;height:90px;border-radius:45px"></div>
+  <div class="ghost" style="left:230px;top:300px;width:620px;height:330px"></div>
+  <div class="card">
+    <div class="bar"><span>05 · AI</span><span>faster-whisper / MLX</span></div>
+    <div class="view"><img class="shot" src="../../assets/img/transcript-plus.webp"></div>
+  </div>
+  <div class="frame"><i></i><i></i><i></i><i></i><span>FOCUS / Transcript Plus — offline speech-to-text</span></div>
+  <svg class="cursor" viewBox="0 0 24 24"><path d="M3 2l7 19 2.6-7.4L20 11z" fill="#f3eee4" stroke="#070909" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  <div class="word">AI.</div>
+  <div class="rail"><i></i></div>
+  <div class="track"><span class="done">Frontend</span><span class="done">Backend</span><span class="done">Database</span><span class="done">Architect</span><span class="cur">AI</span><span>Agent</span><span>AI Apps</span></div>
+</div>
+<script>window.__timelines = window.__timelines || {}; window.__timelines.film = gsap.timeline({ paused: true }).to({}, { duration: 1 });</script>
+</body>
+</html>

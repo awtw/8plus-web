@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>B · Kinetic Type</title>
+<script src="../vendor/gsap.min.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+  #film { background: #f3eee4; color: #171c18; }
+  .past { position: absolute; left: 64px; top: 120px; display: flex; flex-direction: column; gap: 0; }
+  .past span { font-size: 78px; line-height: .98; font-weight: 300; letter-spacing: -.05em; color: #171c18; opacity: .2; }
+  .past span s { text-decoration-thickness: 3px; text-decoration-color: #171c1866; }
+  .hero { position: absolute; left: 56px; top: 520px; font-size: 248px; line-height: .84; font-weight: 600; letter-spacing: -.075em; white-space: nowrap; }
+  .hero em { font-style: normal; position: relative; z-index: 1; }
+  .hero em::before { content: ""; position: absolute; left: -12px; right: -18px; top: 18%; bottom: 2%; background: #e7ffac; border-radius: 999px; z-index: -1; }
+  .note { position: absolute; font: 500 15px "JetBrains Mono", monospace; color: #6b7066; letter-spacing: .04em; }
+  .note b { color: #171c18; font-weight: 500; }
+  .count { position: absolute; right: 64px; top: 64px; font: 500 15px "JetBrains Mono", monospace; letter-spacing: .14em; }
+  .count b { font-size: 120px; font-family: "Outfit"; font-weight: 300; letter-spacing: -.06em; display: block; text-align: right; line-height: .9; margin-bottom: 8px; }
+  .next { position: absolute; left: 64px; bottom: 120px; font-size: 78px; line-height: 1; font-weight: 300; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px #171c1855; }
+  .zh { position: absolute; right: 64px; bottom: 64px; font: 400 22px "PingFang TC", sans-serif; color: #3d423a; text-align: right; line-height: 1.5; }
+  .bar { position: absolute; left: 64px; bottom: 64px; width: 360px; height: 3px; background: #171c181a; }
+  .bar i { position: absolute; left: 0; top: 0; height: 3px; width: 86%; background: #171c18; }
+  .loop { position: absolute; left: 70px; top: 760px; display: flex; gap: 14px; font: 500 22px "JetBrains Mono", monospace; }
+  .loop span { padding: 8px 16px; border: 1.5px solid #171c18; border-radius: 99px; }
+  .loop span.cur { background: #171c18; color: #e7ffac; }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="film" data-width="1080" data-height="1080">
+  <div class="past"><span><s>Frontend</s></span><span><s>Backend</s></span><span><s>Database</s></span><span><s>Architect</s></span><span><s>AI</s></span></div>
+  <div class="count"><b>06</b>/ 07 LAYERS</div>
+  <div class="hero">AI <em>Agent</em></div>
+  <div class="loop"><span>plan</span><span class="cur">tool</span><span>check</span><span>↺</span></div>
+  <div class="next">AI Apps</div>
+  <div class="bar"><i></i></div>
+  <div class="zh">把 AI 想法，做成<br>團隊真的能用的系統。</div>
+</div>
+<script>window.__timelines = window.__timelines || {}; window.__timelines.film = gsap.timeline({ paused: true }).to({}, { duration: 1 });</script>
+</body>
+</html>

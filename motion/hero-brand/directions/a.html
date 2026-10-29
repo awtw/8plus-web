@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  body { background: var(--ink); color: var(--cream); }
+  .top { position: absolute; left: 96px; right: 96px; top: 72px; display: flex; justify-content: space-between; align-items: center; font-size: 22px; color: var(--muted); }
+  .top b { color: var(--cream); font-weight: 600; }
+  .stack { position: absolute; left: 96px; top: 196px; }
+  .row { display: flex; align-items: baseline; gap: 40px; font-weight: 600; font-size: 212px; line-height: 1.04; letter-spacing: -.02em; white-space: nowrap; }
+  .row .n { font-family: var(--mono); font-size: 30px; font-weight: 500; color: var(--line); width: 72px; transform: translateY(-120px); }
+  .ghost { color: transparent; -webkit-text-stroke: 2px #3a403a; }
+  .live { color: var(--lime); }
+  .live .bar { display: inline-block; width: 22px; height: 176px; background: var(--orange); margin-left: 18px; transform: translateY(18px); }
+  .tag { position: absolute; right: 96px; top: 560px; width: 420px; border-top: 2px solid var(--line); padding-top: 22px; font-size: 26px; line-height: 1.55; color: var(--muted); }
+  .tag strong { display: block; color: var(--cream); font-size: 32px; font-weight: 600; margin-bottom: 8px; }
+  .strip { position: absolute; left: 96px; right: 96px; bottom: 64px; display: flex; justify-content: space-between; font-size: 20px; color: var(--line); }
+  .beat { display: flex; gap: 10px; }
+  .beat i { width: 46px; height: 6px; background: #252a25; }
+  .beat i.on { background: var(--lime); }
+</style></head>
+<body>
+  <div class="top"><span><b>8plus</b>&nbsp;&nbsp;/&nbsp;&nbsp;Engineering &amp; AI</span><span class="mono">02 · Value</span></div>
+  <div class="stack">
+    <div class="row ghost"><span class="n">01</span>可驗證。</div>
+    <div class="row live"><span class="n" style="color:var(--lime)">02</span>可交付。<span class="bar"></span></div>
+    <div class="row ghost"><span class="n">03</span>可維護。</div>
+  </div>
+  <div class="tag"><strong>看過就會用。</strong>完善 AI 應用，確保資料正確與服務穩定；體驗則追求看過就會用。</div>
+  <div class="strip"><div class="beat"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div><span class="mono">8plus.app</span></div>
+</body></html>

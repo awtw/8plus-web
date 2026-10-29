@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>C · Exploded stack</title>
+<script src="../../vendor/gsap.min.js"></script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+  #film { background: radial-gradient(700px 600px at 55% 45%, #121616, var(--ground) 70%); }
+  .viewport { position: absolute; inset: 0; perspective: 2200px; perspective-origin: 50% 40%; }
+  #world { position: absolute; left: 250px; top: 600px; width: 460px; height: 290px; transform-style: preserve-3d; transform: rotateX(60deg) rotateZ(-36deg); }
+  .panel { position: absolute; inset: 0; background: var(--paper); padding: 6px; box-sizing: border-box; outline: 1px solid #ffffff30; box-shadow: 0 0 60px #0009; }
+  .panel.dark { background: #0d1010; }
+  .panel.on { outline: 3px solid var(--accent); }
+  .panel .lid { position: absolute; inset: 0; background: #070909; opacity: .35; }
+  .label { position: absolute; display: flex; align-items: center; gap: 12px; white-space: nowrap; transform: translateY(-50%); }
+  .label .n { font: 500 13px "JetBrains Mono", monospace; color: var(--line); }
+  .label b { font-size: 26px; font-weight: 500; letter-spacing: -.02em; }
+  .label i { width: 70px; height: 1px; background: #ffffff40; }
+  .label.on b, .label.on .n { color: var(--accent); }
+  .label.on i { background: var(--accent); }
+  .logo { position: absolute; left: 72px; top: 64px; }
+  .head { position: absolute; right: 72px; top: 72px; }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="film" data-width="1080" data-height="1080">
+  <div class="head eyebrow">FULL STACK → AI</div>
+  <div class="viewport"><div id="world"></div></div>
+  <div id="labels"></div>
+</div>
+<script>
+  const layers = [
+    ['01', 'Frontend', '1914'], ['02', 'Backend', 'flash-sale-api'], ['03', 'Database', 'powerbi'],
+    ['04', 'Architect', 'smart-community-backend'], ['05', 'AI', 'transcript-plus'], ['06', 'AI Agent', null], ['07', 'AI Apps', 'crm'],
+  ];
+  const world = document.getElementById('world'), labels = document.getElementById('labels');
+  const on = 6;
+  layers.forEach(([n, name, img], i) => {
+    const p = document.createElement('div');
+    p.className = 'panel' + (img ? '' : ' dark') + (i === on ? ' on' : '');
+    p.style.transform = `translateZ(${i * 84}px)`;
+    p.innerHTML = img ? `<img class="shot" src="../../assets/img/${img}.webp">` + (i < on - 1 ? '<div class="lid"></div>' : '')
+      : `<div style="height:100%;display:grid;place-items:center;font:500 22px 'JetBrains Mono';color:#e7ffac">plan → tool → check ↺</div>`;
+    world.appendChild(p);
+    const l = document.createElement('div');
+    l.className = 'label' + (i === on ? ' on' : '');
+    l.innerHTML = `<i></i><span class="n">${n}</span><b>${name}</b>`;
+    labels.appendChild(l);
+  });
+  // labels sit flat beside each panel's right-most corner, so they stay readable in 2D
+  document.fonts.ready.then(() => [...world.children].forEach((p, i) => {
+    const r = p.getBoundingClientRect(), l = labels.children[i];
+    l.style.left = `${Math.round(r.right - 24)}px`; l.style.top = `${Math.round(r.top + r.height * .32)}px`;
+  }));
+  window.__timelines = window.__timelines || {}; window.__timelines.film = gsap.timeline({ paused: true }).to({}, { duration: 1 });
+</script>
+</body>
+</html>

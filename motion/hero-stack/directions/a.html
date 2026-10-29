@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A · Prompt to App</title>
+<script src="../vendor/gsap.min.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+  #film { background: #f3eee4; color: #171c18; }
+  .grid { position: absolute; inset: 0; background-image: radial-gradient(#171c1822 1.2px, transparent 1.2px); background-size: 28px 28px; }
+  .prompt { position: absolute; left: 72px; right: 72px; top: 96px; height: 92px; border-radius: 46px; background: #fff; box-shadow: 0 24px 60px -24px #171c1840, 0 0 0 1px #171c1814; display: flex; align-items: center; padding: 0 14px 0 36px; gap: 18px; }
+  .prompt .q { flex: 1; font: 400 30px "PingFang TC", "Outfit", sans-serif; letter-spacing: -.01em; }
+  .prompt .q b { font-weight: 400; background: #e7ffac; padding: 0 4px; }
+  .caret { display: inline-block; width: 3px; height: 32px; background: #171c18; vertical-align: -6px; margin-left: 4px; }
+  .send { width: 64px; height: 64px; border-radius: 50%; background: #171c18; color: #e7ffac; display: grid; place-items: center; font-size: 28px; }
+  .log { position: absolute; left: 72px; top: 252px; width: 380px; }
+  .log .t { font: 500 14px "JetBrains Mono", monospace; letter-spacing: .12em; color: #6b7066; margin-bottom: 22px; }
+  .step { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; padding: 13px 0; border-top: 1px solid #171c1814; }
+  .step i { width: 22px; height: 22px; border-radius: 50%; margin-top: 4px; display: grid; place-items: center; font: 700 13px "Outfit"; font-style: normal; }
+  .step.done i { background: #171c18; color: #e7ffac; }
+  .step.run i { border: 2.5px solid #171c18; border-right-color: transparent; }
+  .step.todo { opacity: .35; } .step.todo i { border: 2px solid #171c18; }
+  .step h4 { margin: 0; font-size: 27px; font-weight: 500; letter-spacing: -.02em; }
+  .step p { margin: 3px 0 0; font: 400 14px "JetBrains Mono", monospace; color: #6b7066; }
+  .step.run h4 span { background: #e7ffac; padding: 0 6px; }
+  .bento { position: absolute; left: 488px; top: 252px; right: 72px; bottom: 96px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.25fr 1fr 1fr; gap: 14px; }
+  .tile { position: relative; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px #171c1814; }
+  .tile .k { position: absolute; right: 14px; top: 12px; font: 500 12px "JetBrains Mono", monospace; letter-spacing: .1em; padding: 5px 9px; border-radius: 99px; background: #171c18; color: #f3eee4; z-index: 2; }
+  .tile.wide { grid-column: span 2; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .tile.dark { background: #171c18; color: #e7ffac; display: grid; place-items: center; font: 500 20px "JetBrains Mono", monospace; }
+  .tile.ghost { background: transparent; box-shadow: none; border: 2px dashed #171c1840; }
+  .code { padding: 52px 18px 0; font: 400 14px/1.75 "JetBrains Mono", monospace; color: #3d423a; }
+  .code b { color: #171c18; font-weight: 500; }
+  .foot { position: absolute; left: 72px; bottom: 56px; font: 500 14px "JetBrains Mono", monospace; letter-spacing: .12em; color: #6b7066; }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="film" data-width="1080" data-height="1080">
+  <div class="grid"></div>
+  <div class="prompt"><div class="q">把<b>語音逐字稿</b>做成團隊能用的 AI 應用<span class="caret"></span></div><div class="send">↑</div></div>
+  <div class="log">
+    <div class="t">8PLUS AGENT · BUILDING</div>
+    <div class="step done"><i>✓</i><div><h4>Frontend</h4><p>React 19 · Tauri 2</p></div></div>
+    <div class="step done"><i>✓</i><div><h4>Backend</h4><p>Python 3.12 sidecar</p></div></div>
+    <div class="step done"><i>✓</i><div><h4>Database</h4><p>SQLite · single source of truth</p></div></div>
+    <div class="step done"><i>✓</i><div><h4>Architect</h4><p>job queue · retry · undo</p></div></div>
+    <div class="step run"><i></i><div><h4><span>AI</span></h4><p>faster-whisper · MLX</p></div></div>
+    <div class="step todo"><i></i><div><h4>AI Agent</h4><p>plan → tool → check</p></div></div>
+    <div class="step todo"><i></i><div><h4>Ship</h4><p>an app your team uses</p></div></div>
+  </div>
+  <div class="bento">
+    <div class="tile wide"><span class="k">UI</span><img src="../assets/img/transcript-plus.webp"></div>
+    <div class="tile"><span class="k">CONTRACT</span><div class="code"><b>Transcript</b><br>Word · Cue<br>→ SRT · VTT · JSON</div></div>
+    <div class="tile"><span class="k">DB</span><div class="code"><b>SQLite</b><br>autosave<br>undo / redo</div></div>
+    <div class="tile dark">Breeze ASR ▸ INT8</div>
+    <div class="tile ghost"></div>
+  </div>
+  <div class="foot">FRONTEND → AI APPS / 05 of 07</div>
+</div>
+<script>window.__timelines = window.__timelines || {}; window.__timelines.film = gsap.timeline({ paused: true }).to({}, { duration: 1 });</script>
+</body>
+</html>

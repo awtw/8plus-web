@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-TW" data-om-signature="off" data-composition-variables='[
+  {"id":"lang","type":"enum","label":"語言","default":"zh","options":[{"value":"zh","label":"中文"},{"value":"en","label":"English"}]},
+  {"id":"accent","type":"color","label":"重點色","default":"#e7ffac"},
+  {"id":"brand","type":"color","label":"品牌橘","default":"#fe5000"}
+]'>
+<head>
+<meta charset="utf-8">
+<title>8plus · Manifesto</title>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/om.js"></script>
+<style id="om-fonts">
+@font-face { font-family: "Outfit"; src: url("assets/fonts/Outfit.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/JetBrainsMono.woff2") format("woff2"); font-weight: 100 800; }
+/* Noto Sans TC, subset to the film's own characters (Google Fonts text= subset, OFL) */
+@font-face { font-family: "Noto Sans TC"; src: url("assets/fonts/NotoSansTC-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Noto Sans TC"; src: url("assets/fonts/NotoSansTC-600.woff2") format("woff2"); font-weight: 600; }
+</style>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #070909; }
+  #film { --ink: #070909; --cream: #f3eee4; --muted: #b8bdb5; --line: #78816f; --ghost: #343a34;
+    position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--ink); color: var(--cream);
+    font-family: "Outfit", "Noto Sans TC", sans-serif; font-weight: 600; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "JetBrains Mono", monospace; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  .sc { position: absolute; inset: 0; visibility: hidden; }
+  .m { display: inline-block; overflow: hidden; vertical-align: top; padding: .08em .06em .16em; margin: -.08em -.06em -.16em; }
+  .c { display: inline-block; }
+  .hi { color: var(--accent); }
+  .big { position: absolute; left: 120px; margin: 0; font-weight: 600; line-height: 1.08; letter-spacing: -.02em; white-space: nowrap; }
+
+  /* idea */
+  .l1 { top: 330px; font-size: 230px; transform-origin: 0 50%; }
+  .pill { background: var(--accent); color: var(--ink); border-radius: .16em; padding: 0 .12em; }
+  .l2a { top: 236px; font-size: 190px; }
+  .l2b { top: 470px; font-size: 190px; }
+  .en .l1 { font-size: 220px; }
+  .en .l2a, .en .l2b { font-size: 176px; }
+  .sweep { position: absolute; left: 124px; top: 712px; height: 12px; background: var(--brand); transform-origin: 0 50%; }
+
+  /* value */
+  .lab { position: absolute; left: 126px; top: 300px; font-size: 28px; color: var(--accent); }
+  .v1 { top: 356px; font-size: 270px; transform-origin: 0 50%; }
+  .en .v1 { top: 340px; font-size: 196px; line-height: 1; }
+  .row { position: absolute; left: 120px; display: flex; align-items: baseline; gap: 40px; font-size: 200px; line-height: 1.04; letter-spacing: -.02em; white-space: nowrap;
+    --fill: var(--accent); --stroke: rgba(0,0,0,0); }
+  .row .t { color: var(--fill); -webkit-text-stroke: 2px var(--stroke); }
+  .row .n { width: 72px; font-size: 30px; color: var(--line); transform: translateY(-110px); }
+  .en .row { font-size: 150px; }
+  .rbar { position: absolute; left: 0; top: 0; width: 22px; height: 170px; background: var(--brand); }
+
+  /* data */
+  .dl, .dr { position: absolute; top: 410px; font-size: 180px; line-height: 1.04; white-space: nowrap; }
+  .dl { right: 1060px; text-align: right; transform-origin: 100% 50%; }
+  .dr { left: 1060px; transform-origin: 0 50%; }
+  .en .dl, .en .dr { top: 360px; font-size: 136px; line-height: 1.02; }
+  .slash { position: absolute; left: 936px; top: 390px; width: 48px; height: 300px; background: var(--brand); }
+
+  /* capability */
+  .cn { position: absolute; left: 126px; top: 300px; font-size: 32px; color: var(--accent); }
+  .ct { top: 352px; font-size: 230px; }
+  .cs { position: absolute; left: 126px; top: 650px; font-size: 46px; font-weight: 400; color: var(--muted); white-space: nowrap; }
+  .en .ct { font-size: 168px; white-space: normal; width: 1600px; line-height: 1; }
+  .en .cs { top: 720px; }
+  .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,9,9,.82) 0, rgba(7,9,9,0) 22%, rgba(7,9,9,0) 62%, rgba(7,9,9,.88) 100%); }
+  .tag { position: absolute; left: 120px; bottom: 150px; padding: 14px 26px; border-radius: 999px; background: var(--accent); color: var(--ink); font-size: 36px; font-weight: 600; white-space: nowrap; }
+
+  /* proof */
+  .p1 { top: 236px; font-size: 230px; transform-origin: 0 50%; }
+  .en .p1 { font-size: 200px; }
+  .p2 { position: absolute; left: 120px; top: 500px; display: flex; align-items: baseline; gap: 28px; white-space: nowrap; }
+  .num { font-size: 330px; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -.03em; display: inline-block; min-width: 1.15em; transform-origin: 0 80%; }
+  .unit { font-size: 160px; }
+  .en .unit { font-size: 150px; }
+
+  /* brand */
+  .tagline { position: absolute; left: 120px; top: 480px; font-size: 84px; white-space: nowrap; }
+  .en .tagline { font-size: 66px; top: 490px; }
+  .slot { display: inline-block; width: .86em; height: .86em; margin-left: .12em; vertical-align: -.1em; }
+  .word .m { padding: .05em .1em .32em; margin: -.05em -.1em -.32em; }
+  .word { position: absolute; font-size: 240px; font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  .cta { position: absolute; left: 0; right: 0; top: 690px; display: flex; justify-content: center; align-items: center; gap: 36px; }
+  .cta .go { background: var(--accent); color: var(--ink); font-size: 46px; padding: 20px 40px; border-radius: 999px; white-space: nowrap; }
+  .cta .go i { display: inline-block; font-style: normal; margin-left: .3em; }
+  .cta .url { position: relative; font-size: 32px; color: var(--muted); }
+  .cta .url u { position: absolute; left: 0; right: 0; bottom: -10px; height: 3px; background: var(--brand); transform-origin: 0 50%; }
+  #mark { position: absolute; left: 0; top: 0; width: 220px; height: 220px; visibility: hidden; transform-origin: 50% 50%; overflow: visible; }
+  #ghost { position: absolute; left: 1020px; top: 60px; width: 1000px; height: 1000px; overflow: visible; transform-origin: 50% 50%; }
+  #wipe { position: absolute; left: 0; top: -400px; width: 3000px; height: 1880px; background: var(--brand); transform: skewX(-21deg); }
+
+  /* tall 4:5 cut (1080×1350, the phone film): same scenes, stacked */
+  #film.tall { width: 1080px; height: 1350px; }
+  .tall .big { left: 80px; }
+  .tall .l1 { top: 470px; font-size: 158px; }
+  .tall.en .l1 { font-size: 172px; line-height: 1.02; }
+  .tall .l2a { top: 420px; font-size: 150px; }
+  .tall .l2b { top: 600px; font-size: 150px; }
+  .tall.en .l2a, .tall.en .l2b { font-size: 132px; }
+  .tall.en .l2b { top: 580px; }
+  .tall .sweep { left: 84px; }
+  .tall .lab { left: 86px; top: 480px; }
+  .tall .v1 { top: 530px; font-size: 150px; }
+  .tall.en .v1 { top: 530px; font-size: 140px; }
+  .tall .row { left: 80px; gap: 28px; font-size: 150px; }
+  .tall.en .row { font-size: 120px; }
+  .tall .row .n { width: 56px; font-size: 26px; transform: translateY(-80px); }
+  .tall .rbar { width: 18px; height: 130px; }
+  .tall .dl, .tall .dr { left: 80px; right: auto; text-align: left; transform-origin: 0 50%; font-size: 150px; }
+  .tall .dl { top: 400px; }
+  .tall .dr { top: 850px; }
+  .tall.en .dl, .tall.en .dr { font-size: 120px; }
+  .tall.en .dl { top: 420px; }
+  .tall .slash { left: 110px; top: 620px; height: 200px; width: 40px; }
+  .tall .cn { left: 86px; top: 460px; }
+  .tall .ct { top: 510px; font-size: 160px; }
+  .tall .cs { left: 86px; top: 720px; font-size: 38px; }
+  .tall.en .ct { font-size: 120px; width: 920px; }
+  .tall.en .cs { top: 800px; }
+  .tall .shot { background: var(--ink); }
+  .tall .shot img { inset: auto; left: 80px; top: 370px; width: 920px; height: 600px; border-radius: 18px; }
+  .tall .shot .shade { display: none; }
+  .tall .tag { left: 80px; bottom: auto; top: 1020px; }
+  .tall .p1 { top: 460px; font-size: 150px; }
+  .tall.en .p1 { font-size: 118px; }
+  .tall .p2 { left: 80px; top: 660px; gap: 22px; }
+  .tall .num { font-size: 270px; }
+  .tall .unit { font-size: 120px; }
+  .tall.en .unit { font-size: 88px; }
+  .tall .tagline { left: 80px; top: 520px; font-size: 74px; line-height: 1.25; }
+  .tall.en .tagline { font-size: 62px; }
+  .tall .word { font-size: 180px; }
+  .tall .cta { top: 700px; flex-direction: column; gap: 30px; }
+  .tall .cta .go { font-size: 42px; }
+  .tall #ghost { left: 260px; top: 520px; width: 900px; height: 900px; }
+  .tall .hb { left: 80px; top: 64px; font-size: 24px; }
+  .tall .hs { right: 80px; top: 66px; font-size: 22px; }
+  .tall .prog { left: 80px; bottom: 70px; }
+  .tall .hu { right: 80px; bottom: 60px; }
+
+  /* hud */
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+  .hb { position: absolute; left: 120px; top: 70px; font-size: 26px; font-weight: 400; color: var(--muted); }
+  .hb b { color: var(--cream); font-weight: 700; letter-spacing: -.02em; }
+  .hs { position: absolute; right: 120px; top: 72px; font-size: 24px; color: var(--cream); }
+  .hs span { position: absolute; right: 0; white-space: nowrap; visibility: hidden; }
+  .prog { position: absolute; left: 120px; bottom: 76px; display: flex; gap: 10px; }
+  .prog i { width: 48px; height: 6px; background: #252a25; }
+  .prog i b { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+  .hu { position: absolute; right: 120px; bottom: 66px; font-size: 22px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="film" data-width="1920" data-height="1080">
+  <audio id="om-sound" src="assets/sound.wav" data-start="0" data-duration="20" data-track-index="8" data-volume="1"></audio>
+  <svg id="ghost" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#1d231d" stroke-width=".45"><circle cx="32" cy="29" r="18"/><path d="M53 9H68L36 91H21L53 9Z"/><circle cx="70" cy="64" r="28"/></g></svg>
+  <section class="sc" id="s-idea"><h1 class="big l1" data-om-id="idea-line"></h1></section>
+  <section class="sc" id="s-idea2"><div class="big l2a" data-om-id="idea-a"></div><div class="big l2b" data-om-id="idea-b"></div><i class="sweep" data-om-id="sweep"></i></section>
+  <section class="sc" id="s-v1"><div class="lab mono" data-om-id="v1-label"></div><div class="big v1" data-om-id="v1"></div></section>
+  <section class="sc" id="s-stack"><i class="rbar" data-om-id="stack-bar"></i></section>
+  <section class="sc" id="s-data"><div class="dl" data-om-id="data-left"></div><i class="slash" data-om-id="data-slash"></i><div class="dr" data-om-id="data-right"></div></section>
+  <div id="caps"></div>
+  <section class="sc" id="s-gap"></section>
+  <section class="sc" id="s-proof"><div class="big p1" data-om-id="proof-a"></div><div class="p2" data-om-id="proof-b"><span class="num">0</span><span class="unit"></span></div></section>
+  <section class="sc" id="s-brand">
+    <div class="tagline" data-om-id="tagline"><span class="txt"></span><span class="slot"></span></div>
+    <div class="word" data-om-id="wordmark"><span class="m"><span class="c">8plus</span></span></div>
+    <div class="cta" data-om-id="cta"><span class="go"><span class="gt"></span><i>→</i></span><span class="url mono">8plus.app<u></u></span></div>
+  </section>
+  <svg id="mark" viewBox="0 0 100 100" data-om-id="mark">
+    <circle class="k1" cx="32" cy="29" r="18" fill="#f3eee4"/>
+    <path class="k2" d="M53 9H68L36 91H21L53 9Z" fill="var(--brand)"/>
+    <circle class="k3" cx="70" cy="64" r="28" fill="#f3eee4"/>
+  </svg>
+  <div class="hud">
+    <div class="hb"><b>8plus</b>&nbsp;&nbsp;/&nbsp;&nbsp;Engineering &amp; AI</div>
+    <div class="hs mono" data-om-id="hud-section"><span>01 · Idea</span><span>02 · Value</span><span>03 · Capability</span><span>04 · Proof</span><span>05 · 8plus</span></div>
+    <div class="prog" data-om-id="hud-progress"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    <div class="hu mono">8plus.app</div>
+  </div>
+  <i id="wipe" data-om-id="wipe"></i>
+</div>
+
+<script type="text/vnd.abc" id="om-score">
+X:1
+T:8plus · Manifesto (UK garage, F minor, 120)
+M:4/4
+L:1/8
+Q:1/4=120
+K:Fm
+V:KK inst=drums kit=808 gain=0.85
+!mark:idea! !mf! C,,/ z/ z z z z C,,/ z/ z z | C,,/ z/ z z z z C,,/ z/ z z | C,,/ z/ z z z z C,,/ z/ z z | !mp! C,,2 z6 |
+!mark:capability! !mf! C,,/ z/ z z z z C,,/ z/ z z | C,,2 C,,2 C,,2 C,,2 |
+[M:1/4] !mark:proof! z2 |
+[M:4/4] !ff! C,,2 C,,2 C,,2 C,,2 | !mark:brand! C,,2 C,,2 C,,2 C,,2 | !mf! C,,/ z/ z z z z C,,/ z/ z z |
+[M:3/4] C,,2 z2 C,,C,, |
+V:DR inst=drums kit=pop gain=0.75
+!mf! ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ | ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ |
+^F,,/^F,,/ ^F,,/^F,,/ [D,,^D,,]/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ [D,,^D,,]/^F,,/ ^F,,/^F,,/ | !mp! ^F,,2 ^F,,2 D,,2 ^F,,2 |
+!mf! ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ | !crescendo(! D,,D,, D,,D,, D,,/D,,/D,,/D,,/ D,,/D,,/D,,/D,,/ !crescendo)! |
+[M:1/4] !rise(! z2 |
+[M:4/4] !rise)! !hit! !ff! [^C,^F,,]/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^A,,/ | ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ |
+!mp! ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ |
+[M:3/4] ^F,,/^F,,/ ^F,,/^F,,/ D,,/^F,,/ ^F,,/^F,,/ D,,/D,,/ D,,/D,,/ |
+V:RH inst=rhodes gain=0.6
+!mf! z [ACEG] z2 [ACEG]/ z/ z z2 | z [FAce] z2 [FAce]/ z/ z z2 | z [DFAc] z2 [DFAc]/ z/ z z2 | !mp! [EGBd]4 z4 |
+!mf! z [ACEG] z2 [ACEG]/ z/ z z2 | z [FAce] z2 [FAce]/ z/ z z2 |
+[M:1/4] z2 |
+[M:4/4] !f! z [ACEG] z2 [ACEG]/ z/ z z2 | z [DFAc] z2 [DFAc]/ z/ z z2 | !mp! z [FAce] z2 [FAce]/ z/ z z2 |
+[M:3/4] [EGBd]2 z4 |
+V:SB inst=sinebass gain=0.85
+!mf! F,,3 z F,,/ z/ C,3 | D,,3 z D,,/ z/ A,,3 | B,,,3 z B,,,/ z/ F,,3 | E,,8 |
+F,,3 z F,,/ z/ C,3 | D,,D,,D,,D,, D,,D,,D,,D,, |
+[M:1/4] z2 |
+[M:4/4] !ff! F,,F,F,,F, F,,F,F,,F, | B,,,B,,B,,,B,, B,,,B,,B,,,B,, | !mf! D,,3 z D,,/ z/ A,,3 |
+[M:3/4] E,,6 |
+V:PL inst=synpluck gain=0.45
+z8 | !mp! z4 FA c2 | z8 | z4 FA c2 |
+!mf! F/A/c/A/ F/A/c/A/ F/A/c/A/ F/A/c/A/ | F/A/d/A/ F/A/d/A/ !stutter(! F/A/d/A/ F/A/d/A/ !stutter)! |
+[M:1/4] z2 |
+[M:4/4] !f! c/A/f/A/ c/A/f/A/ c/A/f/A/ c/A/f/A/ | B/d/f/d/ B/d/f/d/ c/e/g/e/ c/e/g/e/ | z8 |
+[M:3/4] z6 |
+V:VN inst=violins role=melody gain=0.7
+z8 | z8 | z8 | z8 | z8 | z8 |
+[M:1/4] z2 |
+[M:4/4] !f! [ff']2 [aa']2 [c'c'']4 | [bb']3 [aa']3 [gg']2 | [ff']4 z4 |
+[M:3/4] z6 |
+V:BL inst=bell gain=0.55
+z8 | z8 | z8 | z8 | z8 | z8 |
+[M:1/4] z2 |
+[M:4/4] z8 | z8 | !mf! z2 FA c2 z2 |
+[M:3/4] f4 z2 |
+</script>
+
+<script>
+// live mode (?live=1): the homepage plays this page in an iframe instead of a rendered video;
+// ?lang=en and ?format=tall pick the copy and the 4:5 cut. The renderer never sets these.
+const Q = new URLSearchParams(location.search);
+const LIVE = Q.get('live') === '1';
+const DEFAULTS = Object.fromEntries(JSON.parse(document.documentElement.dataset.compositionVariables).map((d) => [d.id, d.default]));
+const V = { ...DEFAULTS, ...OM.vars(), ...(LIVE && Q.get('lang') ? { lang: Q.get('lang') } : {}) };
+const L = V.lang === 'en' ? 'en' : 'zh';
+const film = document.getElementById('film');
+if (LIVE && Q.get('format') === 'tall') Object.assign(film.dataset, { width: '1080', height: '1350' });
+const tall = +film.dataset.height > +film.dataset.width;
+const W = +film.dataset.width;
+film.classList.add(L);
+if (tall) film.classList.add('tall');
+film.style.setProperty('--accent', V.accent);
+film.style.setProperty('--brand', V.brand);
+document.documentElement.lang = L === 'en' ? 'en' : 'zh-TW';
+
+// all copy comes from lib/content/home-sections.ts (zh-TW / en)
+const COPY = {
+  zh: {
+    l1: ['把 ', 'AI', ' 想法，'], l2a: '做成團隊', l2b: ['真的能用的', '系統。'],
+    lab: '設計原則', v1: '看過就會用。',
+    stack: ['可驗證。', '可交付。', '可維護。'],
+    data: ['資料正確', '服務穩定'],
+    caps: [['AI 架構', 'RAG · 地端模型 · 評測'], ['AI 輔助開發', '用 AI 加速開發，貼近使用者需求'], ['UIX 與數據', '無障礙 · 易讀字體 · GA 轉換']],
+    p1: '千萬級推播', unit: '分鐘送達',
+    tagline: '把 AI 想法，做成團隊真的能用的系統', cta: '預約 30 分鐘諮詢',
+  },
+  en: {
+    l1: ['Turn ', 'AI', ' ideas'], l2a: 'into systems', l2b: ['your team ', 'can use.'],
+    lab: 'Design principle', v1: 'Understood\nat a glance.',
+    stack: ['Testable.', 'Deliverable.', 'Maintainable.'],
+    data: ['Accurate\ndata', 'Stable\nservice'],
+    caps: [['AI architecture', 'RAG · On-prem models · Evaluation'], ['AI-assisted development', 'Ship faster with AI'], ['UIX & data', 'Accessible · Readable · GA conversion']],
+    p1: '10M-scale push', unit: '-min delivery',
+    tagline: 'Turn AI ideas into systems your team can use', cta: 'Book a 30-minute call',
+  },
+}[L];
+if (tall) Object.assign(COPY, {
+  zh: { l2b: ['真的能用的\n', '系統。'], tagline: '把 AI 想法，\n做成團隊真的能用的系統' },
+  en: { l1: ['Turn ', 'AI', '\nideas'], l2b: ['your team\n', 'can use.'], data: ['Accurate data', 'Stable service'], tagline: 'Turn AI ideas into\nsystems your team can use' },
+}[L]);
+
+const esc = (s) => s.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c]);
+const unitRe = /[⺀-鿿　-〿＀-￯]|[^\s⺀-鿿　-〿＀-￯]+|\n|\s+/g;
+// CJK rises per character, Latin per word; each unit sits in its own mask
+const rise = (text, cls = '') => (text.match(unitRe) || []).map((u) =>
+  u === '\n' ? '<br>' : /^\s+$/.test(u) ? ' ' : `<span class="m"><span class="c ${cls}">${esc(u)}</span></span>`).join('');
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...(typeof r === 'string' ? document.querySelector(r) : r).querySelectorAll(s)];
+
+$('.l1').innerHTML = rise(COPY.l1[0]) + `<span class="m"><span class="c pill">${COPY.l1[1]}</span></span>` + rise(COPY.l1[2]);
+$('.l2a').innerHTML = rise(COPY.l2a);
+$('.l2b').innerHTML = rise(COPY.l2b[0]) + rise(COPY.l2b[1], 'hi');
+$('.lab').textContent = COPY.lab;
+$('.v1').innerHTML = rise(COPY.v1);
+$('#s-stack').insertAdjacentHTML('beforeend', COPY.stack.map((s, i) =>
+  `<div class="row" data-om-id="stack-${i + 1}" style="top:${tall ? 390 + i * 190 : 170 + i * 230}px"><span class="n mono">0${i + 1}</span><span class="t">${rise(s)}</span></div>`).join(''));
+$('.dl').innerHTML = rise(COPY.data[0]);
+$('.dr').innerHTML = rise(COPY.data[1]);
+$('.p1').innerHTML = rise(COPY.p1);
+$('.unit').innerHTML = rise(COPY.unit);
+$('.tagline .txt').innerHTML = rise(COPY.tagline);
+$('.cta .gt').textContent = COPY.cta;
+
+// three capability cards, each followed by a real project; then four quick cuts
+const shots = ['transcript-plus', 'ckd2026', 'powerbi', '1914', 'e-cooperative', 'experimentlab', 'b18'];
+$('#caps').innerHTML = COPY.caps.map(([t, s], i) => `
+  <section class="sc cap" id="s-cap${i}"><div class="cn mono">0${i + 1} / 03</div><div class="big ct" data-om-id="cap-${i + 1}">${rise(t)}</div><div class="cs">${esc(s)}</div></section>
+  <section class="sc shot" id="s-shot${i}" data-om-id="work-${shots[i]}"><img src="assets/img/${shots[i]}.webp" alt=""><div class="shade"></div><span class="tag">${esc(t)}</span></section>`).join('')
+  + shots.slice(3).map((s, i) => `<section class="sc shot" id="s-q${i}" data-om-id="work-${s}"><img src="assets/img/${s}.webp" alt=""><div class="shade"></div></section>`).join('');
+
+function build() {
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
+  const B = (n) => n * 0.5; // 120 BPM
+  OM.music({ bpm: 120 });
+
+  // hard cuts: exactly one scene visible at a time
+  const order = [];
+  let shown = null;
+  const cut = (id, t) => {
+    if (shown) tl.set(shown, { visibility: 'hidden' }, t);
+    tl.set(id, { visibility: 'visible' }, t);
+    shown = id; order.push([t, id]);
+  };
+  const hudSpans = $$('.hs span');
+  const progBars = $$('.prog b');
+  const section = (i, t) => {
+    hudSpans.forEach((s, k) => tl.set(s, { visibility: k === i ? 'visible' : 'hidden' }, t));
+    if (i > 0) tl.fromTo(progBars[i], { scaleX: 0 }, { scaleX: 1, duration: .4, ease: 'power3.out' }, t);
+  };
+  const up = (el, at, opts = {}) => tl.fromTo($$('.c', el), { yPercent: 140 }, { yPercent: 0, duration: opts.d || .45, stagger: opts.s ?? .035, ease: 'expo.out' }, at);
+
+  // poster state (frame 0 and the loop target)
+  gsap.set('#s-idea', { visibility: 'visible' }); shown = '#s-idea';
+  gsap.set(hudSpans[0], { visibility: 'visible' });
+  gsap.set(progBars[0], { scaleX: 1 });
+  gsap.set('#wipe', { x: -3700 });
+
+  // the mark drawn as a faint outline, turning slowly behind the type; back where it began at 20 s
+  tl.fromTo('#ghost', { rotation: 0, x: 0 }, { rotation: 10, x: -60, duration: 10, ease: 'sine.inOut' }, 0)
+    .to('#ghost', { rotation: 0, x: 0, duration: 10, ease: 'sine.inOut' }, 10)
+    .fromTo('#ghost', { opacity: 1 }, { opacity: 0, duration: .3 }, B(29))
+    .set('#ghost', { opacity: 1 }, B(39.2));
+
+  // 1 · idea
+  tl.addLabel('scene:idea', 0);
+  tl.fromTo('.l1 .pill', { scale: 1.14 }, { scale: 1, duration: .45, ease: 'back.out(3)', immediateRender: false }, OM.sfx('pop', B(1), { gain: .6 }));
+  tl.to('.l1', { scale: 1.035, duration: 1, ease: 'none' }, 0);
+  cut('#s-idea2', OM.sfx('hit', B(2), { gain: .5 }));
+  up('.l2a', B(2), { s: .05 });
+  up('.l2b', B(3), { s: .045 });
+  OM.sfx('thud', B(3) + .12, { gain: .6 });
+  $('.sweep').style.width = `${$('.l2b').offsetWidth - 8}px`;
+  if (tall) $('.sweep').style.top = `${$('.l2b').offsetTop + $('.l2b').offsetHeight + 24}px`;
+  tl.fromTo('.sweep', { scaleX: 0 }, { scaleX: 1, duration: .55, ease: 'expo.inOut' }, OM.sfx('draw', B(5), { gain: .5 }));
+  tl.fromTo('#s-idea2', { scale: 1 }, { scale: 1.025, duration: 2, ease: 'none', transformOrigin: '0 50%' }, B(2));
+
+  // 2 · value
+  tl.addLabel('scene:value', B(6));
+  section(1, B(6));
+  cut('#s-v1', OM.sfx('impact', B(6), { gain: .45 }));
+  up('.v1', B(6), { s: .03, d: .4 });
+  tl.fromTo('.v1', { scale: 1.12 }, { scale: 1, duration: .7 }, B(6))
+    .fromTo('.lab', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .4 }, B(6) + .2);
+
+  cut('#s-stack', B(8));
+  const rows = $$('#s-stack .row');
+  const lime = V.accent, cream = '#f3eee4', clear = 'rgba(0,0,0,0)', ghost = '#262b26';
+  rows.forEach((row, i) => {
+    const at = B(8 + i);
+    up(row, at, { s: .03, d: .32 });
+    OM.sfx('pop', at + .08, { note: i * 2 + 1, gain: .55, pan: -.3 + i * .3 });
+    tl.fromTo(row, { '--fill': lime, '--stroke': clear }, { '--fill': lime, '--stroke': clear, duration: .01 }, at)
+      .fromTo($('.n', row), { color: lime }, { color: lime, duration: .01 }, at);
+    if (i > 0) tl.fromTo(rows[i - 1], { '--fill': lime, '--stroke': clear }, { '--fill': ghost, '--stroke': clear, duration: .18, ease: 'power2.out' }, at)
+      .fromTo($('.n', rows[i - 1]), { color: lime }, { color: '#78816f', duration: .18 }, at);
+  });
+  tl.fromTo('.rbar', { x: 0, y: 0, scaleY: 0 }, { scaleY: 1, duration: .3 }, B(8));
+  const barX = (row) => $('.t', row).offsetLeft + $('.t', row).offsetWidth + row.offsetLeft + 28;
+  rows.forEach((row, i) => tl.to('.rbar', { x: barX(row), y: row.offsetTop + (tall ? 30 : 38), duration: i ? .28 : .01, ease: 'power3.out' }, B(8 + i)));
+  // all three hold together in cream
+  tl.to(rows.slice(0, 2), { '--fill': cream, '--stroke': clear, duration: .25, ease: 'power2.out' }, B(11))
+    .to(rows[2], { '--fill': cream, duration: .25 }, B(11))
+    .to('.rbar', { scaleY: 0, duration: .25, ease: 'power2.in' }, B(11));
+
+  // the data pair, split by the logo's slash
+  cut('#s-data', B(12));
+  tl.fromTo('.slash', { rotation: -90, scaleY: .2, skewX: -21 }, { rotation: 0, scaleY: 1, skewX: -21, duration: .45 }, OM.sfx('whip', B(12), { gain: .5 }));
+  tl.fromTo('.dl', { x: -140, opacity: 0 }, { x: 0, opacity: 1, duration: .45 }, B(12));
+  up('.dl', B(12), { s: .04 });
+  tl.fromTo('.dr', { x: 140, opacity: 0 }, { x: 0, opacity: 1, duration: .45 }, OM.sfx('thud', B(13), { gain: .6, pan: .3 }));
+  up('.dr', B(13), { s: .04 });
+  tl.to('.dl', { scaleX: 0, opacity: 0, duration: .4, ease: 'power3.in' }, OM.sfx('whoosh', B(15), { gain: .4 }) - .1)
+    .to('.dr', { scaleX: 0, opacity: 0, duration: .4, ease: 'power3.in' }, B(15) - .1)
+    .to('.slash', { scaleY: 0, duration: .2, ease: 'power2.in' }, B(15) + .25);
+
+  // 3 · capability: one cut per beat, then four on the eighth notes
+  tl.addLabel('scene:capability', B(16));
+  section(2, B(16));
+  COPY.caps.forEach((_, i) => {
+    const at = B(16 + i * 2);
+    cut(`#s-cap${i}`, at);
+    up(`#s-cap${i} .ct`, at, { s: .04, d: .38 });
+    tl.fromTo(`#s-cap${i} .cn`, { opacity: 0 }, { opacity: 1, duration: .2 }, at)
+      .fromTo(`#s-cap${i} .cs`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .35 }, at + .12);
+    OM.sfx('hit', at, { gain: .45, pan: i % 2 ? .25 : -.25 });
+    cut(`#s-shot${i}`, B(17 + i * 2));
+    tl.fromTo(`#s-shot${i} img`, { scale: 1.14 }, { scale: 1.02, duration: .5, ease: 'power2.out' }, B(17 + i * 2))
+      .fromTo(`#s-shot${i} .tag`, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .3 }, B(17 + i * 2) + .05);
+  });
+  shots.slice(3).forEach((_, i) => {
+    const at = B(22) + i * .25;
+    cut(`#s-q${i}`, at);
+    tl.fromTo(`#s-q${i} img`, { scale: 1.08 }, { scale: 1, duration: .25, ease: 'power2.out' }, at);
+    OM.sfx('tick', at, { gain: .35, pan: -.4 + i * .27 });
+  });
+
+  // 4 · proof: one beat of nothing, then the drop
+  tl.addLabel('scene:proof', B(24));
+  section(3, B(24));
+  cut('#s-gap', B(24));
+  cut('#s-proof', B(25));
+  up('.p1', B(25), { s: .035, d: .4 });
+  tl.fromTo('.p1', { scale: 1.25 }, { scale: 1, duration: .6 }, B(25));
+  const count = { v: 0 };
+  const numEl = $('.num');
+  tl.fromTo('.num', { opacity: 0, yPercent: 40 }, { opacity: 1, yPercent: 0, duration: .35 }, B(26))
+    .fromTo(count, { v: 0 }, { v: 30, duration: .5, ease: 'power2.out', onUpdate: () => { numEl.textContent = Math.round(count.v); } }, OM.sfx('count', B(26), { gain: .5, dur: .5 }));
+  up('.unit', B(27), { s: .04 });
+  OM.sfx('thud', B(27) + .1, { gain: .65 });
+  tl.fromTo('.num', { scale: 1 }, { scale: 1.06, duration: .18, ease: 'power2.out', yoyo: true, repeat: 1 }, B(28));
+
+  // 5 · brand: the full stop becomes the mark
+  tl.addLabel('scene:brand', B(29));
+  section(4, B(29));
+  cut('#s-brand', B(29));
+  const tagline = $('.tagline'), slot = $('.slot'), word = $('.word');
+  const slotSize = slot.offsetWidth;
+  const sx = tagline.offsetLeft + slot.offsetLeft + slotSize / 2 - 110;
+  const sy = tagline.offsetTop + slot.offsetTop + slot.offsetHeight / 2 - 110;
+  const wordW = word.offsetWidth;
+  // lockup: mark + wordmark centred; the mark is drawn at 220 px and scaled to MK
+  const MK = tall ? 160 : 220, gap = tall ? 40 : 52, lockY = tall ? 430 : 330;
+  const lockX = (W - (MK + gap + wordW)) / 2;
+  word.style.left = `${lockX + MK + gap}px`;
+  word.style.top = `${lockY + MK / 2 - 0.3667 * parseFloat(getComputedStyle(word).fontSize)}px`;
+  gsap.set('#mark', { x: sx, y: sy, scale: slotSize / 220 });
+  gsap.set(['#mark .k1', '#mark .k3'], { transformOrigin: '50% 50%' });
+  gsap.set('#mark .k2', { transformOrigin: '50% 50%' });
+  tl.set('#mark', { visibility: 'visible' }, B(29));
+  up('.tagline', B(29), { s: .012, d: .35 });
+  tl.fromTo('#mark .k1', { scale: 0 }, { scale: 1, duration: .7, ease: OM.spring(.18) }, B(29) + .3)
+    .fromTo('#mark .k3', { scale: 0 }, { scale: 1, duration: .7, ease: OM.spring(.18) }, B(29) + .4)
+    .fromTo('#mark .k2', { scaleY: 0 }, { scaleY: 1, duration: .35, ease: 'expo.out' }, OM.sfx('chime', B(29) + .35, { gain: .5 }));
+  tl.to('.tagline', { y: -70, opacity: 0, duration: .45, ease: 'power3.in' }, B(30) + .2)
+    .fromTo('#mark', { x: sx, y: sy, scale: slotSize / 220 }, { x: lockX - (220 - MK) / 2, y: lockY - (220 - MK) / 2, scale: MK / 220, duration: .8, ease: 'expo.inOut' }, OM.sfx('whoosh', B(30) + .3, { gain: .4 }) - .1);
+  tl.fromTo('.word', { autoAlpha: 0 }, { autoAlpha: 1, duration: .01 }, B(31) + .2);
+  up('.word', B(31) + .2, { s: 0, d: .5 });
+  tl.fromTo('.cta', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45 }, OM.sfx('pop', B(32), { note: 5, gain: .55 }))
+    .fromTo('.cta .url u', { scaleX: 0 }, { scaleX: 1, duration: .5, ease: 'expo.inOut' }, B(34))
+    .fromTo('.cta .go i', { x: 0 }, { x: 12, duration: .22, ease: 'power2.out', yoyo: true, repeat: 1 }, B(35))
+    .fromTo('#mark .k3', { scale: 1 }, { scale: 1.06, duration: .8, ease: 'sine.inOut', yoyo: true, repeat: 1, immediateRender: false }, B(33))
+    .fromTo('#mark .k1', { scale: 1 }, { scale: 1.08, duration: .7, ease: 'sine.inOut', yoyo: true, repeat: 1, immediateRender: false }, B(35.5));
+
+  // loop: the slash sweeps the frame and leaves frame 0 behind it
+  tl.addLabel('scene:loop', B(38.4));
+  tl.fromTo('#wipe', { x: -3700 }, { x: -540, duration: .4, ease: 'power2.in' }, B(38.4));
+  OM.sfx('reverse', B(39.2), { gain: .45 });
+  tl.set('#mark', { visibility: 'hidden' }, B(39.2));
+  cut('#s-idea', B(39.2));
+  section(0, B(39.2));
+  tl.set(progBars.slice(1), { scaleX: 0 }, B(39.2))
+    .set('.l1', { scale: 1 }, B(39.2))
+    .to('#wipe', { x: 2400, duration: .4, ease: 'power2.out' }, B(39.2))
+    .set({}, {}, B(40));
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['film'] = tl;
+}
+
+const ready = Promise.all([
+  ...['600 100px Outfit', '800 100px Outfit', '500 24px "JetBrains Mono"', '600 100px "Noto Sans TC"', '400 40px "Noto Sans TC"'].map((f) => document.fonts.load(f)),
+  ...$$('img').map((img) => img.decode().catch(() => {})),
+]).then(build);
+if (window.OM && OM.ready) OM.ready(ready);
+
+// live playback: fill the frame (cover), loop forever, and take play / pause / sound from the parent page
+if (LIVE) ready.then(() => {
+  const tl = window.__timelines.film;
+  const W = +film.dataset.width, H = +film.dataset.height;
+  const audio = document.getElementById('om-sound');
+  let playing = false, sound = false;
+  const fit = () => {
+    const k = Math.max(innerWidth / W, innerHeight / H);
+    film.style.transformOrigin = '0 0';
+    film.style.transform = `translate(${(innerWidth - W * k) / 2}px, ${(innerHeight - H * k) / 2}px) scale(${k})`;
+  };
+  const syncAudio = () => {
+    if (!audio) return;
+    if (playing && sound) {
+      audio.currentTime = tl.time();
+      audio.play().catch(() => {});
+    } else audio.pause();
+  };
+  fit();
+  addEventListener('resize', fit);
+  tl.repeat(-1).eventCallback('onRepeat', syncAudio);
+  // the picture is the clock: pull the music back when it drifts (a throttled tab, a slow device)
+  if (audio) {
+    audio.loop = true;
+    gsap.ticker.add(() => {
+      if (playing && sound && !audio.paused && Math.abs(audio.currentTime - tl.time()) > .2) audio.currentTime = tl.time();
+    });
+  }
+  addEventListener('message', (e) => {
+    if (e.origin !== location.origin || !e.data || e.data.film !== '8plus') return;
+    if ('playing' in e.data) { playing = !!e.data.playing; playing ? tl.play() : tl.pause(); }
+    if ('sound' in e.data) sound = !!e.data.sound;
+    syncAudio();
+  });
+  parent.postMessage({ film: '8plus', ready: true }, location.origin);
+});
+</script>
+</body>
+</html>

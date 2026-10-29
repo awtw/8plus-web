@@ -1,0 +1,4 @@
+# 2026-10-29 — generated: om sound writes sound.wav; make-tall.sh builds hero-brand-tall; om still renders the key frames
+*/assets/sound.wav
+hero-brand-tall/
+*/directions/**/*.png

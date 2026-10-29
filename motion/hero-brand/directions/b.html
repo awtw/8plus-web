@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  body { background: var(--paper); color: var(--ink); }
+  .wall { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: 14px; padding: 14px; }
+  .wall .shot { width: 100%; height: 100%; border-radius: 10px; filter: grayscale(.85) contrast(.95); opacity: .5; }
+  .hero { position: absolute; left: 470px; top: 150px; width: 980px; height: 612px; border-radius: 18px; overflow: hidden; box-shadow: 0 40px 90px rgba(7,9,9,.35); outline: 6px solid var(--ink); }
+  .hero .shot { width: 100%; height: 100%; }
+  .chip { position: absolute; left: 470px; top: 96px; display: flex; gap: 12px; align-items: center; font-size: 22px; font-weight: 600; }
+  .chip span { background: var(--ink); color: var(--paper); padding: 8px 16px; border-radius: 999px; }
+  .chip span.o { background: var(--orange); color: #fff; }
+  .stat { position: absolute; left: 96px; bottom: 76px; right: 96px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .stat h2 { font-size: 150px; font-weight: 700; letter-spacing: -.03em; line-height: .9; background: var(--paper); padding: 26px 34px 14px; border-radius: 16px; }
+  .stat h2 small { display: block; font-size: 34px; font-weight: 500; letter-spacing: 0; margin-bottom: 14px; color: #4a524a; }
+  .stat .mark { width: 120px; height: 120px; }
+</style></head>
+<body>
+  <div class="wall">
+    <img class="shot" src="../assets/img/1914.jpg"><img class="shot" src="../assets/img/b18.jpg"><img class="shot" src="../assets/img/ckd2026.jpg"><img class="shot" src="../assets/img/powerbi.jpg">
+    <img class="shot" src="../assets/img/e-cooperative.jpg"><img class="shot" src="../assets/img/experimentlab.jpg"><img class="shot" src="../assets/img/flash-sale-api.jpg"><img class="shot" src="../assets/img/r-analysis.jpg">
+    <img class="shot" src="../assets/img/shuyan-art.jpg"><img class="shot" src="../assets/img/smart-community-backend.jpg"><img class="shot" src="../assets/img/crm.jpg"><img class="shot" src="../assets/img/transcript-plus.jpg">
+  </div>
+  <div class="chip"><span class="o">AI 應用與 RAG</span><span>Transcript Plus · 地端語音轉寫</span></div>
+  <div class="hero"><img class="shot" src="../assets/img/transcript-plus.jpg"></div>
+  <div class="stat">
+    <h2><small>推播系統 · 電商規模</small>千萬級推播 · 30 分鐘送達</h2>
+  </div>
+</body></html>

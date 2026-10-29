@@ -475,7 +475,11 @@ function build() {
 
 const ready = Promise.all([
   ...['600 100px Outfit', '800 100px Outfit', '500 24px "JetBrains Mono"', '600 100px "Noto Sans TC"', '400 40px "Noto Sans TC"'].map((f) => document.fonts.load(f)),
-  ...$$('img').map((img) => img.decode().catch(() => {})),
+  // the renderer waits for every image; a live page starts after 2 s at most (hidden tabs can defer decoding)
+  ...$$('img').map((img) => {
+    const decoded = img.decode().catch(() => {});
+    return LIVE ? Promise.race([decoded, new Promise((done) => setTimeout(done, 2000))]) : decoded;
+  }),
 ]).then(build);
 if (window.OM && OM.ready) OM.ready(ready);
 

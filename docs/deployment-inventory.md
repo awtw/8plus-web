@@ -101,3 +101,4 @@ Cloudflare 第一階段只需要 `NEXT_PUBLIC_SITE_URL`（build 預設 `https://
 - 2026-10-20：Worker Route `www.8plus.app/*` 上線（Version `89dd5fb9-b747-495a-b9ee-710d978148b8`），smoke、SEO 測試對 `https://www.8plus.app` 全過
 - apex `8plus.app` 仍由 Vercel 308 → www；DNS 未變更，Vercel 保留為回滾源站
 - 2026-10-27 13:14 +0800：部署 Next.js 16.4.1 升級與 10 月文章（commit `5887320`），Version `171aa65b-6073-4c20-b99f-a9d5221a5339`；回滾目標 `89dd5fb9-…`。smoke、SEO 對 `https://www.8plus.app` 與 workers.dev 全過，四篇新文章 200、RSS／sitemap 已收錄
+- 2026-10-29 14:35 +0800：部署首頁即時品牌片（commit `be87be0`），Version `73b270f4-5759-4b7f-82a6-901a3b77be6c`；回滾目標 `171aa65b-…`。部署前本機 Worker 預覽的 smoke、SEO 全過；部署後 smoke、SEO 對 `https://www.8plus.app` 全過，workers.dev 的 smoke 也全過。`/hero/film/*` 回 200（htmlHandling none，不會被重新導向），正式首頁的 iframe 即時播放，無 console error

@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-29 13:30 +0800 — 首頁主視覺改為 20 秒品牌廣告片（宣言式字體，中英兩版）
+Last activity: 2026-10-29 14:35 +0800 — 首頁即時品牌片上線 www.8plus.app（Worker 73b270f4）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-29 14:35 +0800 — 品牌片上線正式站**：`pnpm build:vinext` 後執行 `npx vinext-cloudflare deploy --skip-build`，Worker Version `73b270f4-5759-4b7f-82a6-901a3b77be6c`（commit `be87be0`）；回滾目標 `171aa65b`。部署前發現 live 模式等圖片解碼時，背景分頁可能卡在海報，已改成最多等 2 秒。www.8plus.app 與 workers.dev 的 smoke 全過，www 的 SEO 也全過；正式首頁即時播放、無 console error。Vercel（apex 轉址源站）未更新；分支未 push。
 
 - ✅ **2026-10-29 14:50 +0800 — 品牌片改為網頁即時執行**：依使用者要求，不再播放影片檔。`motion/hero-brand/tools/make-web.sh` 把組成本身複製到 `public/hero/film/`（GSAP、om.js MIT、字型、7 張 2400px WebP、AAC 配樂，共 1.2MB；配樂只在開聲音時才下載）。首頁用 iframe 載入 `index.html?live=1&lang=zh|en&format=wide|tall`，live 模式負責 cover 縮放、無限循環，並用 postMessage 接收播放、暫停與聲音指令。配樂以畫面為時鐘，偏差超過 0.2 秒就拉回；渲染器不受影響。中文改用自帶的 Noto Sans TC 子集（400/600，各約 17KB），所以 Windows 和 Android 也是同一個字型；海報與靜態幀已用新字型重出。影片準備好之前顯示海報，減少動態模式下顯示靜態幀。舊的 `brand-*.webm/mp4` 已刪除。om check 0 errors。在瀏覽器確認：桌機中文、手機 375 中英直式版都即時播放，暫停／繼續正常；真實點擊開聲音後音軌有播放。專案內沒有 X-Frame-Options 或 CSP 會擋同網域 iframe。瀏覽器面板隱藏時載入較慢、截圖不可靠，所以實際聽感和舊手機效能未驗證。typecheck 和 eslint 通過；因為使用者的 dev server 在跑，未執行 `pnpm build`。未 commit。
 

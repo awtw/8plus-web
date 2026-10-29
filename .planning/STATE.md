@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-29 14:35 +0800 — 首頁即時品牌片上線 www.8plus.app（Worker 73b270f4）
+Last activity: 2026-10-29 15:40 +0800 — 品牌片預約按鈕可點、聲音改 Web Audio 並上線（Worker c6324087）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-29 15:40 +0800 — 品牌片互動修正並上線（Worker c6324087）**：①動畫播到結尾卡時，iframe 每 0.2 秒回報預約按鈕的位置，首頁在同位置疊上真的 `/booking` 連結（依 cover 裁切換算）；減少動態的靜態圖使用量好的四組座標。實際點擊確認會開到預約頁。②依使用者要求拿掉暫停鍵，聲音改成影片右下角 40px 的半透明喇叭圖示；影片內原本右下角的 8PLUS.APP 拿掉，海報與靜態幀已重出。③配樂改由首頁以 Web Audio 播放：點擊時在同一次手勢裡 resume AudioContext，下載並解碼 340KB 音檔，從動畫目前秒數開始循環播放，偏差超過 0.3 秒就重新對齊。原因是 Worker 靜態檔不支援 Range，`<audio>` 無法跳秒，iframe 自己的音訊也已移除。正式站的 smoke、SEO 全過；實際點擊開聲音後 AudioContext 為 running。瀏覽器面板隱藏時動畫被降速，所以實際聽感（同步與是否斷音）未驗證，需要使用者在一般分頁聽一次。回滾目標 `73b270f4`。
 
 - ✅ **2026-10-29 14:35 +0800 — 品牌片上線正式站**：`pnpm build:vinext` 後執行 `npx vinext-cloudflare deploy --skip-build`，Worker Version `73b270f4-5759-4b7f-82a6-901a3b77be6c`（commit `be87be0`）；回滾目標 `171aa65b`。部署前發現 live 模式等圖片解碼時，背景分頁可能卡在海報，已改成最多等 2 秒。www.8plus.app 與 workers.dev 的 smoke 全過，www 的 SEO 也全過；正式首頁即時播放、無 console error。Vercel（apex 轉址源站）未更新；分支未 push。
 

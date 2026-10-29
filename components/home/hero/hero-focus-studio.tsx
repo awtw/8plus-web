@@ -35,6 +35,28 @@ const filmFor = (lang: "zh" | "en", tall: boolean) => {
 };
 
 type FilmWindow = Window & { __timelines?: { film?: { time(): number } } };
+type Score = { ctx: AudioContext; buffer: Promise<AudioBuffer>; source: AudioBufferSourceNode | null; origin: number };
+const scoreUrl = "/hero/film/assets/sound.m4a";
+
+const filmTime = (frame: HTMLIFrameElement | null) => (frame?.contentWindow as FilmWindow | null | undefined)?.__timelines?.film?.time();
+// (re)start the looping score at the film's current time
+const startScore = async (s: Score, frame: HTMLIFrameElement | null, alive: () => boolean) => {
+  const buffer = await s.buffer;
+  if (!alive()) return;
+  s.source?.stop();
+  const source = s.ctx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+  source.connect(s.ctx.destination);
+  const offset = (filmTime(frame) ?? 0) % buffer.duration;
+  source.start(0, offset);
+  s.source = source;
+  s.origin = s.ctx.currentTime - offset;
+};
+const stopScore = (s: Score) => {
+  s.source?.stop();
+  s.source = null;
+};
 
 export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const en = locale === "en";
@@ -46,7 +68,7 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const reduced = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerFalse);
   const [active, setActive] = useState(false);
   const [sound, setSound] = useState(false);
-  const audio = useRef<HTMLAudioElement>(null);
+  const score = useRef<Score | null>(null);
   const [readySrc, setReadySrc] = useState<string | null>(null);
   const ready = readySrc === film.src;
   const box = useRef<HTMLDivElement>(null);
@@ -97,34 +119,51 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
     frame.current?.contentWindow?.postMessage({ film: "8plus", playing: active }, window.location.origin);
   }, [ready, active]);
 
-  // the score plays on this page (a click here may start audio in every browser) and follows the film's clock
-  const filmTime = () => (frame.current?.contentWindow as FilmWindow | null | undefined)?.__timelines?.film?.time();
+  // the score plays on this page through Web Audio: the click that asks for sound unlocks it in every
+  // browser, and a decoded buffer can start at any offset (the Worker serves the file without Range support)
   const toggleSound = () => {
-    const element = audio.current;
-    if (!element) return;
     if (sound) {
-      element.pause();
+      if (score.current) {
+        stopScore(score.current);
+        score.current.ctx.suspend();
+      }
       setSound(false);
       return;
     }
-    element.currentTime = filmTime() ?? 0;
-    element.play().then(() => setSound(true), () => setSound(false));
+    if (!score.current) {
+      const ctx = new AudioContext();
+      const buffer = fetch(scoreUrl).then((response) => response.arrayBuffer()).then((data) => ctx.decodeAudioData(data));
+      score.current = { ctx, buffer, source: null, origin: 0 };
+    }
+    score.current.ctx.resume();
+    setSound(true);
   };
 
   useEffect(() => {
-    const element = audio.current;
-    if (!element || !sound) return;
+    const s = score.current;
+    if (!s || !sound) return;
     if (!active) {
-      element.pause();
+      stopScore(s);
+      s.ctx.suspend();
       return;
     }
-    if (element.paused) element.play().catch(() => setSound(false));
-    const timer = window.setInterval(() => {
-      const t = filmTime();
-      if (t !== undefined && Math.abs(element.currentTime - t) > 0.2) element.currentTime = t;
-    }, 250);
-    return () => window.clearInterval(timer);
+    let alive = true;
+    s.ctx.resume().then(() => startScore(s, frame.current, () => alive)).catch(() => setSound(false));
+    // pull the score back to the picture when they drift apart (a busy device, a throttled tab)
+    const timer = window.setInterval(async () => {
+      const t = filmTime(frame.current);
+      const buffer = await s.buffer;
+      if (!alive || t === undefined || !s.source) return;
+      const drift = Math.abs((s.ctx.currentTime - s.origin) % buffer.duration - t);
+      if (Math.min(drift, buffer.duration - drift) > 0.3) startScore(s, frame.current, () => alive);
+    }, 500);
+    return () => {
+      alive = false;
+      window.clearInterval(timer);
+    };
   }, [sound, active, film.src]);
+
+  useEffect(() => () => void score.current?.ctx.close(), []);
 
   return (
     <section
@@ -163,7 +202,6 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
         ) : null}
         {reduced ? null : (
           <>
-            <audio ref={audio} src="/hero/film/assets/sound.m4a" preload="none" loop />
             <button
               type="button"
               className="focus-studio-sound"

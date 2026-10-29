@@ -24,7 +24,14 @@ const getServerFalse = () => false;
 // Phones get the 4:5 cut; the poster shows until the film says it is ready.
 const filmFor = (lang: "zh" | "en", tall: boolean) => {
   const base = `/hero/brand-${lang}${tall ? "-tall" : ""}`;
-  return { src: `/hero/film/index.html?live=1&lang=${lang}&format=${tall ? "tall" : "wide"}`, poster: `${base}-poster.jpg`, still: `${base}-still.jpg` };
+  return {
+    src: `/hero/film/index.html?live=1&lang=${lang}&format=${tall ? "tall" : "wide"}`,
+    poster: `${base}-poster.jpg`,
+    still: `${base}-still.jpg`,
+    size: tall ? [1080, 1350] : [1920, 1080],
+    // the end card's booking pill in film px (x, y, w, h), as it sits in the still; the live film reports its own
+    cta: { "zh-wide": [599, 690, 489, 109], "en-wide": [548, 690, 592, 98], "zh-tall": [313, 700, 454, 103], "en-tall": [266, 700, 547, 93] }[`${lang}-${tall ? "tall" : "wide"}`]!,
+  };
 };
 
 export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
@@ -40,6 +47,10 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const [sound, setSound] = useState(false);
   const [readySrc, setReadySrc] = useState<string | null>(null);
   const ready = readySrc === film.src;
+  const box = useRef<HTMLDivElement>(null);
+  const [boxSize, setBoxSize] = useState<[number, number] | null>(null);
+  const [liveCta, setLiveCta] = useState<{ src: string; rect: number[] } | null>(null);
+  const ctaRect = reduced ? film.cta : liveCta?.src === film.src ? liveCta.rect : null;
 
   useEffect(() => {
     const element = section.current;
@@ -61,11 +72,23 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin || event.source !== frame.current?.contentWindow) return;
-      if (event.data?.film === "8plus" && event.data.ready) setReadySrc(film.src);
+      if (event.data?.film !== "8plus") return;
+      if (event.data.ready) setReadySrc(film.src);
+      if ("cta" in event.data) setLiveCta(event.data.cta ? { src: film.src, rect: event.data.cta } : null);
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, [film.src]);
+
+  useEffect(() => {
+    const element = box.current;
+    if (!element) return;
+    const measure = () => setBoxSize([element.clientWidth, element.clientHeight]);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -83,12 +106,31 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
       data-film-ready={ready}
       aria-labelledby="focus-studio-title"
     >
-      <div className="focus-studio-film">
+      <div ref={box} className="focus-studio-film">
         <Image src={reduced ? film.still : film.poster} alt="" fill sizes="100vw" priority />
         {reduced ? null : (
           // keyed so a language or screen-size switch after hydration loads the other cut
           <iframe key={film.src} ref={frame} src={film.src} title={en ? "8plus brand film" : "8plus 品牌影片"} aria-hidden="true" tabIndex={-1} />
         )}
+        {ctaRect && boxSize ? (
+          // the film is drawn with object-fit: cover, so map film px into the box the same way;
+          // keyboard and screen-reader users have the booking link below
+          (() => {
+            const [w, h] = boxSize;
+            const [W, H] = film.size;
+            const k = Math.max(w / W, h / H);
+            const [x, y, cw, ch] = ctaRect;
+            return (
+              <Link
+                href="/booking"
+                className="focus-studio-film-cta"
+                tabIndex={-1}
+                aria-hidden="true"
+                style={{ left: (w - W * k) / 2 + x * k, top: (h - H * k) / 2 + y * k, width: cw * k, height: ch * k }}
+              />
+            );
+          })()
+        ) : null}
       </div>
       <div className="section-shell focus-studio-layout">
         <div className="focus-studio-controls">

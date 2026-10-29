@@ -517,6 +517,18 @@ if (LIVE) ready.then(() => {
     if ('sound' in e.data) sound = !!e.data.sound;
     syncAudio();
   });
+  // the end card's booking pill is a real link on the parent page: report where it sits (film px) while it shows
+  const go = $('.cta .go');
+  let ctaOn = null;
+  // a timer, not the ticker: requestAnimationFrame stops in hidden frames, the link should still follow
+  setInterval(() => {
+    const t = tl.time(), on = t > 16.5 && t < 19.3; // CTA settled after B(32), the wipe at B(38.4)
+    if (on === ctaOn) return;
+    ctaOn = on;
+    const f = film.getBoundingClientRect(), r = go.getBoundingClientRect(), k = f.width / W;
+    const rect = on ? [r.left - f.left, r.top - f.top, r.width, r.height].map((v) => Math.round(v / k)) : null;
+    parent.postMessage({ film: '8plus', cta: rect }, location.origin);
+  }, 200);
   parent.postMessage({ film: '8plus', ready: true }, location.origin);
 });
 </script>

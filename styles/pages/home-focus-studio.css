@@ -42,6 +42,9 @@
 /* the live film (an iframe of public/hero/film) fades in over its poster once it is ready */
 .focus-studio-film iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; opacity: 0; transition: opacity .3s ease; }
 .focus-studio[data-film-ready="true"] .focus-studio-film iframe { opacity: 1; }
+/* a real link over the end card's booking pill */
+.focus-studio-film-cta { position: absolute; z-index: 2; border-radius: 999px; cursor: pointer; transition: box-shadow .2s ease; }
+.focus-studio-film-cta:hover { box-shadow: 0 0 0 3px #e7ffac80; }
 .focus-studio-controls { position: relative; z-index: 3; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .focus-studio-controls button { min-height: 44px; padding: 10px 14px; border: 1px solid #78816f; color: #e7ffac; background: #070909; cursor: pointer; font-size: 12px; touch-action: manipulation; }
 .focus-studio-controls button[aria-pressed="true"] { background: #e7ffac; color: #171c18; border-color: #e7ffac; }

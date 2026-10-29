@@ -135,7 +135,6 @@
   .tall .hb { left: 80px; top: 64px; font-size: 24px; }
   .tall .hs { right: 80px; top: 66px; font-size: 22px; }
   .tall .prog { left: 80px; bottom: 70px; }
-  .tall .hu { right: 80px; bottom: 60px; }
 
   /* hud */
   .hud { position: absolute; inset: 0; pointer-events: none; }
@@ -146,7 +145,6 @@
   .prog { position: absolute; left: 120px; bottom: 76px; display: flex; gap: 10px; }
   .prog i { width: 48px; height: 6px; background: #252a25; }
   .prog i b { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
-  .hu { position: absolute; right: 120px; bottom: 66px; font-size: 22px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -175,7 +173,6 @@
     <div class="hb"><b>8plus</b>&nbsp;&nbsp;/&nbsp;&nbsp;Engineering &amp; AI</div>
     <div class="hs mono" data-om-id="hud-section"><span>01 · Idea</span><span>02 · Value</span><span>03 · Capability</span><span>04 · Proof</span><span>05 · 8plus</span></div>
     <div class="prog" data-om-id="hud-progress"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
-    <div class="hu mono">8plus.app</div>
   </div>
   <i id="wipe" data-om-id="wipe"></i>
 </div>
@@ -483,39 +480,23 @@ const ready = Promise.all([
 ]).then(build);
 if (window.OM && OM.ready) OM.ready(ready);
 
-// live playback: fill the frame (cover), loop forever, and take play / pause / sound from the parent page
+// live playback: fill the frame (cover), loop forever, and take play / pause from the parent page
+// (the parent plays the score itself and follows this timeline's clock)
 if (LIVE) ready.then(() => {
   const tl = window.__timelines.film;
   const W = +film.dataset.width, H = +film.dataset.height;
-  const audio = document.getElementById('om-sound');
-  let playing = false, sound = false;
+  let playing = false;
   const fit = () => {
     const k = Math.max(innerWidth / W, innerHeight / H);
     film.style.transformOrigin = '0 0';
     film.style.transform = `translate(${(innerWidth - W * k) / 2}px, ${(innerHeight - H * k) / 2}px) scale(${k})`;
   };
-  const syncAudio = () => {
-    if (!audio) return;
-    if (playing && sound) {
-      audio.currentTime = tl.time();
-      audio.play().catch(() => {});
-    } else audio.pause();
-  };
   fit();
   addEventListener('resize', fit);
-  tl.repeat(-1).eventCallback('onRepeat', syncAudio);
-  // the picture is the clock: pull the music back when it drifts (a throttled tab, a slow device)
-  if (audio) {
-    audio.loop = true;
-    gsap.ticker.add(() => {
-      if (playing && sound && !audio.paused && Math.abs(audio.currentTime - tl.time()) > .2) audio.currentTime = tl.time();
-    });
-  }
+  tl.repeat(-1);
   addEventListener('message', (e) => {
     if (e.origin !== location.origin || !e.data || e.data.film !== '8plus') return;
     if ('playing' in e.data) { playing = !!e.data.playing; playing ? tl.play() : tl.pause(); }
-    if ('sound' in e.data) sound = !!e.data.sound;
-    syncAudio();
   });
   // the end card's booking pill is a real link on the parent page: report where it sits (film px) while it shows
   const go = $('.cta .go');

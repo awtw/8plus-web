@@ -34,6 +34,8 @@ const filmFor = (lang: "zh" | "en", tall: boolean) => {
   };
 };
 
+type FilmWindow = Window & { __timelines?: { film?: { time(): number } } };
+
 export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const en = locale === "en";
   const copy = getHomeSectionContent(locale).hero;
@@ -43,8 +45,8 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const reduced = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerFalse);
   const [active, setActive] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [sound, setSound] = useState(false);
+  const audio = useRef<HTMLAudioElement>(null);
   const [readySrc, setReadySrc] = useState<string | null>(null);
   const ready = readySrc === film.src;
   const box = useRef<HTMLDivElement>(null);
@@ -92,8 +94,37 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
 
   useEffect(() => {
     if (!ready) return;
-    frame.current?.contentWindow?.postMessage({ film: "8plus", playing: active && !paused, sound }, window.location.origin);
-  }, [ready, active, paused, sound]);
+    frame.current?.contentWindow?.postMessage({ film: "8plus", playing: active }, window.location.origin);
+  }, [ready, active]);
+
+  // the score plays on this page (a click here may start audio in every browser) and follows the film's clock
+  const filmTime = () => (frame.current?.contentWindow as FilmWindow | null | undefined)?.__timelines?.film?.time();
+  const toggleSound = () => {
+    const element = audio.current;
+    if (!element) return;
+    if (sound) {
+      element.pause();
+      setSound(false);
+      return;
+    }
+    element.currentTime = filmTime() ?? 0;
+    element.play().then(() => setSound(true), () => setSound(false));
+  };
+
+  useEffect(() => {
+    const element = audio.current;
+    if (!element || !sound) return;
+    if (!active) {
+      element.pause();
+      return;
+    }
+    if (element.paused) element.play().catch(() => setSound(false));
+    const timer = window.setInterval(() => {
+      const t = filmTime();
+      if (t !== undefined && Math.abs(element.currentTime - t) > 0.2) element.currentTime = t;
+    }, 250);
+    return () => window.clearInterval(timer);
+  }, [sound, active, film.src]);
 
   return (
     <section
@@ -102,7 +133,6 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
       className="focus-studio"
       data-header-color="#070909"
       data-active={active}
-      data-paused={paused}
       data-film-ready={ready}
       aria-labelledby="focus-studio-title"
     >
@@ -131,16 +161,29 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
             );
           })()
         ) : null}
+        {reduced ? null : (
+          <>
+            <audio ref={audio} src="/hero/film/assets/sound.m4a" preload="none" loop />
+            <button
+              type="button"
+              className="focus-studio-sound"
+              aria-pressed={sound}
+              aria-label={sound ? (en ? "Mute the film" : "關閉影片聲音") : (en ? "Play the film's sound" : "開啟影片聲音")}
+              onClick={toggleSound}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" />
+                {sound ? (
+                  <path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                ) : (
+                  <path d="M16.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                )}
+              </svg>
+            </button>
+          </>
+        )}
       </div>
       <div className="section-shell focus-studio-layout">
-        <div className="focus-studio-controls">
-          <button type="button" aria-pressed={sound} disabled={reduced} onClick={() => { setSound(!sound); if (paused) setPaused(false); }}>
-            {sound ? (en ? "Sound off" : "關閉聲音") : (en ? "Sound on" : "開啟聲音")}
-          </button>
-          <button type="button" aria-pressed={paused} disabled={reduced} onClick={() => setPaused(!paused)}>
-            {reduced ? (en ? "Motion reduced" : "已減少動態") : paused ? (en ? "Resume" : "繼續播放") : (en ? "Pause" : "暫停")}
-          </button>
-        </div>
         <div className="focus-studio-copy">
           <div>
             <p className="focus-studio-eyebrow">8PLUS / ENGINEERING & AI</p>

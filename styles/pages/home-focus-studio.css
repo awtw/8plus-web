@@ -45,16 +45,17 @@
 /* a real link over the end card's booking pill */
 .focus-studio-film-cta { position: absolute; z-index: 2; border-radius: 999px; cursor: pointer; transition: box-shadow .2s ease; }
 .focus-studio-film-cta:hover { box-shadow: 0 0 0 3px #e7ffac80; }
-.focus-studio-controls { position: relative; z-index: 3; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-.focus-studio-controls button { min-height: 44px; padding: 10px 14px; border: 1px solid #78816f; color: #e7ffac; background: #070909; cursor: pointer; font-size: 12px; touch-action: manipulation; }
-.focus-studio-controls button[aria-pressed="true"] { background: #e7ffac; color: #171c18; border-color: #e7ffac; }
-.focus-studio-controls button:disabled { color: #a4ada0; cursor: default; }
+/* the only film control: a small speaker in the corner the film leaves empty */
+.focus-studio-sound { position: absolute; right: 16px; bottom: 16px; z-index: 3; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid #f3eee433; border-radius: 999px; color: #f3eee4b3; background: #07090999; cursor: pointer; touch-action: manipulation; transition: color .2s ease, border-color .2s ease; }
+.focus-studio-sound:hover, .focus-studio-sound[aria-pressed="true"] { color: #e7ffac; border-color: #e7ffac80; }
+.focus-studio-sound svg { width: 20px; height: 20px; }
 .focus-studio button:focus-visible, .focus-studio a:focus-visible { outline: 2px solid #e7ffac; outline-offset: 5px; }
 @media (max-width: 1000px) {
   .focus-studio-copy { grid-template-columns: 1fr; }
   .focus-studio h1 { font-size: 34px; }
 }
 @media (max-width: 700px) {
+  .focus-studio-sound { right: 12px; bottom: 12px; width: 36px; height: 36px; }
   /* phones play the 4:5 cut */
   .focus-studio-film { height: min(125vw, calc(100svh - var(--header-h, 74px))); }
   .focus-studio-layout { gap: 28px; padding-top: 12px; padding-bottom: 56px; }
@@ -64,5 +65,4 @@
   .focus-studio-actions { gap: 5px; }
   .focus-studio-actions a { font-size: 12px; padding: 12px; }
   .focus-studio-footnote { margin-top: 22px; font-size: 9px; }
-  .focus-studio-controls button { min-height: 40px; padding: 8px 12px; font-size: 11px; }
 }

@@ -57,6 +57,38 @@ const stopScore = (s: Score) => {
   s.source?.stop();
   s.source = null;
 };
+const createScore = (): Score => {
+  const ctx = new AudioContext();
+  const buffer = fetch(scoreUrl).then((response) => response.arrayBuffer()).then((data) => ctx.decodeAudioData(data));
+  return { ctx, buffer, source: null, origin: 0 };
+};
+// sound is on unless the visitor muted it; that choice is remembered (in memory when storage is blocked)
+const soundKey = "8plus-hero-sound";
+let soundChoice: boolean | null = null;
+const soundListeners = new Set<() => void>();
+const subscribeSound = (onChange: () => void) => {
+  soundListeners.add(onChange);
+  return () => void soundListeners.delete(onChange);
+};
+const getSound = () => {
+  if (soundChoice !== null) return soundChoice;
+  try {
+    return window.localStorage.getItem(soundKey) !== "off";
+  } catch {
+    return true;
+  }
+};
+const getServerTrue = () => true;
+const chooseSound = (on: boolean) => {
+  soundChoice = on;
+  try {
+    window.localStorage.setItem(soundKey, on ? "on" : "off");
+  } catch {
+    // storage blocked: the choice lasts for this visit
+  }
+  soundListeners.forEach((listener) => listener());
+};
+const unlockEvents = ["pointerdown", "touchend", "keydown"] as const;
 
 export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const en = locale === "en";
@@ -67,8 +99,10 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const reduced = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerFalse);
   const [active, setActive] = useState(false);
-  const [sound, setSound] = useState(false);
+  const sound = useSyncExternalStore(subscribeSound, getSound, getServerTrue);
+  const [audible, setAudible] = useState(false);
   const score = useRef<Score | null>(null);
+  const soundButton = useRef<HTMLButtonElement>(null);
   const [readySrc, setReadySrc] = useState<string | null>(null);
   const ready = readySrc === film.src;
   const box = useRef<HTMLDivElement>(null);
@@ -119,36 +153,49 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
     frame.current?.contentWindow?.postMessage({ film: "8plus", playing: active }, window.location.origin);
   }, [ready, active]);
 
-  // the score plays on this page through Web Audio: the click that asks for sound unlocks it in every
-  // browser, and a decoded buffer can start at any offset (the Worker serves the file without Range support)
+  // Sound is on by default. Browsers only let a page start audio after the visitor interacts with it,
+  // so the score starts at once where that is allowed, otherwise on the first tap, click or key press
+  // anywhere on the page. It plays here through Web Audio: a decoded buffer can start at any offset and
+  // follow the film's clock (the Worker serves the file without Range support).
   const toggleSound = () => {
-    if (sound) {
-      if (score.current) {
-        stopScore(score.current);
-        score.current.ctx.suspend();
-      }
-      setSound(false);
+    const s = score.current;
+    // waiting for the first interaction: this tap is it, so start rather than mute
+    if (sound && s && s.ctx.state !== "running") {
+      s.ctx.resume().catch(() => {});
       return;
     }
-    if (!score.current) {
-      const ctx = new AudioContext();
-      const buffer = fetch(scoreUrl).then((response) => response.arrayBuffer()).then((data) => ctx.decodeAudioData(data));
-      score.current = { ctx, buffer, source: null, origin: 0 };
+    const next = !sound;
+    if (next) (score.current ??= createScore()).ctx.resume().catch(() => {});
+    else if (s) {
+      stopScore(s);
+      s.ctx.suspend().catch(() => {});
     }
-    score.current.ctx.resume();
-    setSound(true);
+    chooseSound(next);
   };
 
   useEffect(() => {
-    const s = score.current;
-    if (!s || !sound) return;
+    // getSound(): during hydration `sound` is still the server default; a visitor who muted fetches nothing
+    if (!sound || !getSound() || reduced) return;
+    const s = (score.current ??= createScore());
     if (!active) {
       stopScore(s);
-      s.ctx.suspend();
+      s.ctx.suspend().catch(() => {});
       return;
     }
     let alive = true;
-    s.ctx.resume().then(() => startScore(s, frame.current, () => alive)).catch(() => setSound(false));
+    // audible follows the context: suspended until the visitor's first interaction, or when muted / off-screen
+    const play = () => {
+      setAudible(s.ctx.state === "running");
+      if (alive && s.ctx.state === "running") startScore(s, frame.current, () => alive);
+    };
+    const unlock = (event: Event) => {
+      if (soundButton.current?.contains(event.target as Node)) return; // the button handles its own tap
+      s.ctx.resume().catch(() => {});
+    };
+    s.ctx.addEventListener("statechange", play);
+    unlockEvents.forEach((type) => document.addEventListener(type, unlock, true));
+    s.ctx.resume().catch(() => {});
+    if (s.ctx.state === "running") startScore(s, frame.current, () => alive);
     // pull the score back to the picture when they drift apart (a busy device, a throttled tab)
     const timer = window.setInterval(async () => {
       const t = filmTime(frame.current);
@@ -160,10 +207,19 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
     return () => {
       alive = false;
       window.clearInterval(timer);
+      s.ctx.removeEventListener("statechange", play);
+      unlockEvents.forEach((type) => document.removeEventListener(type, unlock, true));
     };
-  }, [sound, active, film.src]);
+  }, [sound, active, reduced, film.src]);
 
-  useEffect(() => () => void score.current?.ctx.close(), []);
+  useEffect(
+    () => () => {
+      // drop the closed context so a remount (Strict Mode, fast refresh) builds a fresh one
+      score.current?.ctx.close().catch(() => {});
+      score.current = null;
+    },
+    [],
+  );
 
   return (
     <section
@@ -204,8 +260,10 @@ export function HeroFocusStudio({ locale }: { locale: HomeLocale }) {
           <>
             <button
               type="button"
+              ref={soundButton}
               className="focus-studio-sound"
               aria-pressed={sound}
+              data-waiting={sound && !audible}
               aria-label={sound ? (en ? "Mute the film" : "關閉影片聲音") : (en ? "Play the film's sound" : "開啟影片聲音")}
               onClick={toggleSound}
             >

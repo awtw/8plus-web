@@ -49,6 +49,10 @@
 .focus-studio-sound { position: absolute; right: 16px; bottom: 16px; z-index: 3; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid #f3eee433; border-radius: 999px; color: #f3eee4b3; background: #07090999; cursor: pointer; touch-action: manipulation; transition: color .2s ease, border-color .2s ease; }
 .focus-studio-sound:hover, .focus-studio-sound[aria-pressed="true"] { color: #e7ffac; border-color: #e7ffac80; }
 .focus-studio-sound svg { width: 20px; height: 20px; }
+/* sound is on but the browser is still waiting for the visitor's first tap: a soft pulse invites it */
+.focus-studio-sound[data-waiting="true"] { animation: focus-studio-sound-wait 1.6s ease-in-out infinite; }
+@keyframes focus-studio-sound-wait { 50% { box-shadow: 0 0 0 6px #e7ffac26; color: #e7ffac; } }
+@media (prefers-reduced-motion: reduce) { .focus-studio-sound[data-waiting="true"] { animation: none; } }
 .focus-studio button:focus-visible, .focus-studio a:focus-visible { outline: 2px solid #e7ffac; outline-offset: 5px; }
 @media (max-width: 1000px) {
   .focus-studio-copy { grid-template-columns: 1fr; }

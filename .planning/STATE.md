@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-29 15:40 +0800 — 品牌片預約按鈕可點、聲音改 Web Audio 並上線（Worker c6324087）
+Last activity: 2026-10-30 +0800 — 品牌片聲音預設開啟並上線（Worker 34b69703）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-10-30 +0800 — 品牌片聲音預設開啟並上線（Worker 34b69703）**：使用者要求預設有聲音。瀏覽器只允許訪客互動後才出聲，所以做法是：允許的話一開頁就播；否則在頁面任何位置第一次 pointerdown、touchend 或 keydown 時就 resume AudioContext，從動畫目前的秒數開始播。等待期間喇叭會輕微脈動（減少動態時不動）。訪客按喇叭靜音後會用 localStorage `8plus-hero-sound` 記住（儲存被封鎖時改記在記憶體），之後不再下載音檔。也修了 Strict Mode 重掛時沿用已關閉 AudioContext 的問題，並接住所有 AudioContext promise 錯誤。本機與正式站都實測：新訪客預設開啟、點頁面後開始播放、靜音會被記住、無 console error。smoke、SEO 全過。回滾目標 `c6324087`。實際聽感未驗證。
 
 - ✅ **2026-10-29 15:40 +0800 — 品牌片互動修正並上線（Worker c6324087）**：①動畫播到結尾卡時，iframe 每 0.2 秒回報預約按鈕的位置，首頁在同位置疊上真的 `/booking` 連結（依 cover 裁切換算）；減少動態的靜態圖使用量好的四組座標。實際點擊確認會開到預約頁。②依使用者要求拿掉暫停鍵，聲音改成影片右下角 40px 的半透明喇叭圖示；影片內原本右下角的 8PLUS.APP 拿掉，海報與靜態幀已重出。③配樂改由首頁以 Web Audio 播放：點擊時在同一次手勢裡 resume AudioContext，下載並解碼 340KB 音檔，從動畫目前秒數開始循環播放，偏差超過 0.3 秒就重新對齊。原因是 Worker 靜態檔不支援 Range，`<audio>` 無法跳秒，iframe 自己的音訊也已移除。正式站的 smoke、SEO 全過；實際點擊開聲音後 AudioContext 為 running。瀏覽器面板隱藏時動畫被降速，所以實際聽感（同步與是否斷音）未驗證，需要使用者在一般分頁聽一次。回滾目標 `73b270f4`。
 

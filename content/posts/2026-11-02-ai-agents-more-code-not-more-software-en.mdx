@@ -1,0 +1,84 @@
+---
+title: "AI agents wrote 30% more code, and teams shipped no more: the bottleneck is code review"
+date: "2026-11-02"
+summary: "A Harvard study of more than 700 software firms found that AI coding agents raised code, commits and pull requests, but the number of completed issues did not move. What the study shows, and where teams should invest instead."
+slug: "ai-agents-more-code-not-more-software-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI agents", "code review", "engineering management", "trends"]
+locale: "en"
+---
+
+# AI agents wrote 30% more code, and teams shipped no more
+
+In mid-October, Ars Technica covered a [Harvard working paper](https://fion.ac/jellyfish.pdf) by Fiona Chen and James Stratton (not yet peer reviewed). The headline is blunt: [AI coding agents generate more code, but not more software](https://arstechnica.com/ai/2026/10/ai-coding-agents-generate-more-code-but-not-more-software/).
+
+It is worth five minutes because it does not rely on surveys or lab tasks. It uses real work records from real companies.
+
+## 1. How the study works
+
+- **Data:** telemetry from an engineering analytics platform, covering more than 700 software firms and about 300 million work events from 2021 to March 2026.
+- **Method:** firms adopted AI tools at different times, so the study compares adopters with firms that had not adopted yet, before and after adoption.
+- **Two kinds of tools:** autocomplete-style coding assistants, and coding agents that take a task and produce changes on their own.
+
+## 2. The result: more upstream, flat downstream
+
+After adopting coding agents, the average engineer produced:
+
+| Metric | Change |
+|--------|--------|
+| Lines of code | about +30% (nearly 1,500 extra lines a month) |
+| Commits | about +20% |
+| Pull requests | about +23% |
+| **Completed Jira issues** | **no statistically significant change** |
+
+Headcount at the firm level did not drop noticeably either. The authors conclude that the productivity gains **do not fully pass through to software output or employment**. Constraints further down the process absorb them.
+
+## 3. Absorbed where? Code review
+
+The most interesting numbers in the coverage are on the review side:
+
+- Time from PR submission to merge rose **about 49%**
+- **The share of PRs with changes requested nearly doubled**
+- Review comments per PR rose about 35%
+- The share of engineers doing code review rose about 14%
+
+Writing code got faster, but reviewers got busier, more work was sent back, and waits got longer. By March 2026 about 80% of firms used some form of AI code review, yet AI accounted for only 23.3% of review comments and appeared on 10.8% of PRs. Review is still mostly done by people.
+
+The authors' advice is clear: to get the benefits of AI, firms need **complementary investment in downstream review capacity**, not just more code.
+
+## 4. How I read it: this is not "AI doesn't work"
+
+It is easy to read this as "AI coding is hype." I don't. What it really says is that **software delivery is a production line. Speed up one station and the line still moves at the pace of the slowest one.**
+
+That matches the principle in my [AI workflow integration](/blog/ai-workflow-integration-en) post: automation can take over execution, but acceptance and permissions stay with people. Once execution gets cheap, acceptance becomes the new bottleneck.
+
+Limits to keep in mind:
+
+- It is a working paper and has not been peer reviewed.
+- "Completed issues" is a coarse output measure. Quality, maintainability and incident rates are not counted.
+- The data ends in March 2026, and agents and AI review tools have improved a lot since.
+
+## 5. Four changes for teams
+
+### 1. Stop measuring the gain in lines and commits
+
+The study points out that many managers rely on these intermediate metrics. They will always rise after adopting agents, and that does not mean more is shipped. Track **lead time (ticket to production)**, **review wait time per PR** and **the rate of PRs sent back** instead.
+
+### 2. Make PRs smaller and easier to review
+
+Agents happily change a lot at once. Say it plainly in your guidelines or `AGENTS.md`: one PR does one thing, includes verification steps, and explains what changed and why. A PR that is easy to review is worth more than extra code.
+
+### 3. Leave mechanical checks to CI, and keep people for judgment calls
+
+Types, lint, tests, build and security scans should all run before a PR reaches a person. Human review time is for architecture, edge cases and business logic, the items on my [code review checklist](/blog/code-review-checklist-en).
+
+### 4. Plan review as real capacity
+
+If agents add 20% more PRs, budget the review time to match instead of quietly pushing it onto senior engineers' evenings. AI review can do the first pass, but the final approval needs a named owner.
+
+---
+
+AI tools have made writing code cheap. The advantage has moved to confirming the code is right and shipping it safely. If your team feels busier since adopting AI but isn't shipping any faster, [book a 30-minute intro call](/booking) and we can find the station that's holding things up.

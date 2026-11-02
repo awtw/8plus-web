@@ -1,0 +1,76 @@
+---
+title: "The Node.js October security release: 10 CVEs, 4 high, and a good moment to check whether your Node is already EOL"
+date: "2026-11-02"
+summary: "On October 21 Node.js shipped security releases for the 22, 24 and 26 lines, fixing TLS hostname verification bypasses, a Brotli out-of-bounds write and more. Which version to move to, who should move first, and the EOL version I found on my own machine."
+slug: "nodejs-october-2026-security-release-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["Node.js", "security", "upgrades", "operations"]
+locale: "en"
+---
+
+# The Node.js October security release
+
+Last week I wrote about [Next.js 16.4 and the October security update](/blog/nextjs-16-4-upgrade-and-security-en), and on October 21 Node.js published its own [security release](https://nodejs.org/blog/vulnerability/october-2026-security-releases). This one reaches further: if your service, build or CI runs on Node, you are in scope.
+
+## 1. The short version: move to one of these
+
+| Line | Patched version |
+|------|-----------------|
+| 26.x | **v26.12.1** |
+| 24.x | **v24.22.1** |
+| 22.x | **v22.23.4** |
+
+The highest severity on all three lines is **High**. There are no workarounds; the fix is to upgrade.
+
+```bash
+nvm install 24.22.1 && nvm alias default 24.22.1
+node -v
+```
+
+## 2. What was fixed
+
+Ten CVEs in total: 4 high, 3 medium, 3 low. I group them into three buckets.
+
+### 1. TLS hostname verification bypasses (high and medium)
+
+This is the group to pay attention to. With unusual spellings of an IP address, `tls.checkServerIdentity()` can validate a certificate against the wrong target:
+
+- IPs written with fullwidth digits (such as `１２７.0.0.1`), a regression after an earlier fix
+- IPv4 literals with a leading zero (such as `0127.0.0.1`): URL parsing reads them as octal while the OS resolver reads them as decimal, so the two disagree on the address
+- Non-canonical forms such as `0x7f.0.0.1` or `127.1`, which let a DNS-only certificate pass verification for an IP connection
+
+**Who should worry:** services that make HTTPS requests to URLs or IPs taken from user input, such as webhooks, image proxies, link previews and crawlers. These are also where SSRF protection most often breaks.
+
+### 2. Decompression and DNS edge cases (high)
+
+- **Brotli decoder out-of-bounds write:** malicious Brotli data can cause a crash, memory disclosure or even remote code execution. Any service that uses `node:zlib` to decompress outside data is affected.
+- **`dns.resolve*()` truncates names at a NUL character:** a follow-up to an incomplete earlier fix.
+
+### 3. Also worth knowing
+
+- The random caches behind `crypto.randomUUID()` and friends could be saved into startup snapshots and SEAs, so every process produced the same values. Teams using `--build-snapshot` or single executable apps should take note.
+- Several Permission Model bypasses (low).
+- Dependency updates: c-ares, undici, OpenSSL (24 and 22), and removal of the compromised eMudhra intermediate CA certificates.
+
+## 3. What I found on my own machine
+
+While writing this I ran `node -v` and got **v23.11.0**. Odd-numbered 23 has been end of life for a while. The official notice is explicit: EOL versions are **always considered affected** by a security release, and they get no fix.
+
+This site runs on Cloudflare Workers in production, so these Node CVEs don't hit it directly. But builds, local development and parts of CI all run on Node. Your development machine is attack surface too, especially now that coding agents download packages and run commands on it for you.
+
+That's a blind spot for many teams: **someone looks after production, but nobody looks after laptops and CI runners.**
+
+## 4. An upgrade checklist for teams
+
+- [ ] Inventory which Node version runs in production, CI, Docker base images and developer machines
+- [ ] Replace odd-numbered (23, 25) and EOL versions with an LTS
+- [ ] Move to v24.22.1, v22.23.4 or v26.12.1
+- [ ] Add `.nvmrc` or `engines` in `package.json` so the version is a rule you can check
+- [ ] Pin Docker tags (for example `node:24.22.1-slim`) instead of `node:24` that nobody remembers to rebuild
+- [ ] Review code that makes requests from user input and make sure URL and IP allowlists are checked **after** parsing
+- [ ] Run build, tests and smoke tests before going live
+
+Two months in a row of security releases makes one thing clear: frameworks and runtimes are patched too often to rely on upgrading whenever someone remembers. A fixed monthly version check matters more than any single emergency upgrade. If you'd like help setting up that routine, [book a 30-minute intro call](/booking).

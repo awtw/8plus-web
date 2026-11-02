@@ -1,0 +1,76 @@
+---
+title: "Node.js 10 月安全更新：10 個 CVE、4 個 High，順便檢查你的 Node 是不是早就 EOL"
+date: "2026-11-02"
+summary: "Node.js 在 10/21 為 22、24、26 三條線發布安全更新，修補 TLS 主機名驗證繞過、Brotli 越界寫入等問題。整理該升到哪一版、誰最該先升，以及我在自己電腦上發現的 EOL 版本。"
+slug: "nodejs-october-2026-security-release"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["Node.js", "資安", "升級", "維運"]
+locale: "zh-TW"
+---
+
+# Node.js 10 月安全更新
+
+上週才寫完 [Next.js 16.4 與 10 月安全更新](/blog/nextjs-16-4-upgrade-and-security)，10 月 21 日 Node.js 也發布了[安全更新](https://nodejs.org/blog/vulnerability/october-2026-security-releases)。這次範圍更廣：只要你的服務、建置或 CI 跑在 Node 上，都在影響範圍內。
+
+## 一、先看結論：升到這三個版本
+
+| 版本線 | 修補版本 |
+|--------|---------|
+| 26.x | **v26.12.1** |
+| 24.x | **v24.22.1** |
+| 22.x | **v22.23.4** |
+
+三條線的最高嚴重度都是 **High**。官方沒有提供替代方案，處理方式就是升級。
+
+```bash
+nvm install 24.22.1 && nvm alias default 24.22.1
+node -v
+```
+
+## 二、這次修了什麼
+
+一共 10 個 CVE：4 個 High、3 個 Medium、3 個 Low。我把它們歸成三類：
+
+### 1. TLS 主機名驗證可被繞過（High／Medium）
+
+這是這次最需要注意的一組。用特殊寫法表示 IP 位址時，`tls.checkServerIdentity()` 可能把憑證驗證成錯誤的對象：
+
+- 全形數字的 IP（例如 `１２７.0.0.1`）——這是先前修補後的回歸問題
+- 帶前導零的 IPv4（例如 `0127.0.0.1`），URL 解析當成八進位、系統解析器當成十進位，兩邊看到的位址不同
+- `0x7f.0.0.1`、`127.1` 這類非標準寫法，讓只有 DNS 名稱的憑證通過 IP 連線的驗證
+
+**誰該緊張**：會依使用者輸入的網址或 IP 發出 HTTPS 請求的服務，例如 webhook、圖片代理、URL 預覽、爬蟲。這些也是 SSRF 防護最常出問題的地方。
+
+### 2. 解壓與 DNS 的邊界問題（High）
+
+- **Brotli 解碼越界寫入**：處理惡意的 Brotli 資料可能導致當機、記憶體洩漏，甚至遠端程式碼執行。任何會用 `node:zlib` 解壓外部資料的服務都受影響。
+- **`dns.resolve*()` 遇到 NUL 字元會截斷名稱**：先前修補不完整的延續。
+
+### 3. 其他值得知道的
+
+- `crypto.randomUUID()` 等函式的亂數快取會被存進 startup snapshot 與 SEA，導致每個行程產生相同的值。有用 `--build-snapshot` 或單一執行檔打包的團隊要特別注意。
+- Permission Model 的幾個繞過問題（Low）。
+- 相依套件更新：c-ares、undici、OpenSSL（24／22），以及移除遭外洩的 eMudhra 中繼 CA 憑證。
+
+## 三、我在自己電腦上發現的事
+
+寫這篇時順手跑了一次 `node -v`，結果是 **v23.11.0**。23 是奇數版本，早就 EOL 了。官方公告寫得很清楚：EOL 版本在每次安全更新時**一律視為受影響**，而且不會有修補。
+
+這個網站正式環境跑在 Cloudflare Workers 上，不直接受 Node 的這些 CVE 影響；但建置、本機開發、部分 CI 都跑在 Node 上。開發機本身就是攻擊面，尤其現在 coding agent 會在本機替你下載套件、執行指令。
+
+這也是很多團隊的盲點：**正式環境有人顧，開發機和 CI runner 沒人顧。**
+
+## 四、給團隊的升級清單
+
+- [ ] 盤點：正式環境、CI、Docker base image、開發機各跑哪個 Node 版本
+- [ ] 把奇數版本（23、25）與已 EOL 的版本換成 LTS
+- [ ] 升到 v24.22.1／v22.23.4／v26.12.1
+- [ ] 在專案加上 `.nvmrc` 或 `package.json` 的 `engines`，讓版本變成可檢查的規則
+- [ ] Docker 用明確的 tag（例如 `node:24.22.1-slim`），不要只寫 `node:24` 然後忘了重建
+- [ ] 檢查會依使用者輸入發出請求的程式，確認 URL／IP 白名單在**解析後**才比對
+- [ ] 跑過 build、測試與 smoke test 再上線
+
+連續兩個月都在寫安全更新，說明了一件事：框架和執行環境的修補頻率已經高到不能靠「想到再升」。固定每月一次的版本盤點，比任何單次緊急升級都重要。如果你需要協助建立這套節奏，可以[預約 30 分鐘初談](/booking)。

@@ -12,10 +12,18 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-10-30 +0800 — 品牌片聲音預設開啟並上線（Worker 34b69703）
+Last activity: 2026-11-02 +0800 — Blog 分類／月份分組／訂閱（RSS 中英分開＋電子報表單）；未部署
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-02 +0800 — 修正文章目錄**：原因是 rehypeSlug 只設定在 velite 的 `mdx` 選項，但文章用的是 `s.markdown()`（讀 `markdown` 選項）。已在 `markdown.rehypePlugins` 加上 rehypeSlug；刻意不加 autolink wrap，否則標題會套到 `.blog-prose a` 的橘色樣式。28 篇文章的 h2 都有 id（中文標題也正常），標題有 3 個以上的文章就會顯示目錄；目錄清單拿掉編號，避免和標題自帶的「一、」重複。瀏覽器實測：展開目錄、點擊後跳到對應段落，不會被 header 擋住。`pnpm build` 通過。未 commit、未部署。
+
+- ✅ **2026-11-02 +0800 — 新增「職涯歷程」分類與第一篇**：`category` 加入 `career`（職涯歷程／Career journey）。新增 `content/posts/2026-11-02-cross-domain-journey(-en).mdx`，內容取自 `docs/StoryAboutMe.md` 與 `lib/content/path-milestones.tsx`：食品科學 → 交大生醫所 → 替代役自學 → 後端起步、四種產業 → AI 平台架構，以及跨領域留下的三件事；文末列出系列後續可能的主題。產業段落沒有寫出公司名稱（完整經歷導向 /path）。「實驗室習慣→驗證」「美術→UIX」等對照是代寫時的詮釋，需本人確認語氣。build 通過、瀏覽器檢查中英文頁面無錯誤。另發現既有問題：文章 h2 沒有 id，所以「本文目錄」在所有文章都不會出現（已於同日修正，見下一筆）。未 commit、未部署。
+
+- ✅ **2026-11-02 +0800 — Blog 分類、持續寫作感與訂閱**：①frontmatter 新增必填 `category`（ai／web／ops／delivery／studio，標籤與說明在 `lib/content/blog.ts`），26 篇已歸類；/blog 主題篩選附篇數與說明，可用 `?category=` 分享。②列表頂部顯示篇數、主題數、最近更新日期；文章依月份分組，最新一篇在該月份以滿版卡片呈現（刻意不做年度格子圖，避免凸顯 2025/02–2026/05 的空窗）。③文章頁的日期列加上主題連結，文末加「同主題文章」（最多 3 篇）。④訂閱：RSS 拆成 `/feed.xml`（中文）與 `/feed-en.xml`（英文），加 category、atom:self、lastBuildDate 與 `<link rel=alternate>` 自動探索；新增 BlogSubscribe 區塊（列表與文章頁），Email 表單在設定 `NEXT_PUBLIC_NEWSLETTER_FORM_ACTION`（Buttondown／Kit embed 網址，欄位名稱用 `NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD` 設定）後才顯示，未設定時只顯示 RSS；頁尾 RSS 連結改為「訂閱」並導向 `/blog#subscribe`；GA 事件 `newsletter_subscribe`、`rss_click`。驗證：typecheck、eslint、`pnpm build` 通過；瀏覽器測過桌機中英文、375px、主題篩選與網址同步、文章頁相關文章、暫時設定 env 後的 Email 表單，console 無錯誤。電子報服務尚未註冊，實際送出未測。未 commit、未部署。
+
+- ✅ **2026-11-02 +0800 — 11 月趨勢文章（中英各二）**：`content/posts/2026-11-02-*`。①AI agent 讓程式碼多三成但交付沒變多（哈佛 Chen & Stratton 工作論文，經 Ars Technica 報導；只採用 Ars 與 AI Weekly 都有的數字，論文 PDF 本機無法解析、未逐字核對）②Node.js 10/21 安全更新（10 個 CVE、4 個 High；v22.23.4／v24.22.1／v26.12.1，數字取自 nodejs.org 官方公告），並記錄本機 Node 為已 EOL 的 v23.11.0。`published: true`、`pnpm build` 通過；未 commit、未部署。
 
 - ✅ **2026-10-30 +0800 — 品牌片聲音預設開啟並上線（Worker 34b69703）**：使用者要求預設有聲音。瀏覽器只允許訪客互動後才出聲，所以做法是：允許的話一開頁就播；否則在頁面任何位置第一次 pointerdown、touchend 或 keydown 時就 resume AudioContext，從動畫目前的秒數開始播。等待期間喇叭會輕微脈動（減少動態時不動）。訪客按喇叭靜音後會用 localStorage `8plus-hero-sound` 記住（儲存被封鎖時改記在記憶體），之後不再下載音檔。也修了 Strict Mode 重掛時沿用已關閉 AudioContext 的問題，並接住所有 AudioContext promise 錯誤。本機與正式站都實測：新訪客預設開啟、點頁面後開始播放、靜音會被記住、無 console error。smoke、SEO 全過。回滾目標 `c6324087`。實際聽感未驗證。
 

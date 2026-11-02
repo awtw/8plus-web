@@ -35,14 +35,6 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   metadataBase: new URL(SITE.url),
-  alternates: {
-    types: {
-      "application/rss+xml": [
-        { url: "/feed.xml", title: `${SITE.name} 技術博客` },
-        { url: "/feed-en.xml", title: `${SITE.name} Blog (English)` }
-      ]
-    }
-  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -63,6 +55,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <head>
         <JsonLd />
+        {/* RSS autodiscovery as plain links: vinext's metadata resolver crashes on alternates.types descriptor arrays */}
+        <link rel="alternate" type="application/rss+xml" title={`${SITE.name} 技術博客`} href={`${SITE.url}/feed.xml`} />
+        <link rel="alternate" type="application/rss+xml" title={`${SITE.name} Blog (English)`} href={`${SITE.url}/feed-en.xml`} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider>

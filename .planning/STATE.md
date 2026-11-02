@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-02 +0800 — Blog 分類／月份分組／訂閱（RSS 中英分開＋電子報表單）；未部署
+Last activity: 2026-11-02 14:07 +0800 — Blog 分類／訂閱／11 月文章上線正式站（Worker `71ada4b6`）；Kit 電子報表單已接上
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-02 14:07 +0800 — Blog 分類、訂閱與 11 月文章上線正式站**：Kit 表單 ID `10131083`（`NEXT_PUBLIC_NEWSLETTER_FORM_ACTION=https://app.kit.com/forms/10131083/subscriptions`、`NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD=email_address`，建置時帶入；本機寫在 `.env.local`）。測試訂閱 alec.wang.tpe@gmail.com 送出後 Kit 回 302 到 success 頁。第一次部署 `234a91ff` 讓 `/`、`/blog` 等 18 個路由回 500，已回滾到 `34b69703`。原因：root layout 的 `alternates.types` 用了 `[{ url, title }]` 陣列，vinext 的 metadata 解析把它當字串呼叫 `.startsWith` 而崩潰（文章頁有自己的 metadata 所以沒事；`next build` 不會發現）。改成在 `<head>` 直接寫兩個 `<link rel=alternate>`，本機 `vite preview`（workerd）smoke／SEO 全過後重新部署 `71ada4b6-9108-4f68-950a-d72567dac829`，回滾目標 `34b69703`。部署後 smoke、SEO 對 `https://www.8plus.app` 全過，workers.dev smoke 全過；兩個 feed 各 14 篇、`/blog?category=career` 200、Email 表單指向 Kit。教訓：部署前要先用 `npx vite preview` 跑 smoke。另：vinext 建置會改寫 `.next/types/routes.d.ts`，造成 typecheck 報錯，執行 `npx next typegen` 即可（記得保留 `next-env.d.ts`）。Vercel 未更新；分支未 push。
 
 - ✅ **2026-11-02 +0800 — 修正文章目錄**：原因是 rehypeSlug 只設定在 velite 的 `mdx` 選項，但文章用的是 `s.markdown()`（讀 `markdown` 選項）。已在 `markdown.rehypePlugins` 加上 rehypeSlug；刻意不加 autolink wrap，否則標題會套到 `.blog-prose a` 的橘色樣式。28 篇文章的 h2 都有 id（中文標題也正常），標題有 3 個以上的文章就會顯示目錄；目錄清單拿掉編號，避免和標題自帶的「一、」重複。瀏覽器實測：展開目錄、點擊後跳到對應段落，不會被 header 擋住。`pnpm build` 通過。未 commit、未部署。
 

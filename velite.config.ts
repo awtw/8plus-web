@@ -185,6 +185,10 @@ export default defineConfig({
     data.projects = publicContent(data.projects);
     data.episodes = publicContent(data.episodes);
   },
+  // s.markdown() reads these, not the mdx options; ids feed the post TOC (lib/reading.ts)
+  markdown: {
+    rehypePlugins: [rehypeSlug],
+  },
   mdx: {
     rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
   },

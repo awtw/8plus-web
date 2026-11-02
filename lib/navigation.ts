@@ -12,7 +12,7 @@ export const footerNavigation = [
   { href: "/show", labelKey: "nav.show" as const },
   { href: "/services", labelKey: "nav.services" as const },
   { href: "/blog", labelKey: "nav.blog" as const },
-  { href: "/feed.xml", labelKey: "footer.rss" as const, external: true },
+  { href: "/blog#subscribe", labelKey: "footer.rss" as const },
 ] as const
 
 export type NavItem = (typeof siteNavigation)[number]

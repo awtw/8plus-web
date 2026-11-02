@@ -34,6 +34,7 @@ const redirects = [
 const handlers = [
   ["/tool/qrcode", "text/html"],
   ["/feed.xml", "xml"],
+  ["/feed-en.xml", "xml"],
   ["/llms.txt", "text/plain"],
 ];
 

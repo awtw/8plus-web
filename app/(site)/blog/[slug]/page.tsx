@@ -7,6 +7,9 @@ import { PageSection } from "@/components/page/page-section";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogProtectedNote } from "@/components/blog/blog-protected-note";
 import { BlogCta } from "@/components/blog/blog-cta";
+import { BlogSubscribe } from "@/components/blog/blog-subscribe";
+import Link from "next/link";
+import { blogContent } from "@/lib/content/blog";
 import { ReadingProgress } from "@/components/reading-progress";
 import { extractToc, readingMinutes } from "@/lib/reading";
 import { SITE } from "@/lib/seo";
@@ -50,6 +53,11 @@ export default async function PostPage({ params }: PostPageProps) {
   const minutes = readingMinutes(post.html);
   const toc = extractToc(post.html);
   const isEn = post.locale === 'en';
+  const c = blogContent[isEn ? 'en' : 'zh-TW'];
+  const related = getPosts()
+    .filter(p => p.locale === post.locale && p.category === post.category && p.slug !== post.slug)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
 
   const articleLd = {
     "@context": "https://schema.org",
@@ -80,7 +88,11 @@ export default async function PostPage({ params }: PostPageProps) {
               })}
             </time>
             {" · "}
-            {isEn ? `${minutes} min read` : `約 ${minutes} 分鐘閱讀`}
+            {c.minutes(minutes)}
+            {" · "}
+            <Link href={`/blog?category=${post.category}`} className="blog-article-category">
+              {c.categories[post.category].label}
+            </Link>
           </p>
           <h1 className="blog-article-title">{post.title}</h1>
           {post.summary && <p className="page-lead">{post.summary}</p>}
@@ -110,7 +122,27 @@ export default async function PostPage({ params }: PostPageProps) {
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
         </article>
+        {related.length > 0 && (
+          <nav className="blog-related" aria-labelledby="blog-related-title">
+            <h2 id="blog-related-title" className="blog-related-title">
+              {c.related} · {c.categories[post.category].label}
+            </h2>
+            <ul>
+              {related.map(item => (
+                <li key={item.slug}>
+                  <Link href={item.url}>
+                    <span className="blog-related-name">{item.title}</span>
+                    <time dateTime={item.date}>
+                      {new Date(item.date).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+                    </time>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </PageSection>
+      <BlogSubscribe location="blog_post" />
       <BlogCta />
     </>
   );

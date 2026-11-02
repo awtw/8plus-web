@@ -17,6 +17,8 @@ const posts = defineCollection({
       protected: s.boolean().default(false),
       // 'note' = short Field Note (status update); 'article' = long-form post
       kind: s.enum(["article", "note"]).default("article"),
+      // Topic shelf on /blog; keys and labels live in lib/content/blog.ts
+      category: s.enum(["ai", "web", "ops", "delivery", "career", "studio"]),
       slug: s.string(),
       locale: s
         .enum(["zh-TW", "zh-Hant", "en"])

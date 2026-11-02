@@ -35,6 +35,14 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   metadataBase: new URL(SITE.url),
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/feed.xml", title: `${SITE.name} 技術博客` },
+        { url: "/feed-en.xml", title: `${SITE.name} Blog (English)` }
+      ]
+    }
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

@@ -228,7 +228,7 @@ export const translations = {
       madeIn: '台灣製造',
       poweredBy: '由 Vercel 提供支持',
       navLabel: '站內連結',
-      rss: 'RSS',
+      rss: '訂閱',
     },
     shareHub: {
       businessName: '8plus',
@@ -470,7 +470,7 @@ export const translations = {
       madeIn: 'Made in Taiwan',
       poweredBy: 'Powered by Vercel',
       navLabel: 'Site links',
-      rss: 'RSS',
+      rss: 'Subscribe',
     },
     shareHub: {
       businessName: '8plus',

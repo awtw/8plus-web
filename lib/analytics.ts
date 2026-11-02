@@ -23,6 +23,8 @@ export const EVENTS = {
   EMAIL_CLICK: "email_click",
   TEL_CLICK: "tel_click",
   QR_OPEN: "qr_open",
+  NEWSLETTER_SUBSCRIBE: "newsletter_subscribe", // ★ email form submitted to provider
+  RSS_CLICK: "rss_click",
   // Navigation
   NAV_CLICK: "nav_click",
   INTERNAL_CLICK: "internal_click",

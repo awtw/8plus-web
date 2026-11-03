@@ -1,0 +1,77 @@
+---
+title: "GitHub Octoverse 2026：四成 PR 由 Agent 起手，團隊該調整的是流程，不是人數"
+date: "2026-11-03"
+summary: "GitHub 10 月底發布 Octoverse 2026：9 月有超過 40% 的 pull request 由 coding agent 起手，3 月時只有 17%。整理報告裡跟團隊最相關的數字，以及接下來該先改的四件事。"
+slug: "octoverse-2026-agent-pull-requests"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI Agent", "GitHub", "Code Review", "趨勢"]
+locale: "zh-TW"
+---
+
+# GitHub Octoverse 2026：四成 PR 由 Agent 起手
+
+10 月 28 日，GitHub 發布年度報告 [Octoverse 2026](https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/)。最常被引用的一句是：**到了 9 月，超過 40% 的 pull request 是用 agent 起手的；3 月時還只有 17%。**
+
+上週我寫了[哈佛研究：AI agent 讓程式碼多三成，交付卻沒變多](/blog/ai-agents-more-code-not-more-software)。Octoverse 剛好是同一件事的另一個角度——不是單一團隊的效益，而是整個平台的流量。
+
+## 一、先看規模
+
+報告的統計區間是 2025/10/1 到 2026/9/30，數字包含公開與私有 repo：
+
+| 指標 | 2025 | 2026 |
+|------|------|------|
+| Push 次數 | 67 億 | **179 億** |
+| Commit 數 | 129 億 | **343 億** |
+| 合併的 PR | 5.38 億 | **13 億**（平均每天 350 萬） |
+| GitHub Actions 工作 | 140 億 | **454 億** |
+
+一年的 push 數，比 2024 和 2025 加起來還多。GitHub 上的開發者超過 2.25 億人。
+
+## 二、和 agent 有關的五個數字
+
+1. **超過 40% 的 PR 由 agent 起手**（3 月是 17%）。GitHub 的定義是「第一版草稿來自可偵測到的 coding agent」，偵測不到的使用不會算進去。
+2. **agent PR 的合併率追上來了**：2 月時，agent 參與的 PR 有 83% 在兩週內合併，略低於一般 PR 的約 86%；到了 9 月，agent PR 是 90%，一般 PR 仍約 86%。
+3. **agent PR 更常一次改很多檔案**：約 87% 動到多個檔案，一般 PR 是 79%。
+4. **TypeScript 仍是貢獻者最多的語言**，Python、JavaScript 分居二、三。2026 年新開、有 agent 跡象的 repo 中，35% 以 TypeScript 為主，沒有 agent 跡象的只有 24%。
+5. **review 工具跟著長**：AI 輔助 code review 與 GitHub Advanced Security 的使用量都比去年多了 90% 以上。Copilot 的月活躍使用者中，55% 用了 agent 功能（一年前是 35%）。
+
+另外一個我覺得有意思的觀察：今年新開的 repo 裡，**有 agent 設定檔（例如 `AGENTS.md`）的 repo，平均 commit 數是沒有的八倍。**這不代表設定檔造成產出變多，比較可能是「認真用 agent 的團隊，也會認真寫設定」。
+
+## 三、我怎麼解讀
+
+### 合併率上升，不等於品質沒問題
+
+agent PR 的兩週合併率從落後變成領先，可以讀成「agent 寫得越來越好」，也可以讀成「review 越來越習慣放行」。報告本身只量測合併，不量測合併後的事故或回滾。所以這個數字是好消息，但不是結論。
+
+### 「一次改很多檔」是 review 的成本
+
+87% 的 agent PR 動到多個檔案。對 reviewer 來說，跨檔案的修改最難看出副作用。這和哈佛研究看到的「review 時間變長、退件變多」是同一個方向：上游變便宜，壓力就往下游跑。
+
+### TypeScript 的優勢會繼續擴大
+
+型別本身就是給 agent 的規格與檢查。agent 寫錯，`tsc` 會先擋下來，人不必花時間抓低階錯誤。如果團隊還在純 JavaScript 和 TypeScript 之間猶豫，這份數據又多了一個理由。
+
+## 四、團隊可以先改的四件事
+
+### 1. 寫一份 `AGENTS.md`
+
+把專案慣例、指令（安裝、測試、建置）、不准碰的目錄、PR 格式寫清楚。這是讓 agent 產出「接近你團隊寫法」最便宜的方法。8plus 這個網站自己也有一份。
+
+### 2. 限制 PR 範圍
+
+在指引裡要求 agent 一個 PR 只做一件事，並附上驗證步驟。GitHub 今年推出的 stacked pull requests（7 月底預覽，到 9 月已有超過 26.4 萬名開發者用過）就是為了讓大改動拆成小段審查。
+
+### 3. 量合併之後的事
+
+除了合併率，也追蹤回滾次數、上線後 7 天內的 bug、hotfix 數量。這些才看得出 agent PR 的真實品質。
+
+### 4. 讓 CI 先擋，人看判斷題
+
+型別、lint、測試、secret 掃描在 PR 到人手上之前全部跑完。報告裡 push protection 的掃描量今年大增，原因也很直接：程式碼產得越快，金鑰誤推的機會越多。
+
+---
+
+agent 起手的 PR 從兩成不到變成四成，只花了半年。真正拉開差距的，會是團隊怎麼審、怎麼驗、怎麼把關。如果你想替團隊建立 agent 協作的規範與 review 流程，可以[預約 30 分鐘初談](/booking)。

@@ -1,0 +1,77 @@
+---
+title: "Google will support a shared AI training control: what site owners should set in robots.txt"
+date: "2026-11-03"
+summary: "On October 30, Google announced it will support a shared, IETF-based AI training control in robots.txt, so one rule can tell every AI provider not to train on your content. It is planned for 2027. What it covers, what it does not, and what you can set today."
+slug: "google-ai-training-control-robots-en"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["SEO", "robots.txt", "AI", "trends"]
+locale: "en"
+---
+
+# Google will support a shared AI training control
+
+On October 30, the Google Search Central blog published a short post: [Supporting a shared AI training control for websites](https://developers.google.com/search/blog/2026/10/ai-training-control), by John Mueller. The point is simple: **Google plans to support one robots.txt training control shared across AI providers.**
+
+For personal sites, blogs and portfolios, this is one of the few search announcements this year that actually affects you.
+
+## 1. What it is
+
+- **Mechanism:** a shared "policy token" in robots.txt that says "do not use this site's content to train AI".
+- **Origin:** the IETF AIPREF working group ([draft](https://datatracker.ietf.org/doc/draft-kelley-aipref-training-preference-signal/)). It is not a Google-only spec.
+- **Syntax:** Google's [crawler documentation](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers#google-extended) currently refers to it as `user-agent: __usage_ai-training`. The spec is still a draft, so the final syntax may change.
+- **Timing:** Google says it aims to support it alongside other AI providers in **2027**; the documentation says early 2027.
+
+## 2. How it relates to Google-Extended
+
+Google already has its own control, `Google-Extended`, which governs whether content is used for Gemini training and grounding. The shared control does not replace it:
+
+- If a site opts out with the shared token **and does not mention Google-Extended**, Google will treat it as if Google-Extended were disallowed.
+- If a site **explicitly sets Google-Extended**, that rule wins.
+- Each company's existing controls keep working.
+
+Google's documentation is also clear that **Google-Extended does not affect whether a site appears in Google Search and is not a ranking signal.** So the worry that opting out of training hurts your ranking does not hold, at least on the Google-Extended side.
+
+## 3. What it does not cover
+
+This is the part most likely to be misread:
+
+- It controls **training**, not search. Whether you are indexed is still up to `Googlebot`.
+- The announcement does not mention AI Overviews or AI Mode. If you want to stay out of AI summaries entirely, this token is not the answer.
+- Conversely, Google notes that **sites that explicitly allow Google-Extended are eligible to appear in Gemini Apps responses and receive clicks via grounding.**
+
+So there is a trade-off: opting out of training and grounding also means giving up being cited in Gemini answers.
+
+## 4. What site owners can do now
+
+### 1. Decide where you stand
+
+Ask yourself: do I want AI to learn from my content and cite it?
+
+- **Freelancers, consultants, personal brands:** you usually want to be seen and cited. Stay open and put the effort into content quality.
+- **Paid content, original work, photography and illustration:** you may care more about training use and choose to opt out.
+
+### 2. What works today: Google-Extended
+
+If you want to stop Gemini from using your content, you can add this to robots.txt now:
+
+```txt
+User-agent: Google-Extended
+Disallow: /
+```
+
+You can also block only some paths. Google's own example allows a single page and blocks the rest of a directory.
+
+### 3. Add the shared token once the spec is final
+
+`__usage_ai-training` is still an IETF draft, and Google expects to support it in 2027. Note it now and add it when it is officially live, so you are not shipping a rule nobody reads.
+
+### 4. On Next.js, robots lives in code
+
+This site uses `app/robots.ts`. The current rules allow everything except the admin and tool pages. My position is **open**: these articles are meant to be read and cited, and the site also serves `/llms.txt` so AI tools can understand its structure more easily.
+
+---
+
+For the first time, there is a shared, cross-company language for how AI providers may use website content. It is not perfect and not live yet, but the direction is right: **the decision goes back to the site owner.** If you want your site's robots, sitemap and SEO setup reviewed, [book a 30-minute intro call](/booking).

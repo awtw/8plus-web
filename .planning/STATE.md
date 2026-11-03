@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-02 14:07 +0800 — Blog 分類／訂閱／11 月文章上線正式站（Worker `71ada4b6`）；Kit 電子報表單已接上
+Last activity: 2026-11-03 +0800 — 新增 11 月第二批趨勢文章（Octoverse 2026、Google AI 訓練控制，中英各一）；未 commit、未部署
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-03 +0800 — 11 月趨勢文章第二批（中英各二）**：`content/posts/2026-11-03-*`。①GitHub Octoverse 2026（10/28）：9 月超過 40% PR 由 agent 起手（3 月 17%）、agent PR 兩週合併率 83%→90%（一般約 86%）、87% 跨多檔、TypeScript 居首，接續 11/02 哈佛研究文；數字皆核對 github.blog 原文（Visual Studio Magazine 403 未採用）。②Google 10/30 宣布支援 IETF AIPREF 共通 AI 訓練控制（robots.txt policy token `__usage_ai-training`，目標 2027），與 Google-Extended 的優先順序、不影響搜尋排名、拒絕即放棄 Gemini grounding；來源為 Search Central 部落格與 Google 爬蟲文件。原先考慮的 Google 9 月垃圾更新、AI Overviews 連結等，因無一手來源可核對日期而未寫。`published: true`，`pnpm build` 通過（`next-env.d.ts` 已保留）；未 commit、未部署。
 
 - ✅ **2026-11-02 14:07 +0800 — Blog 分類、訂閱與 11 月文章上線正式站**：Kit 表單 ID `10131083`（`NEXT_PUBLIC_NEWSLETTER_FORM_ACTION=https://app.kit.com/forms/10131083/subscriptions`、`NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD=email_address`，建置時帶入；本機寫在 `.env.local`）。測試訂閱 alec.wang.tpe@gmail.com 送出後 Kit 回 302 到 success 頁。第一次部署 `234a91ff` 讓 `/`、`/blog` 等 18 個路由回 500，已回滾到 `34b69703`。原因：root layout 的 `alternates.types` 用了 `[{ url, title }]` 陣列，vinext 的 metadata 解析把它當字串呼叫 `.startsWith` 而崩潰（文章頁有自己的 metadata 所以沒事；`next build` 不會發現）。改成在 `<head>` 直接寫兩個 `<link rel=alternate>`，本機 `vite preview`（workerd）smoke／SEO 全過後重新部署 `71ada4b6-9108-4f68-950a-d72567dac829`，回滾目標 `34b69703`。部署後 smoke、SEO 對 `https://www.8plus.app` 全過，workers.dev smoke 全過；兩個 feed 各 14 篇、`/blog?category=career` 200、Email 表單指向 Kit。教訓：部署前要先用 `npx vite preview` 跑 smoke。另：vinext 建置會改寫 `.next/types/routes.d.ts`，造成 typecheck 報錯，執行 `npx next typegen` 即可（記得保留 `next-env.d.ts`）。Vercel 未更新；分支未 push。
 

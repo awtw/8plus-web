@@ -1,0 +1,77 @@
+---
+title: "GitHub Octoverse 2026: agents start 40% of pull requests. Change the process, not the headcount"
+date: "2026-11-03"
+summary: "GitHub's Octoverse 2026 report says more than 40% of pull requests in September started with a coding agent, up from 17% in March. The numbers that matter for teams, and four things to change first."
+slug: "octoverse-2026-agent-pull-requests-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI agents", "GitHub", "code review", "trends"]
+locale: "en"
+---
+
+# GitHub Octoverse 2026: agents start 40% of pull requests
+
+On October 28, GitHub published its annual [Octoverse 2026](https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/) report. The line everyone is quoting: **as of September, more than 40% of pull requests start with an agent. In March it was 17%.**
+
+Last week I wrote about [a Harvard study showing AI agents produce 30% more code without shipping more software](/blog/ai-agents-more-code-not-more-software-en). Octoverse looks at the same shift from a different angle: not the payoff for one team, but the traffic on the whole platform.
+
+## 1. The scale
+
+The report covers October 1, 2025 to September 30, 2026, across public and private repositories:
+
+| Metric | 2025 | 2026 |
+|--------|------|------|
+| Pushes | 6.7B | **17.9B** |
+| Commits | 12.9B | **34.3B** |
+| Merged pull requests | 538M | **1.3B** (3.5M a day on average) |
+| GitHub Actions jobs | 14.0B | **45.4B** |
+
+There were more pushes this year than in 2024 and 2025 combined, and GitHub now has more than 225 million developers.
+
+## 2. Five numbers about agents
+
+1. **More than 40% of pull requests start with an agent** (17% in March). GitHub counts a pull request when its first draft came from a coding agent it can detect, so undetected use is not included.
+2. **Agent pull requests now merge more often.** In February, 83% of agent-involved pull requests merged within two weeks, slightly behind roughly 86% for the rest. By September, agent pull requests were at 90% while the comparison group held at about 86%.
+3. **Agent pull requests touch more files.** About 87% change multiple files, compared with 79% of other pull requests.
+4. **TypeScript is still the top language by contributors**, followed by Python and JavaScript. Among repositories created in 2026, TypeScript was the primary language in 35% of those with an agent signal, versus 24% without one.
+5. **Review tooling is growing too.** Use of AI-assisted code review and GitHub Advanced Security each grew more than 90% year over year, and 55% of Copilot's monthly active users now use agentic features (35% a year ago).
+
+One more observation I found interesting: among repositories created this year, **those with an agent configuration file (such as `AGENTS.md`) logged eight times as many commits** as those without one. That does not mean the file causes the output. More likely, teams that take agents seriously also take the time to configure them.
+
+## 3. How I read it
+
+### A higher merge rate is not proof of quality
+
+Agent pull requests went from trailing to leading on two-week merge rate. You can read that as "agents are getting better", or as "reviewers are getting used to approving them". The report measures merges, not incidents or rollbacks after the merge. Good news, but not a conclusion.
+
+### Multi-file changes are where review costs go up
+
+87% of agent pull requests touch several files, and cross-file changes are where side effects hide. This lines up with the Harvard finding that review time and change requests went up. When writing code gets cheap, the pressure moves downstream.
+
+### TypeScript's lead will keep growing
+
+Types act as both a spec and a check for agents. When an agent gets something wrong, `tsc` catches it before a person has to. If your team is still undecided between plain JavaScript and TypeScript, this is one more reason.
+
+## 4. Four things teams can change first
+
+### 1. Write an `AGENTS.md`
+
+Spell out project conventions, the commands to install, test and build, the directories that are off limits, and the PR format. It is the cheapest way to get agent output that looks like your team wrote it. This site has one too.
+
+### 2. Keep pull requests small
+
+Tell agents to do one thing per pull request and include verification steps. GitHub's stacked pull requests (preview since July 30, used by more than 264,000 developers by September) exist for exactly this: splitting a large change into reviewable pieces.
+
+### 3. Measure what happens after the merge
+
+Alongside merge rate, track rollbacks, bugs within seven days of release, and hotfixes. Those show the real quality of agent pull requests.
+
+### 4. Let CI do the mechanical checks
+
+Types, lint, tests and secret scanning should all pass before a pull request reaches a person. Push protection scans rose sharply in the report for a simple reason: the faster code is produced, the more chances there are to push a secret by mistake.
+
+---
+
+Agent-started pull requests went from under a fifth to over two fifths in six months. What separates teams now is how they review, verify and gate that work. If you want to set up agent guidelines and a review process for your team, [book a 30-minute intro call](/booking).

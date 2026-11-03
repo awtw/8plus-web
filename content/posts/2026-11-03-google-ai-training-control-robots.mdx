@@ -1,0 +1,77 @@
+---
+title: "Google 宣布支援共通的 AI 訓練開關：網站主現在該怎麼設定 robots.txt"
+date: "2026-11-03"
+summary: "Google 10/30 宣布將支援 IETF 提案的共通 AI 訓練控制，用 robots.txt 一次告訴各家 AI 業者「不要拿我的內容訓練模型」，預計 2027 年上線。整理它管什麼、不管什麼，以及現在可以先做的設定。"
+slug: "google-ai-training-control-robots"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["SEO", "robots.txt", "AI", "趨勢"]
+locale: "zh-TW"
+---
+
+# Google 宣布支援共通的 AI 訓練開關
+
+10 月 30 日，Google Search Central 部落格發了一篇短文：[Supporting a shared AI training control for websites](https://developers.google.com/search/blog/2026/10/ai-training-control)（John Mueller）。重點只有一個：**Google 打算支援一個「各家 AI 業者共用」的 robots.txt 訓練控制。**
+
+對個人網站、部落格、作品集來說，這是今年少數真正跟你有關的搜尋消息。
+
+## 一、它是什麼
+
+- **機制**：寫在 robots.txt 裡的一個共通「policy token」，用來表達「不要拿這個網站的內容訓練 AI」。
+- **來源**：IETF 的 AIPREF 工作小組（[提案草稿](https://datatracker.ietf.org/doc/draft-kelley-aipref-training-preference-signal/)）。不是 Google 自己的規格。
+- **寫法**：Google 的[爬蟲文件](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers#google-extended)目前寫的是 `user-agent: __usage_ai-training`。規格還在草稿階段，正式寫法以上線時為準。
+- **時程**：Google 說目標是 **2027 年**與其他 AI 業者一起支援，文件寫的是 2027 年初。
+
+## 二、跟 Google-Extended 的關係
+
+Google 早就有自己的開關 `Google-Extended`，用來控制內容是否用於 Gemini 的訓練與 grounding。新的共通開關不會取代它：
+
+- 網站用共通 token 拒絕訓練、**而且沒有另外寫 Google-Extended** → Google 會把它當成拒絕 Google-Extended。
+- 網站**有明確寫 Google-Extended** → 以 Google-Extended 的設定為準。
+- 各家既有的專屬開關會繼續有效。
+
+另外，Google 文件寫得很清楚：**Google-Extended 不影響網站是否出現在 Google 搜尋，也不是排名訊號。**所以「關掉訓練會不會掉排名」這個擔心，至少在 Google-Extended 這一側是不成立的。
+
+## 三、它不管什麼
+
+這點最容易被誤會：
+
+- 它是**訓練**的開關，不是搜尋的開關。要不要被 Google 搜尋收錄，還是由 `Googlebot` 決定。
+- 公告沒有提到 AI Overviews 或 AI Mode。如果你希望完全不出現在 AI 摘要裡，這個 token 不是答案。
+- 反過來，Google 提到：**明確允許 Google-Extended 的網站，才有資格透過 grounding 出現在 Gemini Apps 的回答裡並獲得點擊。**
+
+所以這是取捨：拒絕訓練與 grounding，就放棄了在 Gemini 回答中被引用的機會。
+
+## 四、網站主現在可以怎麼做
+
+### 1. 先決定立場
+
+問自己：我希望 AI 學我的內容、引用我嗎？
+
+- **接案者、顧問、個人品牌**：通常希望被看見、被引用。保持開放，把力氣放在內容品質上。
+- **付費內容、原創作品、攝影與插畫**：可能更在意被拿去訓練。可以考慮拒絕。
+
+### 2. 今天就能用的設定：Google-Extended
+
+如果你想拒絕 Gemini 使用內容，現在就能在 robots.txt 加上：
+
+```txt
+User-agent: Google-Extended
+Disallow: /
+```
+
+也可以只擋部分路徑，例如 Google 文件的範例是允許單一頁、擋整個目錄。
+
+### 3. 共通 token 等規格定案再加
+
+`__usage_ai-training` 還在 IETF 草稿階段，Google 預計 2027 年才支援。現在可以先記下來，等正式公告再上，避免寫了一個沒人讀的規則。
+
+### 4. 用 Next.js 的話，robots 寫在程式裡
+
+8plus 這個網站用的是 `app/robots.ts`，目前規則是全部允許、只擋後台與工具頁。我的立場是**開放**：這裡的文章本來就是希望被讀到、被引用；網站也另外提供 `/llms.txt`，讓 AI 工具更容易讀懂網站結構。
+
+---
+
+AI 業者用什麼內容、怎麼用，終於開始有一個跨公司的共通語言。它還不完美，也還沒上線，但方向是對的：**決定權回到網站主手上。**如果你想檢查自己網站的 robots、sitemap 與 SEO 設定，可以[預約 30 分鐘初談](/booking)。

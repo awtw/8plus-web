@@ -1,48 +1,67 @@
 ---
-title: "b18 品牌官網"
+title: "b18 品牌官網｜basement18 studio"
 slug: "b18"
-summary: "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。"
+baseSlug: "b18"
+summary: "設計師服裝品牌 basement18 studio 的官網：以「地下十八層」為世界觀，用深色地下室美學呈現系列、Lookbook 與品牌故事，並導流到 Instagram 與實體寄賣。"
 published: true
 locale: "zh-TW"
 type: case-study
 featured: true
-client: "b18 新創服飾品牌"
-challenge: "新品牌需在同時建立視覺識別、產品敘事與 Instagram 導流，且預算與時程有限。"
-solution: "以 Next.js 建置輕量官網，整合品牌故事、Lookbook 與社群 CTA，並優化行動端首屏轉換。"
+client: "basement18 studio（B18 域拾捌設計）"
+role: "品牌 / 前端"
+stack: ["Next.js", "Vercel", "Instagram", "UI/UX Design"]
+challenge: "新品牌的世界觀很強烈（十八層地獄、宗教符號的解構），但只有零散的 IG 貼文；需要一個能把系列、穿搭照與品牌理念串起來，又能把人帶回 IG 與實體通路的官網。"
+solution: "以 Next.js 建置深色官網：首頁直接進入世界觀，系列頁分 GUANX3 與神明事務所兩條線，Lookbook 與 IG 牆共用作品素材，About 拆解 Logo 與品牌故事，Contact 整理寄賣店家與租借管道。"
 resultMetrics:
-  - label: "上線"
-    value: "2 週內"
-  - label: "技術"
+  - label: "系列"
+    value: "2 條系列線"
+  - label: "頁面"
+    value: "首頁／系列／Lookbook／About／Contact"
+  - label: "部署"
     value: "Next.js + Vercel"
-  - label: "導流"
-    value: "IG 整合"
 links:
-  website: "https://b18.8plus.app/"
-deadLinks: ["website"]
-linksCheckedAt: "2026-11-02"
+  website: "https://b18-seven.vercel.app/"
 ---
 
-# B18 品牌官網
+# b18 品牌官網 — basement18 studio
 
-**Tags**: vibe coding, Next.js, Instagram, UI/UX Design, Vercel
+![basement18 studio 首頁](/og/labs/b18/web.png)
 
-## 專案簡介
-為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。
+**Tags**: Next.js, Vercel, Instagram, UI/UX Design
+
+## 品牌與世界觀
+B18 是電梯的「地下 18 樓」：B 是 Basement，18 影射民間信仰的十八層地獄，同時也是觀音菩薩的象徵數字。品牌以「唯有地獄才知道天堂的好」為核心，把傳統宗教符號與現代時尚語彙解構重組，探討真實人性。
+
+Logo 以電梯樓層識別為原型，三個模糊、無法被定義的人形同時是「B18」的縮寫，象徵人性的多重面向。
+
+## 網站架構
+- **首頁**：B18 STUDIO／B18 域拾捌設計標準字搭配跑馬燈標語，直接帶入世界觀，再接系列與 Instagram 牆。
+- **Series**：兩條系列線
+  - **B18 GUANX3**：Concrete, neon, industrial silhouettes（混凝土、霓虹、工業剪影）
+  - **B18 神明事務所**：Ritual textures, matte blacks, sacred geometry（儀式質感、霧黑、神聖幾何）
+- **Lookbook**：模特兒穿搭照牆，與 IG 共用素材。
+- **About**：品牌故事、Logo 設計理念與設計師 DK Marc 的創作觀。
+- **Contact**：社群管道、實體寄賣合作店家與服裝租借說明。
+
+![系列頁](/og/labs/b18/series.png)
+![B18 神明事務所系列](/og/labs/b18/temple-office.png)
+![Lookbook](/og/labs/b18/lookbook.png)
+![About 品牌故事](/og/labs/b18/about.png)
 
 ## 設計與體驗
-- 以版型與留白凸顯產品質感與品牌定位
-- 以導購節點導流至社群與購買流程
-- 具一致性的設計系統與元件
+- 深色地下室色調、粗體窄字標題與紅色點綴，讓畫面像走進地下樓層。
+- 作品圖保留原始比例，不加多餘裝飾，讓服裝與圖像本身說話。
+- 每個區塊都有通往 Instagram 的出口，官網負責「講清楚品牌」，IG 負責日常更新與互動。
+- 行動版優先：首屏即是品牌標語與兩個主要入口（Explore Series／About the Brand）。
 
-## 技術棧
-- 前端：Next.js
-- 佈署：Vercel
-- 社群整合：Instagram 嵌入/導流
+![行動版首頁](/og/labs/b18/mobile.png)
 
-## 截圖
-![B18 Web](/og/labs/b18/web.png)
-![B18 Content](/og/labs/b18/content.png)
+## 技術
+- Next.js，部署於 Vercel
+- 系列頁採動態路由（`/series/[slug]`）
+- Instagram 導流：作品牆與 Follow 按鈕直接連到官方帳號
 
 ## 連結
-- ~~<https://b18.8plus.app/>~~ ⛓️‍💥 *（2026-11 已失效）*
-
+- 官網：<https://b18-seven.vercel.app/>
+- Instagram：<https://www.instagram.com/basement18_studio/>
+- 舊網址 ~~<https://b18.8plus.app/>~~ ⛓️‍💥 *（2026-11 已失效，已搬遷至上方新網址）*

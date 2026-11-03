@@ -122,76 +122,83 @@
     "url": "/lab/anti-coworker"
   },
   {
-    "title": "B18 Brand Website",
+    "title": "B18 Brand Website — basement18 studio",
     "slug": "b18",
     "baseSlug": "b18",
-    "links": {
-      "website": "https://b18.8plus.app/"
-    },
-    "deadLinks": [
-      "website"
+    "role": "Brand / Frontend",
+    "stack": [
+      "Next.js",
+      "Vercel",
+      "Instagram",
+      "UI/UX Design"
     ],
-    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
+    "links": {
+      "website": "https://b18-seven.vercel.app/"
+    },
     "type": "case-study",
-    "challenge": "A new brand needed visual identity, product narrative, and Instagram conversion on a tight timeline and budget.",
-    "solution": "Lightweight Next.js site with brand story, lookbook, and social CTAs optimized for mobile-first conversion.",
-    "client": "b18 fashion brand",
+    "challenge": "The label had a strong world (the eighteen levels of hell, deconstructed religious symbols) but only scattered Instagram posts; it needed a site tying collections, lookbook and philosophy together while sending people back to Instagram and stockists.",
+    "solution": "A dark Next.js site: the home page drops you straight into the world, Series splits into GUANX3 and Temple Office, Lookbook and the Instagram wall share imagery, About unpacks the logo and story, and Contact lists stockists and rental.",
+    "client": "basement18 studio (B18)",
     "featured": true,
     "resultMetrics": [
       {
-        "label": "Launch",
-        "value": "Within 2 weeks"
+        "label": "Collections",
+        "value": "2 series"
+      },
+      {
+        "label": "Pages",
+        "value": "Home / Series / Lookbook / About / Contact"
       },
       {
         "label": "Stack",
         "value": "Next.js + Vercel"
-      },
-      {
-        "label": "Social",
-        "value": "IG integration"
       }
     ],
-    "summary": "A brand website for an emerging fashion designer, integrating visual language, brand storytelling, and social conversion paths.",
+    "summary": "The website for designer fashion label basement18 studio: a dark, basement-level world built around 'the 18th floor underground', presenting collections, lookbook and brand story while routing visitors to Instagram and physical stockists.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"b18-brand-website\">B18 Brand Website</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"overview\">Overview</h2>\n<p>This Lab is a brand website for an emerging clothing designer, focused on visual language, brand storytelling, and social touchpoints that guide users toward interaction and conversion.</p>\n<h2 id=\"design--experience\">Design &#x26; Experience</h2>\n<ul>\n<li>Use layout and whitespace to highlight product texture and brand positioning</li>\n<li>Guide users from brand discovery to social and purchase flows</li>\n<li>Keep a consistent design system and reusable components</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Social integration: Instagram embed / traffic routing</li>\n</ul>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n</ul>",
+    "html": "<h1 id=\"b18-brand-website--basement18-studio\">B18 Brand Website — basement18 studio</h1>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"basement18 studio home\"></p>\n<p><strong>Tags</strong>: Next.js, Vercel, Instagram, UI/UX Design</p>\n<h2 id=\"brand-and-world\">Brand and world</h2>\n<p>B18 is basement level 18 on an elevator panel: B for basement, 18 for the eighteen levels of hell in Chinese folk belief, and also a number tied to Guanyin. The label's line is roughly \"only hell knows how good heaven is\", deconstructing traditional religious symbols with contemporary fashion language to explore human nature.</p>\n<p>The logo borrows an elevator floor marker: three blurred, undefinable figures that also spell \"B18\", standing for the many sides of human nature.</p>\n<h2 id=\"site-structure\">Site structure</h2>\n<ul>\n<li><strong>Home</strong>: the B18 STUDIO wordmark with a scrolling tagline, then collections and an Instagram wall.</li>\n<li><strong>Series</strong>: two lines\n<ul>\n<li><strong>B18 GUANX3</strong>: concrete, neon, industrial silhouettes</li>\n<li><strong>B18 Temple Office (神明事務所)</strong>: ritual textures, matte blacks, sacred geometry</li>\n</ul>\n</li>\n<li><strong>Lookbook</strong>: a wall of styled shots, sharing imagery with Instagram.</li>\n<li><strong>About</strong>: brand story, logo concept and designer DK Marc's point of view.</li>\n<li><strong>Contact</strong>: social channels, partner stockists and clothing rental.</li>\n</ul>\n<p><img src=\"/og/labs/b18/series.png\" alt=\"Series\">\n<img src=\"/og/labs/b18/temple-office.png\" alt=\"B18 Temple Office series\">\n<img src=\"/og/labs/b18/lookbook.png\" alt=\"Lookbook\">\n<img src=\"/og/labs/b18/about.png\" alt=\"About\"></p>\n<h2 id=\"design-and-experience\">Design and experience</h2>\n<ul>\n<li>Dark basement tones, bold condensed headings and red accents make the site feel like stepping down a floor.</li>\n<li>Images keep their original ratios with no extra decoration, letting garments and graphics speak.</li>\n<li>Every section has an exit to Instagram: the site explains the brand, Instagram carries daily updates.</li>\n<li>Mobile first: the first screen is the tagline and two entry points (Explore Series / About the Brand).</li>\n</ul>\n<p><img src=\"/og/labs/b18/mobile.png\" alt=\"Mobile home\"></p>\n<h2 id=\"tech\">Tech</h2>\n<ul>\n<li>Next.js, hosted on Vercel</li>\n<li>Collections use dynamic routes (<code>/series/[slug]</code>)</li>\n<li>Instagram routing: the gallery and follow buttons link to the official account</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li>Website: <a href=\"https://b18-seven.vercel.app/\">https://b18-seven.vercel.app/</a></li>\n<li>Instagram: <a href=\"https://www.instagram.com/basement18_studio/\">https://www.instagram.com/basement18_studio/</a></li>\n<li>Old URL <del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>(offline as of 2026-11, moved to the URL above)</em></li>\n</ul>",
     "url": "/lab/b18"
   },
   {
-    "title": "b18 品牌官網",
+    "title": "b18 品牌官網｜basement18 studio",
     "slug": "b18",
-    "links": {
-      "website": "https://b18.8plus.app/"
-    },
-    "deadLinks": [
-      "website"
+    "baseSlug": "b18",
+    "role": "品牌 / 前端",
+    "stack": [
+      "Next.js",
+      "Vercel",
+      "Instagram",
+      "UI/UX Design"
     ],
-    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
+    "links": {
+      "website": "https://b18-seven.vercel.app/"
+    },
     "type": "case-study",
-    "challenge": "新品牌需在同時建立視覺識別、產品敘事與 Instagram 導流，且預算與時程有限。",
-    "solution": "以 Next.js 建置輕量官網，整合品牌故事、Lookbook 與社群 CTA，並優化行動端首屏轉換。",
-    "client": "b18 新創服飾品牌",
+    "challenge": "新品牌的世界觀很強烈（十八層地獄、宗教符號的解構），但只有零散的 IG 貼文；需要一個能把系列、穿搭照與品牌理念串起來，又能把人帶回 IG 與實體通路的官網。",
+    "solution": "以 Next.js 建置深色官網：首頁直接進入世界觀，系列頁分 GUANX3 與神明事務所兩條線，Lookbook 與 IG 牆共用作品素材，About 拆解 Logo 與品牌故事，Contact 整理寄賣店家與租借管道。",
+    "client": "basement18 studio（B18 域拾捌設計）",
     "featured": true,
     "resultMetrics": [
       {
-        "label": "上線",
-        "value": "2 週內"
+        "label": "系列",
+        "value": "2 條系列線"
       },
       {
-        "label": "技術",
+        "label": "頁面",
+        "value": "首頁／系列／Lookbook／About／Contact"
+      },
+      {
+        "label": "部署",
         "value": "Next.js + Vercel"
-      },
-      {
-        "label": "導流",
-        "value": "IG 整合"
       }
     ],
-    "summary": "為新創服裝設計師打造的品牌官網，整合視覺語彙、品牌故事與社群導流。",
+    "summary": "設計師服裝品牌 basement18 studio 的官網：以「地下十八層」為世界觀，用深色地下室美學呈現系列、Lookbook 與品牌故事，並導流到 Instagram 與實體寄賣。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"b18-品牌官網\">B18 品牌官網</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。</p>\n<h2 id=\"設計與體驗\">設計與體驗</h2>\n<ul>\n<li>以版型與留白凸顯產品質感與品牌定位</li>\n<li>以導購節點導流至社群與購買流程</li>\n<li>具一致性的設計系統與元件</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Next.js</li>\n<li>佈署：Vercel</li>\n<li>社群整合：Instagram 嵌入/導流</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n</ul>",
+    "html": "<h1 id=\"b18-品牌官網--basement18-studio\">b18 品牌官網 — basement18 studio</h1>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"basement18 studio 首頁\"></p>\n<p><strong>Tags</strong>: Next.js, Vercel, Instagram, UI/UX Design</p>\n<h2 id=\"品牌與世界觀\">品牌與世界觀</h2>\n<p>B18 是電梯的「地下 18 樓」：B 是 Basement，18 影射民間信仰的十八層地獄，同時也是觀音菩薩的象徵數字。品牌以「唯有地獄才知道天堂的好」為核心，把傳統宗教符號與現代時尚語彙解構重組，探討真實人性。</p>\n<p>Logo 以電梯樓層識別為原型，三個模糊、無法被定義的人形同時是「B18」的縮寫，象徵人性的多重面向。</p>\n<h2 id=\"網站架構\">網站架構</h2>\n<ul>\n<li><strong>首頁</strong>：B18 STUDIO／B18 域拾捌設計標準字搭配跑馬燈標語，直接帶入世界觀，再接系列與 Instagram 牆。</li>\n<li><strong>Series</strong>：兩條系列線\n<ul>\n<li><strong>B18 GUANX3</strong>：Concrete, neon, industrial silhouettes（混凝土、霓虹、工業剪影）</li>\n<li><strong>B18 神明事務所</strong>：Ritual textures, matte blacks, sacred geometry（儀式質感、霧黑、神聖幾何）</li>\n</ul>\n</li>\n<li><strong>Lookbook</strong>：模特兒穿搭照牆，與 IG 共用素材。</li>\n<li><strong>About</strong>：品牌故事、Logo 設計理念與設計師 DK Marc 的創作觀。</li>\n<li><strong>Contact</strong>：社群管道、實體寄賣合作店家與服裝租借說明。</li>\n</ul>\n<p><img src=\"/og/labs/b18/series.png\" alt=\"系列頁\">\n<img src=\"/og/labs/b18/temple-office.png\" alt=\"B18 神明事務所系列\">\n<img src=\"/og/labs/b18/lookbook.png\" alt=\"Lookbook\">\n<img src=\"/og/labs/b18/about.png\" alt=\"About 品牌故事\"></p>\n<h2 id=\"設計與體驗\">設計與體驗</h2>\n<ul>\n<li>深色地下室色調、粗體窄字標題與紅色點綴，讓畫面像走進地下樓層。</li>\n<li>作品圖保留原始比例，不加多餘裝飾，讓服裝與圖像本身說話。</li>\n<li>每個區塊都有通往 Instagram 的出口，官網負責「講清楚品牌」，IG 負責日常更新與互動。</li>\n<li>行動版優先：首屏即是品牌標語與兩個主要入口（Explore Series／About the Brand）。</li>\n</ul>\n<p><img src=\"/og/labs/b18/mobile.png\" alt=\"行動版首頁\"></p>\n<h2 id=\"技術\">技術</h2>\n<ul>\n<li>Next.js，部署於 Vercel</li>\n<li>系列頁採動態路由（<code>/series/[slug]</code>）</li>\n<li>Instagram 導流：作品牆與 Follow 按鈕直接連到官方帳號</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>官網：<a href=\"https://b18-seven.vercel.app/\">https://b18-seven.vercel.app/</a></li>\n<li>Instagram：<a href=\"https://www.instagram.com/basement18_studio/\">https://www.instagram.com/basement18_studio/</a></li>\n<li>舊網址 <del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>（2026-11 已失效，已搬遷至上方新網址）</em></li>\n</ul>",
     "url": "/lab/b18"
   },
   {

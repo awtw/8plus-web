@@ -1,48 +1,67 @@
 ---
-title: "B18 Brand Website"
+title: "B18 Brand Website — basement18 studio"
 slug: "b18"
 baseSlug: "b18"
-summary: "A brand website for an emerging fashion designer, integrating visual language, brand storytelling, and social conversion paths."
+summary: "The website for designer fashion label basement18 studio: a dark, basement-level world built around 'the 18th floor underground', presenting collections, lookbook and brand story while routing visitors to Instagram and physical stockists."
 published: true
 locale: "en"
 type: case-study
 featured: true
-client: "b18 fashion brand"
-challenge: "A new brand needed visual identity, product narrative, and Instagram conversion on a tight timeline and budget."
-solution: "Lightweight Next.js site with brand story, lookbook, and social CTAs optimized for mobile-first conversion."
+client: "basement18 studio (B18)"
+role: "Brand / Frontend"
+stack: ["Next.js", "Vercel", "Instagram", "UI/UX Design"]
+challenge: "The label had a strong world (the eighteen levels of hell, deconstructed religious symbols) but only scattered Instagram posts; it needed a site tying collections, lookbook and philosophy together while sending people back to Instagram and stockists."
+solution: "A dark Next.js site: the home page drops you straight into the world, Series splits into GUANX3 and Temple Office, Lookbook and the Instagram wall share imagery, About unpacks the logo and story, and Contact lists stockists and rental."
 resultMetrics:
-  - label: "Launch"
-    value: "Within 2 weeks"
+  - label: "Collections"
+    value: "2 series"
+  - label: "Pages"
+    value: "Home / Series / Lookbook / About / Contact"
   - label: "Stack"
     value: "Next.js + Vercel"
-  - label: "Social"
-    value: "IG integration"
 links:
-  website: "https://b18.8plus.app/"
-deadLinks: ["website"]
-linksCheckedAt: "2026-11-02"
+  website: "https://b18-seven.vercel.app/"
 ---
 
-# B18 Brand Website
+# B18 Brand Website — basement18 studio
 
-**Tags**: vibe coding, Next.js, Instagram, UI/UX Design, Vercel
+![basement18 studio home](/og/labs/b18/web.png)
 
-## Overview
-This Lab is a brand website for an emerging clothing designer, focused on visual language, brand storytelling, and social touchpoints that guide users toward interaction and conversion.
+**Tags**: Next.js, Vercel, Instagram, UI/UX Design
 
-## Design & Experience
-- Use layout and whitespace to highlight product texture and brand positioning
-- Guide users from brand discovery to social and purchase flows
-- Keep a consistent design system and reusable components
+## Brand and world
+B18 is basement level 18 on an elevator panel: B for basement, 18 for the eighteen levels of hell in Chinese folk belief, and also a number tied to Guanyin. The label's line is roughly "only hell knows how good heaven is", deconstructing traditional religious symbols with contemporary fashion language to explore human nature.
 
-## Stack
-- Frontend: Next.js
-- Deployment: Vercel
-- Social integration: Instagram embed / traffic routing
+The logo borrows an elevator floor marker: three blurred, undefinable figures that also spell "B18", standing for the many sides of human nature.
 
-## Screenshots
-![B18 Web](/og/labs/b18/web.png)
-![B18 Content](/og/labs/b18/content.png)
+## Site structure
+- **Home**: the B18 STUDIO wordmark with a scrolling tagline, then collections and an Instagram wall.
+- **Series**: two lines
+  - **B18 GUANX3**: concrete, neon, industrial silhouettes
+  - **B18 Temple Office (神明事務所)**: ritual textures, matte blacks, sacred geometry
+- **Lookbook**: a wall of styled shots, sharing imagery with Instagram.
+- **About**: brand story, logo concept and designer DK Marc's point of view.
+- **Contact**: social channels, partner stockists and clothing rental.
 
-## Link
-- ~~<https://b18.8plus.app/>~~ ⛓️‍💥 *(offline as of 2026-11)*
+![Series](/og/labs/b18/series.png)
+![B18 Temple Office series](/og/labs/b18/temple-office.png)
+![Lookbook](/og/labs/b18/lookbook.png)
+![About](/og/labs/b18/about.png)
+
+## Design and experience
+- Dark basement tones, bold condensed headings and red accents make the site feel like stepping down a floor.
+- Images keep their original ratios with no extra decoration, letting garments and graphics speak.
+- Every section has an exit to Instagram: the site explains the brand, Instagram carries daily updates.
+- Mobile first: the first screen is the tagline and two entry points (Explore Series / About the Brand).
+
+![Mobile home](/og/labs/b18/mobile.png)
+
+## Tech
+- Next.js, hosted on Vercel
+- Collections use dynamic routes (`/series/[slug]`)
+- Instagram routing: the gallery and follow buttons link to the official account
+
+## Links
+- Website: <https://b18-seven.vercel.app/>
+- Instagram: <https://www.instagram.com/basement18_studio/>
+- Old URL ~~<https://b18.8plus.app/>~~ ⛓️‍💥 *(offline as of 2026-11, moved to the URL above)*

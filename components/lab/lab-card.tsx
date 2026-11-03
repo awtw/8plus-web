@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LinkBreak } from '@phosphor-icons/react'
 import type { Project } from '@/lib/projects'
 
 type LabCardProps = {
@@ -7,9 +8,10 @@ type LabCardProps = {
   chip?: string
   featured?: boolean
   cta?: string
+  offline?: string
 }
 
-export function LabCard({ project, roleTag, chip, featured, cta }: LabCardProps) {
+export function LabCard({ project, roleTag, chip, featured, cta, offline }: LabCardProps) {
   const tags = (project.stack ?? []).slice(0, 4)
   return (
     <Link href={`/lab/${project.slug}`} className="lab-card gradient-border-card">
@@ -20,6 +22,12 @@ export function LabCard({ project, roleTag, chip, featured, cta }: LabCardProps)
       <h3 className="lab-card-title">
         {project.title}
         {chip ? <span className="lab-chip">{chip}</span> : null}
+        {offline ? (
+          <span className="lab-chip lab-chip-offline">
+            <LinkBreak className="h-3 w-3" weight="bold" aria-hidden="true" />
+            {offline}
+          </span>
+        ) : null}
       </h3>
       <p className="lab-card-summary">{project.summary}</p>
       {tags.length > 0 ? (

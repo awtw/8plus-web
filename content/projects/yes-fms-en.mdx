@@ -1,0 +1,67 @@
+---
+title: "YES Financial System — Fund Analytics & Data Pipeline"
+slug: "yes-fms"
+baseSlug: "yes-fms"
+summary: "A fund analytics system for insurance and wealth advisers: daily cron crawlers collect NAV and dividends from 20-plus fund houses, feeding performance, dividend cash-flow, investment simulation and a member CRM, with the data pipeline's status and formulas documented in the app."
+published: true
+locale: "en"
+type: project
+role: "Full-stack / Data engineering"
+stack: ["Next.js", "TypeScript", "Supabase", "Cron crawlers", "Vercel"]
+period: "2026"
+highlights:
+  - "86 core funds plus a 121-fund expansion pool, 250 instruments, about 18k daily NAVs and 12k dividend events"
+  - "MoneyDJ and Yahoo crawlers with name-normalised matching; every instrument reports ok / partial / failed / pending"
+  - "Dividends keep both the source value and a recomputed formula value; 2,462 rows reconciled with zero diff where recomputable"
+  - "NAV charts against the S&P 500 and TAIEX; lump-sum or monthly simulations compare up to five funds and print a proposal"
+links:
+  website: "https://yes.fms.8plus.app/"
+---
+
+# YES Financial System — Fund Analytics & Data Pipeline
+
+![YES fund overview](/og/labs/yes-fms/web.png)
+
+**Tags**: Next.js, TypeScript, Supabase, Cron, Vercel
+
+## Why
+Advisers explaining policy-linked funds to clients kept jumping between fund-house sites, MoneyDJ and spreadsheets. The deeper problem was unsynchronised sources: funds, ETFs, stocks and indices trade on different days, so fetching live in the browser or mixing sources breaks charts, makes dividend figures disagree and leaves performance unauditable.
+
+YES moves collection, field mapping and source-value storage into back-end cron jobs, leaving the front end to present and explain. (The UI is in Traditional Chinese.)
+
+## Features
+- **Fund overview**: filter by 20-plus fund houses (Allianz, BlackRock, PIMCO, JPMorgan, Schroder, CTBC and more) and search; shows cumulative return, CAGR, annualised dividend yield and max drawdown, with NAV charted against the S&P 500 and TAIEX.
+- **Dividend cash flow**: enter units held to see per-unit payouts, annualised yield and estimated cash per ex-date, listing both the source yield and the formula yield.
+- **Investment simulator**: lump sum or monthly, 1–40 years, growth from the fund's historical CAGR or conservative / aggressive scenarios, up to five comparison funds, and a printable proposal.
+- **Member CRM**: Supabase-backed members with status (active / lead / inactive), owner, channel, notes and linked funds.
+
+![Dividend cash-flow analysis](/og/labs/yes-fms/dividend.png)
+![Investment simulator](/og/labs/yes-fms/simulator.png)
+
+## Data pipeline (Pipeline Observatory)
+A dedicated page explains where data comes from, how it is judged and how often it refreshes, labelling what runs today versus what is still spec (LIVE / HYBRID):
+
+1. **Source master and whitelist**: the fund whitelist and universe bootstrap decide which funds, ETFs, stocks and indices to track.
+2. **Core fund sync**: MoneyDJ for fund NAV and dividends, Yahoo for required ETFs; name normalisation plus verified code overrides pick the most trustworthy match, with a 0.82 score threshold.
+3. **Expansion instruments**: candidates are written to instruments and a source map, then Yahoo daily bars fill daily NAV.
+4. **Status write-back**: each instrument records ok / partial / failed / pending, last success time and failure reason, read directly by the dashboard and pipeline page.
+5. **Formulas and performance**: the annualised-yield formula is live; the authoritative adjusted-NAV and CAGR batch is still planned.
+
+The page reads Supabase report snapshots (last sync, success and failure counts, instruments to investigate and why), all read-only.
+
+![Pipeline explainer](/og/labs/yes-fms/pipeline.png)
+![Data-flow map and live status](/og/labs/yes-fms/pipeline-flow.png)
+
+## Tech
+- Front end: Next.js + TypeScript, dark dashboard UI, hosted on Vercel
+- Database and auth: Supabase (funds, NAV, dividends, instrument master, source map, sync status, members and notes)
+- Collection: scheduled crawlers (`crawl:required-real`, `sync:universe-instruments`, `crawl:universe-daily`) over MoneyDJ and Yahoo Finance
+- Quality: dividend-formula reconciliation, sync report snapshots, daily checkpoints (batch size and lookback window)
+
+## Limitations
+- Old and new schemas run side by side during migration; some charts still read the legacy tables and add the new status fields.
+- The authoritative adjusted-NAV and CAGR batch isn't live yet; performance uses existing NAV.
+- Sign-in required; figures are for internal analysis and client conversations, not investment advice.
+
+## Links
+- App (sign-in required): <https://yes.fms.8plus.app/>

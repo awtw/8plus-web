@@ -1,0 +1,56 @@
+---
+title: "Anti-Coworker — Office Observation Log"
+slug: "anti-coworker"
+baseSlug: "anti-coworker"
+summary: "A browser observation game set in a government office: tail a coworker, log every way they slack off, then use stereo sound to catch the mole who hiccups like a metronome."
+published: true
+locale: "en"
+type: project
+role: "Game design / Frontend"
+stack: ["Vanilla JS", "Web Audio API", "Canvas", "Cloudflare Workers"]
+period: "2026"
+highlights:
+  - "120 desks, 28 slacking behaviours; one 08:30–17:30 workday plays in about 4 minutes"
+  - "Web Audio stereo panning lets you locate the hiccuping mole by ear"
+  - "Results are encoded into the URL with a generated share card, no names or nicknames included"
+  - "No framework, no build step, served as static assets on Cloudflare Workers"
+links:
+  website: "https://anti-coworker.delicate-truth-7cd5.workers.dev/"
+---
+
+# Anti-Coworker — Undercover in a Government Office
+
+![Anti-Coworker gameplay](/og/labs/anti-coworker/web.png)
+
+**Tags**: Game, Vanilla JS, Web Audio API, Canvas, Cloudflare Workers
+
+## Why
+I wanted a game you can open from a link and finish in five minutes, built on an office scene everyone recognises: look busy, quietly watch your coworkers. The observation itself becomes the mechanic, rewarding attention and judgement rather than raw clicking. (The UI is in Traditional Chinese.)
+
+## How to play
+1. Pick **your seat** (gold ring) on the floor plan, then the **coworker to log** (red 🎯), or use the random buttons.
+2. Press "Start work". The clock runs 08:30 to 17:30 at two minutes per second at 1×, with 2×, 4× and pause.
+3. Read the target's thought bubble, screen colour and where they walk, then press the matching button: bathroom break, phone scrolling, watching stocks, picking up delivery and 28 behaviours in all.
+4. Correct logs score; a wrong press is −5 and a behaviour left unlogged for 8 minutes is −3. Lunch (12:30–13:30) dims the lights and fast-forwards; napping then doesn't count.
+5. Side quest: one coworker is a mole who hiccups frequently and at a fixed interval. Use the hiccup radar timing and left/right audio to find them; you get three accusations, and earlier catches score more.
+
+![Floor plan and seat picking](/og/labs/anti-coworker/office.png)
+
+## Design notes
+- **Floor plan**: ten desk groups A–J, two columns of six each, with the section chief's office and meeting rooms above and restrooms, pantry, copy room and stairwell below; coworkers actually walk there.
+- **Layered clues**: bubbles, screen colour and destination cross-check each other, so reading labels alone isn't enough.
+- **Sound as mechanic**: a Web Audio `StereoPannerNode` pans each hiccup by seat position; the mole's interval is steady while others hiccup in bursts.
+- **Mobile**: the office shrinks to groups A and B on one screen, log buttons sit at the bottom, with pinch zoom and haptic feedback.
+- **Sharing**: a rank by score (from rookie snitch to integrity-office legend), results base64url-encoded into the URL and a Canvas share card, deliberately leaving out coworker names and player nicknames.
+
+![How-to-play dialog](/og/labs/anti-coworker/help.png)
+
+## Tech
+- Plain HTML / CSS / JavaScript in four modules: `data` (behaviours and ranks), `office` (floor plan and movement), `game` (clock, scoring, sound), `share` (result encoding and card)
+- Animation: a `requestAnimationFrame` timeline; pause and speed only change the time scale
+- Sound: hiccups synthesised with the Web Audio API, no audio files
+- Storage: seat, target, nicknames, day count and history in `localStorage`, so you can pick up the next day
+- Hosting: static assets on Cloudflare Workers, no backend, no third-party tracking scripts
+
+## Links
+- Play now: <https://anti-coworker.delicate-truth-7cd5.workers.dev/>

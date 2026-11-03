@@ -73,7 +73,12 @@
 
 .lab-links { padding: 22px 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
 .lab-links-list { display: flex; flex-wrap: wrap; gap: 10px; }
-.lab-links-list a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+.lab-links-list a, .lab-link-dead { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+.lab-link-dead { opacity: 0.55; cursor: not-allowed; text-decoration: line-through; text-decoration-thickness: 1px; }
+.lab-links-note { flex-basis: 100%; margin: 0; font-size: 13px; color: var(--meta); }
+
+/* offline marker on cards + detail eyebrow */
+.lab-chip-offline { display: inline-flex; align-items: center; gap: 5px; color: var(--fg); border-color: var(--accent); }
 
 /* Lab filter chips */
 .lab-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }

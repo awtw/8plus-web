@@ -1,0 +1,56 @@
+---
+title: "辦公室觀察日誌｜Anti-Coworker"
+slug: "anti-coworker"
+baseSlug: "anti-coworker"
+summary: "以公家機關為舞台的網頁觀察小遊戲：盯著同事記錄他在摸什麼魚，再靠聲音方向把打嗝像節拍器的暗樁揪出來。"
+published: true
+locale: "zh-TW"
+type: project
+role: "遊戲設計 / 前端"
+stack: ["Vanilla JS", "Web Audio API", "Canvas", "Cloudflare Workers"]
+period: "2026"
+highlights:
+  - "120 個座位、28 種摸魚行為，一天 08:30–17:30 約 4 分鐘跑完"
+  - "Web Audio 立體聲定位：用左右聲道找出規律打嗝的暗樁"
+  - "成果編碼進網址並產生分享圖卡，不含同事姓名或綽號"
+  - "零框架、零建置步驟，靜態部署於 Cloudflare Workers"
+links:
+  website: "https://anti-coworker.delicate-truth-7cd5.workers.dev/"
+---
+
+# 辦公室觀察日誌 — 公家機關臥底實錄
+
+![辦公室觀察日誌 遊戲畫面](/og/labs/anti-coworker/web.png)
+
+**Tags**: Game, Vanilla JS, Web Audio API, Canvas, Cloudflare Workers
+
+## 緣由
+想做一個「打開網址就能玩、玩五分鐘就有結果」的小遊戲，題材取自大家都有共鳴的辦公室日常：表面上認真上班，其實在偷偷觀察同事。把觀察變成需要專注與判斷的遊戲機制，而不是單純的點擊。
+
+## 怎麼玩
+1. 在辦公室平面圖點選 **你的座位**（金色圈），再點選 **要紀錄的同事**（紅色 🎯），或用「隨機座位／隨機同事」。
+2. 按「開始上班」，時鐘從 08:30 走到 17:30；1× 時一秒兩分鐘，可切換 2×／4× 或暫停。
+3. 盯著目標頭上的符號、螢幕顏色與走動路線，判斷他在做什麼，按右側對應按鈕：上廁所、滑手機、盯盤看股票、下樓拿外送……共 28 種行為。
+4. 記對加分、按錯 −5、行為結束 8 分鐘內沒記到算漏記 −3；12:30–13:30 午休關燈不算摸魚，時鐘自動快轉。
+5. 隱藏任務：辦公室藏了一個打嗝「又頻繁又規律」的暗樁。看嗝聲雷達的時間、聽左右聲道方向，用 3 次指認機會把他揪出來，越早抓到分數越高。
+
+![辦公室平面圖與選座](/og/labs/anti-coworker/office.png)
+
+## 設計重點
+- **辦公室平面**：A～J 十組座位、每組兩直排各 6 席，上方科長室與會議室、下方廁所／茶水間／影印區／樓梯間，同事會真的走過去。
+- **線索設計**：符號泡泡、螢幕顏色、移動目的地三種線索交叉，避免只靠讀字就能答對。
+- **聲音即玩法**：用 Web Audio 的 `StereoPannerNode` 依座位位置調整左右聲道，暗樁的嗝聲間隔固定，其他人則是一陣一陣，玩家可以「聽聲辨位」。
+- **手機版**：辦公室精簡為 A、B 兩組，一個畫面看得完；記錄按鈕排在下方，支援雙指縮放與震動回饋。
+- **分享**：結算時依分數給稱號（菜鳥抓耙仔 → 政風室傳說），結果以 base64url 編碼進網址並用 Canvas 產生分享圖卡；刻意不放同事姓名或玩家取的綽號。
+
+![玩法說明](/og/labs/anti-coworker/help.png)
+
+## 技術
+- 純 HTML / CSS / JavaScript，四個模組：`data`（行為與稱號）、`office`（平面圖與人物移動）、`game`（時鐘、計分、聲音）、`share`（成果編碼與圖卡）
+- 動畫：`requestAnimationFrame` 驅動的時間軸，暫停／倍速只改時間比例
+- 聲音：Web Audio API 合成嗝聲，無外部音檔
+- 儲存：`localStorage` 保存座位、目標、綽號、天數與歷史紀錄，隔天可以接著玩
+- 部署：Cloudflare Workers 靜態資產，無後端、無第三方追蹤腳本
+
+## 連結
+- 立即遊玩：<https://anti-coworker.delicate-truth-7cd5.workers.dev/>

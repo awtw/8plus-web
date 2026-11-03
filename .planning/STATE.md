@@ -564,3 +564,10 @@ Resume file: .planning/spec-brand-show-launch.md
 - 2026-10-01 CST：手機版依標註重排（按鈕堆疊＋動畫置右）；清除 A／C 兩版與比較列。
 - 2026-10-01 CST：手機 hero 第二次編排（CTA 同列等寬、動畫全寬放大）；視覺選單改 Shift 顯示。
 - 2026-10-01 CST：手機 hero 第三次編排（按鈕堆疊左、動畫放大右、說明卡補左下）。
+
+### 2026-11-03 CST — Lab 內容更新與失效連結標示（Claude）
+- 新增 Lab：`anti-coworker`（辦公室觀察日誌，網頁遊戲，分類改名「遊戲與實驗」）、`yes-fms`（YES 財務管理系統，基金分析＋資料管線）；`ckd2026` 依現況改寫為完整教學平台（前後測、100 例判讀、規則式模擬病人、教師六維評分、Supabase 帳號），改列全端＋精選。
+- 登入頁截圖由使用者自行登入後擷取，email／帳號名稱以遮罩處理；CKD 教師端改用「功能展示」模擬資料，不放真實學員成績。
+- 失效連結：frontmatter 新增 `deadLinks`／`linksCheckedAt`，卡片與詳情頁顯示斷鏈 chip、失效按鈕不可點；首頁 Lab 預覽把離線專案排最後。2026-11-02 檢查失效：b18、crmdev／on-boarding-system、experimentlab、resume-2025、hopenet-gf、ecommerce-dashboard 範例連結。
+- 補充內容：power-bi、shuyan-art、r-analysis（加 CKD 腸道菌相分析）、resume-2024（記錄 augustwang.com 現況）；8plus 換新截圖。
+- 待決定：ecommerce-dashboard 為範例內容，建議下架。

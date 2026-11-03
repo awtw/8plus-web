@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { notFound, useParams } from 'next/navigation'
-import { ArrowSquareOut } from '@phosphor-icons/react'
+import { ArrowSquareOut, LinkBreak } from '@phosphor-icons/react'
 import { useLanguage } from '@/components/language-provider'
 import { PageSection } from '@/components/page/page-section'
-import { findLocalizedProject, isCaseStudy, isProjectLocaleFallback } from '@/lib/projects'
+import { findLocalizedProject, isCaseStudy, isProjectLocaleFallback, isProjectOffline } from '@/lib/projects'
 import { getLabContent } from '@/lib/content/lab'
 import '@/styles/pages/lab.css'
 
@@ -27,6 +27,8 @@ export default function ProjectDetail() {
   const caseStudy = isCaseStudy(project)
   const metrics = caseStudy ? (project.resultMetrics ?? []) : []
   const links = project.links ? Object.entries(project.links) : []
+  const deadLinks = project.deadLinks ?? []
+  const offline = isProjectOffline(project)
   const hasHighlights = !!project.highlights && project.highlights.length > 0
 
   return (
@@ -39,6 +41,12 @@ export default function ProjectDetail() {
           <div className="lab-eyebrow-row">
             <p className="scroll-eyebrow">{caseStudy ? c.caseStudy : c.lab}</p>
             {isFallback && <span className="lab-chip">{c.fallbackChip}</span>}
+            {offline && (
+              <span className="lab-chip lab-chip-offline">
+                <LinkBreak className="h-3 w-3" weight="bold" aria-hidden="true" />
+                {getLabContent(locale).offlineChip}
+              </span>
+            )}
           </div>
           <h1 className="lab-detail-title">{project.title}</h1>
 
@@ -136,19 +144,31 @@ export default function ProjectDetail() {
           <div className="surface-card lab-links">
             <span className="lab-mono-label">{t('projects.links')}</span>
             <div className="lab-links-list">
-              {links.map(([key, url]) => (
-                <a
-                  key={key}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="brand-button-secondary"
-                >
-                  {LINK_LABELS[key] ?? key.charAt(0).toUpperCase() + key.slice(1)}
-                  <ArrowSquareOut className="h-4 w-4" weight="bold" />
-                </a>
-              ))}
+              {links.map(([key, url]) => {
+                const label = LINK_LABELS[key] ?? key.charAt(0).toUpperCase() + key.slice(1)
+                // dead links stay visible as a record but are not clickable
+                return deadLinks.includes(key) ? (
+                  <span key={key} className="brand-button-secondary lab-link-dead" title={url} aria-disabled="true">
+                    <LinkBreak className="h-4 w-4" weight="bold" aria-hidden="true" />
+                    {label} · {c.offline}
+                  </span>
+                ) : (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="brand-button-secondary"
+                  >
+                    {label}
+                    <ArrowSquareOut className="h-4 w-4" weight="bold" />
+                  </a>
+                )
+              })}
             </div>
+            {deadLinks.length > 0 && project.linksCheckedAt && (
+              <p className="lab-links-note">{c.offlineNote(project.linksCheckedAt.slice(0, 10))}</p>
+            )}
           </div>
         </PageSection>
       )}

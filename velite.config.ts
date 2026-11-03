@@ -45,6 +45,8 @@ const projects = defineCollection({
       period: s.string().optional(),
       highlights: s.array(s.string()).optional(),
       links: s.record(s.string()).optional(),
+      deadLinks: s.array(s.string()).optional(), // keys of `links` that no longer resolve
+      linksCheckedAt: s.isodate().optional(),
       type: s.enum(["project", "case-study"]).default("project"),
       challenge: s.string().optional(),
       solution: s.string().optional(),

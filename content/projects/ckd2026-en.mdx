@@ -2,52 +2,74 @@
 title: "Kidney Learning — Pediatric CKD Clinic"
 slug: "ckd2026"
 baseSlug: "ckd2026"
-summary: "A front-end-only learning site for pediatric chronic kidney disease (CKD) education, showing progress through pre/post tests and radar charts against historical score distributions."
+summary: "A pediatric chronic kidney disease (CKD) clinical teaching platform for Taipei Veterans General Hospital: pre/post tests, 100 lab-reading cases and rule-based simulated-patient reasoning, with six-dimension teacher scoring and cloud learner accounts."
 published: true
 locale: "en"
 type: project
-role: "Frontend / Product design"
-stack: ["Vue 3", "TypeScript", "Vite", "Vitest", "Vercel"]
+featured: true
+role: "Full-stack / Product design"
+stack: ["Vue 3", "TypeScript", "Vite", "Supabase", "Vitest", "Vercel"]
 period: "2026"
+highlights:
+  - "Five learning stages: pre-test, teaching clinic, lab reading, clinical reasoning and post-test"
+  - "100 synthetic patients with 9 judgements each, drawn randomly without repeats"
+  - "Rule-based simulated-patient interviews record hypotheses, evidence and revisions, scored by teachers on a six-dimension rubric that must quote the learner"
+  - "Anonymous 2022–2026 score distributions (166 pre-tests, 162 post-tests) as a benchmark"
 links:
   website: "https://frontend-two-chi-30.vercel.app/"
 ---
 
 # Kidney Learning — Pediatric CKD Clinic
 
-![Kidney Learning pediatric CKD clinic](/og/labs/ckd2026/ckd2026.png)
+![Kidney Learning dashboard](/og/labs/ckd2026/web.png)
 
-**Tags**: Vue 3, TypeScript, Vite, Vitest, Vercel
+**Tags**: Vue 3, TypeScript, Vite, Supabase, Vitest, Vercel
 
 ## Why
-Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether patients and families actually learned. The teaching clinic wanted a lightweight tool, usable in the clinic or at home, that makes learning outcomes visible and comparable.
+Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether learners and families actually learned. The pediatric immunology and nephrology teaching clinic at Taipei Veterans General Hospital wanted a tool, usable in the clinic or after class, that makes learning outcomes visible and comparable. (The UI is in Traditional Chinese.)
 
-## Goals and intended effect
-- Pre/post tests across five CKD knowledge areas so users can see their own progress.
-- A radar chart for per-area scores, plus a distribution chart placing the user against historical pre/post results.
-- No sign-up: open the URL and practice, keeping the barrier low.
-- A supporting teaching aid and outcome record, not a formal exam with anti-cheating requirements.
+The first version was a front-end-only site with a five-question pre/post test; in late 2026 it grew into a full clinical teaching platform.
 
-## How it was built
-1. Collected clinical guidelines and education-program references, then drafted the topics, five practice questions and candidate answers.
-2. Converted historical pre-test (166) and post-test (162) spreadsheets into **anonymous statistics** with a Python script: score distributions, mean and median only, with no names or per-answer data.
-3. Isolated scoring (2 points per question, completion rate, score rate, tied-score median percentile) in its own module, covered by Vitest.
-4. Answers and drafts live in browser localStorage with JSON backup download; the repository interface leaves room for a cloud adapter later.
-5. Hash routing and fully static deployment on Vercel: no env vars, no backend.
+## Learning flow
+1. **Pre-test**: 15 questions, three in each of five areas (kidney function, CKD staging, common causes, complications, treatment choices).
+2. **Teaching clinic**: enter patient data, practise staging CKD, and get a clinic report.
+3. **Lab reading**: 100 synthetic patients. Read growth, kidney and urine, blood pressure and electrolytes, anaemia and bone-mineral values, make 9 judgements, then see the explanation; retry mistakes, download backups and generate reports.
+4. **Clinical reasoning**: interview a simulated child and mother, recording hypotheses, evidence and revisions at each stage; core labs unlock only after the first reasoning snapshot, practising re-ranking hypotheses on new data.
+5. **Post-test**: retest to see progress.
 
-## Packages and models
-- Framework: Vue 3 + TypeScript + Vite 7
+![Teaching clinic: eGFR and staging computed live from a sample case](/og/labs/ckd2026/clinic.png)
+![Lab reading practice](/og/labs/ckd2026/practice.png)
+![Clinical reasoning, Case 01](/og/labs/ckd2026/reasoning.png)
+
+## Teachers and accounts
+- Learners register cloud accounts with an **invite code** and submit tests and reasoning to their class; teacher rights are assigned by an admin.
+- The teacher console searches learners, shows raw answer snapshots and scores on a **six-dimension rubric**; every score must cite the learner's own words, each publish is kept as a new version, and a separate safety review sits outside the average.
+- Legacy local records are never auto-assigned to new accounts, avoiding misattribution.
+- A demo page uses a showcase account and fictional classmates to present tests, clinic reports and teacher reports without exposing real learners (images below are simulated).
+
+![Clinic report (simulated)](/og/labs/ckd2026/clinic-report.png)
+![Teacher report demo (simulated)](/og/labs/ckd2026/teacher-demo.png)
+
+## Benchmarks and resources
+- Legacy five-question (10-point) scores: 166 pre-tests, mean 6.14 / median 6; 162 post-tests, mean 7.98 / median 8. Shown as distributions and percentile tables, noting that pre/post are unpaired and the unit is attempts, not learners.
+- Resources are grouped by the five areas, linking PubMed papers and guidelines (Schwartz equation, CKiD U25, KDIGO 2024 and more) with source, year and check date.
+
+![Score distributions](/og/labs/ckd2026/benchmarks.png)
+![Learning resources](/og/labs/ckd2026/resources.png)
+
+## Tech
+- Front end: Vue 3 + TypeScript + Vite, hash routing, lazily loaded pages
+- Back end: Supabase (email accounts, tables and RPCs for classes, invite codes, clinic reports, attempts and score versions)
 - Charts: hand-built SVG radar and distribution components
-- Icons: Lucide
 - Testing: Vitest, vue-tsc type checking
-- Data prep: Python + openpyxl (dev-time only)
-- Hosting: Vercel static
-- Models: **no AI model at runtime**; all scoring is deterministic code
+- Data prep: Python turns historical spreadsheets into anonymous statistics (distribution, mean, median only)
+- Hosting: Vercel; the footer shows the build version and changelog
+- Models: clinical reasoning uses a **rule-based script** so replies stay consistent with the case; no generative AI yet
 
 ## Limitations
-- Records stay in that browser and origin; switching devices or clearing data loses them.
-- Client-side answers and scoring are inspectable, so it is unsuitable for formal exams.
-- Questions are a test version and need teacher approval before real use.
+- Simulated patients and labs are synthetic teaching data, not real patients or prevalence, and not for medical use.
+- Practice progress lives in the browser and doesn't sync across devices; submit to the cloud account or download a backup to keep it.
+- Unrecognised questions to the rule-based patient get a neutral reply.
 
 ## Links
 - Live site: <https://frontend-two-chi-30.vercel.app/>

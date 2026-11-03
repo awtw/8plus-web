@@ -63,3 +63,10 @@ export function getFeaturedCaseStudies(locale: Locale): Project[] {
 export function getFeaturedCaseStudy(locale: Locale): Project | undefined {
   return getFeaturedCaseStudies(locale)[0];
 }
+
+// every live destination (website*/demo*) is gone; repo and docs links don't count
+export function isProjectOffline(project: Project): boolean {
+  const dead = project.deadLinks ?? [];
+  const primary = Object.keys(project.links ?? {}).filter((key) => /^(website|demo)/.test(key));
+  return primary.length > 0 && primary.every((key) => dead.includes(key));
+}

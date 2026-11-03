@@ -1,0 +1,67 @@
+---
+title: "YES 財務管理系統｜基金分析與資料管線"
+slug: "yes-fms"
+baseSlug: "yes-fms"
+summary: "給保險／理財顧問用的基金分析系統：每天以 cronjob 爬取 20 多家投信的淨值與配息，提供績效、配息現金流、投資試算與會員 CRM，並把資料管線的狀態與公式公開說明。"
+published: true
+locale: "zh-TW"
+type: project
+role: "全端 / 資料工程"
+stack: ["Next.js", "TypeScript", "Supabase", "Cron 爬蟲", "Vercel"]
+period: "2026"
+highlights:
+  - "86 檔核心基金＋121 檔擴展池、250 個標的，累積 1.8 萬筆日淨值與 1.2 萬筆配息事件"
+  - "MoneyDJ 與 Yahoo 雙來源爬蟲，名稱正規化配對、每檔回寫 ok／partial／failed／pending 狀態"
+  - "配息同時保留「來源值」與「公式重算值」，對帳 2,462 筆、可重算差異為 0"
+  - "淨值走勢對照 S&P 500 與台灣加權，單筆／定額試算可加入 5 檔比較並列印建議書"
+links:
+  website: "https://yes.fms.8plus.app/"
+---
+
+# YES 財務管理系統 — 基金分析與資料管線
+
+![YES 財務系統 基金總覽](/og/labs/yes-fms/web.png)
+
+**Tags**: Next.js, TypeScript, Supabase, Cron, Vercel
+
+## 緣由
+顧問向客戶說明保單連結的基金時，常要在各家投信網站、MoneyDJ 與 Excel 之間來回切換。更根本的問題是資料源彼此不同步：基金、ETF、股票與大盤的交易日不同，前端若直接即時抓資料或混用來源，圖表會斷線、配息口徑會打架，績效也無法稽核。
+
+YES 的做法是把資料採集、欄位轉換與來源值保存放進後端 cronjob，前端只負責展示與解釋。
+
+## 主要功能
+- **基金總覽**：依資料來源（Allianz、BlackRock、PIMCO、JPMorgan、Schroder、CTBC 等 20 多家）篩選與搜尋，顯示累積報酬、年化報酬（CAGR）、年化配息率與最大回撤，淨值走勢可對照 S&P 500、台灣加權指數。
+- **配息現金流**：輸入持有單位數，看每次除息的每單位配息、年化配息率與預估領取現金；年化配息率同時列出「來源值」與「公式值」。
+- **投資試算**：單筆投入或每月定額，1–40 年試算，成長率可用主標的歷史 CAGR 或保守／積極情境，最多再加 5 檔基金比較，並可列印試算建議書。
+- **會員 CRM**：以 Supabase 管理會員、狀態（active／lead／inactive）、負責人、來源渠道與備註，並關聯追蹤的基金。
+
+![配息現金流分析](/og/labs/yes-fms/dividend.png)
+![投資試算](/og/labs/yes-fms/simulator.png)
+
+## 資料管線（Pipeline Observatory）
+系統另有一頁公開說明資料怎麼來、怎麼判斷、多久更新，把「現在真的怎麼跑」和「規劃中的規格」分開標示（LIVE／HYBRID）：
+
+1. **來源主檔與白名單**：從基金白名單與 universe bootstrap 決定要追蹤哪些基金、ETF、股票與指數。
+2. **核心基金同步**：MoneyDJ 抓基金淨值與配息、Yahoo 抓必要 ETF；以名稱正規化與人工驗證的代碼對照幫每檔找最可信的配對，分數門檻 0.82。
+3. **擴展標的建檔**：候選標的寫入 instruments 與來源對照表，再用 Yahoo 日線補齊每日淨值。
+4. **狀態回寫**：每檔標的記錄 ok／partial／failed／pending、最後成功時間與失敗原因，首頁與管線頁直接讀取。
+5. **公式與績效**：年化配息率公式已實作；adjusted NAV 與 CAGR 的權威批次仍在規劃中。
+
+頁面會讀取 Supabase 的報告快照：最近一次同步時間、成功／失敗筆數、待排查標的與失敗原因，全部唯讀、不觸發寫入。
+
+![資料流程說明中心](/og/labs/yes-fms/pipeline.png)
+![資料流地圖與即時狀態](/og/labs/yes-fms/pipeline-flow.png)
+
+## 技術
+- 前端：Next.js + TypeScript，深色儀表板介面，部署於 Vercel
+- 資料庫與帳號：Supabase（基金、淨值、配息、標的主檔、來源對照、同步狀態、會員與備註）
+- 資料採集：排程爬蟲（`crawl:required-real`、`sync:universe-instruments`、`crawl:universe-daily`），來源為 MoneyDJ 與 Yahoo Finance
+- 品質控管：配息公式對帳、同步報告快照、每日 checkpoint（批次大小與回溯天數）
+
+## 限制
+- 新舊兩套資料表並行過渡中，部分圖表仍讀舊表，再補讀新的狀態欄位。
+- adjusted NAV 與 CAGR 權威批次尚未上線，目前績效以既有淨值計算。
+- 系統需登入使用，資料僅供內部分析與客戶溝通，不構成投資建議。
+
+## 連結
+- 系統入口（需登入）：<https://yes.fms.8plus.app/>

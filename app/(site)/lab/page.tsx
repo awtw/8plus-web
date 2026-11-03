@@ -6,7 +6,7 @@ import { useLanguage } from '@/components/language-provider'
 import { PageSection } from '@/components/page/page-section'
 import { PageHeader } from '@/components/page/page-header'
 import { LabCard } from '@/components/lab/lab-card'
-import { getLocalizedProjects, isProjectLocaleFallback, type Project } from '@/lib/projects'
+import { getLocalizedProjects, isProjectLocaleFallback, isProjectOffline, type Project } from '@/lib/projects'
 import {
   LAB_GROUP_OF,
   LAB_GROUP_ORDER,
@@ -52,6 +52,7 @@ export default function ProjectsPage() {
         roleTag={labRoleTag(keyOf(p), locale) ?? p.role}
         chip={isProjectLocaleFallback(p, locale) ? c.fallbackChip : undefined}
         cta={isFeatured ? t('projects.viewDetails') : undefined}
+        offline={isProjectOffline(p) ? c.offlineChip : undefined}
       />
     </li>
   )

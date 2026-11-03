@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react'
 import type { HomeLocale } from '@/lib/content/home-sections'
 import { getHomeSectionContent } from '@/lib/content/home-sections'
-import { getLocalizedProjects, isCaseStudy } from '@/lib/projects'
+import { getLocalizedProjects, isCaseStudy, isProjectOffline, type Project } from '@/lib/projects'
 
 type SectionLabProps = {
   locale: HomeLocale
@@ -18,9 +18,12 @@ function labThumb(key: string): string | null {
   return `/og/labs/${id}/web.webp`
 }
 
+// featured first, offline projects always last so the preview stays clickable
+const rank = (p: Project) => Number(p.featured) - (isProjectOffline(p) ? 2 : 0)
+
 export function SectionLab({ locale }: SectionLabProps) {
   const content = getHomeSectionContent(locale)
-  const projects = getLocalizedProjects(locale).sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, 4)
+  const projects = getLocalizedProjects(locale).sort((a, b) => rank(b) - rank(a)).slice(0, 4)
 
   return (
     <section

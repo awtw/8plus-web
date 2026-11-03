@@ -62,12 +62,76 @@
     "url": "/lab/8plus"
   },
   {
+    "title": "Anti-Coworker — Office Observation Log",
+    "slug": "anti-coworker",
+    "baseSlug": "anti-coworker",
+    "role": "Game design / Frontend",
+    "stack": [
+      "Vanilla JS",
+      "Web Audio API",
+      "Canvas",
+      "Cloudflare Workers"
+    ],
+    "period": "2026",
+    "highlights": [
+      "120 desks, 28 slacking behaviours; one 08:30–17:30 workday plays in about 4 minutes",
+      "Web Audio stereo panning lets you locate the hiccuping mole by ear",
+      "Results are encoded into the URL with a generated share card, no names or nicknames included",
+      "No framework, no build step, served as static assets on Cloudflare Workers"
+    ],
+    "links": {
+      "website": "https://anti-coworker.delicate-truth-7cd5.workers.dev/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "A browser observation game set in a government office: tail a coworker, log every way they slack off, then use stereo sound to catch the mole who hiccups like a metronome.",
+    "published": true,
+    "protected": false,
+    "locale": "en",
+    "html": "<h1 id=\"anti-coworker--undercover-in-a-government-office\">Anti-Coworker — Undercover in a Government Office</h1>\n<p><img src=\"/og/labs/anti-coworker/web.png\" alt=\"Anti-Coworker gameplay\"></p>\n<p><strong>Tags</strong>: Game, Vanilla JS, Web Audio API, Canvas, Cloudflare Workers</p>\n<h2 id=\"why\">Why</h2>\n<p>I wanted a game you can open from a link and finish in five minutes, built on an office scene everyone recognises: look busy, quietly watch your coworkers. The observation itself becomes the mechanic, rewarding attention and judgement rather than raw clicking. (The UI is in Traditional Chinese.)</p>\n<h2 id=\"how-to-play\">How to play</h2>\n<ol>\n<li>Pick <strong>your seat</strong> (gold ring) on the floor plan, then the <strong>coworker to log</strong> (red 🎯), or use the random buttons.</li>\n<li>Press \"Start work\". The clock runs 08:30 to 17:30 at two minutes per second at 1×, with 2×, 4× and pause.</li>\n<li>Read the target's thought bubble, screen colour and where they walk, then press the matching button: bathroom break, phone scrolling, watching stocks, picking up delivery and 28 behaviours in all.</li>\n<li>Correct logs score; a wrong press is −5 and a behaviour left unlogged for 8 minutes is −3. Lunch (12:30–13:30) dims the lights and fast-forwards; napping then doesn't count.</li>\n<li>Side quest: one coworker is a mole who hiccups frequently and at a fixed interval. Use the hiccup radar timing and left/right audio to find them; you get three accusations, and earlier catches score more.</li>\n</ol>\n<p><img src=\"/og/labs/anti-coworker/office.png\" alt=\"Floor plan and seat picking\"></p>\n<h2 id=\"design-notes\">Design notes</h2>\n<ul>\n<li><strong>Floor plan</strong>: ten desk groups A–J, two columns of six each, with the section chief's office and meeting rooms above and restrooms, pantry, copy room and stairwell below; coworkers actually walk there.</li>\n<li><strong>Layered clues</strong>: bubbles, screen colour and destination cross-check each other, so reading labels alone isn't enough.</li>\n<li><strong>Sound as mechanic</strong>: a Web Audio <code>StereoPannerNode</code> pans each hiccup by seat position; the mole's interval is steady while others hiccup in bursts.</li>\n<li><strong>Mobile</strong>: the office shrinks to groups A and B on one screen, log buttons sit at the bottom, with pinch zoom and haptic feedback.</li>\n<li><strong>Sharing</strong>: a rank by score (from rookie snitch to integrity-office legend), results base64url-encoded into the URL and a Canvas share card, deliberately leaving out coworker names and player nicknames.</li>\n</ul>\n<p><img src=\"/og/labs/anti-coworker/help.png\" alt=\"How-to-play dialog\"></p>\n<h2 id=\"tech\">Tech</h2>\n<ul>\n<li>Plain HTML / CSS / JavaScript in four modules: <code>data</code> (behaviours and ranks), <code>office</code> (floor plan and movement), <code>game</code> (clock, scoring, sound), <code>share</code> (result encoding and card)</li>\n<li>Animation: a <code>requestAnimationFrame</code> timeline; pause and speed only change the time scale</li>\n<li>Sound: hiccups synthesised with the Web Audio API, no audio files</li>\n<li>Storage: seat, target, nicknames, day count and history in <code>localStorage</code>, so you can pick up the next day</li>\n<li>Hosting: static assets on Cloudflare Workers, no backend, no third-party tracking scripts</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li>Play now: <a href=\"https://anti-coworker.delicate-truth-7cd5.workers.dev/\">https://anti-coworker.delicate-truth-7cd5.workers.dev/</a></li>\n</ul>",
+    "url": "/lab/anti-coworker"
+  },
+  {
+    "title": "辦公室觀察日誌｜Anti-Coworker",
+    "slug": "anti-coworker",
+    "baseSlug": "anti-coworker",
+    "role": "遊戲設計 / 前端",
+    "stack": [
+      "Vanilla JS",
+      "Web Audio API",
+      "Canvas",
+      "Cloudflare Workers"
+    ],
+    "period": "2026",
+    "highlights": [
+      "120 個座位、28 種摸魚行為，一天 08:30–17:30 約 4 分鐘跑完",
+      "Web Audio 立體聲定位：用左右聲道找出規律打嗝的暗樁",
+      "成果編碼進網址並產生分享圖卡，不含同事姓名或綽號",
+      "零框架、零建置步驟，靜態部署於 Cloudflare Workers"
+    ],
+    "links": {
+      "website": "https://anti-coworker.delicate-truth-7cd5.workers.dev/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "以公家機關為舞台的網頁觀察小遊戲：盯著同事記錄他在摸什麼魚，再靠聲音方向把打嗝像節拍器的暗樁揪出來。",
+    "published": true,
+    "protected": false,
+    "locale": "zh-TW",
+    "html": "<h1 id=\"辦公室觀察日誌--公家機關臥底實錄\">辦公室觀察日誌 — 公家機關臥底實錄</h1>\n<p><img src=\"/og/labs/anti-coworker/web.png\" alt=\"辦公室觀察日誌 遊戲畫面\"></p>\n<p><strong>Tags</strong>: Game, Vanilla JS, Web Audio API, Canvas, Cloudflare Workers</p>\n<h2 id=\"緣由\">緣由</h2>\n<p>想做一個「打開網址就能玩、玩五分鐘就有結果」的小遊戲，題材取自大家都有共鳴的辦公室日常：表面上認真上班，其實在偷偷觀察同事。把觀察變成需要專注與判斷的遊戲機制，而不是單純的點擊。</p>\n<h2 id=\"怎麼玩\">怎麼玩</h2>\n<ol>\n<li>在辦公室平面圖點選 <strong>你的座位</strong>（金色圈），再點選 <strong>要紀錄的同事</strong>（紅色 🎯），或用「隨機座位／隨機同事」。</li>\n<li>按「開始上班」，時鐘從 08:30 走到 17:30；1× 時一秒兩分鐘，可切換 2×／4× 或暫停。</li>\n<li>盯著目標頭上的符號、螢幕顏色與走動路線，判斷他在做什麼，按右側對應按鈕：上廁所、滑手機、盯盤看股票、下樓拿外送……共 28 種行為。</li>\n<li>記對加分、按錯 −5、行為結束 8 分鐘內沒記到算漏記 −3；12:30–13:30 午休關燈不算摸魚，時鐘自動快轉。</li>\n<li>隱藏任務：辦公室藏了一個打嗝「又頻繁又規律」的暗樁。看嗝聲雷達的時間、聽左右聲道方向，用 3 次指認機會把他揪出來，越早抓到分數越高。</li>\n</ol>\n<p><img src=\"/og/labs/anti-coworker/office.png\" alt=\"辦公室平面圖與選座\"></p>\n<h2 id=\"設計重點\">設計重點</h2>\n<ul>\n<li><strong>辦公室平面</strong>：A～J 十組座位、每組兩直排各 6 席，上方科長室與會議室、下方廁所／茶水間／影印區／樓梯間，同事會真的走過去。</li>\n<li><strong>線索設計</strong>：符號泡泡、螢幕顏色、移動目的地三種線索交叉，避免只靠讀字就能答對。</li>\n<li><strong>聲音即玩法</strong>：用 Web Audio 的 <code>StereoPannerNode</code> 依座位位置調整左右聲道，暗樁的嗝聲間隔固定，其他人則是一陣一陣，玩家可以「聽聲辨位」。</li>\n<li><strong>手機版</strong>：辦公室精簡為 A、B 兩組，一個畫面看得完；記錄按鈕排在下方，支援雙指縮放與震動回饋。</li>\n<li><strong>分享</strong>：結算時依分數給稱號（菜鳥抓耙仔 → 政風室傳說），結果以 base64url 編碼進網址並用 Canvas 產生分享圖卡；刻意不放同事姓名或玩家取的綽號。</li>\n</ul>\n<p><img src=\"/og/labs/anti-coworker/help.png\" alt=\"玩法說明\"></p>\n<h2 id=\"技術\">技術</h2>\n<ul>\n<li>純 HTML / CSS / JavaScript，四個模組：<code>data</code>（行為與稱號）、<code>office</code>（平面圖與人物移動）、<code>game</code>（時鐘、計分、聲音）、<code>share</code>（成果編碼與圖卡）</li>\n<li>動畫：<code>requestAnimationFrame</code> 驅動的時間軸，暫停／倍速只改時間比例</li>\n<li>聲音：Web Audio API 合成嗝聲，無外部音檔</li>\n<li>儲存：<code>localStorage</code> 保存座位、目標、綽號、天數與歷史紀錄，隔天可以接著玩</li>\n<li>部署：Cloudflare Workers 靜態資產，無後端、無第三方追蹤腳本</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>立即遊玩：<a href=\"https://anti-coworker.delicate-truth-7cd5.workers.dev/\">https://anti-coworker.delicate-truth-7cd5.workers.dev/</a></li>\n</ul>",
+    "url": "/lab/anti-coworker"
+  },
+  {
     "title": "B18 Brand Website",
     "slug": "b18",
     "baseSlug": "b18",
     "links": {
       "website": "https://b18.8plus.app/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "case-study",
     "challenge": "A new brand needed visual identity, product narrative, and Instagram conversion on a tight timeline and budget.",
     "solution": "Lightweight Next.js site with brand story, lookbook, and social CTAs optimized for mobile-first conversion.",
@@ -91,7 +155,7 @@
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"b18-brand-website\">B18 Brand Website</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"overview\">Overview</h2>\n<p>This Lab is a brand website for an emerging clothing designer, focused on visual language, brand storytelling, and social touchpoints that guide users toward interaction and conversion.</p>\n<h2 id=\"design--experience\">Design &#x26; Experience</h2>\n<ul>\n<li>Use layout and whitespace to highlight product texture and brand positioning</li>\n<li>Guide users from brand discovery to social and purchase flows</li>\n<li>Keep a consistent design system and reusable components</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Social integration: Instagram embed / traffic routing</li>\n</ul>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></li>\n</ul>",
+    "html": "<h1 id=\"b18-brand-website\">B18 Brand Website</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"overview\">Overview</h2>\n<p>This Lab is a brand website for an emerging clothing designer, focused on visual language, brand storytelling, and social touchpoints that guide users toward interaction and conversion.</p>\n<h2 id=\"design--experience\">Design &#x26; Experience</h2>\n<ul>\n<li>Use layout and whitespace to highlight product texture and brand positioning</li>\n<li>Guide users from brand discovery to social and purchase flows</li>\n<li>Keep a consistent design system and reusable components</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Social integration: Instagram embed / traffic routing</li>\n</ul>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n</ul>",
     "url": "/lab/b18"
   },
   {
@@ -100,6 +164,10 @@
     "links": {
       "website": "https://b18.8plus.app/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "case-study",
     "challenge": "新品牌需在同時建立視覺識別、產品敘事與 Instagram 導流，且預算與時程有限。",
     "solution": "以 Next.js 建置輕量官網，整合品牌故事、Lookbook 與社群 CTA，並優化行動端首屏轉換。",
@@ -123,57 +191,71 @@
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"b18-品牌官網\">B18 品牌官網</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。</p>\n<h2 id=\"設計與體驗\">設計與體驗</h2>\n<ul>\n<li>以版型與留白凸顯產品質感與品牌定位</li>\n<li>以導購節點導流至社群與購買流程</li>\n<li>具一致性的設計系統與元件</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Next.js</li>\n<li>佈署：Vercel</li>\n<li>社群整合：Instagram 嵌入/導流</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></li>\n</ul>",
+    "html": "<h1 id=\"b18-品牌官網\">B18 品牌官網</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Instagram, UI/UX Design, Vercel</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>為新創服裝設計師打造的品牌官網，聚焦視覺語彙與品牌故事的呈現，並整合社群觸點以提升互動與轉換。</p>\n<h2 id=\"設計與體驗\">設計與體驗</h2>\n<ul>\n<li>以版型與留白凸顯產品質感與品牌定位</li>\n<li>以導購節點導流至社群與購買流程</li>\n<li>具一致性的設計系統與元件</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Next.js</li>\n<li>佈署：Vercel</li>\n<li>社群整合：Instagram 嵌入/導流</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/b18/web.png\" alt=\"B18 Web\">\n<img src=\"/og/labs/b18/content.png\" alt=\"B18 Content\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><del><a href=\"https://b18.8plus.app/\">https://b18.8plus.app/</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n</ul>",
     "url": "/lab/b18"
   },
   {
     "title": "Kidney Learning — Pediatric CKD Clinic",
     "slug": "ckd2026",
     "baseSlug": "ckd2026",
-    "role": "Frontend / Product design",
+    "role": "Full-stack / Product design",
     "stack": [
       "Vue 3",
       "TypeScript",
       "Vite",
+      "Supabase",
       "Vitest",
       "Vercel"
     ],
     "period": "2026",
+    "highlights": [
+      "Five learning stages: pre-test, teaching clinic, lab reading, clinical reasoning and post-test",
+      "100 synthetic patients with 9 judgements each, drawn randomly without repeats",
+      "Rule-based simulated-patient interviews record hypotheses, evidence and revisions, scored by teachers on a six-dimension rubric that must quote the learner",
+      "Anonymous 2022–2026 score distributions (166 pre-tests, 162 post-tests) as a benchmark"
+    ],
     "links": {
       "website": "https://frontend-two-chi-30.vercel.app/"
     },
     "type": "project",
-    "featured": false,
-    "summary": "A front-end-only learning site for pediatric chronic kidney disease (CKD) education, showing progress through pre/post tests and radar charts against historical score distributions.",
+    "featured": true,
+    "summary": "A pediatric chronic kidney disease (CKD) clinical teaching platform for Taipei Veterans General Hospital: pre/post tests, 100 lab-reading cases and rule-based simulated-patient reasoning, with six-dimension teacher scoring and cloud learner accounts.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"kidney-learning--pediatric-ckd-clinic\">Kidney Learning — Pediatric CKD Clinic</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"Kidney Learning pediatric CKD clinic\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2 id=\"why\">Why</h2>\n<p>Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether patients and families actually learned. The teaching clinic wanted a lightweight tool, usable in the clinic or at home, that makes learning outcomes visible and comparable.</p>\n<h2 id=\"goals-and-intended-effect\">Goals and intended effect</h2>\n<ul>\n<li>Pre/post tests across five CKD knowledge areas so users can see their own progress.</li>\n<li>A radar chart for per-area scores, plus a distribution chart placing the user against historical pre/post results.</li>\n<li>No sign-up: open the URL and practice, keeping the barrier low.</li>\n<li>A supporting teaching aid and outcome record, not a formal exam with anti-cheating requirements.</li>\n</ul>\n<h2 id=\"how-it-was-built\">How it was built</h2>\n<ol>\n<li>Collected clinical guidelines and education-program references, then drafted the topics, five practice questions and candidate answers.</li>\n<li>Converted historical pre-test (166) and post-test (162) spreadsheets into <strong>anonymous statistics</strong> with a Python script: score distributions, mean and median only, with no names or per-answer data.</li>\n<li>Isolated scoring (2 points per question, completion rate, score rate, tied-score median percentile) in its own module, covered by Vitest.</li>\n<li>Answers and drafts live in browser localStorage with JSON backup download; the repository interface leaves room for a cloud adapter later.</li>\n<li>Hash routing and fully static deployment on Vercel: no env vars, no backend.</li>\n</ol>\n<h2 id=\"packages-and-models\">Packages and models</h2>\n<ul>\n<li>Framework: Vue 3 + TypeScript + Vite 7</li>\n<li>Charts: hand-built SVG radar and distribution components</li>\n<li>Icons: Lucide</li>\n<li>Testing: Vitest, vue-tsc type checking</li>\n<li>Data prep: Python + openpyxl (dev-time only)</li>\n<li>Hosting: Vercel static</li>\n<li>Models: <strong>no AI model at runtime</strong>; all scoring is deterministic code</li>\n</ul>\n<h2 id=\"limitations\">Limitations</h2>\n<ul>\n<li>Records stay in that browser and origin; switching devices or clearing data loses them.</li>\n<li>Client-side answers and scoring are inspectable, so it is unsuitable for formal exams.</li>\n<li>Questions are a test version and need teacher approval before real use.</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li>Live site: <a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>Source: private repository (not public)</li>\n</ul>",
+    "html": "<h1 id=\"kidney-learning--pediatric-ckd-clinic\">Kidney Learning — Pediatric CKD Clinic</h1>\n<p><img src=\"/og/labs/ckd2026/web.png\" alt=\"Kidney Learning dashboard\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Supabase, Vitest, Vercel</p>\n<h2 id=\"why\">Why</h2>\n<p>Pediatric CKD education often relies on paper handouts and verbal explanation. Clinic time is short, so it is hard to confirm whether learners and families actually learned. The pediatric immunology and nephrology teaching clinic at Taipei Veterans General Hospital wanted a tool, usable in the clinic or after class, that makes learning outcomes visible and comparable. (The UI is in Traditional Chinese.)</p>\n<p>The first version was a front-end-only site with a five-question pre/post test; in late 2026 it grew into a full clinical teaching platform.</p>\n<h2 id=\"learning-flow\">Learning flow</h2>\n<ol>\n<li><strong>Pre-test</strong>: 15 questions, three in each of five areas (kidney function, CKD staging, common causes, complications, treatment choices).</li>\n<li><strong>Teaching clinic</strong>: enter patient data, practise staging CKD, and get a clinic report.</li>\n<li><strong>Lab reading</strong>: 100 synthetic patients. Read growth, kidney and urine, blood pressure and electrolytes, anaemia and bone-mineral values, make 9 judgements, then see the explanation; retry mistakes, download backups and generate reports.</li>\n<li><strong>Clinical reasoning</strong>: interview a simulated child and mother, recording hypotheses, evidence and revisions at each stage; core labs unlock only after the first reasoning snapshot, practising re-ranking hypotheses on new data.</li>\n<li><strong>Post-test</strong>: retest to see progress.</li>\n</ol>\n<p><img src=\"/og/labs/ckd2026/clinic.png\" alt=\"Teaching clinic: eGFR and staging computed live from a sample case\">\n<img src=\"/og/labs/ckd2026/practice.png\" alt=\"Lab reading practice\">\n<img src=\"/og/labs/ckd2026/reasoning.png\" alt=\"Clinical reasoning, Case 01\"></p>\n<h2 id=\"teachers-and-accounts\">Teachers and accounts</h2>\n<ul>\n<li>Learners register cloud accounts with an <strong>invite code</strong> and submit tests and reasoning to their class; teacher rights are assigned by an admin.</li>\n<li>The teacher console searches learners, shows raw answer snapshots and scores on a <strong>six-dimension rubric</strong>; every score must cite the learner's own words, each publish is kept as a new version, and a separate safety review sits outside the average.</li>\n<li>Legacy local records are never auto-assigned to new accounts, avoiding misattribution.</li>\n<li>A demo page uses a showcase account and fictional classmates to present tests, clinic reports and teacher reports without exposing real learners (images below are simulated).</li>\n</ul>\n<p><img src=\"/og/labs/ckd2026/clinic-report.png\" alt=\"Clinic report (simulated)\">\n<img src=\"/og/labs/ckd2026/teacher-demo.png\" alt=\"Teacher report demo (simulated)\"></p>\n<h2 id=\"benchmarks-and-resources\">Benchmarks and resources</h2>\n<ul>\n<li>Legacy five-question (10-point) scores: 166 pre-tests, mean 6.14 / median 6; 162 post-tests, mean 7.98 / median 8. Shown as distributions and percentile tables, noting that pre/post are unpaired and the unit is attempts, not learners.</li>\n<li>Resources are grouped by the five areas, linking PubMed papers and guidelines (Schwartz equation, CKiD U25, KDIGO 2024 and more) with source, year and check date.</li>\n</ul>\n<p><img src=\"/og/labs/ckd2026/benchmarks.png\" alt=\"Score distributions\">\n<img src=\"/og/labs/ckd2026/resources.png\" alt=\"Learning resources\"></p>\n<h2 id=\"tech\">Tech</h2>\n<ul>\n<li>Front end: Vue 3 + TypeScript + Vite, hash routing, lazily loaded pages</li>\n<li>Back end: Supabase (email accounts, tables and RPCs for classes, invite codes, clinic reports, attempts and score versions)</li>\n<li>Charts: hand-built SVG radar and distribution components</li>\n<li>Testing: Vitest, vue-tsc type checking</li>\n<li>Data prep: Python turns historical spreadsheets into anonymous statistics (distribution, mean, median only)</li>\n<li>Hosting: Vercel; the footer shows the build version and changelog</li>\n<li>Models: clinical reasoning uses a <strong>rule-based script</strong> so replies stay consistent with the case; no generative AI yet</li>\n</ul>\n<h2 id=\"limitations\">Limitations</h2>\n<ul>\n<li>Simulated patients and labs are synthetic teaching data, not real patients or prevalence, and not for medical use.</li>\n<li>Practice progress lives in the browser and doesn't sync across devices; submit to the cloud account or download a backup to keep it.</li>\n<li>Unrecognised questions to the rule-based patient get a neutral reply.</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li>Live site: <a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>Source: private repository (not public)</li>\n</ul>",
     "url": "/lab/ckd2026"
   },
   {
     "title": "腎入學習｜兒童 CKD 教學門診",
     "slug": "ckd2026",
     "baseSlug": "ckd2026",
-    "role": "前端 / 產品設計",
+    "role": "全端 / 產品設計",
     "stack": [
       "Vue 3",
       "TypeScript",
       "Vite",
+      "Supabase",
       "Vitest",
       "Vercel"
     ],
     "period": "2026",
+    "highlights": [
+      "從課前檢測、教學門診、檢驗判讀、臨床推理到課後評估，串起五段學習流程",
+      "100 位合成模擬病人、每例 9 項判讀，隨機出題不重複",
+      "規則式模擬病人問診，記錄假說、證據與修正軌跡，由教師以六維量規引用原文評分",
+      "2022–2026 年 166 筆前測、162 筆後測的匿名成績分布作為對照"
+    ],
     "links": {
       "website": "https://frontend-two-chi-30.vercel.app/"
     },
     "type": "project",
-    "featured": false,
-    "summary": "協助兒童慢性腎臟病（CKD）衛教的純前端學習網站，以前後測與雷達圖呈現學習進步，並對照歷史成績分布。",
+    "featured": true,
+    "summary": "臺北榮總兒童免疫腎臟科的兒童慢性腎臟病（CKD）臨床教學平台：前後測、100 例檢驗判讀、規則式模擬病人臨床推理，搭配教師六維評分與雲端學習帳號。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"腎入學習--兒童-ckd-教學門診\">腎入學習 — 兒童 CKD 教學門診</h1>\n<p><img src=\"/og/labs/ckd2026/ckd2026.png\" alt=\"腎入學習 兒童 CKD 教學門診\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Vitest, Vercel</p>\n<h2 id=\"緣由\">緣由</h2>\n<p>兒童慢性腎臟病的衛教多半停留在紙本與口頭說明，門診時間有限，家屬與病童難以確認「學會了沒有」。教學門診希望有一個能在診間或回家後使用的輕量工具，讓衛教成效可以被看見、被比較，並能作為教學評比的佐證。</p>\n<h2 id=\"目的與預期效果\">目的與預期效果</h2>\n<ul>\n<li>以 CKD 五大知識面向設計前後測，讓使用者了解自己的學習進步。</li>\n<li>用雷達圖呈現各面向得分，用分布圖把個人成績對照歷史前測／後測的中位百分位。</li>\n<li>不需註冊登入，開啟網址即可練習，降低診間使用門檻。</li>\n<li>作為教學門診的輔助教材與成效紀錄，而非有防作弊要求的正式考試。</li>\n</ul>\n<h2 id=\"如何做出來\">如何做出來</h2>\n<ol>\n<li>整理臨床診療指引與衛教計畫等參考資料，擬定主題與五題練習題及候選答案。</li>\n<li>將歷史前測（166 筆）、後測（162 筆）Excel 以 Python 腳本轉為<strong>匿名統計</strong>（僅分數分布、平均、中位數），不含姓名與逐筆答案。</li>\n<li>計分邏輯獨立為 <code>scoring</code> 模組（每題 2 分、完成率、得分率、同分中位百分位），以 Vitest 撰寫測試。</li>\n<li>作答紀錄與草稿存於瀏覽器 localStorage，可下載 JSON 備份；儲存介面預留 adapter，日後可接雲端資料庫。</li>\n<li>路由採 hash，純靜態部署至 Vercel，不需環境變數或後端。</li>\n</ol>\n<h2 id=\"使用的套件與模型\">使用的套件與模型</h2>\n<ul>\n<li>框架：Vue 3 + TypeScript + Vite 7</li>\n<li>圖表：自繪 SVG 雷達圖與分布圖元件</li>\n<li>圖示：Lucide</li>\n<li>測試：Vitest、vue-tsc 型別檢查</li>\n<li>資料處理：Python + openpyxl（僅開發時轉檔）</li>\n<li>部署：Vercel 靜態託管</li>\n<li>模型：網站執行時<strong>不使用任何 AI 模型</strong>，所有計分皆為確定性程式邏輯</li>\n</ul>\n<h2 id=\"限制\">限制</h2>\n<ul>\n<li>紀錄僅存於該瀏覽器與網域，換裝置或清除資料不會帶走。</li>\n<li>純前端的答案與計分可被檢視，不適合正式考試。</li>\n<li>題目為測試版，正式使用前仍須教師核定。</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>線上網站：<a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>原始碼：私有儲存庫（未公開）</li>\n</ul>",
+    "html": "<h1 id=\"腎入學習--兒童-ckd-教學門診\">腎入學習 — 兒童 CKD 教學門診</h1>\n<p><img src=\"/og/labs/ckd2026/web.png\" alt=\"腎入學習 學習總覽\"></p>\n<p><strong>Tags</strong>: Vue 3, TypeScript, Vite, Supabase, Vitest, Vercel</p>\n<h2 id=\"緣由\">緣由</h2>\n<p>兒童慢性腎臟病的衛教多半停留在紙本與口頭說明，門診時間有限，學員與家屬難以確認「學會了沒有」。臺北榮總兒童免疫腎臟科的教學門診希望有一個能在診間或課後使用的工具，讓學習成效可以被看見、被比較，也能作為教學評比的佐證。</p>\n<p>第一版是只有五題前後測的純前端網站；2026 下半年擴充成完整的臨床教學平台。</p>\n<h2 id=\"學習流程\">學習流程</h2>\n<ol>\n<li><strong>課前檢測</strong>：15 題、五大知識面向（腎功能計算、分期判讀、常見病因、合併症辨識、治療選擇）各 3 題，找出自己的起點。</li>\n<li><strong>教學門診</strong>：輸入病人數據，練習判讀 CKD 分期，產生門診報告。</li>\n<li><strong>檢驗判讀練習</strong>：100 位合成模擬病人，每例先看身高體重、腎功能與尿液、血壓電解質、貧血與骨礦物質等數據，再完成 9 項判斷，提交後看解析；錯題可重練、可下載備份與產生報告。</li>\n<li><strong>臨床推理任務</strong>：與模擬病童及母親問診，在不同資訊階段記錄假說、證據與修正；核心檢驗在第一次推理快照後才揭露，練習「依新資料重新排序假說」。</li>\n<li><strong>課後評估</strong>：回測檢視自己的進步。</li>\n</ol>\n<p><img src=\"/og/labs/ckd2026/clinic.png\" alt=\"教學門診：載入教學範例後即時計算 eGFR 與分級\">\n<img src=\"/og/labs/ckd2026/practice.png\" alt=\"檢驗判讀練習\">\n<img src=\"/og/labs/ckd2026/reasoning.png\" alt=\"臨床推理任務 Case 01\"></p>\n<h2 id=\"教師端與帳號\">教師端與帳號</h2>\n<ul>\n<li>學員以 <strong>邀請碼</strong> 註冊雲端帳號，測驗與推理紀錄完成後可提交到班級；教師資格由管理者指派。</li>\n<li>教師後台可搜尋學員、檢視原始作答快照，以 <strong>六維量規</strong> 評分，給分必須引用學員原文；每次發布保留為新版本，另有不納入平均的「安全覆核」。</li>\n<li>舊版本機紀錄不會自動歸屬到新帳號，避免資料錯置。</li>\n<li>「功能展示」頁用展示帳號與虛構同學呈現前後測、門診報告與教師報表，不顯示真實學員資料（下圖皆為模擬資料）。</li>\n</ul>\n<p><img src=\"/og/labs/ckd2026/clinic-report.png\" alt=\"門診報告（模擬資料）\">\n<img src=\"/og/labs/ckd2026/teacher-demo.png\" alt=\"教師報表示範（模擬資料）\"></p>\n<h2 id=\"歷史成績與學習資源\">歷史成績與學習資源</h2>\n<ul>\n<li>舊五題版（滿分 10 分）歷史原始成績：前測 166 筆、平均 6.14／中位數 6；後測 162 筆、平均 7.98／中位數 8。以分布圖與百分位表呈現，並註明前後測非配對、樣本單位是作答筆數。</li>\n<li>學習資源依五大面向整理 PubMed 文獻與臨床指引（Schwartz 公式、CKiD U25、KDIGO 2024 等），每筆標註出處、年份與查核日期。</li>\n</ul>\n<p><img src=\"/og/labs/ckd2026/benchmarks.png\" alt=\"歷史成績分布\">\n<img src=\"/og/labs/ckd2026/resources.png\" alt=\"學習資源\"></p>\n<h2 id=\"技術\">技術</h2>\n<ul>\n<li>前端：Vue 3 + TypeScript + Vite，hash 路由、頁面按需載入</li>\n<li>後端：Supabase（Email 帳號、資料表與 RPC：班級、邀請碼、門診報告、作答與評分版本）</li>\n<li>圖表：自繪 SVG 雷達圖與分布圖元件</li>\n<li>測試：Vitest、vue-tsc 型別檢查</li>\n<li>資料處理：Python 把歷史 Excel 轉成匿名統計（僅分布、平均、中位數）</li>\n<li>部署：Vercel；頁尾顯示建置版本與更新歷程</li>\n<li>模型：臨床推理使用 <strong>規則式腳本</strong>，確保回覆與病例設定一致，尚未連接生成式 AI</li>\n</ul>\n<h2 id=\"限制\">限制</h2>\n<ul>\n<li>模擬病人與檢驗資料為純合成教學資料，非真實病人或盛行率，不作醫療用途。</li>\n<li>練習進度存在瀏覽器，跨裝置不同步；需要保存的紀錄要提交到雲端帳號或下載備份。</li>\n<li>規則式問診遇到未辨識的問句只會給中性回覆。</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>線上網站：<a href=\"https://frontend-two-chi-30.vercel.app/\">https://frontend-two-chi-30.vercel.app/</a></li>\n<li>原始碼：私有儲存庫（未公開）</li>\n</ul>",
     "url": "/lab/ckd2026"
   },
   {
@@ -186,6 +268,11 @@
       "docs1": "https://awtw.github.io/resume/#/project/project-manage/main",
       "docs2": "https://awtw.github.io/resume/#/project/menu/center/centent"
     },
+    "deadLinks": [
+      "website",
+      "website2"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "case-study",
     "challenge": "Multiple CRM scenarios needed consistent IA while iterating quickly across login, permissions, lists, and forms.",
     "solution": "Componentized IA with task-oriented flows, reusable list/form scaffolds, and deployable interactive prototypes for stakeholder validation.",
@@ -209,7 +296,7 @@
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"crm-design-series\">CRM Design Series</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2 id=\"scope\">Scope</h2>\n<p>This Lab explores multiple CRM prototype directions across common back-office modules: authentication, role-based access, list search, form editing, and guided onboarding workflows.</p>\n<h2 id=\"design-focus\">Design Focus</h2>\n<ul>\n<li>Consistent visual language and reusable component patterns</li>\n<li>Task-oriented page flows and interaction paths</li>\n<li>Scalable list and form structures with permissions and state variations</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: VanillaJS, Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Design: UI/UX design, component thinking</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></li>\n<li><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
+    "html": "<h1 id=\"crm-design-series\">CRM Design Series</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2 id=\"scope\">Scope</h2>\n<p>This Lab explores multiple CRM prototype directions across common back-office modules: authentication, role-based access, list search, form editing, and guided onboarding workflows.</p>\n<h2 id=\"design-focus\">Design Focus</h2>\n<ul>\n<li>Consistent visual language and reusable component patterns</li>\n<li>Task-oriented page flows and interaction paths</li>\n<li>Scalable list and form structures with permissions and state variations</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: VanillaJS, Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Design: UI/UX design, component thinking</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li><del><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n<li><del><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
     "url": "/lab/crm-series"
   },
   {
@@ -221,6 +308,11 @@
       "docs1": "https://awtw.github.io/resume/#/project/project-manage/main",
       "docs2": "https://awtw.github.io/resume/#/project/menu/center/centent"
     },
+    "deadLinks": [
+      "website",
+      "website2"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "case-study",
     "challenge": "多版本 CRM 需求並存，登入/權限/清單/表單模組需一致語言卻又能快速迭代不同情境。",
     "solution": "建立元件化 IA 與任務導向流程，以可重用列表/表單骨架支援權限與狀態變化，並部署可互動原型供利害關係人驗證。",
@@ -244,7 +336,7 @@
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"crm-設計系列\">CRM 設計系列</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2 id=\"目的與範疇\">目的與範疇</h2>\n<p>針對不同情境設計多版 CRM 原型，涵蓋登入/權限、清單檢索、表單編輯、流程引導等常見功能模組，強調資訊架構與操作動線的清晰性。</p>\n<h2 id=\"設計重點\">設計重點</h2>\n<ul>\n<li>一致的設計語言與元件系統</li>\n<li>以任務為導向的頁面與操作流</li>\n<li>可擴充的列表/表單架構，支援權限與狀態變化</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：VanillaJS、Next.js</li>\n<li>佈署：Vercel</li>\n<li>設計：UI/UX 設計、元件化思維</li>\n</ul>\n<h2 id=\"相關連結\">相關連結</h2>\n<ul>\n<li><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></li>\n<li><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
+    "html": "<h1 id=\"crm-設計系列\">CRM 設計系列</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/crm/web01.png\" alt=\"CRM Web 01\">\n<img src=\"/og/labs/crm/content01.png\" alt=\"CRM Content 01\">\n<img src=\"/og/labs/crm/web02.png\" alt=\"CRM Web 02\">\n<img src=\"/og/labs/crm/content02.png\" alt=\"CRM Content 02\"></p>\n<p><strong>Tags</strong>: vibe coding, VanillaJS, Next.js, Vercel, UI/UX Design</p>\n<h2 id=\"目的與範疇\">目的與範疇</h2>\n<p>針對不同情境設計多版 CRM 原型，涵蓋登入/權限、清單檢索、表單編輯、流程引導等常見功能模組，強調資訊架構與操作動線的清晰性。</p>\n<h2 id=\"設計重點\">設計重點</h2>\n<ul>\n<li>一致的設計語言與元件系統</li>\n<li>以任務為導向的頁面與操作流</li>\n<li>可擴充的列表/表單架構，支援權限與狀態變化</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：VanillaJS、Next.js</li>\n<li>佈署：Vercel</li>\n<li>設計：UI/UX 設計、元件化思維</li>\n</ul>\n<h2 id=\"相關連結\">相關連結</h2>\n<ul>\n<li><del><a href=\"https://crmdev.8plus.app/en\">https://crmdev.8plus.app/en</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n<li><del><a href=\"https://on-boarding-system.vercel.app/en/login\">https://on-boarding-system.vercel.app/en/login</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/project-manage/main\">https://awtw.github.io/resume/#/project/project-manage/main</a></li>\n<li><a href=\"https://awtw.github.io/resume/#/project/menu/center/centent\">https://awtw.github.io/resume/#/project/menu/center/centent</a></li>\n</ul>",
     "url": "/lab/crm-series"
   },
   {
@@ -254,13 +346,17 @@
     "links": {
       "website": "https://www.hopenet-gf.com"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "A disaster-response collaboration platform for Hualien Guangfu, focused on information integration, resource matching, and rapid community coordination.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"guangfu-collaboration-platform-e-cooperative\">Guangfu Collaboration Platform (e-cooperative)</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2 id=\"background\">Background</h2>\n<p>On 2025/09/23, the Matai'an Creek barrier lake disaster affected the Guangfu area in Hualien. This Lab prototypes a collaboration platform that connects social networks and volunteers to integrate information, improve communication efficiency, and support resource matching.</p>\n<h2 id=\"goals--value\">Goals &#x26; Value</h2>\n<ul>\n<li>Integrate disaster information from multiple sources into a standardized data model</li>\n<li>Support mutual aid and resource matching between volunteers and residents</li>\n<li>Launch and iterate quickly with a lightweight, maintainable architecture</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Next.js deployed on Vercel</li>\n<li>Backend: Python Flask API</li>\n<li>Design: UI/UX design and information architecture</li>\n</ul>\n<h2 id=\"screenshot\">Screenshot</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></li>\n</ul>",
+    "html": "<h1 id=\"guangfu-collaboration-platform-e-cooperative\">Guangfu Collaboration Platform (e-cooperative)</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2 id=\"background\">Background</h2>\n<p>On 2025/09/23, the Matai'an Creek barrier lake disaster affected the Guangfu area in Hualien. This Lab prototypes a collaboration platform that connects social networks and volunteers to integrate information, improve communication efficiency, and support resource matching.</p>\n<h2 id=\"goals--value\">Goals &#x26; Value</h2>\n<ul>\n<li>Integrate disaster information from multiple sources into a standardized data model</li>\n<li>Support mutual aid and resource matching between volunteers and residents</li>\n<li>Launch and iterate quickly with a lightweight, maintainable architecture</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Next.js deployed on Vercel</li>\n<li>Backend: Python Flask API</li>\n<li>Design: UI/UX design and information architecture</li>\n</ul>\n<h2 id=\"screenshot\">Screenshot</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><del><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n</ul>",
     "url": "/lab/e-cooperative"
   },
   {
@@ -269,13 +365,17 @@
     "links": {
       "website": "https://www.hopenet-gf.com"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "為花蓮光復災害協作打造的資訊整合與資源媒合平台，聚焦快速上線與社群協作。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"光復協作平台e-cooperative\">光復協作平台（e-cooperative）</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2 id=\"專案背景\">專案背景</h2>\n<p>2025/09/23 花蓮光復區發生馬太鞍溪堰塞湖災害。透過社群與志工串聯，啟動協作平台的設計與原型開發，目標為整合資訊、提升溝通效率、並協助資源媒合。</p>\n<h2 id=\"目標與價值\">目標與價值</h2>\n<ul>\n<li>整合多來源災情資訊，建立標準化資料模型</li>\n<li>提供志工與居民的互助與媒合機制</li>\n<li>以輕量可維護為前提，快速上線與迭代</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Next.js（Vercel 佈署）</li>\n<li>後端：Python Flask API</li>\n<li>設計：UI/UX 設計與資訊架構</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></li>\n</ul>",
+    "html": "<h1 id=\"光復協作平台e-cooperative\">光復協作平台（e-cooperative）</h1>\n<p><strong>Tags</strong>: vibe coding, Next.js, Vercel, Python Flask API, UI/UX Design</p>\n<h2 id=\"專案背景\">專案背景</h2>\n<p>2025/09/23 花蓮光復區發生馬太鞍溪堰塞湖災害。透過社群與志工串聯，啟動協作平台的設計與原型開發，目標為整合資訊、提升溝通效率、並協助資源媒合。</p>\n<h2 id=\"目標與價值\">目標與價值</h2>\n<ul>\n<li>整合多來源災情資訊，建立標準化資料模型</li>\n<li>提供志工與居民的互助與媒合機制</li>\n<li>以輕量可維護為前提，快速上線與迭代</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Next.js（Vercel 佈署）</li>\n<li>後端：Python Flask API</li>\n<li>設計：UI/UX 設計與資訊架構</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/e-cooperative/web.png\" alt=\"e-cooperative Web\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><del><a href=\"https://www.hopenet-gf.com\">https://www.hopenet-gf.com</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n</ul>",
     "url": "/lab/e-cooperative"
   },
   {
@@ -302,6 +402,11 @@
       "demo": "https://demo.ecommerce-dashboard.com",
       "github": "https://github.com/example/ecommerce-dashboard"
     },
+    "deadLinks": [
+      "demo",
+      "github"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "A modern management dashboard for small and medium e-commerce businesses, integrating order management, inventory control, and data analytics.",
@@ -336,6 +441,11 @@
       "demo": "https://demo.ecommerce-dashboard.com",
       "github": "https://github.com/example/ecommerce-dashboard"
     },
+    "deadLinks": [
+      "demo",
+      "github"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "為中小型電商企業打造的現代化管理後台，整合訂單管理、庫存控制與數據分析。",
@@ -353,13 +463,17 @@
     "links": {
       "website": "https://experimentlab.online/#/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "A medical research prototype platform that helps physicians build early prediction models, visualize indicators, and export research reports.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"experimentlab--medical-analysis-prototype-platform\">ExperimentLab — Medical Analysis Prototype Platform</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab Analysis\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2 id=\"overview\">Overview</h2>\n<p>ExperimentLab is a prototype platform designed to help physicians prepare research proposals. It uses indicator data such as dialysis-related metrics and gene expression signals to build early prediction models and evaluate disease progression or recovery trends.</p>\n<h2 id=\"feature-focus\">Feature Focus</h2>\n<ul>\n<li>Visualize indicator data and track trend changes</li>\n<li>Build baseline model estimates with adjustable parameters</li>\n<li>Record and export reports for research workflows</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Vue 3</li>\n<li>Design: UI/UX design, data visualization</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></li>\n</ul>",
+    "html": "<h1 id=\"experimentlab--medical-analysis-prototype-platform\">ExperimentLab — Medical Analysis Prototype Platform</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab Analysis\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2 id=\"overview\">Overview</h2>\n<p>ExperimentLab is a prototype platform designed to help physicians prepare research proposals. It uses indicator data such as dialysis-related metrics and gene expression signals to build early prediction models and evaluate disease progression or recovery trends.</p>\n<h2 id=\"feature-focus\">Feature Focus</h2>\n<ul>\n<li>Visualize indicator data and track trend changes</li>\n<li>Build baseline model estimates with adjustable parameters</li>\n<li>Record and export reports for research workflows</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Frontend: Vue 3</li>\n<li>Design: UI/UX design, data visualization</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><del><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n</ul>",
     "url": "/lab/experimentlab"
   },
   {
@@ -368,13 +482,17 @@
     "links": {
       "website": "https://experimentlab.online/#/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "協助醫師建立研究原型與基礎預測模型的醫學分析平台，支援指標視覺化與研究報表匯出。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"experimentlab--醫學分析原型平台\">ExperimentLab — 醫學分析原型平台</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab 分析\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>協助醫師在申請研究計畫時使用的原型平台，透過指標數據（例如覆膜透析程度、基因表現）建立初步預測模型，評估疾病惡化或好轉的風險趨勢。</p>\n<h2 id=\"功能重點\">功能重點</h2>\n<ul>\n<li>指標資料視覺化呈現與趨勢追蹤</li>\n<li>基礎模型推估與可調參數</li>\n<li>記錄與匯出研究用報表</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Vue 3</li>\n<li>設計：UI/UX 設計、資料視覺化</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></li>\n</ul>",
+    "html": "<h1 id=\"experimentlab--醫學分析原型平台\">ExperimentLab — 醫學分析原型平台</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/experimentlab/web.png\" alt=\"ExperimentLab Web\">\n<img src=\"/og/labs/experimentlab/analysis.png\" alt=\"ExperimentLab 分析\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design, Analysis Algorithm</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>協助醫師在申請研究計畫時使用的原型平台，透過指標數據（例如覆膜透析程度、基因表現）建立初步預測模型，評估疾病惡化或好轉的風險趨勢。</p>\n<h2 id=\"功能重點\">功能重點</h2>\n<ul>\n<li>指標資料視覺化呈現與趨勢追蹤</li>\n<li>基礎模型推估與可調參數</li>\n<li>記錄與匯出研究用報表</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>前端：Vue 3</li>\n<li>設計：UI/UX 設計、資料視覺化</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><del><a href=\"https://experimentlab.online/#/\">https://experimentlab.online/#/</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n</ul>",
     "url": "/lab/experimentlab"
   },
   {
@@ -412,31 +530,47 @@
     "title": "Power BI Market & Disease Analysis",
     "slug": "power-bi",
     "baseSlug": "power-bi",
+    "role": "Data analysis",
+    "stack": [
+      "Python",
+      "Power BI"
+    ],
     "type": "project",
     "featured": false,
     "summary": "A Python and Power BI analysis Lab exploring possible relationships between market, employment, and disease data through interactive dashboards.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"power-bi--market--disease-relationship-exploration\">Power BI — Market &#x26; Disease Relationship Exploration</h1>\n<p><strong>Tags</strong>: Python, Power BI</p>\n<p>Based on public datasets, this Lab explores possible relationships between stock market movement, employment market changes, and specific disease patterns. Python handles data processing and feature engineering, while Power BI provides the interactive dashboard layer.</p>\n<h2 id=\"focus\">Focus</h2>\n<ul>\n<li>Data cleaning and feature engineering workflow</li>\n<li>Indicator and time-series visualization</li>\n<li>Filtering and interactive analysis</li>\n</ul>",
+    "html": "<h1 id=\"power-bi--market--disease-relationship-exploration\">Power BI — Market &#x26; Disease Relationship Exploration</h1>\n<p><img src=\"/og/labs/powerbi/powerbi.jpeg\" alt=\"Power BI dashboard\"></p>\n<p><strong>Tags</strong>: Python, Power BI</p>\n<p>Based on public datasets, this Lab explores possible relationships between stock market movement, employment market changes, and specific disease patterns. Python handles data processing and feature engineering, while Power BI provides the interactive dashboard layer.</p>\n<h2 id=\"focus\">Focus</h2>\n<ul>\n<li>Data cleaning and feature engineering workflow</li>\n<li>Indicator and time-series visualization</li>\n<li>Filtering and interactive analysis</li>\n</ul>\n<h2 id=\"limitations\">Limitations</h2>\n<ul>\n<li>Shows correlation only, not causation; public datasets differ in release cadence and definitions, so readings need caution.</li>\n</ul>",
     "url": "/lab/power-bi"
   },
   {
     "title": "Power BI",
     "slug": "power-bi",
+    "baseSlug": "power-bi",
+    "role": "資料分析",
+    "stack": [
+      "Python",
+      "Power BI"
+    ],
     "type": "project",
     "featured": false,
     "summary": "以 Python 與 Power BI 探索市場、就業與疾病資料的潛在關聯，建立互動式分析儀表板。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"power-bi--市場與疾病關聯探索\">Power BI — 市場與疾病關聯探索</h1>\n<h1 id=\"tags-python-power-bi\"><strong>Tags</strong>: Python, Power BI</h1>\n<p>以公開資料為基礎，探索股市與就業市場變化與特定疾病之間的潛在關聯。以 Python 進行資料處理與特徵工程，並以 Power BI 建立互動式儀表板。</p>\n<h2 id=\"重點\">重點</h2>\n<ul>\n<li>資料清理與特徵工程流程</li>\n<li>指標與時間序列視覺化</li>\n<li>篩選與交互分析</li>\n</ul>",
+    "html": "<h1 id=\"power-bi--市場與疾病關聯探索\">Power BI — 市場與疾病關聯探索</h1>\n<p><img src=\"/og/labs/powerbi/powerbi.jpeg\" alt=\"Power BI 儀表板\"></p>\n<p><strong>Tags</strong>: Python, Power BI</p>\n<p>以公開資料為基礎，探索股市與就業市場變化與特定疾病之間的潛在關聯。以 Python 進行資料處理與特徵工程，並以 Power BI 建立互動式儀表板。</p>\n<h2 id=\"重點\">重點</h2>\n<ul>\n<li>資料清理與特徵工程流程</li>\n<li>指標與時間序列視覺化</li>\n<li>篩選與交互分析</li>\n</ul>\n<h2 id=\"限制\">限制</h2>\n<ul>\n<li>只呈現相關性，不推論因果；公開資料的發布頻率與定義不一，需要在解讀時保留餘地。</li>\n</ul>",
     "url": "/lab/power-bi"
   },
   {
     "title": "R Analysis",
     "slug": "r-analysis",
     "baseSlug": "r-analysis",
+    "role": "Data analysis",
+    "stack": [
+      "R",
+      "VanillaJS"
+    ],
     "links": {
       "website": "https://awtw.github.io/R_page/"
     },
@@ -446,12 +580,18 @@
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"r-analysis--shopping-cart-button-impact-analysis\">R Analysis — Shopping Cart Button Impact Analysis</h1>\n<h2 id=\"screenshot\">Screenshot</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>This Lab uses R to build an analysis model exploring how shopping cart button design affects purchase conversion. VanillaJS powers the interactive visualization layer for decision support and iteration.</p>\n<h2 id=\"focus\">Focus</h2>\n<ul>\n<li>Model assumptions and variable selection</li>\n<li>Experiment design and A/B comparison</li>\n<li>Visualization and insight presentation</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
+    "html": "<h1 id=\"r-analysis--shopping-cart-button-impact-analysis\">R Analysis — Shopping Cart Button Impact Analysis</h1>\n<h2 id=\"screenshot\">Screenshot</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>This Lab uses R to build an analysis model exploring how shopping cart button design affects purchase conversion. VanillaJS powers the interactive visualization layer for decision support and iteration.</p>\n<h2 id=\"focus\">Focus</h2>\n<ul>\n<li>Model assumptions and variable selection</li>\n<li>Experiment design and A/B comparison</li>\n<li>Visualization and insight presentation</li>\n</ul>\n<h2 id=\"study-1-cart-button-colour-and-purchasing\">Study 1: cart button colour and purchasing</h2>\n<p>Using data across countries and devices, compares two cart-button colour groups to see whether colour, culture or device changes purchase behaviour, visualised with box plots, time-series lines and density curves.</p>\n<h2 id=\"study-2-gut-microbiome-in-ckd-patients-vs-healthy-controls\">Study 2: gut microbiome in CKD patients vs. healthy controls</h2>\n<p>Clusters 16S rRNA sequencing data into an OTU table (one OTU per bacterium), compares group distance with PCA and PCoA, checks correlations between genera, then compares the relative abundance of selected genera across the two groups.</p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
     "url": "/lab/r-analysis"
   },
   {
     "title": "R分析",
     "slug": "r-analysis",
+    "baseSlug": "r-analysis",
+    "role": "資料分析",
+    "stack": [
+      "R",
+      "VanillaJS"
+    ],
     "links": {
       "website": "https://awtw.github.io/R_page/"
     },
@@ -461,7 +601,7 @@
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"r-analysis--購物車按鍵影響因素分析\">R Analysis — 購物車按鍵影響因素分析</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>利用 R 建立分析模型，探討購物車按鍵設計對購買轉換的影響，並配合 VanillaJS 進行互動式視覺化，輔助決策與迭代。</p>\n<h2 id=\"重點\">重點</h2>\n<ul>\n<li>模型假設與變數選擇</li>\n<li>實驗設計與 A/B 比較</li>\n<li>視覺化呈現與洞察整理</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
+    "html": "<h1 id=\"r-analysis--購物車按鍵影響因素分析\">R Analysis — 購物車按鍵影響因素分析</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/r-analysis/web.png\" alt=\"R Analysis Web\"></p>\n<p><strong>Tags</strong>: R, VanillaJS</p>\n<p>利用 R 建立分析模型，探討購物車按鍵設計對購買轉換的影響，並配合 VanillaJS 進行互動式視覺化，輔助決策與迭代。</p>\n<h2 id=\"重點\">重點</h2>\n<ul>\n<li>模型假設與變數選擇</li>\n<li>實驗設計與 A/B 比較</li>\n<li>視覺化呈現與洞察整理</li>\n</ul>\n<h2 id=\"分析一購物車按鍵顏色與購買行為\">分析一：購物車按鍵顏色與購買行為</h2>\n<p>以不同國家與裝置的資料，比較兩組購物車按鍵顏色是否影響購買，並觀察文化與裝置差異造成的行為不同；以 boxplot、時間序列線圖與密度曲線做視覺化比較。</p>\n<h2 id=\"分析二慢性腎臟病ckd與正常人的腸道菌相差異\">分析二：慢性腎臟病（CKD）與正常人的腸道菌相差異</h2>\n<p>以 16S rRNA 定序資料做 clustering 並產生 OTU table（每個 OTU 代表一種細菌），用 PCA、PCoA 比較兩組菌相距離；再看菌屬之間的相關性，最後比較選定菌屬在兩組的相對豐度差異。</p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://awtw.github.io/R_page/\">https://awtw.github.io/R_page/</a></li>\n</ul>",
     "url": "/lab/r-analysis"
   },
   {
@@ -539,7 +679,7 @@
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"resume-2024--business-style-portfolio\">Resume 2024 — Business-Style Portfolio</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>A business-oriented portfolio design focused on brand cohesion, project value presentation, information hierarchy, visual rhythm, and conversion paths.</p>\n<h2 id=\"technical-focus\">Technical Focus</h2>\n<ul>\n<li>Vue 3 component structure and routing</li>\n<li>Business-style visual and layout system</li>\n<li>Maintainable design and code structure</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
+    "html": "<h1 id=\"resume-2024--business-style-portfolio\">Resume 2024 — Business-Style Portfolio</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>A business-oriented portfolio design focused on brand cohesion, project value presentation, information hierarchy, visual rhythm, and conversion paths.</p>\n<h2 id=\"technical-focus\">Technical Focus</h2>\n<ul>\n<li>Vue 3 component structure and routing</li>\n<li>Business-style visual and layout system</li>\n<li>Maintainable design and code structure</li>\n</ul>\n<h2 id=\"status-2026-11\">Status (2026-11)</h2>\n<p>augustwang.com now hosts a newer, document-style about page (about me, skills and key projects); the screenshots above record the 2024 design.</p>\n<p><img src=\"/og/labs/resume-2024/current-2026.png\" alt=\"augustwang.com in 2026\"></p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2024"
   },
   {
@@ -554,7 +694,7 @@
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"resume-2024--商業風格作品集\">Resume 2024 — 商業風格作品集</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>以商業導向為主的作品集設計，強調品牌凝聚力與專案價值呈現，注重資訊階層、視覺節奏與轉換動線。</p>\n<h2 id=\"技術重點\">技術重點</h2>\n<ul>\n<li>Vue 3 元件化與路由規劃</li>\n<li>商業風格視覺與版面系統</li>\n<li>可維護的設計與代碼結構</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
+    "html": "<h1 id=\"resume-2024--商業風格作品集\">Resume 2024 — 商業風格作品集</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/resume-2024/web.png\" alt=\"Resume 2024 Web\">\n<img src=\"/og/labs/resume-2024/content.png\" alt=\"Resume 2024 Content\">\n<img src=\"/og/labs/resume-2024/web02.png\" alt=\"Resume 2024 Web 02\">\n<img src=\"/og/labs/resume-2024/contenet02.png\" alt=\"Resume 2024 Content 02\"></p>\n<p><strong>Tags</strong>: Vue 3, UI/UX Design</p>\n<p>以商業導向為主的作品集設計，強調品牌凝聚力與專案價值呈現，注重資訊階層、視覺節奏與轉換動線。</p>\n<h2 id=\"技術重點\">技術重點</h2>\n<ul>\n<li>Vue 3 元件化與路由規劃</li>\n<li>商業風格視覺與版面系統</li>\n<li>可維護的設計與代碼結構</li>\n</ul>\n<h2 id=\"現況2026-11\">現況（2026-11）</h2>\n<p>網域 augustwang.com 目前已改放新版的個人介紹頁（文件式版面，整理關於我、技術能力與重要專案），上方截圖為 2024 版設計的紀錄。</p>\n<p><img src=\"/og/labs/resume-2024/current-2026.png\" alt=\"augustwang.com 2026 現況\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://www.augustwang.com/\">https://www.augustwang.com/</a></li>\n</ul>",
     "url": "/lab/resume-2024"
   },
   {
@@ -564,13 +704,17 @@
     "links": {
       "website": "https://resume.2025.8plus.app/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "A Next.js 15 personal portfolio and consulting entry point, integrating Google Calendar booking and modern UIX direction.",
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"resume-2025--personal-portfolio\">Resume 2025 — Personal Portfolio</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2 id=\"overview\">Overview</h2>\n<p>This is a new-generation personal portfolio built quickly by combining years of experience with a modern design language. It integrates a Google Calendar booking flow so people interested in consulting can book directly online and reduce conversion friction.</p>\n<h2 id=\"highlights\">Highlights</h2>\n<ul>\n<li>Clear information architecture that emphasizes Lab value and role contribution</li>\n<li>Layout and motion details centered around readability</li>\n<li>Built-in booking entry point with Google Calendar</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Framework: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Integration: Google Calendar API</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></li>\n</ul>",
+    "html": "<h1 id=\"resume-2025--personal-portfolio\">Resume 2025 — Personal Portfolio</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2 id=\"overview\">Overview</h2>\n<p>This is a new-generation personal portfolio built quickly by combining years of experience with a modern design language. It integrates a Google Calendar booking flow so people interested in consulting can book directly online and reduce conversion friction.</p>\n<h2 id=\"highlights\">Highlights</h2>\n<ul>\n<li>Clear information architecture that emphasizes Lab value and role contribution</li>\n<li>Layout and motion details centered around readability</li>\n<li>Built-in booking entry point with Google Calendar</li>\n</ul>\n<h2 id=\"stack\">Stack</h2>\n<ul>\n<li>Framework: Next.js</li>\n<li>Deployment: Vercel</li>\n<li>Integration: Google Calendar API</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><del><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></del> ⛓️‍💥 <em>(offline as of 2026-11)</em></li>\n</ul>",
     "url": "/lab/resume-2025"
   },
   {
@@ -579,19 +723,29 @@
     "links": {
       "website": "https://resume.2025.8plus.app/"
     },
+    "deadLinks": [
+      "website"
+    ],
+    "linksCheckedAt": "2026-11-02T00:00:00.000Z",
     "type": "project",
     "featured": false,
     "summary": "Next.js 15 個人作品集與諮詢入口，整合 Google Calendar 預約流程與現代 UIX。",
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"resume-2025--個人作品集\">Resume 2025 — 個人作品集</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2 id=\"簡介\">簡介</h2>\n<p>整合多年經驗與設計語彙，快速完成的新一代個人作品集。導入 Google Calendar 預約流程，讓對諮詢有興趣的使用者可直接線上預約，提升轉換效率。</p>\n<h2 id=\"特色亮點\">特色亮點</h2>\n<ul>\n<li>明快的資訊架構，突顯專案價值與角色貢獻</li>\n<li>以可讀性為核心的版面與動態細節</li>\n<li>內建預約入口（Google Calendar）</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>框架：Next.js</li>\n<li>佈署：Vercel</li>\n<li>整合：Google Calendar API</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></li>\n</ul>",
+    "html": "<h1 id=\"resume-2025--個人作品集\">Resume 2025 — 個人作品集</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/resume-2025/web.png\" alt=\"Resume 2025 Web\">\n<img src=\"/og/labs/resume-2025/content.png\" alt=\"Resume 2025 Content\"></p>\n<p><strong>Tags</strong>: vibe coding, Next.js, Google Calendar, Vercel, UI/UX Design</p>\n<h2 id=\"簡介\">簡介</h2>\n<p>整合多年經驗與設計語彙，快速完成的新一代個人作品集。導入 Google Calendar 預約流程，讓對諮詢有興趣的使用者可直接線上預約，提升轉換效率。</p>\n<h2 id=\"特色亮點\">特色亮點</h2>\n<ul>\n<li>明快的資訊架構，突顯專案價值與角色貢獻</li>\n<li>以可讀性為核心的版面與動態細節</li>\n<li>內建預約入口（Google Calendar）</li>\n</ul>\n<h2 id=\"技術棧\">技術棧</h2>\n<ul>\n<li>框架：Next.js</li>\n<li>佈署：Vercel</li>\n<li>整合：Google Calendar API</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><del><a href=\"https://resume.2025.8plus.app/\">https://resume.2025.8plus.app/</a></del> ⛓️‍💥 <em>（2026-11 已失效）</em></li>\n</ul>",
     "url": "/lab/resume-2025"
   },
   {
     "title": "shuyan_art Design Freelance Platform",
     "slug": "shuyan-art",
     "baseSlug": "shuyan-art",
+    "role": "Brand / Frontend",
+    "stack": [
+      "Next.js",
+      "Velite",
+      "UI/UX Design"
+    ],
     "links": {
       "website": "https://www.shuyan.art/"
     },
@@ -601,12 +755,19 @@
     "published": true,
     "protected": false,
     "locale": "en",
-    "html": "<h1 id=\"shuyan_art-design-freelance-platform\">shuyan_art Design Freelance Platform</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<h2 id=\"overview\">Overview</h2>\n<p>This Lab presents a design freelance brand through a refined portfolio experience, clear service positioning, and a lightweight path for potential clients to understand the work and start a conversation.</p>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></li>\n</ul>",
+    "html": "<h1 id=\"shuyan_art-design-freelance-platform\">shuyan_art Design Freelance Platform</h1>\n<h2 id=\"screenshots\">Screenshots</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<h2 id=\"overview\">Overview</h2>\n<p>This Lab presents a design freelance brand through a refined portfolio experience, clear service positioning, and a lightweight path for potential clients to understand the work and start a conversation.</p>\n<h2 id=\"content-structure\">Content structure</h2>\n<ul>\n<li>Home: the designer's positioning and selected work (brand website design, digital art, minimalism, conceptual photography)</li>\n<li>Services: UI/UX, brand planning and visual design, with the collaboration flow from brief to delivery</li>\n<li>Pricing reference, including discounted plans for independent studios and students</li>\n<li>Conversion: a free 15–20 minute design consultation and a persistent \"Let's talk\" button in the nav</li>\n</ul>\n<h2 id=\"tech\">Tech</h2>\n<ul>\n<li>Next.js with Velite managing works and posts, so adding a piece is one new content file</li>\n<li>Generous whitespace, light type and a single tone keep the focus on the work</li>\n</ul>\n<h2 id=\"link\">Link</h2>\n<ul>\n<li><a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></li>\n</ul>",
     "url": "/lab/shuyan-art"
   },
   {
     "title": "shuyan_art 設計接案平台",
     "slug": "shuyan-art",
+    "baseSlug": "shuyan-art",
+    "role": "品牌 / 前端",
+    "stack": [
+      "Next.js",
+      "Velite",
+      "UI/UX Design"
+    ],
     "links": {
       "website": "https://www.shuyan.art/"
     },
@@ -616,7 +777,7 @@
     "published": true,
     "protected": false,
     "locale": "zh-TW",
-    "html": "<h1 id=\"shuyan_art-設計接案平台\">shuyan_art 設計接案平台</h1>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<p>連結：<a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></p>",
+    "html": "<h1 id=\"shuyan_art-設計接案平台\">shuyan_art 設計接案平台</h1>\n<p><strong>Tags</strong>: Next.js, Velite, UI/UX Design</p>\n<h2 id=\"專案簡介\">專案簡介</h2>\n<p>為 UI/UX 設計師「書彥」打造的個人品牌與接案入口。網站把作品集、服務項目、合作流程與價格參考放在同一條動線上，讓潛在客戶從「看作品」自然走到「預約諮詢」。</p>\n<h2 id=\"內容架構\">內容架構</h2>\n<ul>\n<li>首頁：設計師定位、精選作品（品牌網站設計、Digital Art、Minimalism、Conceptual Photography）</li>\n<li>服務：UI/UX 設計、品牌規劃與視覺設計，附從需求討論到交付的合作流程</li>\n<li>價格參考與方案：獨立工作室與學生的優惠方案</li>\n<li>轉換入口：15–20 分鐘免費設計諮詢、「創作討論」按鈕常駐導覽列</li>\n</ul>\n<h2 id=\"技術\">技術</h2>\n<ul>\n<li>Next.js 搭配 Velite 管理作品與文章內容，新增作品只需新增一個內容檔</li>\n<li>以留白、細字與單色調凸顯作品本身</li>\n</ul>\n<h2 id=\"截圖\">截圖</h2>\n<p><img src=\"/og/labs/shuyan-art/web.png\" alt=\"shuyan_art Web\">\n<img src=\"/og/labs/shuyan-art/content.png\" alt=\"shuyan_art Content\"></p>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li><a href=\"https://www.shuyan.art/\">https://www.shuyan.art/</a></li>\n</ul>",
     "url": "/lab/shuyan-art"
   },
   {
@@ -737,5 +898,67 @@
     "locale": "zh-TW",
     "html": "<h1 id=\"transcript-plus--本機字幕與會議整理軟體\">Transcript Plus — 本機字幕與會議整理軟體</h1>\n<p><img src=\"/og/labs/transcript-plus/transcript-plus.png\" alt=\"Transcript Plus\"></p>\n<p><strong>Tags</strong>: Tauri, React, Python, SQLite, Whisper, Offline</p>\n<p>目前為 <strong>v0.1 開發版</strong>：已實作桌面介面、Python 本機轉錄核心、SQLite 儲存、逐字稿校對與字幕匯出；macOS 已可建置 <code>.app</code>，尚非完整 MVP，Windows 實機與公開發行尚未驗收。</p>\n<h2 id=\"緣由\">緣由</h2>\n<p>靈感來自工作上開發語音相關功能的經驗：發現真正耗時的不是辨識本身，而是「辨識完成到整理完成」之間的人工校對、斷句與對時，市面上也少有能完整銜接這段流程的工具。同時，訪談、會議與課程錄音常含敏感內容，不適合上傳雲端。因此決定自己嘗試做成可安裝的單機軟體，資料與推論都留在電腦。</p>\n<h2 id=\"目的與預期效果\">目的與預期效果</h2>\n<ul>\n<li>讓訪談、Podcast、課程與會議整理者，從本機影音一路做到可發布字幕。</li>\n<li>縮短校對時間：目標是在相同素材下，字幕整理時間中位數減少 30% 以上（規劃目標，尚未達標驗證）。</li>\n<li>全程離線可用，模型備齊後可斷網工作，無註冊登入與自建伺服器。</li>\n<li>同一份逐字稿資料同時產出 TXT、SRT、VTT、JSON，以及（規劃中）摘要與待辦。</li>\n</ul>\n<h2 id=\"如何做出來\">如何做出來</h2>\n<ol>\n<li>先撰寫 MVP 需求、驗收指標與架構文件，釐清範圍與技術選型，再依里程碑逐步實作。</li>\n<li>架構採 Tauri 2 桌面外殼、React 前端、Python sidecar 核心，以 PyInstaller 封裝，使用者不需自備開發環境。</li>\n<li>以結構化 Transcript／Word／Cue 資料契約為核心，SQLite 為唯一可寫事實來源，字幕檔只是衍生輸出。</li>\n<li>持久化工作佇列與階段狀態，支援取消、重試、自動儲存與復原／重做；字詞時間失效時明示待核對，不假裝有效。</li>\n<li>2 小時逐字稿以虛擬清單呈現，維持編輯流暢度。</li>\n</ol>\n<p>已完成：影音匯入與播放、本機轉錄與詞時間、字幕生成／拆合／時間微調、TXT／SRT／VTT／JSON 匯出。\n尚未提供：自動講者分離、本機摘要與待辦、影片代理、模型下載管理、簽章與公證。</p>\n<h2 id=\"使用的套件與模型\">使用的套件與模型</h2>\n<ul>\n<li>桌面：Tauri 2（Rust）、React 19、TypeScript、Vite、TanStack Virtual、Lucide</li>\n<li>核心：Python 3.12、SQLite、PyInstaller</li>\n<li>語音辨識：faster-whisper（CTranslate2，CPU INT8）；Apple Silicon 另支援 MLX Whisper</li>\n<li>模型：Breeze ASR（台灣華語優化）／Whisper 系列，由使用者自行指定本機模型資料夾，程式不自動下載權重</li>\n<li>規劃中：sherpa-onnx 講者分離、本機 LLM 摘要與待辦</li>\n<li>測試：pytest、Vitest、Testing Library</li>\n<li>媒體處理：FFmpeg／ffprobe</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>原始碼與 README：<a href=\"https://github.com/awtw/transcript-plus\">https://github.com/awtw/transcript-plus</a></li>\n</ul>",
     "url": "/lab/transcript-plus"
+  },
+  {
+    "title": "YES Financial System — Fund Analytics & Data Pipeline",
+    "slug": "yes-fms",
+    "baseSlug": "yes-fms",
+    "role": "Full-stack / Data engineering",
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Cron crawlers",
+      "Vercel"
+    ],
+    "period": "2026",
+    "highlights": [
+      "86 core funds plus a 121-fund expansion pool, 250 instruments, about 18k daily NAVs and 12k dividend events",
+      "MoneyDJ and Yahoo crawlers with name-normalised matching; every instrument reports ok / partial / failed / pending",
+      "Dividends keep both the source value and a recomputed formula value; 2,462 rows reconciled with zero diff where recomputable",
+      "NAV charts against the S&P 500 and TAIEX; lump-sum or monthly simulations compare up to five funds and print a proposal"
+    ],
+    "links": {
+      "website": "https://yes.fms.8plus.app/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "A fund analytics system for insurance and wealth advisers: daily cron crawlers collect NAV and dividends from 20-plus fund houses, feeding performance, dividend cash-flow, investment simulation and a member CRM, with the data pipeline's status and formulas documented in the app.",
+    "published": true,
+    "protected": false,
+    "locale": "en",
+    "html": "<h1 id=\"yes-financial-system--fund-analytics--data-pipeline\">YES Financial System — Fund Analytics &#x26; Data Pipeline</h1>\n<p><img src=\"/og/labs/yes-fms/web.png\" alt=\"YES fund overview\"></p>\n<p><strong>Tags</strong>: Next.js, TypeScript, Supabase, Cron, Vercel</p>\n<h2 id=\"why\">Why</h2>\n<p>Advisers explaining policy-linked funds to clients kept jumping between fund-house sites, MoneyDJ and spreadsheets. The deeper problem was unsynchronised sources: funds, ETFs, stocks and indices trade on different days, so fetching live in the browser or mixing sources breaks charts, makes dividend figures disagree and leaves performance unauditable.</p>\n<p>YES moves collection, field mapping and source-value storage into back-end cron jobs, leaving the front end to present and explain. (The UI is in Traditional Chinese.)</p>\n<h2 id=\"features\">Features</h2>\n<ul>\n<li><strong>Fund overview</strong>: filter by 20-plus fund houses (Allianz, BlackRock, PIMCO, JPMorgan, Schroder, CTBC and more) and search; shows cumulative return, CAGR, annualised dividend yield and max drawdown, with NAV charted against the S&#x26;P 500 and TAIEX.</li>\n<li><strong>Dividend cash flow</strong>: enter units held to see per-unit payouts, annualised yield and estimated cash per ex-date, listing both the source yield and the formula yield.</li>\n<li><strong>Investment simulator</strong>: lump sum or monthly, 1–40 years, growth from the fund's historical CAGR or conservative / aggressive scenarios, up to five comparison funds, and a printable proposal.</li>\n<li><strong>Member CRM</strong>: Supabase-backed members with status (active / lead / inactive), owner, channel, notes and linked funds.</li>\n</ul>\n<p><img src=\"/og/labs/yes-fms/dividend.png\" alt=\"Dividend cash-flow analysis\">\n<img src=\"/og/labs/yes-fms/simulator.png\" alt=\"Investment simulator\"></p>\n<h2 id=\"data-pipeline-pipeline-observatory\">Data pipeline (Pipeline Observatory)</h2>\n<p>A dedicated page explains where data comes from, how it is judged and how often it refreshes, labelling what runs today versus what is still spec (LIVE / HYBRID):</p>\n<ol>\n<li><strong>Source master and whitelist</strong>: the fund whitelist and universe bootstrap decide which funds, ETFs, stocks and indices to track.</li>\n<li><strong>Core fund sync</strong>: MoneyDJ for fund NAV and dividends, Yahoo for required ETFs; name normalisation plus verified code overrides pick the most trustworthy match, with a 0.82 score threshold.</li>\n<li><strong>Expansion instruments</strong>: candidates are written to instruments and a source map, then Yahoo daily bars fill daily NAV.</li>\n<li><strong>Status write-back</strong>: each instrument records ok / partial / failed / pending, last success time and failure reason, read directly by the dashboard and pipeline page.</li>\n<li><strong>Formulas and performance</strong>: the annualised-yield formula is live; the authoritative adjusted-NAV and CAGR batch is still planned.</li>\n</ol>\n<p>The page reads Supabase report snapshots (last sync, success and failure counts, instruments to investigate and why), all read-only.</p>\n<p><img src=\"/og/labs/yes-fms/pipeline.png\" alt=\"Pipeline explainer\">\n<img src=\"/og/labs/yes-fms/pipeline-flow.png\" alt=\"Data-flow map and live status\"></p>\n<h2 id=\"tech\">Tech</h2>\n<ul>\n<li>Front end: Next.js + TypeScript, dark dashboard UI, hosted on Vercel</li>\n<li>Database and auth: Supabase (funds, NAV, dividends, instrument master, source map, sync status, members and notes)</li>\n<li>Collection: scheduled crawlers (<code>crawl:required-real</code>, <code>sync:universe-instruments</code>, <code>crawl:universe-daily</code>) over MoneyDJ and Yahoo Finance</li>\n<li>Quality: dividend-formula reconciliation, sync report snapshots, daily checkpoints (batch size and lookback window)</li>\n</ul>\n<h2 id=\"limitations\">Limitations</h2>\n<ul>\n<li>Old and new schemas run side by side during migration; some charts still read the legacy tables and add the new status fields.</li>\n<li>The authoritative adjusted-NAV and CAGR batch isn't live yet; performance uses existing NAV.</li>\n<li>Sign-in required; figures are for internal analysis and client conversations, not investment advice.</li>\n</ul>\n<h2 id=\"links\">Links</h2>\n<ul>\n<li>App (sign-in required): <a href=\"https://yes.fms.8plus.app/\">https://yes.fms.8plus.app/</a></li>\n</ul>",
+    "url": "/lab/yes-fms"
+  },
+  {
+    "title": "YES 財務管理系統｜基金分析與資料管線",
+    "slug": "yes-fms",
+    "baseSlug": "yes-fms",
+    "role": "全端 / 資料工程",
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Cron 爬蟲",
+      "Vercel"
+    ],
+    "period": "2026",
+    "highlights": [
+      "86 檔核心基金＋121 檔擴展池、250 個標的，累積 1.8 萬筆日淨值與 1.2 萬筆配息事件",
+      "MoneyDJ 與 Yahoo 雙來源爬蟲，名稱正規化配對、每檔回寫 ok／partial／failed／pending 狀態",
+      "配息同時保留「來源值」與「公式重算值」，對帳 2,462 筆、可重算差異為 0",
+      "淨值走勢對照 S&P 500 與台灣加權，單筆／定額試算可加入 5 檔比較並列印建議書"
+    ],
+    "links": {
+      "website": "https://yes.fms.8plus.app/"
+    },
+    "type": "project",
+    "featured": false,
+    "summary": "給保險／理財顧問用的基金分析系統：每天以 cronjob 爬取 20 多家投信的淨值與配息，提供績效、配息現金流、投資試算與會員 CRM，並把資料管線的狀態與公式公開說明。",
+    "published": true,
+    "protected": false,
+    "locale": "zh-TW",
+    "html": "<h1 id=\"yes-財務管理系統--基金分析與資料管線\">YES 財務管理系統 — 基金分析與資料管線</h1>\n<p><img src=\"/og/labs/yes-fms/web.png\" alt=\"YES 財務系統 基金總覽\"></p>\n<p><strong>Tags</strong>: Next.js, TypeScript, Supabase, Cron, Vercel</p>\n<h2 id=\"緣由\">緣由</h2>\n<p>顧問向客戶說明保單連結的基金時，常要在各家投信網站、MoneyDJ 與 Excel 之間來回切換。更根本的問題是資料源彼此不同步：基金、ETF、股票與大盤的交易日不同，前端若直接即時抓資料或混用來源，圖表會斷線、配息口徑會打架，績效也無法稽核。</p>\n<p>YES 的做法是把資料採集、欄位轉換與來源值保存放進後端 cronjob，前端只負責展示與解釋。</p>\n<h2 id=\"主要功能\">主要功能</h2>\n<ul>\n<li><strong>基金總覽</strong>：依資料來源（Allianz、BlackRock、PIMCO、JPMorgan、Schroder、CTBC 等 20 多家）篩選與搜尋，顯示累積報酬、年化報酬（CAGR）、年化配息率與最大回撤，淨值走勢可對照 S&#x26;P 500、台灣加權指數。</li>\n<li><strong>配息現金流</strong>：輸入持有單位數，看每次除息的每單位配息、年化配息率與預估領取現金；年化配息率同時列出「來源值」與「公式值」。</li>\n<li><strong>投資試算</strong>：單筆投入或每月定額，1–40 年試算，成長率可用主標的歷史 CAGR 或保守／積極情境，最多再加 5 檔基金比較，並可列印試算建議書。</li>\n<li><strong>會員 CRM</strong>：以 Supabase 管理會員、狀態（active／lead／inactive）、負責人、來源渠道與備註，並關聯追蹤的基金。</li>\n</ul>\n<p><img src=\"/og/labs/yes-fms/dividend.png\" alt=\"配息現金流分析\">\n<img src=\"/og/labs/yes-fms/simulator.png\" alt=\"投資試算\"></p>\n<h2 id=\"資料管線pipeline-observatory\">資料管線（Pipeline Observatory）</h2>\n<p>系統另有一頁公開說明資料怎麼來、怎麼判斷、多久更新，把「現在真的怎麼跑」和「規劃中的規格」分開標示（LIVE／HYBRID）：</p>\n<ol>\n<li><strong>來源主檔與白名單</strong>：從基金白名單與 universe bootstrap 決定要追蹤哪些基金、ETF、股票與指數。</li>\n<li><strong>核心基金同步</strong>：MoneyDJ 抓基金淨值與配息、Yahoo 抓必要 ETF；以名稱正規化與人工驗證的代碼對照幫每檔找最可信的配對，分數門檻 0.82。</li>\n<li><strong>擴展標的建檔</strong>：候選標的寫入 instruments 與來源對照表，再用 Yahoo 日線補齊每日淨值。</li>\n<li><strong>狀態回寫</strong>：每檔標的記錄 ok／partial／failed／pending、最後成功時間與失敗原因，首頁與管線頁直接讀取。</li>\n<li><strong>公式與績效</strong>：年化配息率公式已實作；adjusted NAV 與 CAGR 的權威批次仍在規劃中。</li>\n</ol>\n<p>頁面會讀取 Supabase 的報告快照：最近一次同步時間、成功／失敗筆數、待排查標的與失敗原因，全部唯讀、不觸發寫入。</p>\n<p><img src=\"/og/labs/yes-fms/pipeline.png\" alt=\"資料流程說明中心\">\n<img src=\"/og/labs/yes-fms/pipeline-flow.png\" alt=\"資料流地圖與即時狀態\"></p>\n<h2 id=\"技術\">技術</h2>\n<ul>\n<li>前端：Next.js + TypeScript，深色儀表板介面，部署於 Vercel</li>\n<li>資料庫與帳號：Supabase（基金、淨值、配息、標的主檔、來源對照、同步狀態、會員與備註）</li>\n<li>資料採集：排程爬蟲（<code>crawl:required-real</code>、<code>sync:universe-instruments</code>、<code>crawl:universe-daily</code>），來源為 MoneyDJ 與 Yahoo Finance</li>\n<li>品質控管：配息公式對帳、同步報告快照、每日 checkpoint（批次大小與回溯天數）</li>\n</ul>\n<h2 id=\"限制\">限制</h2>\n<ul>\n<li>新舊兩套資料表並行過渡中，部分圖表仍讀舊表，再補讀新的狀態欄位。</li>\n<li>adjusted NAV 與 CAGR 權威批次尚未上線，目前績效以既有淨值計算。</li>\n<li>系統需登入使用，資料僅供內部分析與客戶溝通，不構成投資建議。</li>\n</ul>\n<h2 id=\"連結\">連結</h2>\n<ul>\n<li>系統入口（需登入）：<a href=\"https://yes.fms.8plus.app/\">https://yes.fms.8plus.app/</a></li>\n</ul>",
+    "url": "/lab/yes-fms"
   }
 ]

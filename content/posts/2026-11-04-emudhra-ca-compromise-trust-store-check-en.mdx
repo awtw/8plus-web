@@ -1,0 +1,76 @@
+---
+title: "The eMudhra intermediate CA key compromise: even if your site never used it, check your servers' trust stores"
+date: "2026-11-04"
+summary: "On October 17 a researcher showed that the private keys of eight eMudhra intermediate CAs could be computed straight from the public certificates. Browsers blocked them within hours and Chrome and Mozilla pulled the root. Browsers are fine now; the trust stores in your servers, containers and CI are what need checking."
+slug: "emudhra-ca-compromise-trust-store-check-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["security", "TLS certificates", "supply chain", "trends"]
+locale: "en"
+---
+
+# The eMudhra intermediate CA key compromise
+
+On October 17 a researcher told the major root programs that the private keys of eight intermediate CA certificates belonging to the Indian certificate authority eMudhra could be recovered. Mozilla described what happened on its [security blog](https://blog.mozilla.org/security/2026/10/20/protecting-firefox-users-following-the-compromise-of-emudhra-intermediate-certificates/) and in the [Bugzilla incident](https://bugzilla.mozilla.org/show_bug.cgi?id=2083449), and Google published [its own write-up for Chrome and Android](https://blog.google/security/protecting-chrome-and-android-users-from-compromised-emudhra-intermediate-ca-certificates/).
+
+Whoever holds an intermediate CA key can issue certificates browsers will accept for **any domain**. This wasn't one website having a bad day. It was a link in the HTTPS chain of trust breaking.
+
+## 1. What happened
+
+- Eight intermediates were affected: six for TLS and two for code signing, all P-384 keys generated in the same batch on April 30, 2025.
+- Mozilla's investigation found that all eight private keys were **integers smaller than 256**. Given the public certificate, the key can be computed almost instantly, and Mozilla's engineers recovered them independently without any hints.
+- Timeline (UTC): Chrome received the report at 18:05 on 10/17 and blocked the keys via CRLSet at 19:45. Mozilla received it at 20:06 and finished its OneCRL block at 22:59. eMudhra revoked the eight certificates on 10/18, and [Sectigo revoked its cross-signs](https://www.sectigo.com/resource-library/advisory-on-compromised-emudhra-intermediate-certificates) on 10/19.
+- On 10/20 Mozilla shipped NSS 3.131.1, removing the root that signed these intermediates, **emSign ECC Root CA - G3**. Chrome's root store removal was expected to reach devices that rely on it on 10/27 (Pacific time).
+- In Bugzilla, eMudhra estimated about 30,000 certificates needed migrating, about 97% of them issued via ACME. Its [October 28 update](https://emudhra.com/en/post/certificate-security-incident) announced a wind-down of its publicly trusted TLS business.
+
+The good news: Google says no TLS certificate chaining to these intermediates had been logged to Certificate Transparency before the block, so browsers that enforce CT could not have been fooled by a forged certificate.
+
+## 2. Why ops teams still need to care
+
+Browsers have automatic blocking channels. **Your servers are not browsers.**
+
+Backend calls to third-party APIs, webhooks, crawlers and CI package downloads rely on the OS `ca-certificates` package, on trust stores bundled with language runtimes (Python's certifi, for example), or on whatever copy was frozen into a container image. Many non-browser clients don't check CT either.
+
+The community-maintained [tracking page](https://emudhra.we-have-a-problem.com/) noted on 10/28 that Apple's developer tools on macOS (`git`, `curl`, `python3`) still trusted these certificates at that point. Patch progress varies a lot between components, so "the browser is fine" doesn't mean you're fine.
+
+## 3. Two groups, two jobs
+
+**A. Your site certificate was issued by eMudhra / emSign:** the root is gone, so move to another CA now.
+
+**B. Everyone else:** update the trust stores on servers, containers and developer machines.
+
+```bash
+# 1. Check who issued your site certificate (look for emSign / eMudhra)
+echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null \
+  | openssl x509 -noout -issuer
+
+# 2. Test whether a client still trusts the blocked intermediates (it should fail)
+curl -sS -o /dev/null https://dv-g3b-emudhra.we-have-a-problem.com/ \
+  && echo "still trusted, update needed" || echo "rejected (or a network error, double-check)"
+
+# 3. Debian / Ubuntu hosts and containers
+apt-get update && apt-get install --only-upgrade ca-certificates
+
+# 4. Python projects
+pip install -U certifi   # 2026.10.19 and later include the fix
+```
+
+## 4. Checklist
+
+- [ ] List the certificate issuer for every domain you run, including APIs and public endpoints of internal services
+- [ ] Update `ca-certificates` on servers and CI runners
+- [ ] **Rebuild your Docker images**, not just the hosts; the trust store inside an old image never changes on its own
+- [ ] Move Node.js to the October 21 security release (v26.12.1, v24.22.1 or v22.23.4); the [official notice](https://nodejs.org/blog/vulnerability/october-2026-security-releases) includes this CA update
+- [ ] Update certifi in Python projects, and remember Java keeps its own `cacerts`
+- [ ] Run the `curl` test above from production, not just your laptop
+- [ ] Behind a TLS-intercepting proxy, it's the proxy's trust store that counts, not the client's
+
+## 5. My take
+
+The lesson here is that **a trust store is a dependency too**. We watch `package.json` and lockfiles closely, yet few teams know how old the CA bundle inside their production containers is.
+
+The other number worth noticing is the 97% issued through ACME. Certificate automation turns "switch CA" from a project into a config change, and how quickly affected sites can get out of this depends largely on whether they automated. If your certificates are still renewed by hand once a year, this is a good moment to change that.
+
+If you want certificate, trust store and base image updates built into a regular operations routine, [book a 30-minute intro call](/booking).

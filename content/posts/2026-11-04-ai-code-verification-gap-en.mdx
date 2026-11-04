@@ -1,0 +1,80 @@
+---
+title: "81% of teams have merged AI code they didn't fully understand. The gap is before the merge"
+date: "2026-11-04"
+summary: "TestMu AI's 2026 quality engineering survey, published in early November: 81% of respondents say their team has merged AI-written code or tests they didn't fully understand, and only 41% run any automated check before merge. The key numbers, and five ways to make AI output verifiable."
+slug: "ai-code-verification-gap-en"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["code review", "testing", "AI-generated code", "trends"]
+locale: "en"
+---
+
+# 81% of teams have merged AI code they didn't fully understand
+
+In early November, the testing platform TestMu AI (formerly LambdaTest) published [State of AI in Quality Engineering 2026](https://www.testmuai.com/research/state-of-ai-in-quality-engineering/). The headline: **81% of respondents say their team has merged AI-written code or tests they didn't fully understand.**
+
+My last two posts covered [Octoverse 2026](/blog/octoverse-2026-agent-pull-requests-en) and [the Harvard study on AI agents](/blog/ai-agents-more-code-not-more-software-en). Both pointed the same way: once writing code gets cheap, the pressure moves downstream to review and verification. This report looks at that same pressure from the testing and QA side.
+
+## 1. Check the sample before the numbers
+
+How the survey was run matters here:
+
+- It was fielded online from late July to early October 2026 through TestMu AI's community channels
+- 58% of respondents work in QA roles, 29% are developers, 7% are leaders
+- Most respondents are in India (43%) and the US (23%), and the sample leans toward SaaS and software services
+- The page **does not publish a total sample size**. Each percentage is a share of the people who answered that question
+
+So this is a vendor-run community survey. Read it for direction, not as a precise benchmark.
+
+## 2. The numbers worth keeping
+
+1. **40%** say AI writes more than half of their production code.
+2. Only **41%** run *any* automated check on AI-written code before merge.
+3. The most common safeguards are manual: someone reviews and tests it by hand (55%), or QA tests it after hand-off (51%). Only 34% run separate automated tests in CI, and 5% have no check beyond the agent saying it's done.
+4. **44%** report more escaped defects or production incidents as AI-generated code grew. Among teams relying on a QA hand-off without CI tests, 49% saw defects rise, compared with 38% of teams that run those tests.
+5. 64% of teams require a person to approve every AI-generated test. Even so, 81% of those teams have merged AI output they didn't fully understand.
+6. Budget: 50% spend most of their AI testing budget on generating output (agent seats and model APIs), against 17% on verifying it. Only 13% have an incident-response plan for AI mistakes.
+
+For comparison, Qodo published its [2026 State of AI Code Quality report](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) on September 23 (a Censuswide survey of 500 US developers and 300 US engineering leaders). Developers and leaders each named reviewing and validating AI-generated code as their primary delivery constraint at 26%, and 89% of organizations reported an AI-related production incident. Also a vendor report, but it points the same way.
+
+## 3. How I read it
+
+### Approved is not the same as understood
+
+Point 5 is the one to sit with. The approval step exists, and the outcome barely changes. When output arrives faster than anyone can read it, manual review quietly turns into a formality.
+
+### Manual gates don't scale with output
+
+Manual testing (55%) and QA hand-off (51%) both cost more as code volume grows. If AI doubles the volume, these gates are where things jam first.
+
+### The money goes to generating; the risk stays in acceptance
+
+A 50-to-17 budget split says many teams treat AI as a way to write faster without investing in proving the code is right. In contract and outsourced work, that is exactly where acceptance disputes come from.
+
+## 4. Five ways to make AI output verifiable
+
+### 1. Write acceptance criteria before any code is generated
+
+Put inputs, outputs, edge cases and the definition of done in the issue or task. Then the agent and the reviewer measure against the same thing.
+
+### 2. CI first, humans second
+
+Type checks, lint, unit tests and secret scanning should all pass before a pull request reaches a person. Save human attention for design and boundaries, not mechanical mistakes.
+
+### 3. If you can't explain it, don't merge it
+
+Whoever opens the pull request, person or agent, should be able to say what changed, why, and how it was verified. If that's unclear, send it back and split it up. My [code review checklist](/blog/code-review-checklist-en) is a reasonable starting point.
+
+### 4. Measure what happens after the merge
+
+Track defects, rollbacks and hotfixes in the seven days after release. In the report, 44% of teams felt defects going up, while 15% said it was too early to tell or that they don't measure it. Without numbers, it's all gut feeling.
+
+### 5. Put verification in the scope of work
+
+For contract or outsourced projects, list testing, CI setup and acceptance steps in the contract and the quote, not just "features complete". AI makes code cheap. The part that proves the code is right is now the valuable part.
+
+---
+
+The sample leans toward a QA community and has no published total, so discount the exact figures. The direction, though, matches the other reports from the past few months: output is speeding up and verification isn't keeping pace. If you want to set up review and acceptance processes for your team or an outsourced project, [book a 30-minute intro call](/booking).

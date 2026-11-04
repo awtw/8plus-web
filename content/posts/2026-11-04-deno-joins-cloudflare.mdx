@@ -1,0 +1,72 @@
+---
+title: "Deno 團隊加入 Cloudflare：Deno Deploy 剩半年，JavaScript runtime 該怎麼選"
+date: "2026-11-04"
+summary: "10/9 Deno 宣布整個團隊加入 Cloudflare：Deno runtime 再維護一年後停止開發，Deno Deploy 六個月後關閉。整理官方說了什麼、沒說什麼，以及現在用 Deno 的團隊該怎麼規劃。"
+slug: "deno-joins-cloudflare"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Deno", "Cloudflare", "部署", "趨勢"]
+locale: "zh-TW"
+---
+
+# Deno 團隊加入 Cloudflare
+
+10 月 9 日，Ryan Dahl 在 Deno 官方部落格發表 [Deno is joining Cloudflare](https://deno.com/blog/cloudflare)，Cloudflare 同步發了 [Deno joins Cloudflare](https://blog.cloudflare.com/deno-joins-cloudflare/)（Ryan Dahl 與 Kenton Varda 共同撰寫）。一句話：**整個 Deno 團隊加入 Cloudflare，Deno runtime 與 Deno Deploy 都進入倒數。**
+
+這不是單純的併購新聞。對正在選 runtime 或部署平台的團隊來說，它直接改變了「Deno 是不是一個長期選項」的答案。
+
+## 一、官方說了什麼
+
+根據 Deno 的公告：
+
+- **Deno runtime**：再支援一年，期間每月發布包含 bug 修正與安全更新的版本；之後團隊**停止開發** Deno runtime。程式碼維持開源，歡迎其他人接手。
+- **Deno Deploy**：再運作**六個月**，之後關閉。付費客戶搬到 Cloudflare Workers 會有遷移協助。
+- **JSR**（Deno 推的套件 registry）：繼續營運，基礎設施搬到 Cloudflare。
+- **rusty_v8**：持續維護，並朝整合進 workerd（Workers 的開源 runtime）的方向走。
+
+Cloudflare 那篇則說明接下來的方向：由 Ryan Dahl 與 Bert Belder 帶隊，讓 **workerd 自架成為正式支援的部署方式**，並把 Deno 團隊做的 celld 的程式與設計合併回 workerd。Kenton Varda 也坦白，目前 workerd 的 Durable Objects 只支援單一實例，目標是做到分散式、可擴展。
+
+## 二、官方沒說什麼
+
+這部分同樣重要，規劃時不要自己補空白：
+
+- **沒有給 Deno Deploy 的關閉日期**，只說「六個月」。網路上有人推算 2027 年 4 月左右，但那不是官方日期。
+- **沒有提到 Deno KV、Fresh、Subhosting 的後續**。如果你的服務依賴 Deno KV，目前沒有官方遷移路徑。
+- **遷移協助只寫了付費客戶**，免費專案要自己來。
+- Cloudflare 說「接下來幾個月會有更多公告」，所以自架 workerd 的細節還在路上。
+
+## 三、這對選型代表什麼
+
+我看到兩個訊號：
+
+**1. 獨立 runtime 的長期維護風險是真的。** Deno 在技術上很受好評，但商業上撐一個 runtime 加一個部署平台很難。這不代表 Bun 或其他新 runtime 會走一樣的路，但選型時「誰在維護、靠什麼收入維護」應該是一個明確的評估項目，不只是看效能跑分。
+
+**2. Workers 的程式模型正在變成「可以帶走」的東西。** 過去選 Cloudflare Workers 最常見的顧慮是綁定：程式寫成 Workers 的樣子，就只能跑在 Cloudflare 上。如果 workerd 自架真的成為一等公民，這個顧慮會小很多。不過目前只是方向宣示，還沒有可以驗收的產品。
+
+## 四、實務建議
+
+### 用 Deno Deploy 的團隊
+
+- **現在就開始盤點**，不要等關閉日期公告。列出用到的 Deno 專屬功能（例如 Deno KV），每一項先找到替代方案。
+- 官方指向的目的地是 Cloudflare Workers；Node.js 相容的平台也是選項，看你的程式碼對 Deno API 的依賴程度。
+- 付費客戶，主動聯絡 Deno 拿遷移協助。
+
+### 用 Deno runtime 的團隊
+
+- 一年內仍有安全更新，**不必恐慌，但不要再加碼**。新專案建議選 Node.js 或你已經熟悉的 runtime。
+- 依賴 `Deno.*` API 的程式，盡量收斂到一層 adapter 後面，未來換 runtime 時只改一處。
+- 發佈在 JSR 的套件可以繼續用，JSR 會持續營運。
+
+### 正在評估 Workers 的團隊
+
+- 把「未來可能自架 workerd」當加分，不要當成決策依據，等正式產品出來再算進去。
+
+## 五、對這個站的影響
+
+8plus 沒有用 Deno，所以沒有直接影響。這個站目前透過 vinext 部署在 Cloudflare Workers，[搬遷時](/blog/vinext-cloudflare-field-note)我保留了 Next.js 原始碼與 Vercel 當退路，就是不想把網站綁死在單一平台。workerd 自架如果成熟，對這種「不想被綁定」的考量是好消息。
+
+---
+
+runtime 和部署平台的選擇，常常在專案初期被當成技術偏好，幾年後才發現是商業依賴。Deno 這次至少給了一年緩衝和清楚的方向，算是負責任的收尾。如果你想盤點自己的服務綁了哪些平台功能、怎麼留退路，可以[預約 30 分鐘初談](/booking)。

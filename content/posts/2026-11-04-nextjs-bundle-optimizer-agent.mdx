@@ -1,0 +1,69 @@
+---
+title: "讓 AI agent 幫你瘦身 JavaScript：Next.js 16.4 的 bundle optimizer 與新版 Bundle Analyzer"
+date: "2026-11-04"
+summary: "Next.js 10/28 推出 next-bundle-optimizer agent skill 與新版 Bundle Analyzer，Vercel 說在 v0 與 vercel.com 上砍掉將近 2 MB 的壓縮後 JavaScript。整理它怎麼運作、前提條件，以及團隊導入時該注意什麼。"
+slug: "nextjs-bundle-optimizer-agent"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Next.js", "效能", "AI", "趨勢"]
+locale: "zh-TW"
+---
+
+# 讓 AI agent 幫你瘦身 JavaScript
+
+10 月 28 日，Next.js 官方部落格發表 [Ship less JavaScript in Next.js with your AI agent](https://nextjs.org/blog/ship-less-javascript-with-ai)（Will Binns-Smith）。內容分兩半：一個給 AI agent 用的 **`next-bundle-optimizer` skill**，和一組給人用的 **Bundle Analyzer 新功能**。
+
+我覺得這篇值得寫，不是因為「AI 又能做一件事」，而是它示範了一個很實際的分工：**分析交給工具，修改交給 agent，驗收留給人。**
+
+## 一、問題：你以為延遲載入了，其實沒有
+
+官方舉的例子很典型：你用 `lazy(() => import('./HeavyComponent'))` 想延後載入一個大元件。如果它是唯一引用 `HeavyComponent` 的地方，延遲會生效；但只要**同一個 bundle 裡任何其他模組靜態 import 了它**，這段程式碼照樣會在一開始就載入。
+
+這種問題很難靠讀程式碼發現，因為兩個 import 可能在完全不相干的檔案裡。專案越大，越容易默默變胖。
+
+## 二、agent skill 怎麼運作
+
+- **前提**：Next.js 16.4，而且要用 Turbopack（Next.js 16 起的預設 bundler），因為它依賴 Turbopack 的模組圖。
+- **安裝**：`npx skills add vercel/next.js --skill next-bundle-optimizer`，然後在 agent 裡執行 `/next-bundle-optimizer`。
+- **做法**：agent 把 `next analyze` 的快照匯出成 JSON，重建模組與 chunk 的關係圖，找出彼此相連的大型模組群，再用 minimum cut 找出「改少數幾個 import 邊界就能延後載入」的位置，最後對照原始碼確認元件實際怎麼被使用。
+- **還能抓**：可以搬到 React Server Components 的邏輯、重複版本的大型依賴、tree shaking 沒生效而拉進未使用程式碼的情況。
+- **預設只報告**。要套用修改得跑 `/next-bundle-optimizer fix`，它會重跑分析並比較前後快照。
+
+## 三、Vercel 自己的數字
+
+官方說用這個 skill 在 v0 與 vercel.com 上總共省下**將近 2 MB 的壓縮後 JavaScript**。幾個具體案例：
+
+- v0 有個實驗性程式碼編輯器，連不在實驗組的使用者也會載入，大部分頁面省下 **150 KB**。
+- v0 的集中式對話框註冊表，依頁面不同省下 **40–650 KB**。
+- vercel.com 的 Agent 面板沒打開也會載入 markdown、語法高亮與圖表，dashboard 頁省下 **255 KB**。
+- 一個 URL 解析工具透過共用檔案拉進了整個 observability 查詢引擎，deployments 頁省下 **125 KB**。
+
+注意這些是 Vercel 自家大型產品的數字。每個修改都開成 PR、在 preview 部署上驗證後才上線，這個流程比數字本身更值得抄。
+
+## 四、給人用的 Bundle Analyzer
+
+不想交給 agent 的話，`next analyze` 也多了幾個實用功能：
+
+- **路由總覽**：首頁直接列出最大的 client 路由，知道從哪裡開始查。
+- **自動快照與比對**：每次分析自動存快照，可以 diff，量測優化成效或找出新功能帶來的成長。
+- **關鍵渲染路徑**：標出初次渲染同步載入的模組，可以過濾掉非同步依賴。官方也提醒，實際哪些模組在關鍵路徑上，還是要自己測。
+- 圖資料可以用 `next analyze export` 匯出給自己的工具。
+
+## 五、導入建議
+
+1. **先量，再優化**。在 CI 加一個 bundle 大小的預算檢查，否則 agent 修完、下個月又長回來。
+2. **先用報告模式**。讓 agent 列出問題與建議，人看過再決定要不要 `fix`。
+3. **一個修改一個 PR**，在 preview 環境實際點過互動再合併。延後載入可能改變使用者第一次點擊時的體驗。
+4. **確認你的建置用的是 Turbopack**。如果專案還鎖在 webpack，這個 skill 用不了。
+
+## 六、對這個站的影響
+
+8plus 已經在 Next.js 16.4，也有一個自己寫的 bundle 預算檢查（`pnpm check:bundle`），量的是各頁初次載入的 JavaScript gzip 大小，目標 200 KB、上限 340 KB，10/1 記錄的首頁基準是 324 KB。換句話說，離目標還有距離，這類工具正好派得上用場。
+
+但有一個要注意的地方：這個站正式環境是透過 vinext 用 Vite 建置後跑在 Cloudflare Workers 上，而 `next analyze` 分析的是 Turbopack 的建置結果。兩者的切分方式不一定相同，所以在這裡找到的問題要回到實際部署的版本再驗證一次。
+
+---
+
+JavaScript 體積是那種「每次只多一點、一年後很可觀」的技術債。過去要找到原因得靠資深工程師花一個下午追 import，現在可以先讓 agent 跑一輪報告。工具變便宜了，**預算與驗收**才是團隊要守住的部分。如果你想幫自己的網站建立效能預算與檢查流程，可以[預約 30 分鐘初談](/booking)。

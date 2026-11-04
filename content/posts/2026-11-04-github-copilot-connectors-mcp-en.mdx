@@ -1,0 +1,66 @@
+---
+title: "GitHub Copilot connectors in public preview: MCP goes from install-it-yourself to sign-in-and-go. Set up the gates first"
+date: "2026-11-04"
+summary: "On October 28, GitHub put Copilot connectors into public preview: 26 GitHub-verified MCP servers you connect once and use across Copilot surfaces. What changes, and the settings admins should check before rolling it out."
+slug: "github-copilot-connectors-mcp-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["MCP", "GitHub Copilot", "AI governance", "trends"]
+locale: "en"
+---
+
+# GitHub Copilot connectors: MCP becomes sign-in-and-go
+
+On October 28, GitHub announced that [Copilot connectors are in public preview](https://github.blog/changelog/2026-10-28-connect-your-tools-to-copilot-without-all-the-setup). Connectors are **GitHub-verified MCP servers**, and 26 services are available at launch, including Slack, Figma, Notion, Sentry, Linear, Atlassian Rovo, Cloudflare, Vercel and Work IQ.
+
+Until now, getting Copilot to read a Slack thread or a Sentry error meant finding an MCP server, setting up sign-in, and repeating that for every tool. Now you pick a service, sign in once, and you are done.
+
+## 1. What actually changes
+
+Based on the changelog and the [official docs](https://docs.github.com/en/copilot/concepts/customizations/copilot-connectors):
+
+1. **No install, no manual credentials.** GitHub handles MCP server configuration and authentication, and Copilot keeps you signed in in the background.
+2. **Connect once, use everywhere.** The same connection works in the Copilot app, Copilot CLI (the Connectors tab under `/mcp`), VS Code, Copilot in the cloud and GitHub Mobile.
+3. **No need to name the service.** Once connected, Copilot uses a service's tools whenever they are relevant to the request.
+4. **Scheduled work.** In the Copilot app you can set up automations that use a connected service on a schedule.
+5. **Available on all Copilot plans**, but still in public preview, and the docs say it is subject to change.
+
+One current limitation: connectors are **not yet supported** in sessions that run on GitHub Actions, such as assigning an issue to Copilot. Local and cloud sandbox sessions work.
+
+## 2. How I read it
+
+### The barrier to MCP moves from engineering to a click
+
+MCP is already how many agents reach external tools, but setup has always been the hurdle. Connectors remove that step, so people on the team who do not write code can now point Copilot at Slack, Notion or Linear. That speeds up adoption and creates a new governance problem: **knowing how to install an MCP server used to be a filter in itself. It no longer is.**
+
+### "Verified" does not mean "safe to expose all your data"
+
+GitHub verifies the MCP server itself. A connector connects with the identity you signed in and approved, so what the agent can read or write essentially follows your permissions in that service. If someone can see a lot of Slack channels, connecting a connector widens what Copilot can reach by the same amount.
+
+### The governance controls arrived first
+
+In August, GitHub made [MCP allowlists in enterprise managed settings](https://github.blog/changelog/2026-08-06-mcp-allowlists-in-enterprise-managed-settings) generally available. You define `allowedMcpServers` and `deniedMcpServers` in `copilot/managed-settings.json` in your `.github-private` repository, matching by URL (wildcards supported), local command, or name. A malformed configuration fails closed and is blocked. The changelog also notes that name matching is a convenience, not a security control, because users can rename servers.
+
+## 3. Pre-rollout checklist for Business and Enterprise admins
+
+According to the docs, all of these need to be right before an organization can use connectors:
+
+1. The **Editor preview features** policy must be enabled, since connectors are in preview.
+2. The **MCP servers in Copilot** policy must be enabled, or connectors will not work.
+3. If **Restrict MCP access to registry servers** is set to "Registry only", clients that enforce it will block connectors. It has to be "Allow all".
+4. The **allowlist** must include each connector's URL, or a matching wildcard.
+5. **Deny wins.** A matching `deniedMcpServers` entry blocks a connector even if the allowlist permits it.
+6. **The service side has to allow it too.** Some services need their own admin to enable access first, such as turning on MCP access in Slack.
+
+## 4. Recommendations for teams
+
+- **Decide the allowlist before turning on preview features.** Do not flip on "Allow all" for a trial and forget to tighten it. Pick two or three services you actually need, such as Sentry and Linear, and deny the rest.
+- **Start with read-only work.** Investigating errors, summarizing threads and collecting requirements are low-risk with obvious payoff. Hold off on uses that write data or send messages until the workflow is stable.
+- **Review permissions in each service.** A connector's reach equals the user's access in that service. Use this as a reason to clean up sensitive Slack channels and Notion pages that are visible to the whole company.
+- **Track who connected what.** The feature will keep changing during preview. At minimum, know internally which people and repositories are using which connectors.
+
+---
+
+MCP is moving from an engineer's tool to a default feature for everyone. The hard part is not whether you can connect, but which data an agent should be allowed to touch. If you want help planning MCP and Copilot governance settings for your team, [book a 30-minute intro call](/booking).

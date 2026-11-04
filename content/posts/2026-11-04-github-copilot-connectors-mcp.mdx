@@ -1,0 +1,66 @@
+---
+title: "GitHub Copilot connectors 公開預覽：MCP 從「自己裝」變成「登入就能用」，企業該先設好閘門"
+date: "2026-11-04"
+summary: "GitHub 10 月 28 日推出 Copilot connectors 公開預覽，首批 26 個服務、由 GitHub 驗證的 MCP server，登入一次就能在各個 Copilot 介面使用。整理它改變了什麼，以及管理者上線前該確認的設定。"
+slug: "github-copilot-connectors-mcp"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["MCP", "GitHub Copilot", "AI 治理", "趨勢"]
+locale: "zh-TW"
+---
+
+# GitHub Copilot connectors：MCP 變成「登入就能用」
+
+10 月 28 日，GitHub 在 changelog 宣布 [Copilot connectors 進入公開預覽](https://github.blog/changelog/2026-10-28-connect-your-tools-to-copilot-without-all-the-setup)。connectors 是**由 GitHub 驗證過的 MCP server**，首批 26 個服務，包括 Slack、Figma、Notion、Sentry、Linear、Atlassian Rovo、Cloudflare、Vercel、Work IQ 等。
+
+以前要讓 Copilot 讀 Slack 討論串或 Sentry 錯誤，得自己找 MCP server、設定登入，每個工具重來一次。現在是選服務、登入一次，就結束了。
+
+## 一、具體改變了什麼
+
+依照 changelog 與[官方文件](https://docs.github.com/en/copilot/concepts/customizations/copilot-connectors)：
+
+1. **不用安裝、不用手動填憑證**：GitHub 負責 MCP server 的設定與驗證，Copilot 會在背景維持登入狀態。
+2. **連一次，到處都能用**：同一個連線可以在 Copilot app、Copilot CLI（`/mcp` 裡的 Connectors 分頁）、VS Code、Copilot in the cloud 和 GitHub Mobile 使用。
+3. **不必指名**：連好之後，只要跟需求相關，Copilot 會自己決定要不要呼叫那個服務的工具。
+4. **可以排程**：在 Copilot app 裡能建立自動化，定期用連線的服務處理例行工作。
+5. **適用所有 Copilot 方案**，但仍是公開預覽，官方文件註明功能可能變動。
+
+目前有一個限制：在 GitHub Actions 上跑的 session（例如把 issue 指派給 Copilot）**還不支援** connectors；本機與雲端沙箱 session 則可以用。
+
+## 二、我怎麼解讀
+
+### MCP 的門檻從「工程」變成「點擊」
+
+MCP 已經是很多 agent 接外部工具的方式，但門檻一直在安裝與設定。connectors 把這一步拿掉，意味著團隊裡不寫程式的人，也能讓 Copilot 去讀 Slack、Notion、Linear。對採用速度是好事，對管控則是新的考驗：**以前「會裝 MCP」本身就是一道過濾，現在沒有了。**
+
+### 「已驗證」不等於「可以放心給所有資料」
+
+GitHub 驗證的是 MCP server 本身。connector 是用你自己登入、授權的身分去連服務，所以 agent 能讀到什麼、寫入什麼，基本上跟著你在該服務上的權限走。一個在 Slack 看得到很多頻道的人連上 connector，Copilot 能碰到的範圍也就跟著變大。資料範圍要從各服務的權限去管，不是靠 connector 名單。
+
+### 治理工具其實已經先到位
+
+GitHub 8 月已經讓 [MCP allowlist 進入企業 managed settings](https://github.blog/changelog/2026-08-06-mcp-allowlists-in-enterprise-managed-settings)，並正式推出：在 `.github-private` repo 的 `copilot/managed-settings.json` 裡設定 `allowedMcpServers` 和 `deniedMcpServers`，可以用 URL（支援萬用字元）、本機指令或名稱比對，設定格式錯誤時會「fail closed」直接擋下。changelog 也特別提醒，名稱比對只是方便用，不算安全控管，因為使用者可以改名。
+
+## 三、Business／Enterprise 管理者上線前的檢查清單
+
+依官方文件，組織要用 connectors，以下設定都要對：
+
+1. **Editor preview features** 政策要開啟（因為還在預覽）。
+2. **MCP servers in Copilot** 政策要開啟，否則 connectors 不會運作。
+3. **Restrict MCP access to registry servers** 若設成「Registry only」，在有執行此設定的用戶端上會擋掉 connectors，要改成「Allow all」才能用。
+4. **allowlist** 要加入每個 connector 的 URL（或對應的萬用字元）。
+5. **denylist 優先**：只要符合 `deniedMcpServers`，即使 allowlist 允許也會被擋。
+6. **服務端也要開**：有些服務需要它自己的管理者先允許，例如 Slack 要先開放 MCP 存取。
+
+## 四、給台灣團隊的建議
+
+- **先決定白名單，再開預覽功能**。不要為了試用把「Allow all」打開就忘了收。先挑兩三個真正有需求的服務（例如 Sentry、Linear），其他的用 deny 擋住。
+- **從唯讀場景開始**。查錯誤、摘要討論串、整理需求，這類讀取型任務風險低、效益明顯。會寫入或發訊息的用法，等流程穩定再開。
+- **盤點各服務的權限**。connector 的資料範圍等於使用者在該服務的權限。趁這次把 Slack、Notion 裡「全公司可見」的敏感頻道和頁面整理一遍。
+- **記錄誰連了什麼**。預覽階段功能還會變，至少內部要知道哪些人、哪些 repo 在用哪些 connector。
+
+---
+
+MCP 正在從工程師的工具變成每個人的預設功能。真正要花心思的，不是連不連得上，而是哪些資料該讓 agent 碰。如果你想替團隊規劃 MCP 與 Copilot 的治理設定，可以[預約 30 分鐘初談](/booking)。

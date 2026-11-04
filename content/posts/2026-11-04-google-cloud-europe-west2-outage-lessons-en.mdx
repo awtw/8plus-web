@@ -1,0 +1,71 @@
+---
+title: "Google Cloud's London power incident report: one zone went dark, so why did the whole region hurt?"
+date: "2026-11-04"
+summary: "On October 20 the facility behind Google Cloud's europe-west2-b lost power, and the backup generators never started because of a controller misconfiguration. Impact lasted 6 hours 8 minutes. The incident report published on October 27 is worth reading for anyone running services in the cloud, especially the part about multi-zone setups."
+slug: "google-cloud-europe-west2-outage-lessons-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["cloud operations", "postmortem", "high availability", "trends"]
+locale: "en"
+---
+
+# Google Cloud's London power incident report
+
+On October 20, zone b of Google Cloud's London region, europe-west2, lost power entirely, and the impact spread to the other zones in the region. On October 27 Google posted a full incident report on its [status page](https://status.cloud.google.com/incidents/Xs2XTHzAVC9YnafnPyzj), and it is refreshingly candid.
+
+Most of us don't run anything in London, but the report describes a problem every cloud architecture runs into eventually: **redundancy doesn't always work at the moment you need it.**
+
+## 1. How it happened
+
+The facility normally runs 2N power: two utility feeds that can each carry the full load, backed by diesel generators and five minutes of UPS battery.
+
+1. A routine quarterly generator load test on October 14 surfaced issues, so feed B was opened for repairs, leaving the site **temporarily on feed A alone (1N)**.
+2. At 22:53 Pacific on October 19, an underground cable fault outside the facility cut feed A.
+3. The generator controllers (PLCs) decided whether to start the generators by sensing voltage **upstream** of the open feed B breaker. Feed B was disconnected, but its upstream side was still live, so the PLCs concluded utility power was healthy and never started the generators.
+4. The UPS carried the load until the batteries ran out, and the whole zone lost power from 23:00. On-site staff eventually switched the facility to a standby utility source by hand.
+
+Standby power was connected within an hour, but services didn't come straight back. A large number of storage devices had shut down uncleanly and needed recovery first, and Google chose not to rush traffic back in and make things worse. From start to recovery of most workloads, the incident lasted **6 hours 8 minutes**.
+
+## 2. The part worth reading twice: why the other zones suffered
+
+In theory, when one zone fails the other two (a and c) absorb the load. The report names two reasons that didn't go smoothly:
+
+- **A sudden demand surge:** huge numbers of workloads failed over to zones a and c at once, exhausting compute capacity and causing queuing, delayed database failovers and intermittent 500 and 503 errors. The report admits that **some failovers failed because of capacity constraints**.
+- **Control-plane dependencies across zones:** regional services called metadata components sitting in zone b and timed out. During this window some customers **couldn't create, update or delete regional resources**.
+
+Google is also clear that zonal resources (VMs, non-HA Cloud SQL, zonal GKE clusters and so on) being unavailable during a zone failure is working as designed. If you need failover, planning cross-zone recovery is your job.
+
+## 3. What you can check today
+
+On GCP, start by finding the resources that actually live in a single zone:
+
+```bash
+# Cloud SQL: availabilityType ZONAL means no cross-zone HA
+gcloud sql instances list \
+  --format="table(name,region,gceZone,settings.availabilityType)"
+
+# GKE: if location is a zone (e.g. us-central1-b), it's a zonal cluster
+gcloud container clusters list --format="table(name,location)"
+
+# Which zones your VMs are spread across
+gcloud compute instances list --format="table(name,zone.basename(),status)"
+```
+
+The same applies on any cloud. The checklist:
+
+- [ ] Map which zones each service's database, cache and compute run in
+- [ ] Write down which services truly need cross-zone resilience and which can tolerate a few hours of downtime
+- [ ] Don't build a failover plan that **depends on creating new resources mid-incident**; the control plane may be struggling and capacity may already be gone
+- [ ] Keep a backup copy in **another region**, and actually rehearse restoring it
+- [ ] During maintenance (database upgrades, node swaps), notice when you've temporarily dropped to a single copy
+- [ ] Subscribe to your provider's status feed and run your own external monitoring
+
+## 4. My take
+
+The root cause is very much a data center problem, but the lesson is a software one: **a misconfiguration that only triggers in a maintenance state is invisible to everyday testing.** Google's own action items include freezing planned maintenance at other sites with a similar topology and reviewing comparable PLC configurations worldwide by November 15.
+
+Small teams don't need to go fully multi-region. But you should know which services are single points of failure, how long they'd be down, and who decides to fail over. Writing that down on one page is more practical than paying for another zone.
+
+If you'd like a second pair of eyes on the single points of failure and recovery plan in your current setup, [book a 30-minute intro call](/booking).

@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-03 +0800 — 新增 11 月第二批趨勢文章（Octoverse 2026、Google AI 訓練控制，中英各一）；未 commit、未部署
+Last activity: 2026-11-04 11:11 +0800 — 新增 11 月第三批趨勢文章（8 主題、中英共 16 篇，五個分類）；未 commit、未部署
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-04 11:11 +0800 — 11 月第三批趨勢文章（8 主題、中英共 16 篇，涵蓋 ai／web／ops／delivery／career）**：`content/posts/2026-11-04-*`。ai：①IBM Agent Identity 與 Vault 2.2（10/27，佐以 Okta Agent SSO）②GitHub Copilot connectors 公開預覽（10/28，附管理者檢查清單）。web：③Deno 團隊加入 Cloudflare（10/9，Deno Deploy 六個月後關閉；關閉日期官方未給）④Next.js next-bundle-optimizer 與新版 Bundle Analyzer（10/28，附本站 bundle 預算）。ops：⑤eMudhra 中繼 CA 私鑰外洩與信任清單檢查（10/17–10/28）⑥Google Cloud europe-west2-b 停電事故報告（10/20 發生、10/27 公布）。delivery：⑦AI 程式碼驗收缺口（TestMu 11/02、Qodo 9/23，皆廠商報告）。career：⑧AI 時代工程師就業市場（Indeed Hiring Lab 9–10 月，美國資料）。由四個研究代理依一手來源撰寫，主流程抽查 Deno 與 Copilot connectors 事實、站內連結全數有效。站務（studio）為站內更新，非外部趨勢，本批未寫。未採用：GPT-6.1（官方頁 403）、DORA 停辦年報（讀不到一手公告）等。gcloud 指令欄位名稱未實際執行驗證。`published: true`，`pnpm build` 通過（48 篇，`next-env.d.ts` 已保留）；未 commit、未部署。
 
 - ✅ **2026-11-03 +0800 — 11 月趨勢文章第二批（中英各二）**：`content/posts/2026-11-03-*`。①GitHub Octoverse 2026（10/28）：9 月超過 40% PR 由 agent 起手（3 月 17%）、agent PR 兩週合併率 83%→90%（一般約 86%）、87% 跨多檔、TypeScript 居首，接續 11/02 哈佛研究文；數字皆核對 github.blog 原文（Visual Studio Magazine 403 未採用）。②Google 10/30 宣布支援 IETF AIPREF 共通 AI 訓練控制（robots.txt policy token `__usage_ai-training`，目標 2027），與 Google-Extended 的優先順序、不影響搜尋排名、拒絕即放棄 Gemini grounding；來源為 Search Central 部落格與 Google 爬蟲文件。原先考慮的 Google 9 月垃圾更新、AI Overviews 連結等，因無一手來源可核對日期而未寫。`published: true`，`pnpm build` 通過（`next-env.d.ts` 已保留）；未 commit、未部署。
 

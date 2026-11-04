@@ -1,0 +1,75 @@
+---
+title: "AI agents need IDs too: IBM's Agent Identity and why agent governance starts with accounts"
+date: "2026-11-04"
+summary: "At TechXchange in late October, IBM launched Agent Identity and HashiCorp Vault 2.2, giving each AI agent its own identity, owner and short-lived credentials. What this wave of agent identity products means, and what teams can prepare now."
+slug: "ai-agent-identity-governance-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI agents", "security", "identity", "trends"]
+locale: "en"
+---
+
+# AI agents need IDs too: agent governance starts with accounts
+
+On October 27, at TechXchange 2026, IBM announced a set of [identity and control capabilities for AI agents](https://newsroom.ibm.com/2026-10-27-ibm-introduces-identity-and-control-for-ai-agents,-securing-frontier-intelligence-for-the-enterprise). The press release opens with a Gartner projection: **by 2028, the average Fortune 500 enterprise will use more than 150,000 AI agents.** The same Gartner research found that only 13% of organizations believe they have the right agent governance in place.
+
+Most companies in Taiwan are nowhere near 150,000 agents. The underlying question still applies to everyone: whose account are your agents using today, and what can they touch?
+
+## 1. What IBM announced
+
+Three pieces matter most for agents:
+
+1. **Agent Identity (generally available).** Used with HashiCorp Vault, it creates an authoritative record for each agent: who owns it, its lifecycle status, and the authority it has been granted.
+2. **HashiCorp Vault 2.2 (generally available).** Agents get their own secured accounts, with short-lived credentials that renew automatically and are scoped to what the agent needs. Access can be revoked in real time when an agent tries something it is not authorized to do.
+3. **watsonx Orchestrate discover, contain and evaluate.** Discover finds agents built in third-party environments such as Amazon Bedrock, Microsoft Foundry and Google Gemini, and extends to models and MCP servers. Contain runs agents in isolated sandboxes and adds a kill switch that can shut down any agent. Evaluate tests agents, models and MCP servers before deployment, then monitors them and tracks cost by model and token use. Evaluate is generally available; discover and contain are in tech preview.
+
+IBM also put a remote MCP server for Terraform into public preview, so developers and agents can change infrastructure through approved controls.
+
+## 2. Not just IBM: agent identity is becoming table stakes
+
+This is not a single-vendor story. On August 24, Okta [made Agent SSO generally available](https://www.okta.com/en-au/newsroom/press-releases/okta-brings-first-class-identity-to-ai-agents-with-agent-sso/). It registers agents as first-class identities in the directory and issues short-lived tokens when an agent acts in another application on a user's behalf, instead of letting the agent hold stored credentials. Okta says it is included in core SSO plans at no additional cost.
+
+Agent SSO is built on Cross App Access (XAA), an open protocol. According to Okta, XAA extends OAuth and has been incorporated as the official Enterprise-Managed Authorization extension for MCP. The same release cites Okta's own report: only 34% of organizations apply the same security controls to AI agents as they do to human workers.
+
+The two vendors point in the same direction:
+
+- **An agent is its own identity**, not a borrowed engineer account or a shared API key.
+- **Credentials are short-lived and least-privilege**, and expire after use.
+- **Every agent has an owner**, so you know who to call when something goes wrong.
+- **You can shut it off quickly.**
+
+## 3. How I read it
+
+### The risk is not that agents are too smart. It is that they have too much access
+
+The first step for many teams is to hand an agent someone's personal token or an overpowered service account. It works, but when the agent gets prompt-injected or simply makes a bad call, the damage it can do is capped only by that key's permissions. IBM's release makes the same point: long-lived, overprivileged credentials and unclear ownership let one misdirected agent put systems and data at risk.
+
+### Finding your agents comes before governing them
+
+I like that IBM puts discovery first. Agents grow inside departments on their own: one built on Bedrock, an MCP connection in Copilot, an automation chained together in n8n. Before any governance conversation, most companies do not even have a list.
+
+## 4. Four things smaller companies and engineering teams can do now
+
+You do not need an enterprise product to start:
+
+### 1. Keep an agent inventory
+
+For each agent, record its purpose, owner, which systems it can reach, and which account or key it uses. A spreadsheet is fine. What matters is that someone owns keeping it current.
+
+### 2. Do not let agents use human accounts
+
+Give each agent a dedicated service account or API key with only the access it needs. Then your audit logs can tell a person's action from an agent's.
+
+### 3. Shorten credential lifetimes
+
+Prefer short-lived tokens over permanent keys; most cloud platforms already support them. At minimum, set expiry and rotation on every key an agent uses.
+
+### 4. Decide in advance how to stop each agent
+
+Every agent needs a clear off switch: which key to revoke, which schedule to disable. You do not want to be figuring that out during an incident.
+
+---
+
+The number of agents will keep growing. Identity and permissions are the first rules to set, and every other kind of governance builds on them. If you want to take stock of how your team uses agents and plan a permission and audit setup, [book a 30-minute intro call](/booking).

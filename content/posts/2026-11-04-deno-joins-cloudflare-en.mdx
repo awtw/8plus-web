@@ -1,0 +1,72 @@
+---
+title: "The Deno team joins Cloudflare: Deno Deploy has six months left, so how should you choose a JavaScript runtime?"
+date: "2026-11-04"
+summary: "On October 9, Deno announced that its whole team is joining Cloudflare. The Deno runtime gets one more year of maintenance before development ends, and Deno Deploy shuts down in six months. What was announced, what was left out, and how teams on Deno should plan."
+slug: "deno-joins-cloudflare-en"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Deno", "Cloudflare", "deployment", "trends"]
+locale: "en"
+---
+
+# The Deno team joins Cloudflare
+
+On October 9, Ryan Dahl published [Deno is joining Cloudflare](https://deno.com/blog/cloudflare) on the Deno blog, and Cloudflare published its own post, [Deno joins Cloudflare](https://blog.cloudflare.com/deno-joins-cloudflare/), co-written by Ryan Dahl and Kenton Varda. In short: **the entire Deno team is moving to Cloudflare, and both the Deno runtime and Deno Deploy are now on a clock.**
+
+This is more than acquisition news. If you are choosing a runtime or a hosting platform, it changes the answer to "is Deno a long-term option?"
+
+## 1. What was announced
+
+From Deno's post:
+
+- **Deno runtime:** supported for one more year, with monthly releases containing bug fixes and security updates. After that, the team **ends development** of the runtime. The code stays open source, and others are invited to carry it forward.
+- **Deno Deploy:** keeps running for **six months**, then shuts down. Paying customers moving to Cloudflare Workers get migration support.
+- **JSR**, the package registry Deno launched, keeps operating, with its infrastructure moving to Cloudflare.
+- **rusty_v8** stays supported, with work toward integrating it into workerd, the open-source Workers runtime.
+
+Cloudflare's post covers what comes next. Ryan Dahl and Bert Belder will lead an effort to make **self-hosting workerd a first-class, supported way to run Workers-style apps**, merging code and ideas from celld, a project the Deno team built, back into workerd. Kenton Varda is candid that workerd's Durable Objects support is currently limited to a single instance; the goal is distributed, scalable operation.
+
+## 2. What was not announced
+
+This matters just as much. Do not fill in the gaps yourself:
+
+- **There is no shutdown date for Deno Deploy**, only "six months". Some posts estimate around April 2027, but that is not an official date.
+- **Deno KV, Fresh and Subhosting are not addressed.** If your service depends on Deno KV, there is no official migration path yet.
+- **Migration support is promised to paying customers.** Free projects are on their own.
+- Cloudflare says more announcements are coming in the next few months, so the details of self-hosted workerd are still to come.
+
+## 3. What it means for technology choices
+
+I read two signals here.
+
+**1. Long-term maintenance risk for independent runtimes is real.** Deno is technically well regarded, but funding a runtime plus a hosting platform is hard. That does not mean Bun or any other newer runtime will follow the same path. It does mean "who maintains this, and what pays for it" deserves to be an explicit line in your evaluation, next to the benchmarks.
+
+**2. The Workers programming model is becoming portable.** The most common objection to Cloudflare Workers has been lock-in: write your code the Workers way and it only runs on Cloudflare. If self-hosted workerd really becomes first-class, that objection shrinks a lot. For now, though, it is a stated direction, not a product you can evaluate.
+
+## 4. Practical advice
+
+### If you run on Deno Deploy
+
+- **Start your inventory now**; do not wait for a shutdown date. List the Deno-specific features you rely on (Deno KV, for example) and find a replacement for each one.
+- The official destination is Cloudflare Workers. Node.js-compatible platforms are also an option, depending on how much your code depends on Deno APIs.
+- If you are a paying customer, reach out to Deno for migration help.
+
+### If you run the Deno runtime
+
+- You still get security updates for a year. **No need to panic, but do not double down.** For new projects, pick Node.js or a runtime your team already knows well.
+- Push code that depends on `Deno.*` APIs behind a thin adapter layer, so switching runtimes later means changing one place.
+- Packages published on JSR remain usable; JSR keeps running.
+
+### If you are evaluating Workers
+
+- Treat "we might self-host workerd later" as a bonus, not a deciding factor. Count it once there is a real product.
+
+## 5. What it means for this site
+
+8plus does not use Deno, so there is no direct impact. The site currently runs on Cloudflare Workers through vinext. When I [moved it there](/blog/vinext-cloudflare-field-note-en), I kept the Next.js source and Vercel as a fallback precisely to avoid tying the site to a single platform. If self-hosted workerd matures, that is good news for exactly this kind of concern.
+
+---
+
+Runtime and hosting choices often get made early as a matter of taste, and only years later turn out to be business dependencies. Deno at least gave a year of runway and a clear direction, which is a responsible way to wind down. If you want to map which platform features your services depend on and how to keep an exit open, [book a 30-minute intro call](/booking).

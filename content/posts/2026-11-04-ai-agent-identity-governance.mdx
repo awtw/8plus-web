@@ -1,0 +1,75 @@
+---
+title: "AI Agent 也要有身分證：IBM 推出 Agent Identity，企業的 agent 治理從帳號開始"
+date: "2026-11-04"
+summary: "IBM 在 10 月底的 TechXchange 發布 Agent Identity 與 HashiCorp Vault 2.2，讓每個 AI agent 有自己的身分、擁有者與短效憑證。整理這波「agent 身分管理」的重點，以及團隊現在就能做的準備。"
+slug: "ai-agent-identity-governance"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI Agent", "資安", "身分管理", "趨勢"]
+locale: "zh-TW"
+---
+
+# AI Agent 也要有身分證：企業的 agent 治理從帳號開始
+
+10 月 27 日，IBM 在 TechXchange 2026 發布了一組[針對 AI agent 的身分與控管功能](https://newsroom.ibm.com/2026-10-27-ibm-introduces-identity-and-control-for-ai-agents,-securing-frontier-intelligence-for-the-enterprise)。新聞稿開頭引用 Gartner 的預估：**到 2028 年，平均每家 Fortune 500 企業會用到超過 15 萬個 AI agent。**但同一份 Gartner 資料也指出，只有 13% 的組織認為自己的 agent 治理是到位的。
+
+15 萬這個數字離台灣多數企業很遠，但問題本身一點都不遠：你的團隊現在跑的 agent，是用誰的帳號、拿什麼權限在動系統？
+
+## 一、IBM 這次發布了什麼
+
+跟 agent 直接相關的有三塊：
+
+1. **Agent Identity（已正式推出）**：搭配 HashiCorp Vault，替每個 agent 建立一筆「權威紀錄」——誰擁有它、它的生命週期狀態、被授予了哪些權限。
+2. **HashiCorp Vault 2.2（已正式推出）**：讓 agent 有自己的受保護帳號，憑證自動更新、而且是短效的，只給這個 agent 需要的權限。agent 試圖做未授權的事時，可以即時撤銷。
+3. **watsonx Orchestrate 的 discover / contain / evaluate**：discover 能找出在 Amazon Bedrock、Microsoft Foundry、Google Gemini 等第三方環境建立的 agent，也涵蓋模型和 MCP server；contain 把 agent 放進隔離的沙箱，並提供能關掉任何 agent 的 kill switch；evaluate 在上線前測試 agent、模型與 MCP server，上線後持續監控並按模型與 token 追蹤成本。其中 evaluate 已正式推出，discover 和 contain 還是技術預覽。
+
+另外，Terraform 也推出了遠端 MCP server（公開預覽），讓開發者和 agent 透過已核准的控管機制去改基礎設施。
+
+## 二、不只 IBM：agent 身分正在變成標準配備
+
+這不是單一廠商的題目。Okta 在 8 月 24 日[正式推出 Agent SSO](https://www.okta.com/en-au/newsroom/press-releases/okta-brings-first-class-identity-to-ai-agents-with-agent-sso/)，把 agent 註冊成目錄裡的正式身分，在 agent 代替使用者去操作另一個應用程式時，發放短效 token，而不是讓它保存長期憑證。Okta 說這個功能包含在核心 SSO 方案裡、不另外收費。
+
+Agent SSO 用的是 Cross App Access（XAA）這個開放協定。依 Okta 的說法，XAA 是 OAuth 的延伸，並已被納入 MCP 的官方 Enterprise-Managed Authorization 擴充。Okta 同一份新聞稿引用自家報告：只有 34% 的組織對 AI agent 套用和員工一樣的資安控管。
+
+兩家的方向很一致：
+
+- **agent 是獨立身分**，不是借用某個工程師的帳號或一把共用 API key。
+- **憑證要短效、最小權限**，用完就失效。
+- **每個 agent 要有擁有者**，出事時知道找誰。
+- **要能一鍵停掉**。
+
+## 三、我怎麼解讀
+
+### 問題不是 agent 太聰明，而是權限太大
+
+多數團隊導入 agent 的第一步，是把某個人的 token 或一把權限很大的 service account 交給它。能跑起來，但 agent 一旦被提示注入（prompt injection）或判斷錯誤，它能造成的傷害就等於那把 key 的權限上限。IBM 新聞稿裡講的也是這件事：長期有效、權限過大的憑證，加上不清楚的擁有權，會讓一個出錯的 agent 危及整個系統和資料。
+
+### 「找得到 agent」比「管得好 agent」更早遇到
+
+IBM 把 discover 放在第一步，我覺得很實際。agent 很容易在各部門自己長出來：有人在 Bedrock 建了一個、有人在 Copilot 接了 MCP、有人用 n8n 串了自動化。還沒談治理之前，大部分公司連清單都沒有。
+
+## 四、中小企業與工程團隊可以先做的四件事
+
+不用等買到企業級產品，這幾件事現在就能開始：
+
+### 1. 列一份 agent 清單
+
+每個 agent 寫下：用途、擁有者、能存取哪些系統、用哪個帳號或 key。一張試算表就夠，重點是有人負責更新。
+
+### 2. 不要讓 agent 用人的帳號
+
+替 agent 開專屬的 service account 或 API key，權限只給它需要的範圍。這樣稽核紀錄才分得清楚「是人做的還是 agent 做的」。
+
+### 3. 縮短憑證壽命
+
+能用短效 token 就不要用永久 key；雲端平台大多有現成機制。至少把 agent 用的 key 設定到期與輪替。
+
+### 4. 先想好怎麼停
+
+每個 agent 都要有明確的停用方式：撤銷哪把 key、關掉哪個排程。真的出事時，你不會想現場才找。
+
+---
+
+agent 數量會一直變多，身分與權限是最早該立的規矩，也是之後所有治理的基礎。如果你想盤點團隊目前的 agent 使用狀況、規劃權限與稽核架構，可以[預約 30 分鐘初談](/booking)。

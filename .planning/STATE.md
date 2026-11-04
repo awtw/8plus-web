@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-04 11:11 +0800 — 新增 11 月第三批趨勢文章（8 主題、中英共 16 篇，五個分類）；未 commit、未部署
+Last activity: 2026-11-04 +0800 — 11/4 趨勢文章 16 篇上線正式站（Worker 4b3cf067，回滾目標 eb0b7ac5）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-04 +0800 — 11/4 趨勢文章上線正式站（Worker 4b3cf067）**：commit ccea668 已 push。`pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、16 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `4b3cf067-8342-43d8-8a7e-fcc8e11fb516`，回滾目標 `eb0b7ac5`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；16 篇新文章 200、已進 sitemap 與 feed；瀏覽器檢視 Deno 文章頁無 console error。Vercel（apex 轉址源站）未更新。
 
 - ✅ **2026-11-04 11:11 +0800 — 11 月第三批趨勢文章（8 主題、中英共 16 篇，涵蓋 ai／web／ops／delivery／career）**：`content/posts/2026-11-04-*`。ai：①IBM Agent Identity 與 Vault 2.2（10/27，佐以 Okta Agent SSO）②GitHub Copilot connectors 公開預覽（10/28，附管理者檢查清單）。web：③Deno 團隊加入 Cloudflare（10/9，Deno Deploy 六個月後關閉；關閉日期官方未給）④Next.js next-bundle-optimizer 與新版 Bundle Analyzer（10/28，附本站 bundle 預算）。ops：⑤eMudhra 中繼 CA 私鑰外洩與信任清單檢查（10/17–10/28）⑥Google Cloud europe-west2-b 停電事故報告（10/20 發生、10/27 公布）。delivery：⑦AI 程式碼驗收缺口（TestMu 11/02、Qodo 9/23，皆廠商報告）。career：⑧AI 時代工程師就業市場（Indeed Hiring Lab 9–10 月，美國資料）。由四個研究代理依一手來源撰寫，主流程抽查 Deno 與 Copilot connectors 事實、站內連結全數有效。站務（studio）為站內更新，非外部趨勢，本批未寫。未採用：GPT-6.1（官方頁 403）、DORA 停辦年報（讀不到一手公告）等。gcloud 指令欄位名稱未實際執行驗證。`published: true`，`pnpm build` 通過（48 篇，`next-env.d.ts` 已保留）；未 commit、未部署。
 

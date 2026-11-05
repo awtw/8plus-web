@@ -1,0 +1,71 @@
+---
+title: "Two months into EU CRA reporting: the 24-hour clock belongs in your outsourcing contract"
+date: "2026-11-05"
+summary: "The EU Cyber Resilience Act's vulnerability and incident reporting duties have applied since September 11, and ENISA upgraded its Single Reporting Platform to version 1.3 on November 4. What's settled, what isn't, and what contract and outsourced projects should add to their agreements."
+slug: "eu-cra-reporting-delivery-en"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["Cyber Resilience Act", "security", "outsourcing contracts", "trends"]
+locale: "en"
+---
+
+# Two months into EU CRA reporting
+
+The reporting duties in Article 14 of the EU Cyber Resilience Act (CRA) have applied since **September 11, 2026**. The same day, ENISA launched the [CRA Single Reporting Platform (SRP)](https://www.enisa.europa.eu/cra-srp/), and the SRP page notes it was **upgraded to version 1.3 on November 4**, with documentation still being brought up to date. The European Commission's [CRA reporting page](https://digital-strategy.ec.europa.eu/en/policies/cra-reporting) lays out the process and deadlines.
+
+This isn't legal advice. What I want to look at is this: when your client sells a product into the EU and you (or your team) built it, how does that 24-hour clock land on the delivery process and the contract?
+
+## 1. What's settled
+
+From the Commission's page:
+
+- **Who reports**: manufacturers of products with digital elements.
+- **What**: **actively exploited vulnerabilities** and **severe incidents** affecting the product's security.
+- **Deadlines**: an early warning within **24 hours** of becoming aware; a full notification within **72 hours**; a final report within **14 days** after a corrective measure is available for vulnerabilities, or within **one month** of the 72-hour notification for severe incidents.
+- **How**: report once through the SRP. It goes to the CSIRT where the manufacturer has its main establishment, and ENISA receives it at the same time.
+- **Open-source stewards**: their reporting duties don't apply until **December 11, 2027**.
+
+Two law firm write-ups add a few points. Hogan Lovells' [September 11 article](https://hlc.com/en/publications/eu-cyber-resilience-act-vulnerability-and-incident-reporting-obligations-now-apply) and Jones Day's [July alert](https://www.jonesday.com/en/insights/2026/07/eu-cyber-resilience-act-24hour-reporting-duties-start-september-11-2026) both cite the Commission's guidance:
+
+- **Products already on the EU market are covered**, not only new ones.
+- Exploitation known before September 11 **does not need to be reported retroactively**.
+- "Becoming aware" means that, after an initial assessment, there is a reasonable degree of certainty that a vulnerability is being actively exploited or that a severe incident has compromised the product's security.
+- Manufacturers must inform impacted users and, where appropriate, all users (Article 14(8), per Hogan Lovells).
+- Jones Day notes fines of up to EUR 15 million or 2.5% of worldwide annual turnover, whichever is higher.
+
+Most of the CRA's other requirements, including the security requirements for the products themselves, apply from **December 11, 2027**. Only reporting is live now.
+
+## 2. What's unclear, or not covered here
+
+- **Whether your product is in scope** depends on what it is and how it's used, and I can't decide that for you. Pure SaaS, internal systems and device firmware are very different cases. Check with a lawyer who knows the CRA.
+- **Who the "manufacturer" is** gets blurry in outsourced work. My reading is that it's mainly the party placing the product on the market under its own name, usually the client rather than the contractor. That's my reading, not a legal conclusion.
+- I **did not read** the Commission's full July guidance directly. The points above on legacy products and awareness come from the two law firms' summaries.
+- The SRP documentation is still catching up with version 1.3, and Hogan Lovells notes that voluntary reporting (Article 15) wasn't in the launch version. Details may still change.
+
+## 3. What it means for contract and outsourced work
+
+The rule names the manufacturer. But answering "does this vulnerability affect our product, which versions, and is it being exploited?" within 24 hours depends on information the **development team** holds:
+
+- Which packages and versions does the product use?
+- Which version is deployed at which customer?
+- If the alert arrives at 2 a.m., who can assess the impact within a few hours?
+- How long until a fix ships?
+
+If that lives only in a contractor's head, or nobody maintains the project after hand-off, the client's 24-hour clock runs straight into a wall. It's one reason I keep arguing that [delivery should start from architecture and maintainability](/blog/architecture-first-delivery-en): things that can be handed over and traced are what help at moments like this.
+
+It cuts the other way too. A delivery team that can write down exactly how it will respond when a vulnerability appears is a more convincing partner for clients selling into the EU.
+
+## 4. What to add to contracts and delivery
+
+1. **Make the component inventory a deliverable.** Ship a list of dependencies and versions with every release, ideally as an SBOM (CycloneDX or SPDX), not just the source code.
+2. **Set a vulnerability notification window.** When the contractor finds or hears about a vulnerability, how many hours until the client's named contact is told? It has to be much shorter than 24 hours so the client has time to assess and report.
+3. **Define the maintenance period and terms.** Who handles security updates after hand-off, for how long, and how it's billed. My post on [engagement models](/blog/consulting-engagement-models-en) covers turning maintenance into a retainer.
+4. **Keep versions and deployments traceable.** Which version, which date, which environment, written down, not remembered.
+5. **Agree on contacts and escalation.** Primary and backup contacts on both sides, and how to reach someone outside office hours.
+6. **Rehearse once a year.** Take a real CVE through the whole flow: assess impact, notify, fix, release, and see how long it actually takes. Hogan Lovells also passes on ENISA's advice: have the responsible staff set up EU Login with multi-factor authentication now, and register as an Assigned Representative only when a report is actually needed.
+
+---
+
+Reporting is only the first step; fuller product requirements arrive at the end of 2027. Writing component inventories, notification windows and maintenance periods into contracts now costs little and makes a big difference when something happens. If you're planning a product for the EU market or want to add security delivery terms to an outsourcing contract, [book a 30-minute intro call](/booking).

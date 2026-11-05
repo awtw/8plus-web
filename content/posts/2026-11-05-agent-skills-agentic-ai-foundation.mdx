@@ -1,0 +1,71 @@
+---
+title: "Agent Skills 捐給 Agentic AI Foundation：skill 變成跨工具的標準格式，團隊該把它當程式碼管"
+date: "2026-11-05"
+summary: "Anthropic 10 月 22 日把 Agent Skills 標準捐給 Linux Foundation 旗下的 Agentic AI Foundation，和 MCP 放在同一個中立組織。整理這次捐贈實際包含什麼、還沒說清楚的地方，以及團隊開始累積 skills 前該先定好的規矩。"
+slug: "agent-skills-agentic-ai-foundation"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["Agent Skills", "AI Agent", "AI 治理", "開放標準", "趨勢"]
+locale: "zh-TW"
+---
+
+# Agent Skills 捐給 Agentic AI Foundation：skill 變成跨工具的標準
+
+10 月 22 日，Anthropic 宣布[把 Agent Skills 捐給 Agentic AI Foundation（AAIF）](https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation)。AAIF 隸屬 Linux Foundation，是 Anthropic 和 Block、OpenAI 共同成立的組織，[MCP 在 2025 年 12 月就已經捐到這裡](https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/)。換句話說，「agent 怎麼連外部工具」（MCP）和「agent 怎麼學會一件事的做法」（Skills），現在都放在同一個中立的地方維護。
+
+這件事沒有新功能，但對正在導入 coding agent 的團隊來說，它回答了一個實際問題：**我們寫的 skill，換工具之後還能不能用？**
+
+## 一、這次捐贈實際包含什麼
+
+依 Anthropic 的公告：
+
+1. **捐出的內容**：Agent Skills 標準本身，加上名稱與 logo、GitHub organization，以及 `agentskills.io` 網域。
+2. **維護方式**：由來自 Anthropic、Google、OpenAI 等公司的工程師以**個人身分**參與維護，Lead Maintainer 是 David Soria Parra 與 Mahesh Murag。
+3. **參與門檻**：使用或貢獻這個標準不需要加入 AAIF。規格討論在 [GitHub](https://github.com/agentskills/agentskills) 與 Discord。
+4. **採用現況**：公告說自 2025 年 12 月公開標準以來，已有超過 70 個 agent 平台整合，點名了 ChatGPT、Cursor、GitHub Copilot 和 VS Code；目前已發布 100 萬個 skills，安裝次數接近 2.8 億。這些是 Anthropic 自己公布的數字。
+5. **接下來的方向**：提議的 roadmap 先處理三件事：版本化發布、正式的提案流程，以及給 skill 作者與安裝者的安全指引。
+
+格式本身沒有變。依 [agentskills.io 的規格](https://agentskills.io/specification)，一個 skill 就是一個資料夾，裡面一定要有 `SKILL.md`，frontmatter 至少要有 `name`（最多 64 字元，小寫英數與連字號，且要和資料夾同名）與 `description`（最多 1024 字元）。另外可以放 `scripts/`、`references/`、`assets/`。agent 啟動時只讀每個 skill 的名稱與描述，任務對上了才載入完整內容，需要時再讀附帶檔案或執行腳本。
+
+## 二、還沒說清楚的地方
+
+- **沒有時間表**。版本化發布、提案流程、安全指引都還在「提議」階段，公告沒有給日期。
+- **「支援」的程度不一樣**。70 多個平台整合，不代表每個平台的行為都相同。規格裡的 `allowed-tools`（預先核准 skill 可以用哪些工具）本身就標註為實驗性質，各家實作可能不同。
+- **安全指引還沒出來**。skill 可以附帶可執行的腳本，而安裝量已經是億級。在正式指引出來之前，怎麼審查、怎麼發布，目前還是各團隊自己負責。
+- **數字是單方說法**。100 萬、2.8 億這類數字來自 Anthropic，沒有第三方統計可以對照。
+
+## 三、我怎麼解讀
+
+### skill 從「某家工具的設定」變成「團隊的資產」
+
+以前寫給某個 agent 的指令檔，很容易被當成個人設定：放在自己的家目錄、換工具就重寫。標準交給中立組織之後，比較能放心地把 skill 當成團隊共用、跟著 repo 走的東西。這跟當年大家開始把 CI 設定、lint 規則放進版本控制是同一個轉變。
+
+### 真正的價值在「做法」，不在格式
+
+skill 的格式很簡單，難的是內容：你們團隊怎麼發版、怎麼 review、出事時先查哪裡。這些過去散在 wiki、資深同事的腦袋和 Slack 討論裡。agent 能不能做對事，很大程度取決於這些做法有沒有被寫清楚。**標準化解決的是「寫一次到處用」，沒有解決「寫什麼」。**
+
+### skill 也是供應鏈的一部分
+
+一個 skill 可以帶 Bash 或 Python 腳本，agent 會照著說明去執行。從風險角度看，安裝一個來路不明的 skill，跟 `npm install` 一個沒看過的套件很像，甚至更直接，因為執行它的是一個會自己做決定的 agent。
+
+## 四、團隊開始累積 skills 前的檢查清單
+
+1. **放進版本控制**。團隊共用的 skill 跟著 repo 或獨立的 skills repo 走，修改要經過 PR review，不要散在各人電腦裡。
+2. **外部 skill 先讀再裝**。特別是 `scripts/` 裡的東西。來源不明的 skill，先在沙箱或沒有正式憑證的環境試。
+3. **description 要寫準**。agent 是靠 `description` 判斷要不要啟用 skill，寫得太泛會被誤觸發，寫得太窄則永遠用不到。規格建議同時寫「做什麼」和「什麼時候用」。
+4. **一個 skill 只做一件事**。規格建議 `SKILL.md` 控制在 500 行以內，細節拆到 `references/`。一個萬用 skill 很難維護，也很難審查。
+5. **不要依賴實驗性欄位做權限控管**。`allowed-tools` 還是實驗性質，真正的權限邊界應該設在 agent 平台、沙箱與憑證本身。
+6. **可以用官方工具驗證格式**。規格提供 `skills-ref validate` 檢查 frontmatter 與命名，適合放進 CI。
+7. **追蹤 AAIF 的安全指引**。指引出來後，回頭檢查既有的 skills 與安裝流程。
+
+## 五、跟我自己的做法
+
+這個網站的 repo 裡就放了不少 agent skills，用來跑規劃、開發、審查的流程。我的經驗是，skill 寫得好不好，差別幾乎都在「有沒有把隱性的判斷寫出來」：什麼情況該停下來問人、什麼情況可以直接做。這也是導入 agent 時最值得花時間的地方：先把人的做法講清楚，再交給機器執行。
+
+如果你在意的是 agent 能連到哪些外部系統，可以參考我前一篇談 [Copilot connectors 與 MCP 治理](/blog/github-copilot-connectors-mcp)；skills 管的是 agent 會怎麼做事，兩者要一起看。
+
+---
+
+Skills 標準化之後，「寫一次、多個 agent 共用」變得可行，但寫什麼、誰能改、外部的能不能信，還是團隊自己要決定的事。如果你想替團隊整理第一批 skills、或規劃 agent 的導入流程，可以[預約 30 分鐘初談](/booking)。

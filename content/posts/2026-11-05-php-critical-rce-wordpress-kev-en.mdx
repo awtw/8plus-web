@@ -1,0 +1,90 @@
+---
+title: "Two exploited 9.2 PHP RCEs and a WordPress core flaw in KEV: what to do this week if you still run PHP"
+date: "2026-11-05"
+summary: "PHP patched two unauthenticated remote code execution bugs on October 21, and CISA added both to its exploited list on October 26. The upgrade-process RCE fixed in WordPress 7.1.4 joined KEV on November 3. Here is who is affected, how to check, what is still unclear, and a checklist you can work through."
+slug: "php-critical-rce-wordpress-kev-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["security", "PHP", "WordPress", "upgrades", "trends"]
+locale: "en"
+---
+
+# Two weeks of PHP and WordPress in KEV
+
+On October 21 the PHP project published an [urgent security advisory](https://www.php.net/archive/2026.php#2026-10-21-5) for two **unauthenticated remote code execution** bugs, [CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) and [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp), both rated 9.2 under CVSS v4.0. Five days later CISA added both to the [Known Exploited Vulnerabilities (KEV) catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), which means they are being used in real attacks. On October 28 WordPress shipped [7.1.4](https://wordpress.org/news/2026/10/wordpress-7-1-4/), and the upgrade-process RCE it fixes ([CVE-2026-119977](https://nvd.nist.gov/vuln/detail/CVE-2026-119977)) landed in KEV on November 3.
+
+A lot of teams will say "we're not a PHP shop." What I keep seeing with clients is a product written in Node or Go, next to a marketing site or blog on WordPress, or an early Laravel admin panel and a phpMyAdmin that nobody turned off. **The box most likely to get you is the one everyone forgot was running.**
+
+## 1. What happened
+
+**PHP itself (Oct 20–26)**
+
+- On 10/20 the project gave [advance notice](https://www.php.net/archive/2026.php) of a release at 14:00 UTC the next day, with both bugs rated CVSS v4.0 9.2.
+- On 10/21 it released **8.5.12, 8.4.27, 8.3.36 and 8.2.35**. One bug is state corruption when out-of-memory handling interrupts a request; the other is internal request state that outlives its memory and gets reused by the next request on the same worker.
+- According to the advisory, **every PHP installation serving web requests** is affected: PHP-FPM, Apache mod_php, php-cgi, FrankenPHP and LiteSpeed. mod_php carries the highest risk.
+- **PHP 8.1 and older get no fixes from the project.** The security team pushed minimal source backport branches for 7.4, 8.0 and 8.1 to php-src, but whether you can use them depends on your distribution or LTS vendor.
+- On 10/23 an informational follow-up recommended disabling `session.upload_progress` until the next regular release, and said a full advisory for CVE-2026-115560 will ship with that release.
+- On 10/26 CISA added both CVEs to KEV.
+
+**WordPress core (Oct 28 – Nov 3)**
+
+- 7.1.4 fixes 12 security issues. Most are stored XSS; the serious one is an "upgrade process weakness" that can lead to remote code execution during the upgrade window. The same release updates the bundled root certificates because of the [eMudhra intermediate CA incident](/blog/emudhra-ca-compromise-trust-store-check-en).
+- The NVD record, submitted by Wordfence, says versions 4.7 through 7.1.3 are affected because full-package core upgrades use **predictable, web-accessible staging paths**. CVSS 3.1 score: 8.1.
+- CISA added it to KEV on 11/03. WordPress.org's [version status API](https://api.wordpress.org/core/stable-check/1.0/) currently marks 7.1.4 as latest, and 7.0.8, 6.9.11 and 6.8.12 are no longer flagged insecure.
+
+**A Linux kernel bug you should read alongside these**
+
+On 10/28 CISA also added [CVE-2026-46300](https://nvd.nist.gov/vuln/detail/CVE-2026-46300). It is a kernel networking bug fixed back in May, and on its own it needs local access (CVSS 7.8). But the KEV entry says it **can be chained with the two PHP bugs to plant PHP webshells and run commands as root**. PHP gets the attacker in; the kernel hands over the machine.
+
+## 2. Who is affected and how to check
+
+These are generic commands. I haven't run them in your environment, so try them on a non-production box first:
+
+```bash
+# 1. PHP version (CLI and FPM can differ, so check both)
+php -v
+php-fpm -v 2>/dev/null
+
+# 2. PHP inside a container image
+docker run --rm <your-image> php -v
+
+# 3. WordPress core version (if WP-CLI is installed)
+wp core version
+
+# 4. Running kernel; on Debian/Ubuntu this file means an update is waiting for a reboot
+uname -r
+ls /var/run/reboot-required 2>/dev/null
+```
+
+The rule is simple: anything below 8.5.12, 8.4.27, 8.3.36 or 8.2.35, or anything on 8.1 or older, is affected. Distribution packages often carry their own version numbers, so check your distro's advisory for these two CVEs.
+
+## 3. What is still unclear
+
+- **Attack details.** Neither PHP nor KEV has published how the bugs are being exploited or at what scale, and KEV lists ransomware use as "Unknown." I wouldn't read "no headlines" as "not affected."
+- **Older WordPress branches.** The 7.1.4 post says backports to every branch down to 4.7 are "still in progress." I can only vouch for the versions the API lists above; confirm older branches yourself.
+- **The upgrade window itself.** The RCE happens during an upgrade, and upgrading to 7.1.4 runs the old version's upgrader. The official material I read gives no special guidance on that, and I couldn't read Wordfence's detail page, so I can't confirm the exact staging path.
+- **CVE-2026-115560.** Details are due with PHP's next regular release.
+
+## 4. Checklist
+
+- [ ] List every place PHP runs: marketing site, blog, internal admin tools, old project containers, not just the main product
+- [ ] Upgrade to 8.5.12, 8.4.27, 8.3.36 or 8.2.35, or the distro package that includes the fix
+- [ ] **Rebuild container images and restart every FPM worker**; swapping the package without a restart leaves old processes in memory
+- [ ] On 8.1 or older: schedule the upgrade, and get a backport from your distro or LTS vendor in the meantime. WordPress's [own post](https://wordpress.org/news/2026/10/critical-php-security-release/) even cites the UK NCSC's advice to consider taking the system offline
+- [ ] If you truly can't upgrade today, set `session.upload_progress.enabled = 0` in `php.ini` or the FPM pool and restart workers (`ini_set()` and `.user.ini` won't work). The project is explicit that these mitigations **do not make an installation safe**; they buy time
+- [ ] Move WordPress to 7.1.4 or your branch's fixed release. What I do is pick a low-traffic window and turn on maintenance mode, or have the deploy pipeline replace the files directly, to keep the exposure window short
+- [ ] Apply your distro's kernel update and **actually reboot**, then confirm `uname -r` shows the new kernel
+- [ ] Look for signs of compromise: KEV flags these CVEs for forensic triage. At minimum, review PHP files added or changed in the web root since 10/20, for example `find /var/www -type f -name '*.php' -newermt 2026-10-20` (untested; adjust the path), and skim the access logs for that period
+- [ ] Put PHP 8.2 on the roadmap: the 8.2.35 announcement states it reaches **end of life on December 31, 2026**
+
+## 5. My take
+
+Two things stood out to me over these two weeks.
+
+First, **KEV is a better priority list than CVSS scores**. A small team can't chase every CVE, but "already exploited" is worth dropping other work for. Subscribing to the KEV feed and reading it once a week costs almost nothing.
+
+Second, **a single bug's score understates a chain**. That kernel bug was fixed in May and, on its own, is a local privilege escalation. On hosts without a regular reboot routine, it became the last link of an attack chain in October. Updating packages, rebuilding images and rebooting only count when you do all three.
+
+If you want help finding the "forgotten PHP" in your stack, or building patching and reboots into a regular operations routine, [book a 30-minute intro call](/booking).

@@ -1,0 +1,74 @@
+---
+title: "Next.js 11 月安全更新：這次的重點是快取身分，不是 RCE"
+date: "2026-11-05"
+summary: "11/3 Next.js 發布 16.4.5 與 15.5.29，修補七個問題，其中多數跟 Cache Components 的快取鍵與多租戶隔離有關。整理哪些寫法會中、哪些部署方式才受影響，以及用 use cache 做多租戶時該建立的習慣。"
+slug: "nextjs-november-2026-security-release"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Next.js", "資安", "快取", "趨勢"]
+locale: "zh-TW"
+---
+
+# Next.js 11 月安全更新
+
+10 月 27 日，Next.js 先發了[預告](https://nextjs.org/blog/upcoming-nextjs-security-release-november-2026)，11 月 3 日正式發布 [November 2026 Security Release](https://nextjs.org/blog/november-2026-security-release)：修補版本是 **16.4.5**（Active LTS）與 **15.5.29**（Maintenance LTS）。
+
+跟 10 月那次兩個 Critical RCE 比起來（我在 [Next.js 16.4 與 10 月安全更新](/blog/nextjs-16-4-upgrade-and-security) 整理過），這次看起來溫和很多。但仔細讀完，我反而覺得這次更值得架構層面的人看：**七個問題裡有四個跟「快取把 A 的結果給了 B」有關。** 這不是單一 bug，而是 Cache Components 這種快取模型本身要面對的風險類型。
+
+## 一、官方公布了什麼
+
+依官方文章，七個問題如下：
+
+| 問題 | 等級 | 前提條件 |
+|------|------|---------|
+| `unstable_cache` 與 `use cache` 混用時的跨租戶快取外洩 | High | 啟用 Cache Components，同一個 `use cache` 函式同時被直接呼叫、也在 `unstable_cache` 裡被呼叫，且函式讀取 root parameter（例如租戶 ID） |
+| 巢狀 `use cache` 的跨 root parameter 外洩 | Medium | 內層快取函式讀 root parameter，同時回傳一個先到的值與一個較慢的非同步值，外層沒等它就結束 |
+| 二進位參數造成的快取身分碰撞 | Medium | 把具安全意義的二進位資料（例如用來區分使用者）當 `use cache` 參數 |
+| 自架環境的共用 shell 快取污染 | Medium | `next start` 自架、啟用 Cache Components、未啟用 Partial Prefetching，且路由結構符合特定條件 |
+| 壓縮回應 framing 錯置造成的跨用戶回應注入 | Medium | 自架、原封不動回傳攻擊者可控的 fetch `Response`，前面有會在共用連線排隊 pipelined 請求的 HTTP/1.1 反向代理 |
+| Edge 路由的 cookie 值經內部 header 外洩 | Medium | Edge Route Handler 或 Pages Router Edge API route 用 `NextResponse.cookies.set()` 設定敏感 cookie，且同源有攻擊者可控的 JavaScript |
+| Image Optimization 的 SVG 拒絕機制被繞過 | Medium | 允許來源的圖片被誤判成 AVIF，而影像後端能解碼 SVG |
+
+第一個 High 等級的問題，[advisory](https://github.com/vercel/next.js/security/advisories/GHSA-mfr8-8qww-v76h) 寫明有完整的替代做法：**不要在 `unstable_cache()` 裡呼叫 `use cache` 函式。**
+
+## 二、沒說清楚、或要自己判斷的地方
+
+- **預告寫的是「七個 medium」，正式公告卻有一個標成 High。** 兩篇文章的說法不一致，以正式公告為準。這也提醒我們：預告只能拿來排時程，不能拿來判斷嚴重度。
+- **官方沒有說明 Vercel 平台上的部署是否因平台層而免疫。** 有幾個問題明確寫了「self-hosted」，其他的沒寫，就不要自己假設在 Vercel 上就沒事。
+- **Edge cookie 問題要搭配同源惡意 JavaScript 才成立**，官方也強調它不是獨立的 XSS 管道。但如果你的站有第三方 script，這個前提沒有想像中遙遠。
+- **只修 16.4 與 15.5 兩條線。** 還在更舊版本的專案，這次沒有修補可裝。
+
+## 三、這對選型代表什麼
+
+Cache Components 與 `use cache` 的設計讓快取變得很好寫：一個指令，函式結果就被快取。問題在於**「快取鍵由哪些東西組成」從顯性變成隱性**。過去你手寫 Redis key，會很自然地把 tenant ID 串進去；現在快取身分由框架從參數、root parameter、閉包推導，大多數時候是對的，但這次的幾個問題正好都發生在推導出錯的邊界上。
+
+我的判斷是：這不代表 Cache Components 不能用，而是**多租戶系統用它時，要把租戶隔離當成自己的責任，不要完全交給框架**。框架會修 bug，但你的系統要在框架出 bug 的那幾週也不外洩資料。
+
+另一個訊號是自架與平台的差距。這次有兩個問題只發生在 `next start` 自架、或特定反向代理配置下。選擇自架或 OpenNext 一類方案時，「框架的安全修補在你的環境上是否被完整測過」應該是評估項目之一。
+
+## 四、實務建議
+
+1. **先升版。** 16.x 升到 16.4.5、15.5 升到 15.5.29，都是 patch 等級。
+
+   ```bash
+   pnpm add next@16.4.5   # 16.x
+   pnpm add next@15.5.29  # 仍在 15.5 的專案
+   ```
+
+2. **全專案搜一次 `unstable_cache`。** 它跟 `use cache` 混用正是 High 等級問題的前提。趁這次把舊 API 收斂掉，不要兩套並存。
+3. **檢查快取函式的參數。** 用來區分使用者或帳號的值，盡量以字串或明確的 ID 傳入，不要用 `Uint8Array` 之類的二進位資料當身分依據。
+4. **多租戶應用加一道防線。** 從快取取出的資料，在回應前比對一次 tenant ID 是否一致。成本很低，卻能把框架層的錯誤擋在外面。
+5. **自架的團隊檢查反向代理。** 如果前面是會做 HTTP/1.1 pipelining 的代理，評估一下是否需要調整；同時盤點有沒有路由把外部 fetch 的 `Response` 原樣回傳。
+6. **Edge 路由有設敏感 cookie 的，升版後實際打一次請求，看回應 header 裡還有沒有 `x-middleware-set-cookie`。** 能改用 Node.js runtime 或 `cookies().set()` 的，官方重現的外洩情境並不包含這兩種寫法。
+
+## 五、對這個站的影響
+
+8plus 原本是 Next.js 16.4.1，沒有啟用 Cache Components、沒有 `use cache`、也沒有 Edge runtime 的 route handler，所以前幾個快取問題對這個站不成立。但它有用 `next/image`，Vercel 備援環境跑的是正版 Next.js，所以 11/5 還是升到了 16.4.5（patch 升級，typecheck 與建置都沒有任何需要改的地方）。
+
+正式環境透過 vinext 跑在 Cloudflare Workers 上。vinext 是重新實作 Next.js API 的另一套程式，這些 advisory 是針對 `next` 套件寫的，不能直接推論 vinext 受不受影響，我會另外追 vinext 那邊的公告。這也是用替代 runtime 時的隱性成本：**安全公告要看兩份**。
+
+---
+
+快取 bug 的麻煩在於它通常不會報錯，只會安靜地把資料給錯人。這次的修補很快，但更長久的保護來自你自己的設計：快取鍵要能說清楚、租戶邊界要有第二道檢查。如果你正在用 Cache Components 做多租戶系統，想一起檢視快取與隔離的設計，可以[預約 30 分鐘初談](/booking)。

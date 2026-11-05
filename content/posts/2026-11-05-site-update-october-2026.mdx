@@ -1,0 +1,57 @@
+---
+title: "Field Note｜10 月站務近況：搬上 Cloudflare、首頁品牌片、Blog 分類與訂閱"
+date: "2026-11-05"
+summary: "過去一個月 8plus 網站做了哪些事：正式站搬到 Cloudflare Workers、首頁改成即時執行的品牌片、Blog 加上主題分類與 RSS／Email 訂閱、Lab 補上新作品。也記下一次部署出錯和學到的事。"
+slug: "site-update-october-2026"
+published: true
+protected: false
+kind: "note"
+category: "studio"
+tags: ["近況", "網站", "Cloudflare", "部署"]
+locale: "zh-TW"
+---
+
+# 10 月站務近況
+
+上一則[站務筆記](/blog/site-rebuild-field-note)是 10 月 1 日。這一個月網站改了不少地方，整理成一則短篇 Field Note。
+
+## 一、正式站搬到 Cloudflare Workers
+
+10 月 20 日起，`www.8plus.app` 改由 Cloudflare Workers 提供服務，建置工具是 vinext。原本的 Next.js 原始碼和 Vercel 部署都保留，當作退路。為什麼這樣做、過程踩了哪些坑，寫在[這篇實作筆記](/blog/vinext-cloudflare-field-note)。
+
+同一週也把 Next.js 升到 16.4.1，處理 10 月的安全更新，細節在[這篇](/blog/nextjs-16-4-upgrade-and-security)。
+
+## 二、首頁改成一支「用程式跑」的品牌片
+
+首頁第一屏原本是靜態主視覺，現在換成 20 秒的品牌片，依序講想法、價值、能力和實績，最後停在預約按鈕。
+
+這支片不是影片檔，而是網頁直接執行的動畫：文字、作品截圖和配樂都是在瀏覽器裡即時組出來的，所以手機會自動切成直式版面，中英文也各有一版。片尾的預約按鈕可以直接點，會開到預約頁。
+
+聲音預設是開的，但瀏覽器規定訪客互動後才能出聲，所以實際上是你第一次點擊或捲動頁面時才開始播。不想聽的話，右下角的喇叭按一下就會記住。
+
+## 三、Blog：主題分類、目錄與訂閱
+
+- **主題分類**：文章分成 AI 與 Agent、Web 與框架、資安與維運、工程與交付、職涯歷程、站務近況六類，[Blog 頁面](/blog)可以篩選，網址也能直接分享（例如 `/blog?category=ops`）。
+- **新的「職涯歷程」**：第一篇是[從生醫實驗室到 AI 架構師](/blog/cross-domain-journey)。
+- **本文目錄**：之前所有文章的標題都沒有錨點，目錄其實一直沒有顯示，這次修好了。
+- **訂閱**：RSS 分成中文 `/feed.xml` 和英文 `/feed-en.xml`；也可以留 Email，有新文章才寄。訂閱入口在 [Blog 底部](/blog#subscribe)。
+
+11 月起開始整理技術趨勢文章，原則是只寫讀得到一手來源的消息，讀不到的就不寫。
+
+## 四、Lab 補上新作品
+
+[Lab](/lab) 新增了「辦公室觀察日誌」小遊戲和 YES 財務管理系統，b18 換成 basement18 studio 改版後的新官網。已經下線的作品連結也標示出來，不讓訪客點到壞掉的頁面。
+
+## 五、一次部署出錯，和學到的事
+
+11 月 2 日的第一次部署，首頁和 Blog 等 18 個頁面回了 500。原因是 RSS 自動探索的設定寫法，`next build` 檢查不出來，但 Workers 上的 runtime 會在執行時出錯。當下先回滾，改寫法後重新部署。
+
+教訓很簡單：**部署前要在跟正式環境一樣的 runtime 上跑一次冒煙測試**，不能只信建置成功。現在每次部署前都會先在本機用 workerd 跑過一輪。
+
+## 接下來
+
+- 《靈機8動》節目頁補上真實的平台連結與單集
+- shuyan.art 創作分站
+- 持續整理技術趨勢文章
+
+有任何想聊的需求，歡迎[預約 30 分鐘初談](/booking)。

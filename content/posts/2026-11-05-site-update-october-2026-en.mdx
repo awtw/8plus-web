@@ -1,0 +1,57 @@
+---
+title: "Field Note | October site update: moving to Cloudflare, a live brand film, blog topics and subscriptions"
+date: "2026-11-05"
+summary: "What changed on the 8plus site over the past month: production moved to Cloudflare Workers, the homepage now runs a live brand film, the blog gained topic filters plus RSS and email subscriptions, and the Lab has new work. Also one deployment that went wrong, and what I took from it."
+slug: "site-update-october-2026-en"
+published: true
+protected: false
+kind: "note"
+category: "studio"
+tags: ["update", "website", "Cloudflare", "deployment"]
+locale: "en"
+---
+
+# October site update
+
+The last [site note](/blog/site-rebuild-field-note-en) was on October 1. A fair amount has changed since then, so here is a short Field Note.
+
+## 1. Production moved to Cloudflare Workers
+
+Since October 20, `www.8plus.app` has been served from Cloudflare Workers, built with vinext. The original Next.js source and the Vercel deployment are still there as a fallback. Why I did it and what went wrong along the way is in [this field note](/blog/vinext-cloudflare-field-note-en).
+
+The same week I upgraded to Next.js 16.4.1 for the October security release; details are [here](/blog/nextjs-16-4-upgrade-and-security-en).
+
+## 2. A brand film on the homepage, rendered in code
+
+The first screen used to be a static hero. It is now a 20-second brand film that walks through the idea, the values, the capabilities and some proof, and ends on a booking button.
+
+It is not a video file. The page runs the animation directly: type, project screenshots and the score are put together in the browser. That means phones get a portrait layout automatically, and there is a Chinese and an English cut. The booking button at the end is a real link to the booking page.
+
+Sound is on by default, but browsers only allow audio after a visitor interacts, so in practice it starts on your first click or scroll. If you would rather not hear it, tap the speaker in the corner once and the site remembers.
+
+## 3. Blog: topics, a table of contents and subscriptions
+
+- **Topics**: posts now sit in six shelves — AI and agents, Web and frameworks, security and operations, engineering and delivery, career journey, and studio notes. The [blog page](/blog) filters by topic, and the URL is shareable (for example `/blog?category=ops`).
+- **A new career shelf**: it starts with [From a biomedical lab to AI architect](/blog/cross-domain-journey-en).
+- **Table of contents**: post headings had no anchors, so the table of contents never actually appeared. That is fixed.
+- **Subscribe**: RSS is split into Chinese (`/feed.xml`) and English (`/feed-en.xml`), and you can leave an email to get new posts only when they go out. Both are at the [bottom of the blog](/blog#subscribe).
+
+From November I have started writing tech-trend posts. The rule: only news I can read from a primary source. If I cannot verify it, I do not write it.
+
+## 4. New work in the Lab
+
+The [Lab](/lab) now includes a small office-observation game (Anti-Coworker) and the YES financial management system, and b18 now points to basement18 studio's relaunched site. Projects that have gone offline are marked, so visitors do not land on broken pages.
+
+## 5. One deployment that went wrong
+
+The first deployment on November 2 returned 500 on 18 routes, including the homepage and the blog. The cause was how the RSS autodiscovery metadata was written: `next build` did not catch it, but the Workers runtime failed on it at request time. I rolled back, changed the approach and redeployed.
+
+The lesson is simple: **run a smoke test on the same runtime as production before you deploy**, not just a successful build. Every deployment now gets a local run on workerd first.
+
+## Next
+
+- Real platform links and episodes for the LING8 show page
+- The shuyan.art creative sub-site
+- More tech-trend posts
+
+If there is something you want to talk through, [book a 30-minute intro call](/booking).

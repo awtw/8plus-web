@@ -1,0 +1,88 @@
+---
+title: "The year-end EOL calendar: .NET 8/9 and PostgreSQL 14 expire next week, Python 3.10 is already gone"
+date: "2026-11-05"
+summary: ".NET 8 and 9 reach end of support on November 10 and PostgreSQL 14 on November 12. Python 3.10 and Kubernetes 1.34 already expired in October, and PHP 8.2 follows on December 31. Official dates, what EOL actually costs, inventory commands, and the upgrade targets I recommend."
+slug: "eol-calendar-late-2026-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["operations", "upgrades", "EOL", "trends"]
+locale: "en"
+---
+
+# The year-end EOL calendar
+
+Q4 is always heavy on end-of-life dates, and this year they cluster tightly. [.NET 8 and .NET 9](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core) both reach end of support on **November 10**, and the final [PostgreSQL 14](https://www.postgresql.org/support/versioning/) release is scheduled for **November 12**. Looking back, [Python 3.10](https://peps.python.org/pep-0619/) stopped receiving support after its last release on October 1, and [Kubernetes 1.34](https://kubernetes.io/releases/) expired on October 27.
+
+EOL doesn't break anything on the day itself, which is exactly why it keeps getting pushed back. This post puts the dates in one place and explains why I don't think this round should be postponed.
+
+## 1. The dates
+
+| Component | End of support | Upgrade target |
+|-----------|----------------|----------------|
+| Python 3.10 | 2026-10-01 (final release 3.10.22) | 3.12 or 3.13 |
+| Kubernetes 1.34 | 2026-10-27 | 1.35 or later, on your provider's schedule |
+| .NET 8 (LTS), .NET 9 (STS) | 2026-11-10 | .NET 10 (LTS, supported until November 2028) |
+| PostgreSQL 14 | 2026-11-12 | 17 or 18 |
+| PHP 8.2 | 2026-12-31 | 8.4 or 8.5 |
+
+A few details:
+
+- .NET 9 is an STS release, but Microsoft now supports STS for 24 months, so it ends on the same day as .NET 8. The policy page notes that end dates line up with Patch Tuesday, the second Tuesday of the month.
+- The last PostgreSQL 14 release ships with the regular update on 11/12. PostgreSQL 19 RC2 lands the same day, with [GA planned for 11/19](https://www.postgresql.org/about/news/postgresql-19-rc-1-released-3409/), though the project says that date can slip.
+- PEP 619 now lists Python 3.10 as end-of-life: the branch is frozen and accepts no further changes.
+- The PHP 8.2 date comes from php.net's [8.2.35 announcement](https://www.php.net/archive/2026.php).
+
+## 2. The cost of EOL showed up this month
+
+The clearest example is PHP last month. On October 21 the project fixed two exploited remote code execution bugs (details in [this post](/blog/php-critical-rce-wordpress-kev-en)). Every branch from 8.2 up got a release; **8.1 and older got nothing from upstream**, leaving only distro or LTS-vendor backports.
+
+That's what EOL really means. Everything is fine until the day something breaks, and then "bump the patch version" is no longer an option. You're left with an emergency major upgrade or finding someone to backport for you, and a major upgrade is the last thing you want to do under attack.
+
+Two distinctions worth keeping in mind:
+
+- **Upstream EOL is not distro EOL.** Python or PostgreSQL installed from Ubuntu or RHEL packages may still get fixes from the distro, depending on its policy.
+- **Managed services run their own schedules.** Managed databases and managed Kubernetes often offer extended support, sometimes for an extra fee. I haven't checked every provider's policy, so go by your provider's notices.
+
+## 3. How to take inventory
+
+These are common commands; I haven't run them in your environment:
+
+```bash
+# Runtimes
+python3 --version
+dotnet --list-runtimes
+php -v
+kubectl version          # look at Server Version
+psql -c 'SHOW server_version;'
+
+# Versions pinned in your projects
+grep -rn '<TargetFramework' --include='*.csproj' .
+grep -rnE 'python-version|dotnet-version|php-version' .github/workflows/
+
+# Base images used by your Dockerfiles
+grep -rhE '^FROM ' --include='Dockerfile*' . | sort | uniq -c
+```
+
+What usually gets missed: CI runners, scheduled jobs, internal tools, and "that small service a colleague built three years ago." Production tends to have an owner. These don't.
+
+## 4. Upgrade notes
+
+- **.NET 8/9 to 10:** five days left. If you can't do everything, start with internet-facing services. Change `TargetFramework`, update packages, run the tests; this is usually the simplest of the bunch.
+- **PostgreSQL 14 to 17 or 18:** use `pg_upgrade` or dump and restore. I wouldn't move production to 19 the week it ships; wait for the first minor release or two. Going from 14 to 18 already gets you most of the benefit. Rehearse on a replica first and measure the downtime.
+- **Python 3.10 to 3.12/3.13:** check your dependencies' supported versions first. Once the interpreter stops getting fixes, libraries drop 3.10 too, and eventually you can't install their security updates either.
+- **Kubernetes 1.34:** on managed clusters, follow your provider's timeline, but don't wait for a forced upgrade. Upgrading yourself at least lets you pick the time.
+- **PHP 8.2:** under two months to go. Next sprint is a good slot.
+
+## 5. Checklist
+
+- [ ] Run the inventory across production, CI, container images and internal tools
+- [ ] Handle internet-facing .NET 8/9 services this week
+- [ ] Set a date for the PostgreSQL 14 upgrade and rehearse it on a replica
+- [ ] Check your managed providers' extended-support terms and pricing
+- [ ] Schedule Python 3.10 and PHP 8.2 into the next two sprints
+- [ ] Pin versions in your repos (`.python-version`, `global.json`, `engines`) so they can be checked automatically
+- [ ] Put every component's EOL date on the team calendar with a reminder one quarter ahead
+
+I've long thought **EOL management is one of the highest-return habits in operations**. The dates are published years in advance and can be scheduled like anything else, yet they're routinely left until something goes wrong. If you want version inventory and upgrades on a regular cadence, [book a 30-minute intro call](/booking).

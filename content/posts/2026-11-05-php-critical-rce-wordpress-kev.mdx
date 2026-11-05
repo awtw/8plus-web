@@ -1,0 +1,90 @@
+---
+title: "PHP 兩個 9.2 分 RCE 已遭利用，WordPress 核心也進了 KEV：還有 PHP 的團隊這週該做的事"
+date: "2026-11-05"
+summary: "PHP 在 10/21 修補兩個未經驗證即可遠端執行程式碼的漏洞，10/26 被 CISA 列入已遭利用清單；WordPress 7.1.4 修補的升級流程 RCE 也在 11/03 進了 KEV。整理影響範圍、檢查方式、目前還不清楚的地方，以及一份可以直接照做的清單。"
+slug: "php-critical-rce-wordpress-kev"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["資安", "PHP", "WordPress", "升級", "趨勢"]
+locale: "zh-TW"
+---
+
+# PHP 與 WordPress 的兩週 KEV 連發
+
+10 月 21 日，PHP 官方發布[緊急安全公告](https://www.php.net/archive/2026.php#2026-10-21-5)，修補兩個**未經驗證即可遠端執行程式碼**的漏洞：[CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) 與 [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp)，CVSS v4.0 都是 9.2。五天後，CISA 把兩者加進 [Known Exploited Vulnerabilities（KEV）目錄](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)，代表已經有實際攻擊。10 月 28 日 WordPress 發布 [7.1.4 安全更新](https://wordpress.org/news/2026/10/wordpress-7-1-4/)，其中的升級流程 RCE（[CVE-2026-119977](https://nvd.nist.gov/vuln/detail/CVE-2026-119977)）也在 11 月 3 日進了 KEV。
+
+很多團隊會說「我們不是 PHP 公司」。但我在客戶那邊最常看到的是：產品用 Node 或 Go 寫，官網、部落格、活動頁卻是一台 WordPress；或是某個早期的 Laravel 後台、phpMyAdmin 還開著。**最容易出事的，往往是大家忘記還在跑的那台。**
+
+## 一、到底發生什麼事
+
+**PHP 本身（10/20–10/26）**
+
+- 10/20 官方[預告](https://www.php.net/archive/2026.php)隔天 14:00 UTC 會發布修補，並說明兩個漏洞都是 CVSS v4.0 9.2。
+- 10/21 發布 **8.5.12、8.4.27、8.3.36、8.2.35**。兩個漏洞分別是記憶體不足（OOM）處理中斷時造成的狀態損壞，以及請求結束後殘留的內部狀態被下一個請求誤用。
+- 官方說明影響**所有對外服務 HTTP 請求的 PHP**：PHP-FPM、Apache mod_php、php-cgi、FrankenPHP、LiteSpeed 都算在內，其中 mod_php 風險最高。
+- **PHP 8.1 以前的版本官方不再修補**。安全團隊在 php-src 放了 7.4、8.0、8.1 的最小原始碼 backport 分支，但要不要、能不能用，得看你的發行版或 LTS 廠商。
+- 10/23 補了一則資訊性公告，建議在下一次例行更新前先關閉 `session.upload_progress`，並預告還有一個 CVE-2026-115560 的完整說明會跟著下一版釋出。
+- 10/26 CISA 將兩個 CVE 列入 KEV。
+
+**WordPress 核心（10/28–11/03）**
+
+- 7.1.4 一次修補 12 個安全問題，大部分是 stored XSS，最嚴重的是「升級流程的弱點，可能在升級期間導致遠端程式碼執行」。同一版也更新了內建的根憑證，原因是 [eMudhra 中繼 CA 事件](/blog/emudhra-ca-compromise-trust-store-check)。
+- NVD 上由 Wordfence 提交的紀錄寫明：4.7 到 7.1.3 都受影響，原因是完整套件升級時使用**可預測、可從網頁存取的暫存路徑**，CVSS 3.1 為 8.1。
+- 11/03 CISA 列入 KEV。依 WordPress.org 的[版本狀態 API](https://api.wordpress.org/core/stable-check/1.0/)，目前 7.1.4 是 latest，7.0.8、6.9.11、6.8.12 不再標為 insecure。
+
+**還有一個要一起看的 Linux kernel 漏洞**
+
+10/28 CISA 也把 [CVE-2026-46300](https://nvd.nist.gov/vuln/detail/CVE-2026-46300) 加入 KEV。這是 5 月就已經修補的 kernel 網路堆疊問題，本身需要本機權限（CVSS 7.8），但 KEV 的描述特別寫到：它可以**和上面兩個 PHP 漏洞串連，植入 PHP webshell 並以 root 執行指令**。換句話說，PHP 讓攻擊者進門，kernel 讓他拿到整台機器。
+
+## 二、誰受影響、怎麼檢查
+
+以下指令是通用寫法，我沒有在你的環境測過，請先在測試機上確認：
+
+```bash
+# 1. PHP 版本（CLI 與 FPM 可能不是同一個版本，兩個都看）
+php -v
+php-fpm -v 2>/dev/null
+
+# 2. 容器映像裡的 PHP
+docker run --rm <your-image> php -v
+
+# 3. WordPress 核心版本（有裝 WP-CLI 的話）
+wp core version
+
+# 4. 正在跑的 kernel；Debian/Ubuntu 若有這個檔案代表更新後還沒重開機
+uname -r
+ls /var/run/reboot-required 2>/dev/null
+```
+
+判斷標準很簡單：PHP 低於 8.5.12／8.4.27／8.3.36／8.2.35，或者還在 8.1 以前，就是受影響。透過發行版套件安裝的 PHP，版號可能不同，要看發行版自己的安全公告是否已包含這兩個 CVE。
+
+## 三、目前還不清楚的地方
+
+- **攻擊細節**：PHP 官方與 KEV 都沒有公開攻擊手法或規模，KEV 的勒索軟體使用欄位是「Unknown」。我不建議從「沒看到新聞」推論自己沒事。
+- **WordPress 舊分支**：7.1.4 公告寫 backport 到 4.7 的工作「仍在進行中」。我能確認的只有上面 API 列出的版本；更舊的分支請自行確認。
+- **升級本身的時間窗**：這個 RCE 發生在「升級期間」，而升級到 7.1.4 的過程跑的正是舊版的升級程式。我讀到的官方資料沒有針對這點給特別指引，Wordfence 的詳細頁面我也沒能讀到，所以確切的暫存路徑我無法確認。
+- **CVE-2026-115560**：完整說明要等 PHP 下一次例行更新。
+
+## 四、行動清單
+
+- [ ] 盤點所有跑 PHP 的地方：官網、部落格、內部後台、管理工具、舊專案的容器，不要只看主要產品
+- [ ] 升級到 8.5.12／8.4.27／8.3.36／8.2.35，或發行版已包含修補的套件版本
+- [ ] **重建容器映像並重啟所有 FPM worker**；只換套件不重啟，舊的行程還在記憶體裡
+- [ ] 8.1 以前：排定升級；短期內做不到就找發行版或 LTS 廠商的 backport。WordPress 的[公告](https://wordpress.org/news/2026/10/critical-php-security-release/)甚至引用英國 NCSC 的建議，考慮先把服務下線
+- [ ] 今天真的升不了，先在 `php.ini` 或 FPM pool 設定 `session.upload_progress.enabled = 0` 並重啟 worker（`ini_set()` 與 `.user.ini` 無效）。官方說得很清楚，這類緩解**不會讓系統變安全**，只是爭取時間
+- [ ] WordPress 升到 7.1.4（或該分支已修補的版本）。我自己的做法是挑低流量時段、先開維護模式，或改由部署流程直接替換檔案，縮短可被利用的時間窗
+- [ ] 套用發行版的 kernel 更新並**真的重開機**，確認 `uname -r` 是新版本
+- [ ] 檢查是否已被入侵：KEV 對這幾個 CVE 都標示需要鑑識分診。至少看一次網站目錄裡 10/20 之後新增或修改的 PHP 檔，例如 `find /var/www -type f -name '*.php' -newermt 2026-10-20`（未測試，路徑請依實際環境調整），並翻一下這段期間的存取記錄
+- [ ] 把 PHP 8.2 的升級排進行程：官方在 8.2.35 公告裡寫明 **2026 年 12 月 31 日 EOL**
+
+## 五、我的看法
+
+這兩週給我的提醒有兩個。
+
+第一，**KEV 是比 CVSS 分數更好用的優先順序**。小團隊不可能每個 CVE 都追，但「已經被利用」這個訊號值得你放下手邊的事。訂閱 KEV 的 RSS 或 JSON，每週看一次，成本很低。
+
+第二，**單一漏洞的分數會低估串連後的風險**。那個 kernel 漏洞 5 月就有修補，單看只是本機提權；但沒有固定重開機節奏的主機，到了 10 月就變成攻擊鏈的最後一塊。套件更新、重建映像、重開機，三件事要一起做才算數。
+
+如果你想盤點團隊裡「被忘記的 PHP」，或把修補與重開機排進固定的維運節奏，可以[預約 30 分鐘初談](/booking)。

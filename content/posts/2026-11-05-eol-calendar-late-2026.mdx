@@ -1,0 +1,88 @@
+---
+title: "年底 EOL 行事曆：.NET 8／9、PostgreSQL 14 下週到期，Python 3.10 已經停止支援"
+date: "2026-11-05"
+summary: ".NET 8 與 9 在 11/10、PostgreSQL 14 在 11/12 結束支援，Python 3.10 與 Kubernetes 1.34 在 10 月已經到期，PHP 8.2 則是 12/31。整理官方日期、EOL 的實際代價、盤點指令，以及我建議的升級目標。"
+slug: "eol-calendar-late-2026"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["維運", "升級", "EOL", "趨勢"]
+locale: "zh-TW"
+---
+
+# 年底 EOL 行事曆
+
+每年第四季都是 EOL 的高峰，今年特別集中：[.NET 8 與 .NET 9](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core) 在 **11 月 10 日**同一天結束支援，[PostgreSQL 14](https://www.postgresql.org/support/versioning/) 的最後一次更新排在 **11 月 12 日**。往回看，[Python 3.10](https://peps.python.org/pep-0619/) 在 10 月 1 日發布最後一版後已經停止支援，[Kubernetes 1.34](https://kubernetes.io/releases/) 也在 10 月 27 日到期。
+
+EOL 不會讓服務當天就壞掉，所以很容易被一路往後推。這篇把日期整理在一起，順便說明為什麼我認為這次不該再推。
+
+## 一、日期總表
+
+| 元件 | 結束支援 | 我建議的升級目標 |
+|------|---------|----------------------|
+| Python 3.10 | 2026-10-01（最後一版 3.10.22） | 3.12 或 3.13 |
+| Kubernetes 1.34 | 2026-10-27 | 1.35 以上，依雲端供應商排程 |
+| .NET 8（LTS）、.NET 9（STS） | 2026-11-10 | .NET 10（LTS，支援到 2028 年 11 月） |
+| PostgreSQL 14 | 2026-11-12 | 17 或 18 |
+| PHP 8.2 | 2026-12-31 | 8.4 或 8.5 |
+
+幾個細節：
+
+- .NET 9 是 STS，但微軟已經把 STS 的支援期改成 24 個月，所以它和 .NET 8 同一天到期。官方說明結束日對齊每月第二個星期二的 Patch Tuesday。
+- PostgreSQL 14 的最後一版會和 11/12 的例行更新一起發布；同一天 PostgreSQL 19 釋出 RC2，[正式版預計 11/19](https://www.postgresql.org/about/news/postgresql-19-rc-1-released-3409/)，但官方也說如果有問題可能延後。
+- Python 3.10 在 PEP 619 裡已經標示為 end-of-life，程式碼凍結，不再接受任何修正。
+- PHP 8.2 的日期來自 php.net 在 [8.2.35 的公告](https://www.php.net/archive/2026.php)。
+
+## 二、EOL 的代價，這個月就看得到
+
+最直接的例子是上個月的 PHP。10 月 21 日官方修補了兩個已遭利用的遠端程式碼執行漏洞（詳見[這篇](/blog/php-critical-rce-wordpress-kev)），8.2 以上都有新版，**8.1 以前則官方不再修補**，只能靠發行版或 LTS 廠商的 backport。
+
+這就是 EOL 的真正意思：平常一切正常，等到真的出事那天，你沒有「升一個小版本」這個選項，只剩「緊急做一次大版本升級」或「找人幫你 backport」。而大版本升級最不適合在被攻擊的壓力下做。
+
+另外要分清楚兩件事：
+
+- **上游 EOL 不等於發行版 EOL**。透過 Ubuntu、RHEL 套件安裝的 Python 或 PostgreSQL，可能還有發行版的修補，要看各自的支援政策。
+- **託管服務有自己的時程**。雲端的託管資料庫、託管 Kubernetes 常有延長支援，有些要另外收費。我沒有逐一確認各家的政策，請以你的供應商公告為準。
+
+## 三、怎麼盤點
+
+以下指令是常見寫法，我沒有在你的環境測過：
+
+```bash
+# 執行環境
+python3 --version
+dotnet --list-runtimes
+php -v
+kubectl version          # 看 Server Version
+psql -c 'SHOW server_version;'
+
+# 專案裡寫死的版本
+grep -rn '<TargetFramework' --include='*.csproj' .
+grep -rnE 'python-version|dotnet-version|php-version' .github/workflows/
+
+# Dockerfile 用了哪些 base image
+grep -rhE '^FROM ' --include='Dockerfile*' . | sort | uniq -c
+```
+
+盤點時最常漏掉的是 CI runner、排程任務、內部工具，以及「某個同事三年前做的小服務」。正式環境通常有人顧，這些沒有。
+
+## 四、各項升級的建議
+
+- **.NET 8／9 → 10**：只剩五天，來不及全部升完就先處理對外的服務。改 `TargetFramework`、更新套件、跑完測試，通常是最單純的一個。
+- **PostgreSQL 14 → 17 或 18**：用 `pg_upgrade` 或 dump／restore。我不建議正式環境在 19 剛發布就直接跳過去，等第一、二個小版本再說；從 14 升到 18 已經能拿到大部分好處。升級前務必在複本上演練一次，量好停機時間。
+- **Python 3.10 → 3.12／3.13**：先確認相依套件的支援範圍。直譯器不再修補之後，相依套件也會陸續停止支援 3.10，到時連套件的安全更新都裝不上。
+- **Kubernetes 1.34**：託管叢集照供應商的升級時程走，但不要等它強制升級；自己升至少能選時間。
+- **PHP 8.2**：還有不到兩個月，現在排進下個 sprint 剛好。
+
+## 五、清單
+
+- [ ] 用上面的指令盤點正式環境、CI、容器映像、內部工具的版本
+- [ ] 本週內處理對外的 .NET 8／9 服務
+- [ ] PostgreSQL 14 排定升級日期，先在複本上演練
+- [ ] 確認託管服務的延長支援政策與費用
+- [ ] Python 3.10、PHP 8.2 排進接下來兩個 sprint
+- [ ] 在專案裡固定版本（`.python-version`、`global.json`、`engines`），讓版本變成可檢查的規則
+- [ ] 把各元件的 EOL 日期寫進團隊行事曆，提前一季提醒
+
+我一直認為，**EOL 管理是維運裡投資報酬率最高的事之一**：日期幾年前就公布了，完全可以預先排程，卻常常拖到出事才處理。如果你想把版本盤點和升級排成固定節奏，可以[預約 30 分鐘初談](/booking)。

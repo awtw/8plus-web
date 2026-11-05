@@ -1,0 +1,71 @@
+---
+title: "Thoughtworks 技術雷達第 35 期：agent 變多之後，瓶頸在審查與交付管線"
+date: "2026-11-05"
+summary: "Thoughtworks 11 月 4 日更新的技術雷達第 35 期，把「同時跑更多 agent」列為主題之一，並直接點名審查量能與交付管線會先塞住。從交付的角度整理幾個值得注意的 blip：路徑對應、風險分級審查、人在迴路的表演、Stacked PR 與產出量指標。"
+slug: "thoughtworks-radar-35-delivery"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["技術雷達", "Code Review", "交付流程", "趨勢"]
+locale: "zh-TW"
+---
+
+# 技術雷達第 35 期：瓶頸在審查與交付管線
+
+Thoughtworks 的 [Technology Radar 第 35 期](https://www.thoughtworks.com/radar)已經上線，各個 blip 頁面標示的發布日期是 2026 年 11 月 4 日（[英文 PDF](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2026/11/tr_technology_radar_vol_35_en.pdf)）。技術雷達一年兩期，是 Thoughtworks 根據自家顧問專案經驗整理出來的工具、技術與平台觀察。
+
+這期四個主題裡有三個跟 AI 直接相關，這不意外。我比較在意的是其中一個主題「Putting more agents to work」講的不是 agent 有多厲害，而是**agent 變多以後，人的審查量能和交付管線會先撐不住**。這篇只從工程交付的角度整理，不談模型選擇與 AI 基礎設施。
+
+## 一、這期在說什麼
+
+四個主題分別是：
+
+1. **Harness engineering at scale**：圍繞 agent 的記憶、context、回饋迴圈與護欄，正在變成一門需要持續維護的工程。
+2. **Beyond frontier models**：預設用最強的閉源模型不再是理所當然，open-weight 與本地模型在很多任務上已經夠用。
+3. **Putting more agents to work**：開發者同時跑多個 agent session，或把較長的任務交給 agent 過夜執行。
+4. **Constructing the AI factory**：AI 的成本最後取決於基礎設施，Kubernetes 正在成為底層平台。
+
+第三個主題的重點，雷達寫得很直接：當每個開發者都同時跑好幾個 agent，**注意力和審查量能就成了限制**；如果審查跟不上，監督就會變成「human-in-the-loop theater」。而當好幾個開發者都這樣做，變更進入管線的速度可能超過管線能處理的速度。雷達的建議是：**加開 session 之前，先確認你的審查與交付流程吃得下。**
+
+## 二、跟交付直接相關的幾個 blip
+
+Techniques 象限這期有 45 個 blip，下面是我認為跟「專案能不能驗收、能不能維護」最有關的幾個：
+
+- **Path-to-production mapping（Adopt）**：2022 年就在 Adopt，這期重寫了說明。做法是整個團隊一起把從開發者電腦到正式環境的每一步畫出來，標出延遲、風險與不一致的地方。雷達的理由是 agent 讓程式碼產出變快，會把瓶頸暴露在交付流程的其他環節。
+- **Risk-tiered human oversight（Trial）**：依照變更可能造成的損害決定審查深度。最高風險、最難回復的變更留給人做；中度風險的由人審查；低風險的可以讓 agent 透過 CI 自動合併。判斷方式包括在程式碼庫劃出「敏感區域」加嚴審查，以及用 LLM 分類器評估影響（雷達也提醒分類器會出錯）。
+- **Human-in-the-loop theater（Caution）**：流程上有人簽核，但簽核的人實際上無法判斷自己核准的東西，結果變成沒人真正負責。雷達的建議是分流：人只審自己真的能判斷的，其他的靠 mutation testing、property-based testing、形式化模型等方式把關。
+- **Mutation testing（從 Trial 升到 Adopt）**：故意在程式碼裡放小錯誤，看測試會不會失敗。AI 產生大量測試時，覆蓋率數字很容易虛胖，這是檢查測試是否真的有在驗證邏輯的方法。完整執行很慢，雷達建議只針對特定套件或最近改動的程式碼跑。
+- **Stacked pull requests（Caution）**：把大改動切成一串互相依賴的小 PR。雷達承認小 PR 比較好審，GitHub 也有原生支援了，但放在 Caution 的理由是：它常常是在補「事前沒拆好工作」的洞，甚至變成一次塞進巨大變更的藉口。
+- **Coding throughput as a measure of productivity（Caution）**：4 月那期就有，這期把警告延伸到「AI 產生程式碼占比」「token 用量」這類採用指標。雷達認為它們只能說明有在用，不能代表生產力，建議回到 DORA 指標與協作品質，並提出「第一次就能用的比例」（first-pass acceptance rate）作為領先指標。
+
+## 三、要打折看的地方
+
+- **這是一家顧問公司的觀點，不是調查研究。**雷達反映的是 Thoughtworks 內部技術顧問委員會對自家專案的判斷，沒有樣本數，也沒有量化數據。適合拿來校準方向，不適合拿來當「業界標準」引用。
+- **很多 blip 在 Trial 或 Assess**，代表他們覺得值得試，不代表已經證明有效。例如 risk-tiered oversight 裡用 LLM 判斷風險這件事，雷達自己就說會出錯。
+- **工具名稱變動很快。**雷達提到的一些 agent 工具，半年後可能已經換了樣子；做法比工具更值得記。
+
+## 四、對團隊與外包專案的意義
+
+我自己讀完的結論是：**這期雷達把「交付」重新放回中心。**寫程式的成本在下降，但從 PR 到上線之間的每一步，審查、測試、部署、回滾，成本沒有跟著下降，反而因為量變多而更容易塞車。
+
+對接案或外包來說，這有幾個直接影響：
+
+- **「人工 review 過」不再是足夠的交付保證。**如果審查者其實看不完，那個簽核只是 theater。合約與驗收條件要寫清楚用什麼方式驗證，而不只是「有人看過」。
+- **用產出量報進度會誤導雙方。**PR 數、程式碼行數、AI 產生比例都很好看，但甲方真正在乎的是能不能穩定上線。報告裡放前置時間、變更失敗率這類指標，比較不會吵架。
+- **拆工作是交付方的責任。**雷達對 Stacked PR 的提醒很適合外包情境：如果需求沒拆好，靠工具把一個大改動切成十個小 PR，審查方一樣看不懂整體。
+
+這跟我前幾篇寫的方向一致：[AI 程式碼的驗證缺口](/blog/ai-code-verification-gap)在合併之前，而這期雷達補上了「該怎麼分流」的具體做法。
+
+## 五、可以直接拿去用的清單
+
+1. **畫一次 path-to-production。**找一個下午，整個團隊（包含甲方窗口）把從 commit 到正式環境的每一步寫在白板上，標出每一步平均等多久、誰負責、出錯怎麼回復。
+2. **定義敏感區域。**在 repo 裡用 CODEOWNERS 或文件標出金流、權限、資料刪除、對外 API 等區域，這些地方的變更一律要有人實際審。
+3. **分三級審查。**高風險人寫、中風險人審、低風險 CI 全綠就可以合併。把分級規則寫進 [Code Review Checklist](/blog/code-review-checklist) 或團隊的 PR 範本。
+4. **在核心模組跑 mutation testing。**不用全專案，先挑最關鍵的一兩個模組，看看現有測試有多少「永遠會過」。
+5. **交付報告改用 DORA 指標。**前置時間、部署頻率、變更失敗率、復原時間，加上第一次就能用的比例，取代 PR 數與 AI 產出占比。
+6. **加開 agent 之前先問一句：**現在的審查和管線，吃得下兩倍的變更量嗎？
+
+---
+
+技術雷達不是聖經，但這期把一個很多團隊已經感覺到、卻還沒說出口的問題講清楚了：產出變快之後，交付流程本身就是產品的一部分。如果你想替團隊或外包專案盤點審查與交付流程，歡迎[預約 30 分鐘初談](/booking)。

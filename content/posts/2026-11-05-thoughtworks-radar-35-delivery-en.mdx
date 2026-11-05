@@ -1,0 +1,71 @@
+---
+title: "Thoughtworks Technology Radar Vol. 35: with more agents, the bottleneck moves to review and the pipeline"
+date: "2026-11-05"
+summary: "Volume 35 of the Thoughtworks Technology Radar, dated November 4, makes \"putting more agents to work\" one of its themes and says plainly that review capacity and delivery pipelines are what jam first. A delivery-focused read of the blips that matter: path-to-production mapping, risk-tiered oversight, human-in-the-loop theater, stacked PRs and throughput metrics."
+slug: "thoughtworks-radar-35-delivery-en"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["Technology Radar", "code review", "delivery process", "trends"]
+locale: "en"
+---
+
+# Technology Radar Vol. 35: the bottleneck is review and the pipeline
+
+[Volume 35 of the Thoughtworks Technology Radar](https://www.thoughtworks.com/radar) is out, with its blip pages dated November 4, 2026 ([English PDF](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2026/11/tr_technology_radar_vol_35_en.pdf)). The Radar comes out twice a year and captures what Thoughtworks sees across its own client work: tools, techniques, platforms and frameworks worth a look.
+
+Three of the four themes in this edition are about AI, which is no surprise. What caught my attention is that one of them, "Putting more agents to work", isn't about how capable agents are. It's about what breaks first when you run more of them: **human review capacity and the delivery pipeline**. This post reads the Radar from a delivery angle only. I'll leave model choice and AI infrastructure to others.
+
+## 1. What this edition says
+
+The four themes:
+
+1. **Harness engineering at scale**: the memory, context, feedback loops and guardrails around an agent are becoming a discipline that needs ongoing ownership.
+2. **Beyond frontier models**: defaulting to the most capable proprietary model is no longer automatic. Open-weight and local models are good enough for many tasks.
+3. **Putting more agents to work**: developers run several agent sessions in parallel, or hand longer tasks to agents that run overnight.
+4. **Constructing the AI factory**: AI cost comes down to infrastructure, and Kubernetes is becoming the platform underneath.
+
+On the third theme, the Radar is blunt. When each developer runs several agents, **attention and review capacity become the constraint**, and if review can't keep up, oversight turns into "human-in-the-loop theater". When several developers do this at once, changes can reach the pipeline faster than it can process them. The advice: **before adding more sessions, check whether your review and delivery process can absorb the extra work.**
+
+## 2. The blips that matter for delivery
+
+The Techniques quadrant has 45 blips this time. These are the ones I think bear most directly on whether a project can be accepted and maintained:
+
+- **Path-to-production mapping (Adopt)**: in Adopt since 2022, with a rewritten description this time. The whole team maps every step from a developer's machine to production and marks delays, risks and inconsistencies. The Radar's reasoning: agents speed up code output, which exposes bottlenecks elsewhere in delivery.
+- **Risk-tiered human oversight (Trial)**: match review depth to the damage a change could do. The riskiest, hardest-to-reverse changes stay with people; moderate-risk changes get human review; low-risk changes can be merged by agents through CI. Ways to decide include marking sensitive zones in the codebase for stricter review and using LLM classifiers to assess impact, which the Radar notes can get it wrong.
+- **Human-in-the-loop theater (Caution)**: a person signs off, but can't realistically judge what they're approving, so nobody really owns the decision. The Radar suggests triage instead: humans review what they can actually judge, and the rest is checked through mutation testing, property-based testing, formal models and similar techniques.
+- **Mutation testing (moved from Trial to Adopt)**: inject small deliberate bugs and see whether any test fails. When AI generates lots of tests, coverage numbers inflate easily, and this shows whether the tests check logic at all. Full runs are slow, so the Radar suggests targeting specific packages or recently changed code.
+- **Stacked pull requests (Caution)**: split a big change into a chain of dependent small PRs. The Radar grants that small PRs are easier to review and that GitHub now supports this natively. It sits in Caution because it often papers over poor upfront decomposition, and can become a pretext for shipping one enormous change.
+- **Coding throughput as a measure of productivity (Caution)**: first blipped in April, now extended to adoption metrics like the share of AI-generated code and token consumption. The Radar calls these poor proxies for productivity, points back to DORA metrics and collaboration quality, and suggests first-pass acceptance rate (how often AI output is usable with minimal rework) as a leading indicator.
+
+## 3. What to discount
+
+- **This is one consultancy's view, not a survey.** The Radar reflects the judgment of Thoughtworks' technology advisory group about its own projects. There is no sample size and no quantitative data. Use it to calibrate direction, not to cite as an industry standard.
+- **Many blips sit in Trial or Assess.** That means "worth trying", not "proven". The Radar itself says LLM-based risk classification makes mistakes.
+- **Tool names churn fast.** Some of the agent tools mentioned may look different in six months. The practices are worth more than the tools.
+
+## 4. What it means for teams and outsourced work
+
+My takeaway: **this edition puts delivery back at the center.** Writing code is getting cheaper, but every step from pull request to production (review, testing, deployment, rollback) hasn't gotten cheaper, and with more volume it jams more easily.
+
+For contract and outsourced work, a few direct consequences:
+
+- **"A human reviewed it" is no longer enough of a delivery guarantee.** If the reviewer can't actually get through it, the sign-off is theater. Contracts and acceptance criteria should say how changes are verified, not just that someone looked.
+- **Reporting progress by output misleads both sides.** PR counts, lines of code and AI-generated share look good, but what the client cares about is shipping reliably. Lead time and change failure rate make for fewer arguments.
+- **Breaking down the work is the delivery team's job.** The Radar's warning on stacked PRs fits outsourcing well: if the requirement wasn't decomposed, slicing one big change into ten small PRs still leaves the reviewer unable to see the whole.
+
+This fits what I wrote recently about [the AI code verification gap](/blog/ai-code-verification-gap-en) sitting before the merge. This Radar adds concrete ways to triage it.
+
+## 5. A checklist you can use now
+
+1. **Map your path to production once.** Take an afternoon with the whole team, including the client's point of contact, and write every step from commit to production on a whiteboard: how long each step waits, who owns it, how you recover when it fails.
+2. **Define sensitive zones.** Use CODEOWNERS or docs to mark payments, permissions, data deletion and external APIs. Changes there always get a real human review.
+3. **Use three review tiers.** High risk: a person writes it. Medium: a person reviews it. Low: merge when CI is green. Put the rules in your PR template or a [code review checklist](/blog/code-review-checklist-en).
+4. **Run mutation testing on core modules.** Not the whole project. Pick the one or two most critical modules and see how many of your tests would pass no matter what.
+5. **Report with DORA metrics.** Lead time, deployment frequency, change failure rate and time to restore, plus first-pass acceptance rate, instead of PR counts and AI share.
+6. **Before adding more agents, ask one question:** can our current review and pipeline handle twice the changes?
+
+---
+
+The Radar isn't scripture, but this edition names a problem many teams already feel and haven't said out loud: once output speeds up, the delivery process itself is part of the product. If you want to take stock of review and delivery for your team or an outsourced project, [book a 30-minute intro call](/booking).

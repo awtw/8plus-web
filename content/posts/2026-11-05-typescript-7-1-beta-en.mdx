@@ -1,0 +1,69 @@
+---
+title: "TypeScript 7.1 Beta: the API is back, and Vue, Astro and MDX projects finally have a path"
+date: "2026-11-05"
+summary: "TypeScript 7.1 Beta landed on October 20 with the programmatic API that 7.0 shipped without, plus content mappers that let Vue, Svelte, Astro and MDX plug into the native compiler. What was announced, what is still open, and how teams stuck on TypeScript 6 or older should plan the upgrade."
+slug: "typescript-7-1-beta-en"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["TypeScript", "tooling", "upgrades", "trends"]
+locale: "en"
+---
+
+# TypeScript 7.1 Beta
+
+On October 20, Daniel Rosenwasser published [Announcing TypeScript 7.1 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/) on the TypeScript blog. If you remember 7.0 only as "the Go rewrite that is much faster," 7.1 deserves a closer look: **it fills the exact gap that kept many teams from upgrading to 7.0.**
+
+Some background. The [TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) on July 8 said plainly that 7.0 ships without a programmatic API. Vue, MDX, Astro and Svelte projects, which rely on tools like Volar embedding TypeScript, were told to stay on 6.0 for now. typescript-eslint also still depended on the 6.0 API, which is why the team published the `@typescript/typescript6` compatibility package. In other words, 7.0 was fast, but a sizable share of frontend projects could not use it.
+
+## 1. What 7.1 Beta brings
+
+You install it with `npm install -D typescript@beta`. From the post, four things stand out:
+
+- **A new API.** It is split into entry points: `typescript/sync` and `typescript/async` (compiler clients), `typescript/fs` (request-scoped file systems), and the `typescript/ast` family (syntax nodes, type guards, factories). `API`, `Program` and `Snapshot` are `Disposable`, so you use `using` or dispose them manually, otherwise memory leaks on the Go side. A `Snapshot` can derive new state through `snapshot.update()` instead of rebuilding everything.
+- **Content mappers.** You register them in a `contentMappers` array in `tsconfig.json`, each with `package`, `extensions` and `options`. The post says Volar's model becomes a first-class citizen in 7.1, and lists implementations or prototypes for Astro, CSS Modules, Ember, MDX, Svelte and Vue.
+- **Language features.** Import attributes in ambient module declarations (`"css"`, `"text"`, `"bytes"`), source phase imports (`import source x from "..."`, mainly for WebAssembly), and `--target es2026` / `--lib es2026` as stable options.
+- **Performance.** Measured with the default of 4 type-checker threads and `--noEmit`, the post lists 7.0-to-7.1-Beta changes such as mui-docs going from 22.2s to 11.9s and vscode from 21.6s to 17.7s, with memory use dropping as well.
+
+## 2. What was not said, or is still open
+
+- **The API is not labeled stable.** The post says 7.1 "ships a new API," and in the same breath says the team is still working with partners on ergonomics and performance and will publish more examples. I would treat it as "try it, do not bet on it."
+- **TypeScript ships no content mappers of its own.** The ones listed are third-party projects, and the Vue package in the example is not on npm yet. When Astro or MDX get official versions depends on those communities.
+- **A content mapper is effectively an arbitrary executable.** The post describes it that way itself, which is why the CLI needs `tsc --runExternalCode` and VS Code requires both workspace trust and content mapper permissions. That is a new consideration for CI and supply-chain security.
+- **No dates.** The RC is expected in "about a month," with the final release shortly after.
+- **Behavior changes.** Changes to how DOM types are generated can affect type-checking, and distributive type parameters in conditional types are checked more strictly, so some code that compiled before will now error.
+
+## 3. What it means for technology choices
+
+The signal I see: **the TypeScript 7 transition is moving from "does the compiler work" to "can the ecosystem plug in."** 7.0 solved speed; 7.1 starts on integration. For technology choices that means two things.
+
+**1. Do not judge readiness by `tsc` alone.** The TypeScript version a project can actually run is set by the slowest tool to catch up: editor integration, linters, framework language services, code generators. When you evaluate an upgrade, list every tool that uses TypeScript as a library. That is your real dependency list.
+
+**2. Single-file component formats should get cheaper to type-check.** Vue, Svelte, Astro and MDX have always paid for an extra translation layer. If frameworks adopt content mappers, that layer becomes a standard slot instead of each project maintaining its own integration. Until the frameworks ship official support, though, this is a direction, not a result.
+
+## 4. Practical advice
+
+### If you are already on TypeScript 7.0
+
+- Try `typescript@beta` on a branch and look at two things: whether the behavior changes produce new errors, and how much build time and memory actually improve. The official numbers come from large open-source codebases; measure your own.
+
+### If Vue, Astro or MDX is keeping you on 6.0
+
+- **Do not switch yet.** Watch for your framework's language tooling to announce content mapper support, then schedule the upgrade.
+- What you can do now: remove the `tsconfig` options that 6.0 marks as deprecated, so the move to 7 is smaller when it comes.
+
+### If you build internal tools on the TypeScript API
+
+- The new API is a different design, not the old one on a new engine. If you maintain codemods or code generators, start reading it now, but hold the rewrite until it is declared stable.
+- If you use content mappers in CI, `--runExternalCode` means `tsc` runs third-party code. Pin and review those packages like any other dependency.
+
+## 5. What it means for this site
+
+To be honest, 8plus is behind here: it is pinned to TypeScript 5.4.5 and type-checks with `tsc --noEmit`. The posts are MDX, but velite compiles them and `tsc` never checks them, so content mappers are not a direct need for this site.
+
+The real work is to move from 5.4 to 6.0 first, clear the deprecated options, confirm the Next.js and ESLint toolchain is happy, and only then evaluate 7.x. When you are two major versions behind, the safest plan is one step at a time.
+
+---
+
+A faster compiler is good news, but the speed a team actually feels depends on the slowest link in its toolchain. 7.1 gets that link moving. It belongs in next quarter's planning; there is no need to be in the first wave. If you want to map your project's TypeScript toolchain and plan a safe upgrade path, [book a 30-minute intro call](/booking).

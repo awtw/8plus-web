@@ -1,0 +1,74 @@
+---
+title: "GitHub Enterprise now includes Copilot: no seat charge, but usage is billed from the first request"
+date: "2026-11-05"
+summary: "On October 28, GitHub introduced a billing model called Copilot access: users with a GitHub Enterprise Cloud license pay no Copilot seat charge, but there is no included allowance, so usage is billed from the first request. The rules, what keeps working without budget, and the math to do before deciding whether to switch."
+slug: "github-copilot-access-usage-billing-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["GitHub Copilot", "AI costs", "AI governance", "trends"]
+locale: "en"
+---
+
+# GitHub Enterprise now includes Copilot: no seat charge, usage billed from the first request
+
+On October 28, GitHub announced in its changelog that [GitHub Enterprise now includes access to GitHub Copilot](https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot), and the [official docs](https://docs.github.com/copilot/get-started/whats-changing-with-github-enterprise-and-copilot) describe the new model, called "Copilot access." The headline reads like "Copilot is now free." What actually changes is the billing logic: from **per head** to **per use**.
+
+For teams already on Copilot, and especially those letting agents do code review or run tasks in the cloud, this changes how the budget is built and who owns it.
+
+## 1. The rules
+
+Based on the changelog and the docs:
+
+1. **Seat charge.** Users with a GitHub Enterprise Cloud (GHEC) license have a $0 Copilot seat charge. Users without one can get **Copilot Standalone** at $10 per user per month.
+2. **No included allowance.** Usage is metered from the first request against the enterprise budget. For comparison, Copilot Business is $19 per user per month with 1,900 AI credits, and Copilot Enterprise is $39 with 3,900 AI credits, both pooled across the enterprise.
+3. **Same features as Copilot Enterprise.** Feature and model eligibility match Copilot Enterprise, subject to admin policies and spending controls.
+4. **An empty budget does not cut people off.** Code completion and next edit suggestions keep working without budget. Copilot Chat, Copilot code review and Copilot in the cloud need available budget. The changelog says an exhausted budget "never removes access"; the seat stays.
+5. **No mixing.** One enterprise cannot combine Copilot access with Business or Enterprise seats, not even by splitting them across organizations. GHEC users and Standalone users can coexist.
+6. **No automatic rollout.** Enterprise owners still have to assign seats to members, teams or organizations, including people who already hold a GHEC license.
+
+Eligibility is narrow for now: **enterprises that work with a GitHub or Microsoft account team** can sign up from October 28. Self-serve customers cannot yet; GitHub says access will open in stages, with dates shared "in the coming weeks." GitHub Free, Team and self-service GHEC trials are not eligible. Transitions take effect on the first day of a month, and Copilot Business and Enterprise remain on sale, so nothing changes if you do not opt in.
+
+## 2. What is not spelled out
+
+- **The unit price lives elsewhere.** Neither the changelog nor this docs page says what an AI credit costs; they point to the models and pricing reference. To do the math you need those per-model rates.
+- **The budget amount is yours to set.** GitHub gives no recommended figure and no default cap.
+- **No date for self-serve.** Smaller teams usually buy self-serve, so for now they wait.
+
+## 3. How I read it
+
+### Copilot cost now tracks agent work, not headcount
+
+Budgeting for Copilot used to be simple: seats times price. In the new model the light features such as completions work without budget, and the spend comes from Chat, code review and cloud agents. In other words, **cost grows with how much work you hand to agents**. Once a team sends every PR through Copilot code review and lets cloud agents pick up issues, the cost curve moves with it.
+
+### Whether it pays off depends on usage
+
+- Many people who mostly use completions and occasionally ask Chat: dropping the seat charge will likely save money.
+- A smaller group of heavy users running lots of agent work: the pooled credits in Business or Enterprise used to absorb part of that. Under Copilot access, all of it is billed from the first request, so the switch may not pay.
+
+GitHub's docs recommend estimating first: add up current license and overage charges, estimate the cost of all usage with no included allowance, add Standalone users times $10, and compare the two totals.
+
+### The budget becomes a governance control
+
+"An empty budget does not cut access, but Chat, code review and cloud agents stop" effectively turns the budget into a switch: the amount you set decides how much work agents can do each month. That is not just a finance call. It is an engineering management decision.
+
+## 4. Checklist before evaluating or switching
+
+1. **Pull your current usage.** Use the Copilot usage metrics API to see actual usage, broken down by user, client and model. On [November 3, GitHub started breaking out BYOK and enterprise custom model usage](https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api), so watch which usage does not actually flow through GitHub billing.
+2. **Follow the official estimation steps,** paying particular attention to the usage your pooled credits currently absorb. After a switch, all of it becomes real spend.
+3. **Leave room for growth.** If you plan to widen agent use next year, today's usage is not your ceiling.
+4. **Keep the AI credits paid usage policy enabled in AI Controls.** The docs say it is on by default; if it is turned off, users cannot use features that consume credits.
+5. **Check your firewall allowlist.** Copilot access uses the Copilot Enterprise endpoint. If your allowlist only has `*.business.githubcopilot.com`, add `*.enterprise.githubcopilot.com`.
+6. **Manage models alongside the budget.** The [Copilot model policy API went GA on October 19](https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams), letting you control available models at the enterprise, team and organization levels. Who gets the expensive models shows up directly on the bill.
+7. **Confirm the effective date with your account team.** Transitions start on the first of a month, so align it with your billing and internal budget cycles.
+
+## 5. Advice for smaller teams
+
+Most of the smaller teams I work with buy Copilot Business self-serve, so this model is not available to them yet. The direction is clear, though: AI developer tools are moving from buying seats to buying usage. Rather than waiting for self-serve access to do the math, start on two things now: **know which work each team actually hands to agents, and what that work is worth.**
+
+It ties back to my post on how [AI agents produce more code but not more software](/blog/ai-agents-more-code-not-more-software-en): more agent activity does not mean more delivery. Usage-based billing puts that gap straight onto the invoice.
+
+---
+
+A $0 seat is good news, but no allowance and billing from the first request means AI spend now needs to be managed the way cloud spend is. If you want help estimating your team's Copilot usage and budget, or deciding which work is worth handing to agents, [book a 30-minute intro call](/booking).

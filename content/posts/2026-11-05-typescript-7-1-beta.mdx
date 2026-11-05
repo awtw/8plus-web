@@ -1,0 +1,69 @@
+---
+title: "TypeScript 7.1 Beta：API 回來了，Vue、Astro、MDX 專案終於有路可走"
+date: "2026-11-05"
+summary: "10/20 TypeScript 7.1 Beta 發布，補上 7.0 缺席的程式化 API，並推出讓 Vue、Svelte、Astro、MDX 接上原生編譯器的 content mappers。整理官方說了什麼、還沒定案的部分，以及還卡在 TypeScript 6 或更舊版本的團隊怎麼排升級。"
+slug: "typescript-7-1-beta"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["TypeScript", "工具鏈", "升級", "趨勢"]
+locale: "zh-TW"
+---
+
+# TypeScript 7.1 Beta
+
+10 月 20 日，Daniel Rosenwasser 在 TypeScript 官方部落格發表 [Announcing TypeScript 7.1 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/)。如果你只記得 7.0 是「用 Go 重寫、快很多」的那一版，7.1 值得多看一眼：**它補上的正是 7.0 讓很多團隊升不上去的那塊。**
+
+回顧一下背景。7 月 8 日的 [TypeScript 7.0 公告](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)明講 7.0 不附程式化 API，Vue、MDX、Astro、Svelte 這類依賴 Volar 等工具嵌入 TypeScript 的專案，暫時要留在 6.0；typescript-eslint 也還靠 6.0 的 API，所以官方另外提供 `@typescript/typescript6` 相容套件。換句話說，7.0 很快，但有相當比例的前端專案用不了。
+
+## 一、7.1 Beta 帶來什麼
+
+安裝方式是 `npm install -D typescript@beta`。依官方文章，重點有四塊：
+
+- **新的 API。** 拆成幾個進入點：`typescript/sync`、`typescript/async`（編譯器客戶端）、`typescript/fs`（以請求為範圍的檔案系統）、`typescript/ast` 系列（語法節點、type guard、factory）。`API`、`Program`、`Snapshot` 都是 `Disposable`，要用 `using` 或手動釋放，否則 Go 那一側會漏記憶體。`Snapshot` 可以用 `snapshot.update()` 衍生新狀態，不必整個重建。
+- **Content mappers。** 在 `tsconfig.json` 的 `contentMappers` 陣列註冊，每一筆有 `package`、`extensions`、`options`。官方說 Volar 的模型在 7.1 成為一等公民，文中列出的實作或原型涵蓋 Astro、CSS Modules、Ember、MDX、Svelte、Vue。
+- **語言功能。** ambient module 支援 import attributes（`"css"`、`"text"`、`"bytes"`）、source phase imports（`import source x from "..."`，主要用在 WebAssembly）、`--target es2026` 與 `--lib es2026` 成為穩定選項。
+- **效能。** 以預設 4 條型別檢查執行緒、`--noEmit` 測量，官方列出 7.0 到 7.1 Beta 的變化，例如 mui-docs 從 22.2 秒到 11.9 秒、vscode 從 21.6 秒到 17.7 秒，記憶體也同步下降。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **API 沒有被標成穩定。** 文章只說「ships a new API」，同時提到還在和合作團隊確認 API 的易用性與效能、之後會補更多範例。我會把它當成「可以試、不要押」的狀態。
+- **TypeScript 沒有內建任何 content mapper。** 文中列的都是第三方專案，範例裡的 Vue 套件甚至「目前不在 npm 上」。Astro、MDX 社群什麼時候出正式版本，要看各自的時程。
+- **Content mapper 本質上是任意可執行程式。** 官方自己這樣形容，所以命令列要加 `tsc --runExternalCode` 才會執行，VS Code 裡也要同時授予 workspace trust 與 content mapper 權限。這對 CI 與供應鏈安全是新的考量點。
+- **沒有具體日期。** RC 預計「大約一個月後」，正式版「之後不久」。
+- **有行為變更。** DOM 型別產生方式的調整可能影響型別檢查；條件型別裡 distributive 型別參數的檢查變嚴格，有些原本能過的寫法會報錯。
+
+## 三、這對選型代表什麼
+
+我看到的訊號是：**TypeScript 7 的轉換期正在從「編譯器能不能用」移到「生態系能不能接」。** 7.0 解決了速度，7.1 開始解決整合。對選型來說，這代表兩件事：
+
+**1. 別只看 `tsc` 能不能跑。** 一個專案的 TypeScript 版本其實由最慢跟上的那個工具決定：編輯器整合、linter、框架的語言服務、程式碼產生器。評估升級時，列出每一個「把 TypeScript 當函式庫用」的工具，才是真正的相依清單。
+
+**2. 單檔元件格式的成本會下降。** Vue、Svelte、Astro、MDX 一直有「型別檢查要多一層工具轉譯」的額外成本。content mappers 若被各框架採用，這層成本會變成標準化的插槽，而不是各家自己維護一套 fork。不過在各框架正式支援前，這只是方向。
+
+## 四、實務建議
+
+### 已經在 TypeScript 7.0 的團隊
+
+- 在分支上試 `typescript@beta`，主要看兩件事：行為變更會不會讓型別檢查報錯、建置時間與記憶體實際改善多少。官方數字是大型開源專案量的，你的專案要自己量。
+
+### 因為 Vue、Astro、MDX 卡在 6.0 的團隊
+
+- **還不要急著切換。** 先追你用的框架語言工具有沒有宣布 content mapper 支援，再排升級。
+- 現在可以先做的：把 `tsconfig` 裡 6.0 標示為 deprecated 的選項清掉，未來升 7 時阻力會小很多。
+
+### 寫內部工具、用到 TypeScript API 的團隊
+
+- 新 API 是不同的設計，不是舊 API 換個實作。如果你有 codemod 或程式碼產生器，現在就可以開始讀新 API，但正式改寫等到它被標成穩定再做。
+- CI 裡如果要用 content mappers，`--runExternalCode` 等於讓 `tsc` 執行第三方程式碼，要跟其他依賴一樣鎖版本、做審查。
+
+## 五、對這個站的影響
+
+老實說，8plus 這部分落後不少：目前鎖在 TypeScript 5.4.5，型別檢查是 `tsc --noEmit`。文章內容是 MDX，但由 velite 編譯，並不經過 `tsc` 檢查，所以 content mappers 對這個站不是直接需求。
+
+真正的工作是先從 5.4 升到 6.0、清掉 deprecated 選項，確認 Next.js 與 ESLint 這條工具鏈沒問題，再評估 7.x。版本落後兩個大版時，最好的策略是一次只跨一步。
+
+---
+
+編譯器變快是好消息，但團隊感受到的速度，最後取決於工具鏈裡最慢跟上的那一環。7.1 讓這一環開始動起來，值得排進下一季的規劃，不必搶第一批。如果你想盤點自己專案的 TypeScript 工具鏈、排一條穩妥的升級路徑，可以[預約 30 分鐘初談](/booking)。

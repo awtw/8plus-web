@@ -1,0 +1,74 @@
+---
+title: "GitHub Enterprise 內含 Copilot：席位費歸零，但從第一個請求開始計費"
+date: "2026-11-05"
+summary: "GitHub 10 月 28 日推出「Copilot access」計費模式：有 GitHub Enterprise Cloud 授權的人不再付 Copilot 席位費，但也沒有內含額度，用量從第一個請求就計費。整理規則、哪些功能沒預算也能用，以及評估要不要轉換時該算的帳。"
+slug: "github-copilot-access-usage-billing"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["GitHub Copilot", "AI 成本", "AI 治理", "趨勢"]
+locale: "zh-TW"
+---
+
+# GitHub Enterprise 內含 Copilot：席位費歸零，用量從第一個請求開始算
+
+10 月 28 日，GitHub 在 changelog 宣布 [GitHub Enterprise 現在可以內含 Copilot](https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot)，並在[官方文件](https://docs.github.com/copilot/get-started/whats-changing-with-github-enterprise-and-copilot)說明這個叫「Copilot access」的新模式。標題看起來像「Copilot 免費送」，但實際上是計費邏輯從**按人頭**轉成**按用量**。
+
+對已經在用 Copilot、而且開始讓 agent 做 code review、在雲端跑任務的團隊來說，這會直接影響預算怎麼編、誰來管。
+
+## 一、規則是什麼
+
+依 changelog 與官方文件：
+
+1. **席位費**：有 GitHub Enterprise Cloud（GHEC）授權的使用者，Copilot 席位費是 0；沒有 GHEC 授權的人可以用 **Copilot Standalone**，每人每月 10 美元。
+2. **沒有內含額度**：用量從第一個請求開始，計入企業預算。對照之下，Copilot Business 是每人每月 19 美元、含 1,900 AI credits；Copilot Enterprise 是 39 美元、含 3,900 AI credits，兩者的額度都在企業內共用。
+3. **功能等同 Copilot Enterprise**：可用的功能與模型和 Copilot Enterprise 相同，再依管理者的政策與支出控制限制。
+4. **預算用完不會斷線**：code completion 與 next edit suggestions 在沒有預算時仍可使用；Copilot Chat、Copilot code review、Copilot in the cloud 則需要有可用預算。changelog 的原話是預算耗盡「never removes access」，席位本身不會被拿掉。
+5. **不能混用**：同一個 enterprise 不能同時有 Copilot access 和 Business／Enterprise 席位，連在不同 organization 分開也不行。但 GHEC 使用者和 Standalone 使用者可以並存。
+6. **不會自動開通**：enterprise owner 仍要把席位指派給成員、團隊或 organization，包括原本就有 GHEC 授權的人。
+
+適用對象目前有限：**有 GitHub 或 Microsoft 業務窗口的企業**，從 10 月 28 日起可以申請。自助購買的客戶還不能用，GitHub 說會分階段開放、日期「in the coming weeks」公布；GitHub Free、Team 與 GHEC 自助試用則不適用。轉換從每月 1 日生效，Copilot Business 與 Enterprise 也照常販售，不轉換就不受影響。
+
+## 二、沒說清楚的地方
+
+- **單價要另外查**。changelog 與這份說明文件都沒有寫每個 AI credit 多少錢，只指向模型與價格的參考頁。要算帳，得把各模型的費率一起拿來看。
+- **「預算」的金額由你決定**。GitHub 沒有給建議值，也沒有預設上限，這件事完全落在企業自己身上。
+- **自助客戶的時程未定**。中小團隊多半是自助購買，目前只能等。
+
+## 三、我怎麼解讀
+
+### Copilot 的成本開始跟著 agent 走，而不是跟著人頭走
+
+過去編 Copilot 預算很簡單：人數乘以單價。新模式下，補全這類輕量功能沒預算也能用，真正要花錢的是 Chat、code review、雲端 agent。也就是說，**成本會跟著「讓 agent 做多少事」成長**。一個團隊開始把每個 PR 都丟給 Copilot code review、讓雲端 agent 處理 issue，費用曲線就會跟著變。
+
+### 誰划算、誰不划算，取決於用法
+
+- 很多人只用補全、偶爾問 Chat：席位費省下來，很可能比較便宜。
+- 少數重度使用者大量跑 agent：原本 Business／Enterprise 的共用額度可以吸收一部分，轉過去之後全部從第一個請求計費，就不一定划算。
+
+官方文件也是建議先估算：把目前的授權費與超額用量加總，再估算「沒有內含額度時」全部用量的成本，加上 Standalone 人數乘以 10 美元，最後兩邊比較。
+
+### 預算變成治理工具
+
+「預算耗盡不斷線，但 Chat、code review、雲端 agent 會停」這個設計，等於把預算變成一個開關：設多少，就決定了 agent 每個月能做多少事。這不只是財務問題，也是工程管理的決策。
+
+## 四、評估與轉換前的檢查清單
+
+1. **先拉出目前的用量**。用 Copilot usage metrics API 看實際用量（可以依使用者、用戶端、模型拆開看）；GitHub [11 月 3 日也把 BYOK 與企業自訂模型的用量分開列出](https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api)，算帳時要注意哪些用量其實不走 GitHub 計費。
+2. **照官方步驟估算**，特別是「目前被共用額度吸收掉的那部分」，轉換後都會變成實際支出。
+3. **設預算時預留成長**。如果明年打算擴大 agent 的使用範圍，現在的用量不能直接當上限。
+4. **確認 AI Controls 裡的 AI credits paid usage policy 維持開啟**。文件說這個政策預設開啟，關掉的話，使用者就無法使用需要 credits 的功能。
+5. **檢查防火牆白名單**。Copilot access 走的是 Copilot Enterprise 的端點，如果白名單只有 `*.business.githubcopilot.com`，要加上 `*.enterprise.githubcopilot.com`。
+6. **搭配模型政策一起管**。[Copilot 模型政策 API 已在 10 月 19 日 GA](https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams)，可以在 enterprise、團隊、organization 層級控制可用模型。貴的模型開給誰，直接影響每月帳單。
+7. **跟業務窗口確認生效日**。轉換從每月 1 日生效，帳單週期與內部預算週期最好對齊。
+
+## 五、給台灣團隊的建議
+
+我接觸到的台灣中小團隊，多半是自助購買 Copilot Business，這次的模式暫時還用不到。但方向很清楚：AI 開發工具的計費正在從「買席位」轉向「買用量」。與其等到自助開放才算帳，不如現在就開始做兩件事：**知道每個團隊實際把哪些工作交給了 agent，以及這些工作值多少錢。**
+
+這也呼應我在[AI agent 產出更多程式碼，不等於更多軟體](/blog/ai-agents-more-code-not-more-software)裡的觀點：agent 跑得多，不代表交付得多。用量計費會讓這個落差直接出現在帳單上。
+
+---
+
+席位費歸零是好消息，但沒有額度、從第一個請求開始算，代表 AI 成本要像雲端成本一樣被管理。如果你想替團隊估算 Copilot 的用量與預算，或規劃哪些工作值得交給 agent，可以[預約 30 分鐘初談](/booking)。

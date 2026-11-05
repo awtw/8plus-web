@@ -1,0 +1,74 @@
+---
+title: "The Next.js November security release: this time it is about cache identity, not RCE"
+date: "2026-11-05"
+summary: "On November 3, Next.js shipped 16.4.5 and 15.5.29 with fixes for seven issues, most of them about how Cache Components derives cache keys and isolates tenants. Which code patterns are affected, which deployments matter, and the habits worth building if you use use cache in a multi-tenant app."
+slug: "nextjs-november-2026-security-release-en"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Next.js", "security", "caching", "trends"]
+locale: "en"
+---
+
+# The Next.js November security release
+
+Next.js posted an [advance notice](https://nextjs.org/blog/upcoming-nextjs-security-release-november-2026) on October 27 and shipped the [November 2026 Security Release](https://nextjs.org/blog/november-2026-security-release) on November 3. The patched versions are **16.4.5** (Active LTS) and **15.5.29** (Maintenance LTS).
+
+Compared with October's two Critical RCEs (covered in [Next.js 16.4 and the October security update](/blog/nextjs-16-4-upgrade-and-security-en)), this one looks mild. After reading it closely, I think it deserves more attention from people who make architecture decisions, not less: **four of the seven issues come down to "the cache handed A's result to B."** That is not one bug. It is a class of risk that comes with the Cache Components model itself.
+
+## 1. What was announced
+
+According to the release post, the seven issues are:
+
+| Issue | Severity | Preconditions |
+|-------|----------|---------------|
+| Cross-tenant cache disclosure when mixing `unstable_cache` and `use cache` | High | Cache Components enabled; the same `use cache` function is called both directly and inside `unstable_cache`, and it reads a root parameter such as a tenant ID |
+| Cross-root-parameter disclosure in nested `use cache` | Medium | An inner cached function reads a root parameter and returns an early value plus a slower async value, and the outer function finishes without waiting |
+| Cache identity collisions from binary arguments | Medium | Security-relevant binary data (used to tell users apart, for example) is passed as a `use cache` argument |
+| Shared shell cache poisoning when self-hosting | Medium | `next start`, Cache Components on, Partial Prefetching off or unset, and a specific route shape |
+| Cross-client response injection via stale compressed framing | Medium | Self-hosted, returning an attacker-controlled fetched `Response` unchanged, behind an HTTP/1.1 reverse proxy that queues pipelined requests on a shared connection |
+| Cookie values exposed through an internal header in Edge routes | Medium | Edge Route Handlers or Pages Router Edge API routes setting a sensitive cookie with `NextResponse.cookies.set()`, plus attacker-controlled same-origin JavaScript |
+| SVG rejection bypass in Image Optimization | Medium | An image from an allowed source is misclassified as AVIF and the image backend can decode SVG |
+
+For the High-severity issue, the [advisory](https://github.com/vercel/next.js/security/advisories/GHSA-mfr8-8qww-v76h) gives a complete workaround: **do not call a `use cache` function inside `unstable_cache()`.**
+
+## 2. What was unclear, or left for you to judge
+
+- **The advance notice said "seven medium vulnerabilities"; the release lists one as High.** The two posts disagree, and the release post is the one to trust. Treat advance notices as scheduling input, not as a severity assessment.
+- **Nothing says whether deployments on Vercel are shielded at the platform level.** Some issues are explicitly scoped to self-hosting; the rest are not. Do not assume you are fine just because you deploy to Vercel.
+- **The Edge cookie issue needs attacker-controlled same-origin JavaScript**, and the post is clear that it is not a standalone XSS vector. If your site loads third-party scripts, though, that precondition is less far-fetched than it sounds.
+- **Only the 16.4 and 15.5 lines are patched.** Projects on older versions have nothing to install this time.
+
+## 3. What it means for technology choices
+
+Cache Components and `use cache` make caching very easy to write: one directive and the function result is cached. The trade-off is that **what makes up the cache key moves from explicit to implicit.** When you built Redis keys by hand, you naturally included the tenant ID. Now the framework derives cache identity from arguments, root parameters and closures. It gets that right most of the time, and several of these issues sit exactly on the edges where the derivation went wrong.
+
+My read is not that Cache Components is unsafe to use. It is that **in a multi-tenant system, tenant isolation stays your responsibility and should not be delegated entirely to the framework.** The framework will fix its bugs; your system should still avoid leaking data during the weeks before it does.
+
+The other signal is the gap between platforms and self-hosting. Two of these issues only occur under `next start` or with particular reverse-proxy setups. If you self-host or use something like OpenNext, "are framework security fixes fully exercised in my environment?" belongs on your evaluation list.
+
+## 4. Practical advice
+
+1. **Upgrade first.** 16.x goes to 16.4.5 and 15.5 goes to 15.5.29. Both are patch-level changes.
+
+   ```bash
+   pnpm add next@16.4.5   # 16.x
+   pnpm add next@15.5.29  # projects still on 15.5
+   ```
+
+2. **Search the codebase for `unstable_cache`.** Mixing it with `use cache` is the precondition for the High issue. Use this release as the reason to retire the old API instead of keeping both.
+3. **Review what your cached functions take as arguments.** Pass values that identify users or accounts as strings or explicit IDs, not as `Uint8Array` or other binary data.
+4. **Add a second check in multi-tenant apps.** Before returning cached data, confirm its tenant ID matches the request. It costs very little and catches framework-level mistakes.
+5. **If you self-host, look at your reverse proxy.** If it does HTTP/1.1 pipelining onto shared backend connections, decide whether that needs changing, and check for routes that pass an external fetch `Response` straight through.
+6. **If an Edge route sets sensitive cookies, send a real request after upgrading and check whether `x-middleware-set-cookie` still shows up.** Where you can, the leak as reproduced did not affect Node.js Route Handlers or cookies set through `cookies().set()`.
+
+## 5. What it means for this site
+
+8plus was on Next.js 16.4.1 with no Cache Components, no `use cache` and no Edge-runtime route handlers, so the caching issues do not apply here. It does use `next/image`, and the Vercel fallback runs real Next.js, so on November 5 it was bumped to 16.4.5 anyway (a patch upgrade; typecheck and the build needed no changes).
+
+Production runs on Cloudflare Workers through vinext, which is a separate reimplementation of the Next.js APIs. These advisories are written against the `next` package, so I cannot infer whether vinext is affected; I will follow vinext's own announcements. That is a hidden cost of alternative runtimes: **you now read two sets of security advisories.**
+
+---
+
+Cache bugs are unpleasant because they rarely throw an error; they quietly hand data to the wrong person. The fix shipped quickly, but the lasting protection comes from your own design: cache keys you can explain, and a second check at tenant boundaries. If you are building a multi-tenant system on Cache Components and want a second pair of eyes on the caching and isolation design, [book a 30-minute intro call](/booking).

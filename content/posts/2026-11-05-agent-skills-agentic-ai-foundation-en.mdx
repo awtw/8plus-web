@@ -1,0 +1,71 @@
+---
+title: "Agent Skills moves to the Agentic AI Foundation: skills become a cross-tool standard, so manage them like code"
+date: "2026-11-05"
+summary: "On October 22, Anthropic donated the Agent Skills standard to the Agentic AI Foundation under the Linux Foundation, the same neutral home as MCP. What the donation actually covers, what is still open, and the ground rules a team should set before it starts building up skills."
+slug: "agent-skills-agentic-ai-foundation-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["Agent Skills", "AI agents", "AI governance", "open standards", "trends"]
+locale: "en"
+---
+
+# Agent Skills moves to the Agentic AI Foundation
+
+On October 22, Anthropic announced it is [donating Agent Skills to the Agentic AI Foundation (AAIF)](https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation). AAIF sits under the Linux Foundation and was co-founded by Anthropic, Block and OpenAI, and [MCP was donated to it in December 2025](https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/). So the standard for how an agent reaches external tools (MCP) and the standard for how an agent learns a way of doing a task (Skills) now live in the same neutral place.
+
+There is no new feature here. But for teams adopting coding agents, it answers a practical question: **will the skills we write still work if we switch tools?**
+
+## 1. What the donation covers
+
+According to Anthropic's announcement:
+
+1. **What is donated:** the Agent Skills standard itself, its name and logo, the GitHub organization, and the `agentskills.io` domain.
+2. **Who maintains it:** engineers from Anthropic, Google, OpenAI and other companies, participating **as individuals**. The lead maintainers are David Soria Parra and Mahesh Murag.
+3. **How to take part:** you do not need to join AAIF to use or contribute to the standard. Spec discussion happens on [GitHub](https://github.com/agentskills/agentskills) and Discord.
+4. **Adoption so far:** since the standard was published in December 2025, more than 70 agent platforms have integrated it, including ChatGPT, Cursor, GitHub Copilot and VS Code. One million skills have been published and nearly 280 million installed. These are Anthropic's own figures.
+5. **What comes next:** the proposed roadmap starts with versioned releases, a formal proposal process, and security guidance for people who write and install skills.
+
+The format itself has not changed. Per the [agentskills.io specification](https://agentskills.io/specification), a skill is a folder that must contain a `SKILL.md`, whose frontmatter needs at least a `name` (up to 64 characters, lowercase letters, digits and hyphens, matching the folder name) and a `description` (up to 1,024 characters). It can also include `scripts/`, `references/` and `assets/`. At startup an agent reads only each skill's name and description; it loads the full instructions when a task matches, and reads bundled files or runs scripts only when needed.
+
+## 2. What is still open
+
+- **No timeline.** Versioned releases, the proposal process and the security guidance are all still proposals. The announcement gives no dates.
+- **"Supported" does not mean "behaves the same."** Seventy-plus integrations do not guarantee identical behavior. The spec's `allowed-tools` field, which pre-approves the tools a skill may use, is itself marked experimental, and implementations may differ.
+- **No security guidance yet.** Skills can bundle executable scripts, and installs are in the hundreds of millions. Until the guidance lands, reviewing and publishing skills is each team's own responsibility.
+- **The numbers are self-reported.** The one million and 280 million figures come from Anthropic, with no independent source to check them against.
+
+## 3. How I read it
+
+### Skills go from tool configuration to team asset
+
+Instruction files written for a particular agent tend to get treated as personal settings: they sit in someone's home directory and get rewritten when the team changes tools. With the standard under neutral governance, it is easier to treat skills as shared, repo-tracked assets. It is the same shift teams made when CI configs and lint rules moved into version control.
+
+### The value is in the practice, not the format
+
+The format is simple. The hard part is the content: how your team ships, how it reviews, where it looks first when something breaks. That knowledge usually lives in a wiki, in senior engineers' heads and in old Slack threads. Whether an agent does the right thing depends largely on whether those practices are written down. **Standardization solves "write once, use anywhere." It does not solve "what to write."**
+
+### Skills are part of your supply chain
+
+A skill can ship Bash or Python scripts, and the agent will run them as instructed. From a risk perspective, installing a skill of unknown origin is a lot like running `npm install` on a package you have never looked at, and arguably more direct, because what executes it is an agent that makes its own decisions.
+
+## 4. A checklist before your team starts accumulating skills
+
+1. **Put them in version control.** Shared skills live in the repo or a dedicated skills repo, and changes go through PR review rather than living on individual laptops.
+2. **Read external skills before installing them,** especially anything in `scripts/`. Try unfamiliar skills in a sandbox or an environment without production credentials.
+3. **Write precise descriptions.** The agent decides whether to activate a skill from its `description`. Too broad and it fires when it should not; too narrow and it never fires. The spec recommends stating both what the skill does and when to use it.
+4. **One skill, one job.** The spec suggests keeping `SKILL.md` under 500 lines and moving detail into `references/`. A do-everything skill is hard to maintain and hard to review.
+5. **Do not rely on experimental fields for access control.** `allowed-tools` is still experimental. Real permission boundaries belong in the agent platform, the sandbox and the credentials themselves.
+6. **Validate the format with the official tool.** The spec provides `skills-ref validate` to check frontmatter and naming, which fits nicely into CI.
+7. **Watch for AAIF's security guidance.** When it ships, review your existing skills and install process against it.
+
+## 5. How this matches my own setup
+
+The repo behind this site carries a fair number of agent skills for planning, development and review. In my experience, the difference between a good skill and a weak one is almost always whether the implicit judgment calls are written down: when to stop and ask a human, and when to just proceed. That is also where AI adoption deserves the most time. Spell out how people actually do the work first, then hand it to the machine.
+
+If your concern is which external systems an agent can reach, see my earlier post on [Copilot connectors and MCP governance](/blog/github-copilot-connectors-mcp-en). Skills govern how an agent works; connectors govern what it can touch. You need both.
+
+---
+
+With a shared standard, writing a skill once and using it across several agents becomes realistic. What to write, who can change it and which outside skills to trust are still decisions your team has to make. If you want help shaping your team's first set of skills or planning an agent rollout, [book a 30-minute intro call](/booking).

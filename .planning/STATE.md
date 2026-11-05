@@ -12,10 +12,14 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-04 +0800 — 11/4 趨勢文章 16 篇上線正式站（Worker 4b3cf067，回滾目標 eb0b7ac5）
+Last activity: 2026-11-05 +0800 — Next.js 升到 16.4.5（11 月安全更新）＋ 11/5 第四批文章 20 篇；本機 workerd smoke／SEO 全過；未 commit、未部署
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-05 +0800 — Next.js 16.4.1 → 16.4.5（11/3 November 2026 Security Release）**：`next` 與 `eslint-config-next` 升到 16.4.5（`pnpm add -w`，僅 package.json／pnpm-lock.yaml 變動）。本站沒用 Cache Components／`use cache`／Edge route handler，主要是 `next/image` 與 Vercel 備援需要。vinext 維持 1.2.1：其兩則 advisory（GHSA-2956-r8mj-w5c4、GHSA-8969-277p-8rrm）修補版為 1.2.0，`@vinext/cloudflare` 1.1.1 也已在修補版；11 月 vinext 無新 advisory（最新 1.4.3 為一般修正，含 image endpoint 套用 localPatterns 等，未升）。驗證：typecheck 過、`pnpm build`（Next.js 16.4.5）過、`pnpm build:vinext` 過；本機 `vite preview`（新增 `.claude/launch.json` 的 `vinext-preview`，port 3001）smoke、SEO 全過，抽查 6 篇新文章 200、Next.js 文章頁無 console error。`pnpm lint` 有 24 個 error，全在 `motion/*/vendor/gsap.min.js`（既有，與升級無關，可把 `motion/**/vendor/**` 加進 eslint ignores）。Next.js 文章「對這個站的影響」已改成「已升到 16.4.5」。`next-env.d.ts` 已還原。未 commit、未部署。
+
+- ✅ **2026-11-05 +0800 — 11 月第四批文章（10 主題、中英共 20 篇，六個分類都有）**：`content/posts/2026-11-05-*`。ai：①Agent Skills 標準捐給 Linux Foundation 旗下 AAIF（10/22，Anthropic 公告；採用數字為單方公布）②GitHub Enterprise 內含「Copilot access」、改按用量計費（10/28 changelog＋官方文件；AI credit 單價未寫）。web：③Next.js 11 月安全更新（11/3，16.4.5／15.5.29，7 個問題；預告寫 medium、正式公告有一個 High，文中照實寫）④TypeScript 7.1 Beta（10/20，程式化 API、content mappers）。ops：⑤PHP 兩個 9.2 未驗證 RCE（10/21，8.5.12／8.4.27／8.3.36／8.2.35，10/26 進 KEV）＋WordPress 7.1.4（11/3 進 KEV）⑥年底 EOL 行事曆（Python 3.10、K8s 1.34、.NET 8／9、PostgreSQL 14、PHP 8.2；指令未測）。delivery：⑦Thoughtworks Technology Radar 第 35 期（blip 頁標 11/4；PDF 未讀）⑧歐盟 CRA 第 14 條通報義務（9/11 起適用、ENISA SRP 11/4 升 1.3；部分細節引自律所整理，非法律意見）。career：⑨Stack Overflow 2026 開發者調查職涯解讀（10/6）。studio：⑩10 月站務近況 Field Note（Cloudflare 搬遷、首頁品牌片、Blog 分類訂閱、Lab、11/2 部署 500 教訓，由主流程依本檔撰寫）。研究由五個代理依一手來源撰寫；主流程以 curl 抽查 PHP CVE 與版本、KEV 日期、Next.js 16.4.5、Agent Skills 10/22、Copilot $10 皆相符，站內連結全數有效。待確認：PHP 文「我在客戶那邊最常看到」、Copilot 文「我接觸到的台灣中小團隊」屬代寫的個人觀察語氣；Next.js 已於同日升到 16.4.5（見上一筆）。`pnpm build` 通過（68 篇，`next-env.d.ts` 已還原）；未 commit、未部署。
 
 - ✅ **2026-11-04 +0800 — 11/4 趨勢文章上線正式站（Worker 4b3cf067）**：commit ccea668 已 push。`pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、16 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `4b3cf067-8342-43d8-8a7e-fcc8e11fb516`，回滾目標 `eb0b7ac5`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；16 篇新文章 200、已進 sitemap 與 feed；瀏覽器檢視 Deno 文章頁無 console error。Vercel（apex 轉址源站）未更新。
 

@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-05 +0800 — Next.js 升到 16.4.5（11 月安全更新）＋ 11/5 第四批文章 20 篇；本機 workerd smoke／SEO 全過；未 commit、未部署
+Last activity: 2026-11-05 10:24 +0800 — Next.js 16.4.5 與 11/5 文章 20 篇上線正式站（Worker 5722d5df，回滾目標 4b3cf067）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-05 10:24 +0800 — Next.js 16.4.5 與 11/5 文章上線正式站（Worker 5722d5df）**：commit `3861712`（升級）、`8f51c0c`（launch config）、`cd21a6a`（文章）。`pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、20 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `5722d5df-0039-4abd-afeb-e18f467d06ca`，回滾目標 `4b3cf067`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；20 篇新文章 200、已進 sitemap 與中英 feed；瀏覽器檢視站務文章頁無 console error。Vercel（apex 轉址源站）未更新；分支未 push。
 
 - ✅ **2026-11-05 +0800 — Next.js 16.4.1 → 16.4.5（11/3 November 2026 Security Release）**：`next` 與 `eslint-config-next` 升到 16.4.5（`pnpm add -w`，僅 package.json／pnpm-lock.yaml 變動）。本站沒用 Cache Components／`use cache`／Edge route handler，主要是 `next/image` 與 Vercel 備援需要。vinext 維持 1.2.1：其兩則 advisory（GHSA-2956-r8mj-w5c4、GHSA-8969-277p-8rrm）修補版為 1.2.0，`@vinext/cloudflare` 1.1.1 也已在修補版；11 月 vinext 無新 advisory（最新 1.4.3 為一般修正，含 image endpoint 套用 localPatterns 等，未升）。驗證：typecheck 過、`pnpm build`（Next.js 16.4.5）過、`pnpm build:vinext` 過；本機 `vite preview`（新增 `.claude/launch.json` 的 `vinext-preview`，port 3001）smoke、SEO 全過，抽查 6 篇新文章 200、Next.js 文章頁無 console error。`pnpm lint` 有 24 個 error，全在 `motion/*/vendor/gsap.min.js`（既有，與升級無關，可把 `motion/**/vendor/**` 加進 eslint ignores）。Next.js 文章「對這個站的影響」已改成「已升到 16.4.5」。`next-env.d.ts` 已還原。未 commit、未部署。
 

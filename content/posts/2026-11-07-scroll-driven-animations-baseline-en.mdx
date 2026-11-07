@@ -1,0 +1,68 @@
+---
+title: "Scroll-driven animations reach Baseline: scroll motion moves back into CSS, and motion specs need a new format"
+date: "2026-11-07"
+summary: "Firefox 159 enabled scroll-driven animations by default on October 27, and web.dev declared them Baseline Newly available. The W3C also published the first public draft of Animation Triggers on October 20. What happened, what is still open, and how design and frontend teams should rewrite motion specs and handle reduced-motion preferences."
+slug: "scroll-driven-animations-baseline-en"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["CSS", "motion design", "accessibility", "Baseline"]
+locale: "en"
+---
+
+# Scroll-driven animations reach Baseline
+
+On October 27, [Firefox 159](https://developer.mozilla.org/docs/Mozilla/Firefox/Releases/159) enabled scroll-driven animations by default. Two days later, Rachel Andrew's monthly round-up on web.dev, [New to the web platform in October](https://web.dev/blog/web-platform-10-2026), noted that with Chrome, Safari and now Firefox 159 on board, **scroll-driven animations are Baseline Newly available.**
+
+The feature ties a CSS animation's progress to scrolling instead of time. Effects like "fade in when you reach this section," "shrink the header as you scroll" or a reading progress bar used to need a JavaScript scroll listener or a library such as GSAP. Now they can be plain CSS. It took a little over three years to go from Chrome 115 shipping it first to all three engines supporting it.
+
+## 1. What happened
+
+- **Firefox 159 turns it on by default.** The MDN release notes describe animating property values along a scroll-based timeline instead of the default time-based one. The web.dev support table lists Chrome 115, Edge 115, Firefox 159 and Safari 26.
+- **Two kinds of timeline.** `scroll()` and `scroll-timeline` follow the scroll position of a container. `view()` and `view-timeline` follow an element as it enters and leaves the scrollport. You attach either one with `animation-timeline`, and `animation-range` decides over which stretch of scrolling the animation plays.
+- **Things are moving around it.** [Safari 27.2](https://developer.apple.com/documentation/safari-release-notes/safari-27_2-release-notes), released October 26, fixed `animation-range` resolving incorrectly when `zoom` is applied. And on October 20 the W3C CSS Working Group published the [First Public Working Draft of Animation Triggers](https://www.w3.org/news/2026/first-public-working-draft-animation-triggers/), which defines ways to control animation playback from user-interaction events or from an element entering and leaving timeline ranges.
+
+The same round-up has a few other items designers will like: Chrome 156 adds the `random()` function, Chrome 155 adds `margin-trim`, and Chrome 157 Beta adds shorthands that set `border-radius` and `corner-shape` together. None of these work in all three engines yet, so file them under "good to know."
+
+## 2. What was not said, or is still open
+
+- **Newly available does not mean everyone has it.** By the Baseline definition, it takes another 30 months to become Widely available. Users who have not updated, and managed environments that pin browser versions, will not see the effect, so the fallback still needs to be designed.
+- **Animation Triggers is only a first draft.** The final syntax for trigger-style animation, such as "play once when it enters the viewport," is not settled and has no shipping timeline.
+- **Performance is not automatic.** Binding an animation to scroll does not make every property cheap. `transform` and `opacity` are the safe choices; measure anything like `filter` yourself.
+- **Reduced motion is your job.** The spec will not decide for you whether the user has asked for less motion.
+
+## 3. What it means for the design process
+
+**1. Motion specs change units, from milliseconds to scroll ranges.** Motion specs used to say "300ms, ease-out." A scroll-driven animation has no duration, only a range, such as "complete within the first 40% of the element entering the viewport." If the handoff still lists only durations and easing curves, engineers have to guess.
+
+**2. Scroll effects get cheaper, and easier to overuse.** Parallax and fade-ins without loading a library make "animate every section" very cheap. Design reviews need one more question: what does this motion help the user understand?
+
+**3. Accessibility guidance saw this coming.** Success criterion [2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html), added in WCAG 2.1 at level AAA, asks that motion triggered by interaction can be disabled, and scrolling is the textbook interaction. Even if your contract only requires AA, respecting reduced-motion preferences should be the default, not a bonus.
+
+## 4. Practical advice
+
+### Designers
+
+- Add a "trigger" column to motion specs: time, scroll container or element visibility, and mark where the range starts and ends.
+- Give every scroll effect a static version: what the screen looks like with motion turned off, or in a browser without support.
+
+### Frontend engineers
+
+- Wrap scroll-timeline code in `@supports (animation-timeline: view())` and inside `@media (prefers-reduced-motion: no-preference)`, so the default is no motion.
+- Audit existing scroll listeners. Simple fade-ins and progress bars can move to CSS. Pinned, multi-step storytelling is still easier to maintain with a library.
+
+### Agencies and PMs
+
+- Split "motion" into two tiers in quotes: lightweight effects CSS can handle, and narrative scroll sequences that need a library. Their build and test costs are very different.
+- Add two checks to acceptance: one pass on a device with reduced motion turned on, and one pass in a browser without support.
+
+## 5. What it means for this site
+
+8plus already uses this feature, though in a small way. Below 1024px, the timeline cards on `/path` animate in with `view()` and an `entry 0% entry 40%` range, applied only under `prefers-reduced-motion: no-preference`. At desktop widths a different focus effect takes over and that animation is switched off. The project also has a hero prototype that wraps an exit effect in `@supports (animation-timeline: view())`, but the home page does not currently mount it. GSAP ScrollTrigger is installed too, with skeleton components for pinning and scrubbing, but I found no page that uses them.
+
+The practical effect of Firefox 159: **on narrow screens in Firefox, the `/path` cards now animate with scrolling for the first time.** Before, Firefox ignored `animation-timeline`, so the animation fell back to a time-based one that played once on load. That calls for a round of visual checks in Firefox. Separately, the reading progress bar on blog posts listens to scroll in JavaScript and updates a `transform`, which makes it a good candidate for `animation-timeline: scroll()`. As for the unused GSAP pinning skeleton, I would reach for CSS first for simple reveals and progress effects, and keep GSAP for when a pinned narrative is actually needed.
+
+---
+
+Moving scroll motion into CSS saves code, but whether a motion should exist, and what the page looks like without it, is still a design decision. If your team wants a motion guideline that balances brand character with accessibility, or wants to find out which JavaScript animations can move to CSS, [book a 30-minute intro call](/booking).

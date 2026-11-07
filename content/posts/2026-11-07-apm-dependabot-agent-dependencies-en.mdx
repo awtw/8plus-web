@@ -1,0 +1,95 @@
+---
+title: "Dependabot now updates agent skills: time to manage prompts and instructions as dependencies"
+date: "2026-11-07"
+summary: "On November 3, GitHub announced Dependabot support for Agent Package Manager (APM): it opens upgrade pull requests for the skills, prompts and instructions declared in apm.yml and regenerates the lockfile. What APM and this support actually cover, what is still unsettled, and what agencies should think through before adopting it."
+slug: "apm-dependabot-agent-dependencies-en"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["AI agents", "Agent Skills", "supply chain security", "Dependabot", "delivery", "trends"]
+locale: "en"
+---
+
+# Dependabot now updates agent skills
+
+On November 3, the GitHub changelog published [Dependabot version updates support Agent Package Manager](https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager/). Dependabot can now open upgrade pull requests for agent skills, prompts and instructions managed by APM.
+
+On 11/5 I wrote about [Agent Skills moving to the Agentic AI Foundation](/blog/agent-skills-agentic-ai-foundation-en), and one conclusion was "put skills in version control and treat them like code." This news supplies the next step: **not just keeping them in the repo, but giving them a manifest, a lockfile and automated upgrade PRs, the way npm packages have.**
+
+## 1. What APM is
+
+[APM (Agent Package Manager)](https://microsoft.github.io/apm/) is an open-source project under the Microsoft GitHub organization, MIT-licensed, that describes itself as "npm for agent context." The key points:
+
+- **One manifest for everything.** `apm.yml` declares the skills, prompts, instructions, agents, hooks, plugins and MCP servers a project uses, from any git host.
+- **One lockfile for the result.** `apm.lock.yaml` records resolved sources and content hashes, much like `package-lock.json`.
+- **One install for several agents.** The README lists targets including GitHub Copilot, Claude Code, Cursor, Codex, Gemini, Windsurf and Kiro.
+- **Security checks by default.** Every install scans for hidden Unicode that could hijack agent behavior; MCP servers pulled in by transitive dependencies need explicit consent; `apm-policy.yml` lets an organization restrict allowed sources and primitive types; and `apm audit --ci` can be wired into CI.
+
+In CI you can use `apm install --frozen`. According to the CLI docs, it installs only from the lockfile, never rewrites it, and fails if the lockfile is missing an entry or the declarations have changed.
+
+## 2. What Dependabot now supports
+
+From the GitHub changelog, the [supported ecosystems docs](https://docs.github.com/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories#apm) and [dependabot-core issue #14350](https://github.com/dependabot/dependabot-core/issues/14350):
+
+- **Scope:** version updates only, **no security updates**. Available on GitHub.com for all plans; GitHub Enterprise Server gets it in 3.24.
+- **How updates work:** Dependabot reads `apm.yml`, opens PRs for "supported git dependencies," and regenerates `apm.lock.yaml` if it exists. The maintainers explain in the issue that tag pins move to the latest release tag; full commit SHA pins move to the commit of the latest annotated release tag, with a version comment; and branch pins get the commit in the lockfile updated.
+- **What it does not update:** unpinned entries, abbreviated SHAs, local paths, and MCP servers.
+- **Configuration:** add `package-ecosystem: "apm"` to `.github/dependabot.yml`, point `directory` at the folder containing `apm.yml`, and pick a schedule. The usual options such as `ignore`, `groups` and `cooldown` work.
+
+```yaml
+# .github/dependabot.yml (based on GitHub's docs; I have not tested this)
+version: 2
+updates:
+  - package-ecosystem: "apm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+
+On the timeline: the issue was opened in March, a beta shipped on October 22, and the November 3 changelog announced general availability.
+
+## 3. What was not said, or is still open
+
+- **APM itself is still 0.x.** The latest release is v0.35.0 from October 22, and releases come often. The tool is moving fast, and the configuration format could well change.
+- **No security updates means no vulnerability database.** If a skill turns out to be malicious or broken, there is currently nothing like an npm advisory to warn you. Dependabot tells you "there is a new version," not "the old one is dangerous."
+- **MCP servers are out of Dependabot's scope.** They usually carry the most privilege, and you have to track them yourself.
+- **Consistency across agents.** Whether the same skill behaves the same way in different agents is outside APM's control and depends on each platform.
+- **Whether APM becomes a shared format** is not clear yet. It is not the same thing as the Agent Skills standard: Agent Skills defines what a skill looks like, while APM tracks which ones a project uses and at what version.
+
+## 4. How I read it
+
+I do not think the significance is the APM tool itself. It is that **a major platform has picked up the idea that agent instructions are dependencies, with versions, diffs and a review process.**
+
+Until now, a common pattern was this: someone grabs a skill or prompt from the internet, drops it into the repo, and afterwards nobody knows where it came from or what changed upstream. For agencies the problem is worse: the same practices need to stay in sync across several client repos, and after a few rounds of copy-and-paste the versions drift apart.
+
+With a manifest and automated upgrade PRs, upstream changes become a diff you can review. That brings a new risk too: **automated PRs make it very easy to merge a prompt someone else changed.** One changed sentence in a prompt or skill can change agent behavior, and that kind of change does not fail any test. A PR showing up does not mean you can merge it with the habits you use for npm minor versions.
+
+## 5. Practical advice
+
+### Agencies and tech leads
+
+1. **Inventory first; do not rush to adopt.** List the agent instruction files, skills and MCP configurations in each repo, and where each one came from. The list is valuable on its own.
+2. **Keep your own practices in one central repo.** Release with tags and pin client projects to tags. This works with or without APM, and makes adopting it later easy.
+3. **Always pin external skills.** Pin a tag or a full SHA, not a branch. Pinning a branch means taking whatever upstream has, every time.
+4. **A human reads every upgrade diff.** Especially `scripts/`, hooks and anything that runs commands. You can use `cooldown` to let new versions sit for a few days before they come in.
+5. **Use `--frozen` in CI, and avoid `--force`.** According to the docs, `--force` bypasses the security scan's block.
+
+### Engineering managers
+
+- Add agent dependencies to your existing supply chain inventory. APM can export a CycloneDX or SPDX inventory with `apm lock export` (the docs are explicit that this is provenance, not a compliance attestation).
+- Manage MCP servers separately. They are outside Dependabot's scope, so the permission boundary belongs in the agent platform and the credentials themselves.
+
+### Individual developers
+
+- Try `apm install --dry-run` first to see which files it would write into your project before you commit to it. I put these commands together from the official docs and have not tested them on this site.
+
+## 6. What it means for this site
+
+This repo's `.claude/skills/` contains 44 BMAD skills, managed by BMAD's own installer, with the version recorded in `_bmad/_config/manifest.yaml` (currently 6.8.0). There is no `apm.yml` and no `.github/dependabot.yml` yet.
+
+So I will not adopt APM in the short term: BMAD already records its version, and another manifest on top would just be one more thing to keep in sync. What I will do first is step one from section 5: write down where the skills come from and which version they are. When APM reaches 1.0, or when I need to sync the same set of skills across several client repos, I will look at it again.
+
+---
+
+Agent instructions are moving from "personal settings" to "project dependencies." The tools will keep changing, but habits like pinning versions, reading diffs and tracking sources will pay off whichever tool you end up with. If you want help setting up how your team manages agent dependencies, or planning skills shared across projects, [book a 30-minute intro call](/booking).

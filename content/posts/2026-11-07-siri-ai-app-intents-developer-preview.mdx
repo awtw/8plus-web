@@ -1,0 +1,77 @@
+---
+title: "Siri AI 開放給所有 App：App Intents 變成你的 App 給 AI 用的介面"
+date: "2026-11-07"
+summary: "11/3 Apple 在 iOS 27.3 等 beta 推出 Siri AI Developer Preview，任何 App 都能透過 App Intents 把內容與動作交給 Siri AI，還能用 skills 串接多個動作。繁體中文「即將支援」但沒有日期，App Store 送審要到春天。整理官方說了什麼、還沒定案的部分，以及有 iOS App 的團隊現在該排什麼。"
+slug: "siri-ai-app-intents-developer-preview"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI Agent", "Apple", "App Intents", "iOS", "趨勢"]
+locale: "zh-TW"
+---
+
+# Siri AI 開放給所有 App
+
+11 月 3 日，Apple 在開發者網站發布 [Siri AI is now open to all developers](https://developer.apple.com/news/?id=gdk2umrf)：從 iOS 27.3、iPadOS 27.3、macOS 27.3、visionOS 27.3 beta 開始，新的 Developer Preview 讓**任何開發者**都能把 App 接上 Siri AI。
+
+前幾篇我談的多半是開發端的 agent：寫程式的 Copilot、管理 skills 的標準。這一篇是另一面：**當使用者身邊的 AI 助理可以直接操作你的 App，你的 App 要怎麼被它看見、被它正確地使用？**
+
+## 一、Apple 這次說了什麼
+
+依官方文章：
+
+- **接入方式是 App Intents。** App 透過 App Intents 把內容與動作交給 Siri AI，可以用上個人情境理解、畫面內容感知、自然語言等能力。使用者用自己的話提出需求，Siri AI 去執行你做好的自訂動作，官方舉的例子是查詢配送、訂位、下單。
+- **新增 skills。** 對於複雜的需求，開發者可以教 Siri AI 把多個動作組合成一個體驗。
+- **Spotlight 語意索引放寬。** Siri AI 現在可以取用 Spotlight 語意索引裡的任何 entity，不再限於符合既有 schema 的類型。
+- **Apple 自家 App 已經先上。** 行事曆、檔案、郵件、地圖、訊息、備忘錄、照片、提醒事項、Safari、捷徑、天氣等都已開始支援，官方說這些可以當作參考範例。
+- **時程。** 這是「在幾個月後正式推出給使用者之前」的早期預覽；**App Store 送審在春天開放。**
+
+文章也提到已有數千個開發者做過 Siri 整合。App Intents 本來就是 Siri、捷徑等系統功能使用的框架，所以這次比較像是既有介面的能力大幅升級，而不是全新的一套 API。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **繁體中文沒有日期。** 目前支援英文、法文、日文、韓文、葡萄牙文、西班牙文；繁體中文和挪威文、土耳其文、越南文一起列在「即將支援」。官方也註明部分功能不一定在所有地區或語言提供，台灣什麼時候能用，文章沒有說。
+- **使用條款與政策還沒出來。** 官方說會「再補充 Siri AI 相關體驗的條款與使用政策」。對要處理金流、訂單的 App 來說，這部分很關鍵。
+- **有每日用量上限，未來會收費。** 依賴伺服器端模型的 Apple Intelligence 功能（包含 Siri AI）有每日用量限制，會隨功能、請求複雜度、系統負載等因素變動；官方寫明「擴充的使用額度未來會以付費方式提供」。由誰付費、怎麼計價，沒有說明。
+- **歐盟不提供。** iOS、iPadOS、watchOS 上的 Siri AI 目前在歐盟無法使用；13 歲以下使用者也無法使用。
+- **API 細節**在官方的 [Siri AI Developer Preview 文件](https://developer.apple.com/documentation/appintents/siri-ai-developer-preview)裡，這篇沒有逐一核對 API 名稱。預覽期間介面可能會變。
+
+## 三、我怎麼看
+
+**App Intents 正在變成「你的 App 給 AI 用的 API」。** 這跟我在 Web 端看到的趨勢是同一件事：以前我們設計介面給人點，現在還要設計一層給 agent 呼叫。網站或後端用 API、MCP，iOS App 用 App Intents。
+
+這帶來三個實際的轉變：
+
+1. **入口從畫面轉到意圖。** 使用者可能不打開你的 App，直接跟 Siri AI 說「幫我改明天的訂位」。如果你的 App 沒有提供這個動作，Siri AI 可能就去找別人的。
+2. **動作的定義品質變得重要。** 參數清楚、名稱語意明確、該確認的步驟有確認，AI 才用得對。這跟寫好 API 文件是同一種功夫。
+3. **資料暴露範圍要重新檢查。** Spotlight 語意索引放寬後，你放進索引的東西更容易被 AI 取用。哪些內容該被索引、哪些不該，要有人做決定。
+
+## 四、實務建議
+
+### 有 iOS App 的中小企業（老闆、產品負責人）
+
+- **現在不必追加大預算。** 繁體中文還沒上、送審要到春天、條款還沒出來。比較合理的是請團隊做一次小規模評估：如果使用者只能用一句話使用我們的 App，最常說的會是哪三件事？
+- 把評估結果放進明年上半年的產品規劃，而不是這個月的開發排程。
+
+### 接案的 App 團隊
+
+- **盤點客戶 App 既有的 App Intents。** 已經做過捷徑整合的 App，起點會比較好。
+- **用英文環境先試。** 測試裝置需要支援 Apple Intelligence、並設定成支援的語言。先用英文驗證動作設計是否合理，等繁體中文上線再補在地化。這是依官方需求推論的做法，我還沒有實際在裝置上跑過。
+- **涉及金流、訂單、個資的動作，先不做。** 等 Apple 的使用政策出來再決定確認流程該怎麼設計。
+- **報價拆成兩階段。** 現在是探索與原型，正式上線要等春天送審開放。把時程風險寫清楚，對雙方都好。
+
+### 工程主管
+
+- 把「哪些 entity 進 Spotlight 索引」列入隱私與資安審查項目。
+- 每日用量上限代表 Siri AI 不一定每次都能回應，App 內的原有操作流程不能因此簡化掉。
+
+## 五、對這個站的影響
+
+8plus 是網站，沒有原生 App，這次的 Developer Preview 不直接影響這個站。Siri AI 會不會、怎麼讀取一般網站內容，官方文章沒有提，我也不打算猜。
+
+會影響的是我和客戶談需求的方式。之後遇到有 iOS App 的專案，我會在需求訪談裡多問一題：「如果使用者不打開 App，只對 Siri 說一句話，他會想完成什麼？」這題的答案，往往也會讓 Web 與 API 的設計變得更清楚。
+
+---
+
+AI 助理會越來越常成為使用者和服務之間的第一層介面。現在還不是全力投入的時間點，但把「哪些動作值得交給 AI」想清楚，不管 Siri AI 何時支援繁體中文都用得上。如果你想評估自家 App 或服務該怎麼接上 AI 助理，可以[預約 30 分鐘初談](/booking)。

@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-05 10:24 +0800 — Next.js 16.4.5 與 11/5 文章 20 篇上線正式站（Worker 5722d5df，回滾目標 4b3cf067）
+Last activity: 2026-11-07 +0800 — 新增 UI/UX 設計分類、11/7 文章 12 篇、手機版搜尋滑動提示（未 commit、未部署）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-07 +0800 — 新增 UI/UX 設計分類、11/7 文章 12 篇、手機版搜尋滑動提示**：①`category` 加入 `design`（UI/UX 設計／UI/UX design；`lib/content/blog.ts`、`velite.config.ts`、`docs/CONTENT_MODEL.md`），篩選列排在 web 之後。②`content/posts/2026-11-07-*` 六主題中英共 12 篇：design：Figma Config India code layers 與 Specs（10/15）、iPhone Duo 摺疊機設計（10/23 開賣，HIG）、scroll-driven animations 成為 Baseline（Firefox 159）；ai：Siri AI 透過 App Intents 開放（11/3 Developer Preview）；delivery：Dependabot 支援 APM（11/3 changelog）；ops：Ivanti／Cisco／SonicWall SSL VPN 進 KEV（10/29–11/6）。由兩個研究代理依一手來源撰寫；主流程以 curl 抽查 KEV 四筆日期、Apple Siri 公告、APM changelog（GHES 3.24、apm.lock.yaml）、Figma 免費至 11/4、iPhone Duo 規格與開賣日、MDN Firefox 159 皆相符。待確認：Duo 外螢幕 CSS 寬度、safe-area 行為屬推論（文中標註需實測）；SonicWall 修補版本未寫（PSIRT 頁讀不到）；apm／dependabot.yml 範例未實測。③搜尋面板（`command-palette-panel.tsx`、`styles/command-palette.css`）：清單可捲動時上下出現漸層；手機／觸控顯示「共 N 筆 · 往下滑看更多」膠囊，點擊往下捲 70%、到底自動消失（GA `search_scroll_hint`）；觸控拖曳清單時收起鍵盤；手機版高度改用 visualViewport（`--cmdk-vvh`），避免鍵盤蓋住清單底部。Radix Portal 晚於 effect 掛載，所以清單用 callback ref。瀏覽器實測 375 寬：膠囊出現、點擊會捲、到底消失；1280 寬不顯示膠囊、只有漸層。iOS 實機鍵盤行為未驗證。typecheck、`pnpm build`（80 篇）通過；`next-env.d.ts` 已還原。未 commit、未部署。
 
 - ✅ **2026-11-05 10:24 +0800 — Next.js 16.4.5 與 11/5 文章上線正式站（Worker 5722d5df）**：commit `3861712`（升級）、`8f51c0c`（launch config）、`cd21a6a`（文章）。`pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、20 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `5722d5df-0039-4abd-afeb-e18f467d06ca`，回滾目標 `4b3cf067`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；20 篇新文章 200、已進 sitemap 與中英 feed；瀏覽器檢視站務文章頁無 console error。Vercel（apex 轉址源站）未更新；分支未 push。
 

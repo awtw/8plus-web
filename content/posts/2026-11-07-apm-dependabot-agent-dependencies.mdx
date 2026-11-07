@@ -1,0 +1,95 @@
+---
+title: "Dependabot 開始更新 agent skills：把 prompt 與指令當依賴管理的時候到了"
+date: "2026-11-07"
+summary: "11/3 GitHub 宣布 Dependabot 支援 Agent Package Manager（APM），會替 apm.yml 裡的 skills、prompts、instructions 開升級 PR 並重產 lockfile。整理 APM 與這次支援的實際範圍、還沒定案的部分，以及接案團隊導入前該先想清楚的幾件事。"
+slug: "apm-dependabot-agent-dependencies"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["AI Agent", "Agent Skills", "供應鏈安全", "Dependabot", "交付流程", "趨勢"]
+locale: "zh-TW"
+---
+
+# Dependabot 開始更新 agent skills
+
+11 月 3 日，GitHub changelog 發布 [Dependabot version updates support Agent Package Manager](https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager/)：Dependabot 現在可以替 APM 管理的 agent skills、prompts、instructions 開升級 PR。
+
+我在 11/5 寫過 [Agent Skills 捐給 Agentic AI Foundation](/blog/agent-skills-agentic-ai-foundation)，結論之一是「skill 要放進版本控制、當程式碼管」。這次的消息把下一步補上了：**不只是放進 repo，而是像 npm 套件一樣有 manifest、lockfile、自動升級 PR。**
+
+## 一、APM 是什麼
+
+[APM（Agent Package Manager）](https://microsoft.github.io/apm/)是放在 Microsoft GitHub organization 下的開源專案，MIT 授權，官方自我介紹是「agent context 的 npm」。幾個重點：
+
+- **一個 manifest 管全部。** `apm.yml` 宣告這個專案用到的 skills、prompts、instructions、agents、hooks、plugins 與 MCP servers，來源可以是任何 git 主機。
+- **一個 lockfile 鎖住結果。** `apm.lock.yaml` 記錄解析後的來源與內容雜湊，作用類似 `package-lock.json`。
+- **一次部署到多個 agent。** README 列出的目標包含 GitHub Copilot、Claude Code、Cursor、Codex、Gemini、Windsurf、Kiro 等。
+- **預設的安全檢查。** 每次安裝會掃描可能劫持 agent 行為的隱藏 Unicode；間接依賴帶進來的 MCP server 預設要明確同意；`apm-policy.yml` 可以讓組織限制允許的來源與元件類型；`apm audit --ci` 可以接進 CI。
+
+CI 裡可以用 `apm install --frozen`：依官方 CLI 文件，它只照 lockfile 安裝、不改寫 lockfile，lockfile 缺項或宣告變了就失敗。
+
+## 二、Dependabot 這次支援了什麼
+
+依 GitHub changelog、[支援生態系文件](https://docs.github.com/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories#apm)與 [dependabot-core 的 issue #14350](https://github.com/dependabot/dependabot-core/issues/14350)：
+
+- **範圍：** 只有 version updates，**沒有 security updates**。GitHub.com 所有方案都可用，GitHub Enterprise Server 要等 3.24。
+- **怎麼更新：** 讀 `apm.yml`，對「支援的 git 依賴」開 PR；如果有 `apm.lock.yaml` 就一起重產。維護者在 issue 裡的說明是：釘在 tag 的升到最新 release tag；釘完整 commit SHA 的移到最新 annotated release tag 的 commit，並加上版本註解；釘 branch 的則更新 lockfile 裡的 commit。
+- **不會更新的：** 沒有釘版本的項目、縮寫的 SHA、本機路徑，以及 MCP servers。
+- **設定方式：** 在 `.github/dependabot.yml` 加一個 `package-ecosystem: "apm"`，`directory` 指向 `apm.yml` 所在位置，再選更新頻率。`ignore`、`groups`、`cooldown` 這些一般選項都能用。
+
+```yaml
+# .github/dependabot.yml（依 GitHub 說明整理，我尚未實測）
+version: 2
+updates:
+  - package-ecosystem: "apm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+
+時間線上，issue 從 3 月開，10 月 22 日先以 beta 推出，11 月 3 日 changelog 宣布正式可用。
+
+## 三、官方沒說、或還沒定案的部分
+
+- **APM 本身還在 0.x。** 最新版是 10 月 22 日的 v0.35.0，發版頻率很高。工具還在快速變動，設定格式未來改版的可能性不低。
+- **沒有 security updates，代表沒有「漏洞資料庫」。** 一個 skill 被發現有問題時，目前沒有像 npm advisory 那樣的機制會主動通知你。Dependabot 只會告訴你「有新版」，不會告訴你「舊版有危險」。
+- **MCP servers 不在 Dependabot 範圍內。** 它們通常是權限最大的部分，卻要靠你自己追。
+- **跨 agent 的行為一致性。** 同一個 skill 部署到不同 agent，實際行為是否相同，APM 管不到，要靠各家平台。
+- **APM 會不會成為大家共用的格式**，目前看不出來。它和 Agent Skills 標準不是同一件事：Agent Skills 定義一個 skill 長什麼樣子，APM 則管「這個專案用了哪些、哪個版本」。
+
+## 四、我怎麼看
+
+我覺得這件事的意義不在 APM 這個工具，而在**「agent 指令變成有版本、有 diff、有審查流程的依賴」這個方向被大平台接住了**。
+
+過去團隊用 agent，常見的狀況是：某個人從網路上抓了一個 skill 或一段 prompt 放進 repo，之後沒人知道它從哪來、上游改了什麼。對接案團隊來說問題更大：同一套做法要在多個客戶 repo 裡同步，手動複製幾次之後版本就散了。
+
+有了 manifest 與自動升級 PR，上游改了什麼會變成一個可以 review 的 diff。但這也帶來一個新的風險：**自動升級 PR 會讓「合併別人改過的 prompt」變得很順手。** prompt 和 skill 改一句話，agent 的行為就可能改變，而這種改變不會在測試裡報錯。所以 PR 開得出來，不代表可以照 npm 小版本的習慣直接合併。
+
+## 五、實務建議
+
+### 接案團隊、技術負責人
+
+1. **先盤點，不急著導入。** 列出每個 repo 裡有哪些 agent 指令檔、skills、MCP 設定，各自從哪裡來。這份清單本身就有價值。
+2. **自己維護的做法放一個集中 repo。** 用 tag 發版，客戶專案釘 tag。這樣用不用 APM 都成立，未來要導入也最順。
+3. **外部 skill 一律釘版本。** 釘 tag 或完整 SHA，不要釘 branch。釘 branch 等於每次都吃上游最新的內容。
+4. **升級 PR 要人看 diff。** 特別是 `scripts/`、hooks 與任何會執行指令的部分。可以用 `cooldown` 讓新版本放幾天再進來。
+5. **CI 用 `--frozen`，並避免 `--force`。** 依官方文件，`--force` 會略過安全掃描的封鎖。
+
+### 工程主管
+
+- 把 agent 依賴納入現有的供應鏈清單。APM 可以用 `apm lock export` 匯出 CycloneDX 或 SPDX 格式的清單（官方特別說明這是來源紀錄，不是合規證明）。
+- MCP servers 另外管理。它們不在 Dependabot 範圍內，權限邊界要設在 agent 平台與憑證本身。
+
+### 個人開發者
+
+- 先試 `apm install --dry-run` 看它會在你的專案寫入哪些檔案，再決定要不要用。以上指令我都是依官方文件整理，尚未在本站實測。
+
+## 六、對這個站的影響
+
+這個 repo 的 `.claude/skills/` 裡有 44 個 BMAD 的 skills，由 BMAD 自己的安裝程式管理，版本記在 `_bmad/_config/manifest.yaml`（目前是 6.8.0）。repo 裡沒有 `apm.yml`，也還沒有 `.github/dependabot.yml`。
+
+所以短期內我不會導入 APM：BMAD 已經有自己的版本紀錄，再疊一層 manifest 只會多一個要同步的地方。我會先做的是第五節第一步：把 skills 的來源與版本寫清楚。等 APM 進到 1.0、或我開始需要在多個客戶 repo 間同步同一套 skills 時，再回頭評估。
+
+---
+
+agent 的指令正在從「個人設定」變成「專案依賴」。工具會一直換，但鎖版本、看 diff、管來源這些習慣，現在建立起來，換什麼工具都用得上。如果你想替團隊整理 agent 依賴的管理方式，或規劃多個專案共用的 skills，可以[預約 30 分鐘初談](/booking)。

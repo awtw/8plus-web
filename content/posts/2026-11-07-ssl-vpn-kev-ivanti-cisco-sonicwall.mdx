@@ -1,0 +1,84 @@
+---
+title: "十天三家 SSL VPN 進 KEV：Ivanti、Cisco、SonicWall 給中小企業的遠端入口檢查清單"
+date: "2026-11-07"
+summary: "10/29 到 11/6，Cisco ASA／FTD、Ivanti Connect Secure、SonicWall SonicOS 的 SSL VPN 漏洞接連被 CISA 列入已遭利用清單，其中 SonicWall 這個可以繞過 SAML 與 MFA。整理三家各自的事實、官方還沒說清楚的地方，以及只有一台 VPN 設備的團隊這週該做的事。"
+slug: "ssl-vpn-kev-ivanti-cisco-sonicwall"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["資安", "VPN", "KEV", "維運", "趨勢"]
+locale: "zh-TW"
+---
+
+# 十天三家 SSL VPN 進 KEV
+
+從 10 月 29 日到 11 月 6 日，美國 CISA 的[已遭利用漏洞清單（KEV）](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)連續加入三家廠商的 SSL VPN 漏洞：Cisco Secure Firewall ASA／FTD（10/29）、Ivanti Connect Secure（10/30，兩個）、SonicWall SonicOS SSLVPN（11/6）。KEV 只收「已經有人在打」的漏洞，所以這不是理論風險。
+
+對很多台灣中小企業來說，SSL VPN 是遠端辦公的唯一入口，設備常常是設備商或外包 MIS 代管，韌體多久更新一次沒人說得清楚。這篇整理三家各自的事實，以及只有一台 VPN 設備的團隊這週該做什麼。
+
+## 一、三家各自發生什麼事
+
+以下日期與版本都以 CISA KEV 資料、廠商公告與 CVE 紀錄為準。
+
+**Cisco ASA／FTD：CVE-2026-76418（10/28 公告、10/29 進 KEV）**
+
+- [Cisco 公告](https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-tunnel-dos-s6mgkb75)評為 CVSS 8.6。問題在 Remote Access SSL VPN：tunnel group 設了 secondary authentication 時，未經驗證的遠端攻擊者可以讓設備重新開機，造成服務中斷（DoS）。
+- Cisco PSIRT 寫明 10 月已發現實際被利用。官方說「沒有 workaround」，只有兩種會降低安全性的暫時緩解，建議直接升級。修補版本依版本線不同，例如 ASA 9.20 要到 9.20.4.50、FTD 7.4 要到 7.4.9，完整對照請看公告。
+
+**Ivanti Connect Secure：CVE-2026-111357、CVE-2026-118527（10/30 進 KEV）**
+
+- 這兩個是 10 月攻擊鏈的後半段。前半段是 10/13 公布的 CVE-2026-104935（未驗證即可執行指令的認證繞過，同日進 KEV）。[Volexity 的分析](https://www.volexity.com/blog/2026/10/13/a-series-of-unauthenticated-events-chained-exploitation-of-ivanti-connect-secure-zero-days/)說攻擊從 10 月 3 日開始，入侵後的重點是偷 LDAP 網域帳密、查 LAPS 密碼與 BitLocker 復原金鑰，還會修改日誌。
+- 依 [CISA 10/13 發布、10/30 修訂的警示](https://www.cisa.gov/news-events/alerts/2026/10/13/cisa-urges-patching-newly-exploited-vulnerability-ivanti-connect-secure)，受影響的是 25.1.1.2 以前、25.1.2.2 以前與 22.8R2.5 以前；22.8 版本線 2027 年 1 月 31 日 EOL。CVE 紀錄寫 CVE-2026-118527 在 25.1.1.3 與 22.8R2.6 之前受影響。換句話說，**10/13 那一輪已經升級的人，還要再升一次。**
+- CISA 特別提醒：Ivanti 的 Integrity Checker 可能偵測不到，因為指令在記憶體裡執行。懷疑被入侵時，要備份設定、恢復原廠並升級（虛擬機則重建）、重設所有帳號密碼（含網域帳號），並撤銷重發設備上存的憑證與 API 金鑰。
+
+**SonicWall SonicOS SSLVPN：CVE-2026-19868（11/6 公布、同日進 KEV）**
+
+- 依 [NVD](https://nvd.nist.gov/vuln/detail/CVE-2026-19868) 與 CVE 紀錄，持有「另一種驗證方式」有效帳密的使用者，可以繞過 SAML 驗證控制，**連 SAML 強制的 MFA 也可能一起被繞過**。
+- 受影響的是 Gen7 的 7.3.3-7015 以前、Gen8 的 8.2.2-8015 以前。CISA 評估的 CVSS 是 7.5。廠商公告編號 SNWLID-2026-0014。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **SonicWall 的修補版本與緩解方式**，我沒能直接讀到廠商公告（PSIRT 頁面需要執行 JavaScript），CVE 紀錄只寫受影響版本。請以 [SNWLID-2026-0014](https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0014) 為準。
+- **Ivanti 的版本號對照不一致。** CISA 警示、各筆 CVE 紀錄列的版本寫法對不太起來，Ivanti 公告本身我也讀不到（需要登入或 JavaScript）。實際要升到哪一版，請以 Ivanti 公告和你的支援窗口為準。
+- **攻擊者是誰、打了多少台**，三家都沒有公布數字。Cisco 這個是 DoS，但它被利用的目的官方沒說。
+- **SonicWall 的「另一種驗證方式」具體指哪些組合**（例如本機帳號、LDAP 與 SAML 並存），CVE 描述沒有細講。
+
+## 三、我怎麼看這一波
+
+三家漏洞類型完全不同：一個讓設備當機，一個是攻擊鏈拿 root，一個是繞過 MFA。共同點只有一個：**它們都在對外開放、帳密集中、又很少有人在看日誌的那台設備上。**
+
+另一個值得注意的是 CISA 的做法變了。今年 6 月 10 日發布的 [BOD 26-04](https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk) 取代了建立 KEV 的 BOD 22-01，改用「是否對外暴露、是否在 KEV、能否自動化利用、技術影響」四個因素決定修補急迫度，KEV 的每一筆也標示「是否需要鑑識分級（forensic triage）」。這一波裡，Ivanti CVE-2026-111357 標了需要，聯邦機關的期限只有 3 天（10/30 加入、11/2 到期）；Cisco 與 SonicWall 這兩筆則沒有。這雖然是美國聯邦機關的規定，但訊號很清楚：**對某些漏洞來說，「升級完了」不等於「沒事了」。**
+
+中小企業最常見的盲點是 MFA 帶來的安全感。SonicWall 這個漏洞提醒我們：MFA 只保護它有被強制執行的那條登入路徑，同一台設備上如果還留著本機帳號或舊的 LDAP 登入方式，就可能是側門。
+
+## 四、這週可以做的事
+
+### 有自己 VPN 設備的公司（老闆、IT 負責人）
+
+1. **先確認型號與版本。** 打開管理介面，記下型號、韌體版本、上次更新日期。如果這件事要打電話問設備商才知道，就是第一個要改的流程。
+2. **對照上面三家的受影響版本。** 不是這三家也別放心，把你的品牌加進 KEV 搜尋看看。
+3. **用 Ivanti 的公司：** 10/13 之後升過級也要再確認一次版本；任何懷疑都照 CISA 的復原步驟走，並把網域帳號密碼一起換掉。
+4. **用 SonicWall 並且有設 SAML／MFA 的公司：** 盤點 SSL VPN 上還有哪些驗證方式是開的，把不需要的本機帳號、舊的 LDAP 登入關掉。
+
+### 代管客戶設備的接案團隊、外包 MIS
+
+- 把客戶的對外設備列成清單（型號、版本、管理者、合約裡誰負責更新），KEV 有新的同品牌項目就主動通知。這件事做起來不難，但多數合約沒寫。
+- 修補要寫進服務水準：嚴重漏洞幾天內處理、誰批准停機、更新後怎麼驗證。
+
+### 工程主管
+
+- VPN 帳密通常就是網域帳密。檢查 VPN 登入紀錄是否送到集中日誌，異常時段、異常國家的登入要有人看得到。
+- 長期來看，評估是否還需要「整個內網」的 VPN，還是能改成逐一應用程式的存取控制。這不是這週的事，但每一波 VPN 漏洞都在加重這個問題的權重。
+
+順帶一提，Node.js 也已預告 [11 月 11 日或之後會發布 26.x、24.x、22.x 的安全更新](https://nodejs.org/en/blog/vulnerability/november-2026-security-releases)，最高嚴重度為 High，可以和這輪設備更新排在同一週。上一輪的處理方式我寫在 [Node.js 10 月安全更新](/blog/nodejs-october-2026-security-release)。
+
+## 五、對這個站的影響
+
+8plus 部署在 Cloudflare Workers，沒有自己的 VPN 或防火牆設備，這三個漏洞不直接影響這個站。
+
+但道理是一樣的：這個站的「對外入口」是 Cloudflare、GitHub 和網域註冊商的帳號。SonicWall 這次的教訓我會套用在這些帳號上：確認除了 MFA 之外，沒有被遺忘的替代登入方式或長期有效的 API token。這是檢查方向，不是已完成的稽核結果。
+
+---
+
+VPN 設備是最不起眼、卻最常被打的那台機器。不需要一次換掉架構，但至少要知道它是什麼版本、誰負責更新、出事時誰會發現。如果你想盤點公司的對外設備與帳號，或把修補流程寫進維運合約，可以[預約 30 分鐘初談](/booking)。

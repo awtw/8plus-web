@@ -1,0 +1,79 @@
+---
+title: "iPhone Duo 開賣：側邊導覽列、摺痕避讓與「只看寬度」的 RWD 該升級了"
+date: "2026-11-07"
+summary: "第一支摺疊 iPhone 在 10/23 開賣，Apple 的設計指引要求 App 依尺寸類別調整、工具列移到側邊、避開摺痕區域；Safari 27.1 也把 Device Posture 與 Viewport Segments 放在功能旗標後面。整理官方說了什麼、還沒定案的部分，以及設計、iOS 與網頁團隊各該做什麼。"
+slug: "iphone-duo-foldable-design"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["iOS", "Apple", "響應式設計", "摺疊裝置"]
+locale: "zh-TW"
+---
+
+# iPhone Duo 開賣
+
+Apple 在 9 月 9 日[發表 iPhone Duo](https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/)，10 月 16 日開放預購，**10 月 23 日在美國等首波市場開賣**，10 月 30 日再擴及另外 28 個國家和地區，出廠搭載 iOS 27.1。10 月 22 日，Apple 又發了一篇[開發者新聞稿](https://www.apple.com/newsroom/2026/10/developers-bring-incredible-new-app-experiences-to-iphone-duo/)，列出 Netflix、Microsoft Word、Slack、KakaoTalk 等已經適配的 App。
+
+對設計團隊來說，這不只是多一個尺寸。Apple 在[人機介面指南（HIG）的〈Designing for iPhone Duo〉](https://developer.apple.com/design/human-interface-guidelines/designing-for-iphone-duo)裡做了一件很少見的事：**把 iPhone 的工具列與分頁列搬到螢幕側邊。**
+
+## 一、硬體與官方指引說了什麼
+
+硬體部分，依 Apple 新聞稿：外螢幕 5.4 吋、內螢幕 7.6 吋，兩片螢幕長寬比相同，內螢幕比 iPhone 18 Pro Max 大 50%，美國起價 1,999 美元。
+
+設計指引的重點：
+
+- **用尺寸類別，不要為每個姿勢做一套版面。** 外螢幕用 compact 寬度、內螢幕用 regular 寬度，就涵蓋所有姿勢的基礎。指引明講「不要在調整尺寸時重新發明你的 App」，而是讓既有版面依可用空間延展。
+- **控制項移到側邊。** 外螢幕比其他 iPhone 寬而矮，系統會把工具列、分頁列與導覽控制放到側邊，保留垂直空間給內容；內螢幕橫拿時也維持在側邊。使用系統元件就會自動得到這個行為。
+- **保留區域（reserved regions）。** 包括外螢幕前鏡頭、啟用時的內螢幕前鏡頭，以及半摺時的摺疊區域。警示、選單、sheet 會自動避開摺痕；自訂元件要用 `ReservedRegion` API 自己避開。
+- **小幅調整，不要大搬家。** 指引建議摺疊時只移動必要的元素；格狀版面優先用偶數欄，讓內容能在摺痕兩側平均分開。
+- **工具列項目要同時有圖示與標題。** [開發文件](https://developer.apple.com/documentation/technologyoverviews/preparing-your-app-for-iphone-duo)說明，垂直呈現時只用圖示；只有標題、沒有圖示的項目，系統不會放進垂直列。
+
+開發端，Xcode 27.1 的 Device Hub 可以模擬開合、半摺與旋轉。文件也提醒：**用 Xcode 26 或更早版本建置的 App，不會延伸到狀態列與鏡頭底下**，要用新版 Xcode 才能用滿整個螢幕。
+
+網頁端，同一天發布的 [Safari 27.1](https://developer.apple.com/documentation/safari-release-notes/safari-27_1-release-notes) 加入 Device Posture API 與 Viewport Segments API，但兩者都在**功能旗標後面**，預設沒有開。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **網頁的視窗寬度沒公布。** 我在官方文件裡沒找到兩片螢幕在 Safari 裡的 CSS 視窗寬度。你的斷點會落在哪一邊，只能用實機或模擬器量。
+- **網頁 API 何時預設開啟沒有時程。** Safari 27.1 只說「behind a feature flag」，現階段網站不能依賴 `device-posture` 媒體查詢或 `viewport-segment-*` 環境變數。
+- **沒適配的 App 會是什麼樣子，說明有限。** 文件只講了 Xcode 26 以前建置的 App 不會延伸到狀態列與鏡頭下，沒有完整描述相容模式的樣貌。
+- **市場規模未知。** Apple 沒有公布銷量。以 1,999 美元的起價，這台短期內不會是主流機種，適配優先序要看你的使用者組成。
+
+## 三、這對設計代表什麼
+
+**1. 「手機＝底部分頁列」的慣例被打破了。** 過去十年，手機導覽放底部、平板放側邊幾乎是常識。iPhone Duo 讓「手機也可能是側邊導覽」成為系統預設，設計系統裡的導覽元件需要一個垂直版本。
+
+**2. 寬度不再足以描述裝置狀態。** 同一台手機會在兩片長寬比相同但大小不同的螢幕間切換，還可能半摺。只靠寬度斷點的 RWD 能處理大部分情況，但處理不了摺痕。我在[響應式設計最佳實踐](/blog/responsive-design-best-practices)整理過斷點策略與 container queries，那些依然適用，只是現在畫面中間多了一條物理上的線。
+
+**3. 圖示必須能單獨成立。** 垂直列只放圖示，代表「圖示加文字才看得懂」的設計會在這台手機上失去文字。圖示語意要經得起單獨使用，無障礙標籤也更重要。
+
+## 四、實務建議
+
+### 設計師
+
+- Apple Design Resources 在 9 月 18 日加入 iPhone Duo 外框，9 月 17 日更新 iOS 27 的 Figma UI Kit。在設計檔裡至少加三個畫框：外螢幕、內螢幕直拿、內螢幕半摺。
+- 盤點設計系統的導覽元件，補上垂直版本，並確認每個工具列項目都有可單獨辨識的圖示。
+
+### iOS 工程
+
+- 先用 Xcode 27.1 重新建置，用 Device Hub 走一遍每個姿勢。
+- 搜尋程式碼裡寫死的寬度與依螢幕尺寸做的判斷，改成依容器或 scene 的邊界計算。
+
+### 網頁團隊
+
+- 不要為 Device Posture API 寫正式功能，它還在旗標後面。現在能做的是確認版面在兩種寬度下都不破、關鍵內容不會剛好落在畫面正中央。
+
+### 接案與 PM
+
+- 把「摺疊裝置適配」列成報價裡的獨立項目，不要默認含在 RWD 裡。是否要做，依使用者裝置數據決定。
+
+## 五、對這個站的影響
+
+8plus 在 767px 以下會顯示固定在底部的行動版分頁列，並用 `env(safe-area-inset-bottom)` 墊高。iPhone Duo 外螢幕應該會落在這個區間，但內螢幕會不會超過 767px，我在官方資料裡找不到 CSS 寬度，必須實測。
+
+另外，我在專案設定裡沒有找到 `viewport-fit=cover`。依 iOS Safari 的行為，沒有這個設定時，safe-area 的值通常是 0，頁面也不會延伸到鏡頭區域。這讓這個站在新的鏡頭位置下比較安全，但也代表那幾行 `env()` 目前可能沒有作用。這兩件事我會在拿到實機或模擬器後一起確認，再決定要不要調整。
+
+---
+
+新的硬體型態，通常會先把設計系統裡寫死的假設照出來。如果你的產品要評估摺疊裝置的適配範圍，或想整理一套不依賴特定裝置的版面規則，可以[預約 30 分鐘初談](/booking)。更多設計相關的文章在 [UI/UX 設計分類](/blog?category=design)。

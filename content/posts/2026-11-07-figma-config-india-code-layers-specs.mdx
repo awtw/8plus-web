@@ -1,0 +1,78 @@
+---
+title: "Figma Config India：code layers 與 Specs 上桌，設計交付物從畫面變成程式碼加脈絡"
+date: "2026-11-07"
+summary: "10/15 Figma 在 Config India 推出 code layers、Specs、Guidelines 等一系列 beta 功能，code layers 的免費編輯期已在 11/4 結束。整理官方說了什麼、還沒定案的部分，以及接案與產品團隊該怎麼調整交付與報價。"
+slug: "figma-config-india-code-layers-specs"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["Figma", "設計系統", "設計到程式碼", "AI 工作流"]
+locale: "zh-TW"
+---
+
+# Figma Config India：code layers 與 Specs
+
+10 月 15 日，Figma 在班加羅爾舉辦的 Config India 發表一整組新功能，執行長 Dylan Field 同日在官方部落格發表 [Build by design](https://www.figma.com/blog/build-by-design/)。官方的[說明中心整理](https://help.figma.com/hc/en-us/articles/43663368947863-What-s-new-from-Config-India-2026)列了七項，我認為最值得接案與產品團隊注意的是兩個：**code layers 把可執行的程式碼放上畫布，Specs 把 Markdown 規格變成畫布上的物件。**
+
+發表會已經過了三週，現在回頭看反而剛好：官方寫明「在 code layer 裡建立與編輯，付費方案免費到 11 月 4 日」，之後改用 AI credits 計費。今天是 11 月 7 日，試用期已經結束，現在才是評估真實成本的時候。
+
+## 一、發表了什麼
+
+依 [code layers 介紹文](https://www.figma.com/blog/design-together-with-code-layers/)、[Specs 介紹文](https://www.figma.com/blog/introducing-figma-specs/)與說明中心：
+
+- **Code layers（open beta）。** 圖層裡裝的是正在執行的程式碼，可以在畫布上並排比較、留言、複製。來源有五種：把設計 frame 轉成程式碼、從 GitHub 或本機資料夾匯入、用 Figma Chrome 擴充功能擷取現有網頁、透過 MCP 從其他程式工具帶進來、或直接對 agent 下指令。從 GitHub 匯入的 code layer 會與 repo 保持連結，可以推到分支或開 pull request。
+- **Specs（open beta）。** 以 Markdown 為核心的規格容器，可以把 `.md` 檔拖進畫布，也能嵌入 frame 與 FigJam。複製 spec 連結貼進 coding agent 的 prompt，agent 會透過 Figma MCP server 拿到 Markdown、frame、圖表、code layer 與 Code Connect 片段，也能回寫更新 spec。
+- **讓 agent 跟著設計系統走。** Guidelines（open beta）附在已發布的元件庫上，agent 用這個庫產出設計時會自動讀到；Code sources（closed beta）讓元件庫連到 GitHub repo 或 npm 套件；集中式設計系統（centralized design systems）目前只是預覽。
+- **MCP server 更新。** 新增 `html_to_figma`（把 agent 產生的 HTML 轉成可編輯圖層）與 `generate_image` 等工具，官方說新增 20 個合作夥伴。
+
+會後的 [release notes](https://www.figma.com/release-notes/) 也持續在補：11 月 3 日起，從 frame 建 code layer 時 agent 會讀取原型連線與互動；同一天，新的 GitHub 連線**預設允許把 repo clone 進 Figma**，管理員可以逐一 repo 關閉。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **全部都是 beta。** code layers、Specs、Guidelines 是 open beta，Code sources 是 closed beta，集中式設計系統只是預覽。
+- **方案範圍寫法不一致。** Dylan Field 的文章說 Specs 開放給「所有付費方案」，說明中心卻把 Starter 也列進去，Specs 介紹文則寫「所有方案」。以你帳號實際看到的為準。
+- **成本沒有公式。** 說明中心只說 credits 用量取決於模型、任務複雜度與 guidelines 大小，每次 prompt 會顯示用量。沒有可以事先估算的單價。
+- **支援哪些技術沒講清楚。** code layers 的說法是「支援的輕量原型 codebase」，文中出現過 HTML 與 React 的例子，但沒有正式的支援清單。
+- **關閉選項很粗。** 依說明中心，只有 Enterprise 管理員能停用 code layers，而且要連同所有 AI 功能一起關。
+
+## 三、這對團隊代表什麼
+
+Dylan Field 的論點是：AI 讓寫程式變便宜，團隊現在有兩種模式，「為了思考而做」的快速原型，與「為了上線而做」的正式工程。我同意這個區分，也認為它是這次發表最有用的部分，因為它直接點出風險：**code layer 裡跑得起來的東西，是思考用的原型，不是可以上線的程式碼。**
+
+對交付流程，我看到兩個變化：
+
+**1. 交付物從「畫面」變成「畫面＋程式碼＋脈絡」。** 過去設計交付是 frame 加標註；現在可以是一個能點的 code layer，加一份 agent 讀得懂的 spec。好處是誤解變少，代價是驗收標準要重寫：原型的程式碼要不要審？誰負責？
+
+**2. 設計系統的「真相來源」要先決定。** Guidelines 與 Code sources 是讓 Figma 去讀你的 repo，方向是對的。但如果團隊把規則同時寫在 Figma guidelines、repo 的 README 與 agent 設定檔裡，三份很快就會不一致。
+
+## 四、實務建議
+
+### 接案團隊
+
+- **在報價裡區分原型與正式程式碼。** 用 code layer 做給客戶看的原型，合約要寫清楚它不是交付的生產程式碼，避免客戶以為「都已經能動了」。
+- **把 AI credits 當成專案成本。** 免費期已經結束，用量又無法事先估算，可以先在一個小專案量一輪，再決定要怎麼列進報價。
+
+### 設計師
+
+- **先用 Specs 寫規格，再決定要不要用 code layers。** Specs 的價值是讓文字意圖與畫面放在一起，這件事即使不用 agent 也有用。
+- 用 code layer 驗證互動時，記得它的程式碼品質沒有人保證，不要拿來當工程的起點。
+
+### 前端與工程
+
+- **檢查 GitHub 連線設定。** 11 月 3 日之後新建的連線預設允許 clone，哪些 repo 可以進 Figma，應該由工程主管決定，而不是誰先連就算誰的。
+- code layer 開出來的 PR 跟其他 PR 一樣要走 review，不要因為來源是設計工具就放寬。
+
+### 產品與管理者
+
+- 盤點組織裡的 AI 功能開關：既然 Enterprise 只能整包關閉，要先決定 AI 功能整體的政策，而不是只針對 code layers。
+
+## 五、對這個站的影響
+
+8plus 的設計系統目前以程式碼為準：token 寫在 `styles/globals.css`，另有一個 `8plus Design System/` 資料夾，放了給 agent 讀的 `SKILL.md` 與色彩、字體、間距等 guideline 卡片，對比度則由 `scripts/check-contrast.mjs` 依 WCAG AA 檢查。換句話說，Figma 這次推的「讓 agent 讀得到設計規則」，這個站已經用 repo 裡的 Markdown 在做。
+
+所以我不會把真相來源搬進 Figma。如果之後要用，比較合理的是讓 Code sources 指向 repo，由 repo 單向餵給 Figma，而不是在兩邊各維護一份規則。設計交接文件裡原本就把 Figma 設計系統檔列為交付物之一，這部分會等 Guidelines 與 Code sources 脫離 beta 再評估。
+
+---
+
+設計工具開始直接處理程式碼，最大的改變不在工具本身，而在交付合約與驗收方式。如果你的團隊正在決定設計系統要以哪裡為準，或想重新設計設計到工程的交接流程，可以[預約 30 分鐘初談](/booking)，也可以看看[服務內容](/services)。

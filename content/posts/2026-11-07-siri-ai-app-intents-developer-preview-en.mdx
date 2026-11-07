@@ -1,0 +1,77 @@
+---
+title: "Siri AI opens to every app: App Intents become your app's interface for AI"
+date: "2026-11-07"
+summary: "On November 3, Apple launched the Siri AI Developer Preview in the iOS 27.3 betas and their siblings. Any app can now hand its content and actions to Siri AI through App Intents, and use skills to chain several actions. Traditional Chinese is 'coming soon' with no date, and App Store submission opens in the spring. What Apple said, what is still unsettled, and what teams with an iOS app should plan now."
+slug: "siri-ai-app-intents-developer-preview-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI agents", "Apple", "App Intents", "iOS", "trends"]
+locale: "en"
+---
+
+# Siri AI opens to every app
+
+On November 3, Apple posted [Siri AI is now open to all developers](https://developer.apple.com/news/?id=gdk2umrf) on its developer site. Starting with the iOS 27.3, iPadOS 27.3, macOS 27.3 and visionOS 27.3 betas, a new Developer Preview lets **any developer** integrate their app with Siri AI.
+
+Most of my recent posts have been about agents on the development side: Copilot writing code, standards for managing skills. This one is about the other side: **when the AI assistant in a user's pocket can operate your app directly, how does your app get seen, and get used correctly?**
+
+## 1. What Apple announced
+
+From the post:
+
+- **The integration path is App Intents.** Apps hand their content and actions to Siri AI through App Intents, which gives them access to capabilities such as personal context understanding, onscreen awareness and natural language. Users ask in their own words and Siri AI carries out the custom actions you have built. Apple's examples are checking a delivery, booking a reservation and placing an order.
+- **Skills are new.** For complex requests, developers can teach Siri AI to combine several actions into a single experience.
+- **The Spotlight semantic index opens up.** Siri AI can now surface any entity in the Spotlight semantic index, not only those that fit an existing schema.
+- **Apple's own apps went first.** Calendar, Files, Mail, Maps, Messages, Notes, Photos, Reminders, Safari, Shortcuts, Weather and others have started rolling out support, and Apple points to them as reference examples.
+- **Timing.** This is early access "before first shipping to customers in a few months," and **App Store submission opens in the spring.**
+
+The post also notes that thousands of developers have already built Siri integrations. App Intents is the framework that Siri and Shortcuts already use, so this is a large upgrade to an existing interface more than a brand-new API.
+
+## 2. What was not said, or is still open
+
+- **No date for Traditional Chinese.** Supported languages today are English, French, Japanese, Korean, Portuguese and Spanish. Traditional Chinese is listed as "soon," alongside Norwegian, Turkish and Vietnamese. Apple also notes that some features may not be available in all regions or languages. When Taiwan gets it is not stated.
+- **Terms and usage policies are not out yet.** Apple says it "will follow up with more details about the terms and usage policies for experiences enabled through Siri AI." For apps that handle payments or orders, this is the critical part.
+- **Daily usage limits now, fees later.** Apple Intelligence features that rely on server-side models, including Siri AI, are subject to daily usage limits that vary with the feature, request complexity, system demand and other factors. Apple states that "expanded access to such features will be available for a fee in the future." Who pays, and how it is priced, is not explained.
+- **Not available in the EU.** Siri AI on iOS, iPadOS and watchOS is currently unavailable in the EU, and it is not available to users under 13.
+- **API details** are in Apple's [Siri AI Developer Preview documentation](https://developer.apple.com/documentation/appintents/siri-ai-developer-preview). I have not checked the API names one by one for this post, and interfaces may change during the preview.
+
+## 3. How I read it
+
+**App Intents are turning into "your app's API for AI."** It is the same trend I see on the web: we used to design interfaces for people to tap; now we also need a layer for agents to call. Websites and backends use APIs and MCP; iOS apps use App Intents.
+
+That brings three practical shifts:
+
+1. **The entry point moves from screens to intents.** A user might never open your app and just tell Siri AI, "change my reservation for tomorrow." If your app does not offer that action, Siri AI may well go elsewhere.
+2. **The quality of action definitions starts to matter.** Clear parameters, unambiguous names, and confirmation where confirmation belongs are what let an AI use them correctly. It is the same craft as writing good API documentation.
+3. **Data exposure needs another look.** With the Spotlight semantic index opened up, whatever you put in the index is easier for AI to reach. Someone has to decide what should be indexed and what should not.
+
+## 4. Practical advice
+
+### Small and mid-sized companies with an iOS app (owners, product leads)
+
+- **No need for a big new budget yet.** Traditional Chinese is not live, submission opens in the spring, and the terms are not out. A sensible step is a small assessment: if users could use our app with a single sentence, what are the three things they would say most?
+- Put the result into next year's first-half product plan, not this month's sprint.
+
+### App agencies
+
+- **Inventory each client app's existing App Intents.** Apps that already integrate with Shortcuts start from a better place.
+- **Test in English first.** Test devices need to support Apple Intelligence and be set to a supported language. Validate whether the action design makes sense in English, and add localization when Traditional Chinese arrives. This approach is inferred from Apple's stated requirements; I have not run it on a device myself.
+- **Hold off on actions involving payments, orders or personal data.** Wait for Apple's usage policies before deciding how confirmation flows should work.
+- **Quote in two phases.** Right now is exploration and prototyping; production has to wait for submission to open in the spring. Making the schedule risk explicit is good for both sides.
+
+### Engineering leads
+
+- Add "which entities go into the Spotlight index" to your privacy and security review.
+- Daily usage limits mean Siri AI will not always be able to respond, so do not strip down the in-app flows because of it.
+
+## 5. What it means for this site
+
+8plus is a website with no native app, so this Developer Preview does not affect it directly. Whether and how Siri AI reads ordinary websites is not mentioned in Apple's post, and I am not going to guess.
+
+What it does change is how I talk requirements with clients. For projects with an iOS app, I will add one question to discovery: "If the user never opens the app and says one sentence to Siri, what do they want done?" The answer often makes the web and API design clearer as well.
+
+---
+
+AI assistants will increasingly be the first layer between users and services. This is not the moment to go all in, but working out which actions are worth handing to an AI will pay off whenever Siri AI supports Traditional Chinese. If you want to assess how your app or service should connect to AI assistants, [book a 30-minute intro call](/booking).

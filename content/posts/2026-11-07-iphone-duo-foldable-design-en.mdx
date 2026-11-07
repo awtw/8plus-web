@@ -1,0 +1,79 @@
+---
+title: "iPhone Duo is on sale: side navigation, fold avoidance, and why width-only responsive design needs an upgrade"
+date: "2026-11-07"
+summary: "The first foldable iPhone went on sale on October 23. Apple's design guidance asks apps to adapt through size classes, move toolbars to the side and keep clear of the fold, while Safari 27.1 ships Device Posture and Viewport Segments behind a feature flag. What was announced, what is still open, and what design, iOS and web teams should do."
+slug: "iphone-duo-foldable-design-en"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["iOS", "Apple", "responsive design", "foldables"]
+locale: "en"
+---
+
+# iPhone Duo is on sale
+
+Apple [announced iPhone Duo](https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/) on September 9, opened pre-orders on October 16, and **put it on sale on October 23 in the first wave of markets, including the US**, with 28 more countries and regions following on October 30. It ships with iOS 27.1. On October 22, Apple published a [developer news post](https://www.apple.com/newsroom/2026/10/developers-bring-incredible-new-app-experiences-to-iphone-duo/) listing apps already adapted for it, from Netflix and Microsoft Word to Slack and KakaoTalk.
+
+For design teams this is more than another screen size. In the Human Interface Guidelines page [Designing for iPhone Duo](https://developer.apple.com/design/human-interface-guidelines/designing-for-iphone-duo), Apple does something unusual: **it moves iPhone toolbars and tab bars to the side of the screen.**
+
+## 1. What the hardware and the guidance say
+
+On hardware, per Apple's press release: a 5.4-inch outer display and a 7.6-inch inner display with the same aspect ratio, an inner display 50 percent larger than iPhone 18 Pro Max, and a US starting price of $1,999.
+
+The key points of the design guidance:
+
+- **Use size classes, not a layout per pose.** A compact-width layout for the outer display and a regular-width layout for the inner display cover the fundamentals of every pose. The guidance says plainly not to reinvent your app when it resizes, but to let the existing layout expand into the available space.
+- **Controls move to the side.** The outer display is wider and shorter than other iPhones, so the system places toolbars, tab bars and navigation controls on the side to preserve vertical space for content. They stay on the side on the inner display in landscape as well. Standard system components get this automatically.
+- **Reserved regions.** These include the outer front camera, the inner front camera while it is active, and the folding region when the device is partly open. Alerts, menus and sheets avoid the fold on their own. Custom components need the `ReservedRegion` API.
+- **Small adjustments, not rearrangements.** When the device folds, move only what is necessary. In grid layouts, prefer an even number of columns so content splits cleanly on either side of the fold.
+- **Toolbar items need both an icon and a title.** The [developer documentation](https://developer.apple.com/documentation/technologyoverviews/preparing-your-app-for-iphone-duo) explains that vertical bars use icons only, and an item with a title but no icon is not presented vertically at all.
+
+On the development side, Device Hub in Xcode 27.1 simulates opening, closing, partial folding and rotation. The documentation also warns that **apps built with Xcode 26 or earlier do not extend under the status bar and camera**, so you need the new Xcode to use the full screen.
+
+On the web, [Safari 27.1](https://developer.apple.com/documentation/safari-release-notes/safari-27_1-release-notes), released the same day the phone went on sale, adds the Device Posture API and the Viewport Segments API, but both sit **behind a feature flag** and are off by default.
+
+## 2. What was not said, or is still open
+
+- **Viewport widths for the web are not published.** I could not find the CSS viewport width of either display in Apple's documentation. Which side of your breakpoints each display lands on has to be measured on a device or simulator.
+- **No timeline for the web APIs.** Safari 27.1 only says "behind a feature flag." For now, sites cannot rely on the `device-posture` media query or the `viewport-segment-*` environment variables.
+- **Behavior of unadapted apps is only partly described.** The documentation covers the Xcode 26 status bar and camera point, but does not fully describe what a compatibility mode looks like.
+- **Market size is unknown.** Apple has not published sales figures. At $1,999, this will not be a mainstream device soon, so prioritize based on your own user mix.
+
+## 3. What it means for design
+
+**1. The "phone means bottom tab bar" convention is broken.** For a decade, bottom navigation on phones and side navigation on tablets was close to common sense. iPhone Duo makes side navigation a system default on a phone, so your design system's navigation components need a vertical variant.
+
+**2. Width no longer describes the device state.** The same phone switches between two displays of the same aspect ratio but different size, and can sit half folded. Width-based breakpoints cover most cases, but they cannot handle a fold. The breakpoint strategy and container queries I covered in [responsive design best practices](/blog/responsive-design-best-practices-en) still apply; there is just a physical line down the middle of the screen now.
+
+**3. Icons have to stand on their own.** Vertical bars show icons only, so any design that relies on a text label to make an icon understandable loses that label on this phone. Icon semantics need to hold up alone, and accessibility labels matter even more.
+
+## 4. Practical advice
+
+### Designers
+
+- Apple Design Resources added iPhone Duo bezels on September 18 and updated the iOS 27 UI Kit for Figma on September 17. Add at least three frames to your files: outer display, inner display upright, and inner display half folded.
+- Audit your design system's navigation components, add vertical variants, and make sure every toolbar item has an icon that reads on its own.
+
+### iOS engineers
+
+- Rebuild with Xcode 27.1 first, then walk through every pose in Device Hub.
+- Search for hard-coded widths and logic based on screen size, and switch to container or scene bounds.
+
+### Web teams
+
+- Do not build production features on the Device Posture API while it is behind a flag. What you can do now is confirm that layouts hold at both widths and that key content does not land exactly in the middle of the screen.
+
+### Agencies and PMs
+
+- List foldable support as its own line item in quotes instead of assuming it is part of responsive design. Whether to do it should depend on your users' device data.
+
+## 5. What it means for this site
+
+Below 767px, 8plus shows a mobile tab bar fixed to the bottom of the screen and pads it with `env(safe-area-inset-bottom)`. The outer display of iPhone Duo should fall in that range, but whether the inner display goes past 767px I cannot tell, because I found no CSS width in Apple's material. It has to be measured.
+
+I also found no `viewport-fit=cover` setting in the project. In iOS Safari, without it, safe-area values are usually 0 and the page does not extend into the camera area. That keeps the site safe around the new camera positions, but it also means those `env()` lines may currently do nothing. I will check both once I can test on a device or the simulator, and decide then whether to change anything.
+
+---
+
+New hardware tends to expose the assumptions baked into a design system. If your product needs to scope foldable support, or you want a set of layout rules that do not depend on specific devices, [book a 30-minute intro call](/booking). More design posts live in the [UI/UX design category](/blog?category=design).

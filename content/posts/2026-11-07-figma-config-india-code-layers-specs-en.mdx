@@ -1,0 +1,78 @@
+---
+title: "Figma Config India: code layers and Specs turn the design handoff into code plus context"
+date: "2026-11-07"
+summary: "On October 15 Figma used Config India to launch code layers, Specs, Guidelines and more, all in beta, and free editing of code layers ended on November 4. What was announced, what is still open, and how agencies and product teams should adjust delivery and pricing."
+slug: "figma-config-india-code-layers-specs-en"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["Figma", "design systems", "design to code", "AI workflow"]
+locale: "en"
+---
+
+# Figma Config India: code layers and Specs
+
+On October 15, Figma held Config India in Bengaluru and shipped a batch of new features. The same day, CEO Dylan Field published [Build by design](https://www.figma.com/blog/build-by-design/) on the company blog. The [help center round-up](https://help.figma.com/hc/en-us/articles/43663368947863-What-s-new-from-Config-India-2026) lists seven items. For agencies and product teams, two matter most: **code layers put running code on the canvas, and Specs turn Markdown specifications into canvas objects.**
+
+Three weeks on is actually a good time to look at this. Figma said that creating and editing inside code layers would be free on paid plans through November 4, after which it draws on AI credits. Today is November 7, so the trial period is over, and this is when the real cost becomes visible.
+
+## 1. What was announced
+
+From the [code layers post](https://www.figma.com/blog/design-together-with-code-layers/), the [Specs post](https://www.figma.com/blog/introducing-figma-specs/) and the help center:
+
+- **Code layers (open beta).** A layer that holds running code, which teammates can compare side by side, comment on and duplicate. You can start one in five ways: convert a design frame, import from GitHub or a local folder, capture a live page with the Figma Chrome extension, bring a prototype in from another coding tool over MCP, or prompt the agent. A code layer imported from GitHub stays connected to the repository, and you can push to a branch or open a pull request.
+- **Specs (open beta).** A Markdown-based container for context. You can drag a `.md` file onto the canvas and embed frames or FigJam boards. Paste a spec link into a coding agent's prompt and the agent receives the Markdown, frames, diagrams, code layers and Code Connect snippets through the Figma MCP server, and can write updates back to the spec.
+- **Design systems that agents can follow.** Guidelines (open beta) attach to published libraries and are handed to the agent automatically when someone designs with that library. Code sources (closed beta) connect a library to a GitHub repo or npm package. Centralized design systems are only in preview.
+- **MCP server updates.** New tools include `html_to_figma`, which turns agent-generated HTML into editable layers, and `generate_image`. Figma says 20 new partners were added.
+
+The [release notes](https://www.figma.com/release-notes/) have kept moving since. On November 3, the agent started reading prototype connections and interactions when it builds a code layer from frames. On the same day, **cloning repositories into Figma became the default for new GitHub connections**, with admins able to turn it off per repository.
+
+## 2. What was not said, or is still open
+
+- **Everything is in beta.** Code layers, Specs and Guidelines are open beta, Code sources is closed beta, and centralized design systems are a preview.
+- **Plan availability is described inconsistently.** Dylan Field's post says Specs is on "all paid plans," the help center includes Starter, and the Specs post says "all plans." Trust what your own account shows.
+- **There is no pricing formula.** The help center says credit use depends on the model, the task's complexity and the size of your guidelines, and each prompt shows a receipt. There is no unit price you can estimate in advance.
+- **Supported stacks are vague.** Figma describes a "supported, lightweight prototyping codebase." HTML and React appear in examples, but there is no official support matrix.
+- **The off switch is coarse.** Per the help center, only Enterprise admins can disable code layers, and only by turning off all AI features.
+
+## 3. What it means for teams
+
+Dylan Field's argument is that AI made code cheap, so teams now work in two modes: building to think, with fast prototypes, and building to ship, with deliberate engineering. I agree, and I think it is the most useful part of the launch because it names the risk directly: **something that runs inside a code layer is a thinking prototype, not shippable code.**
+
+I see two shifts in delivery:
+
+**1. The deliverable moves from "screens" to "screens plus code plus context."** A design handoff used to be frames with annotations. Now it can be a clickable code layer plus a spec an agent can read. Fewer misunderstandings, but acceptance criteria need rewriting: does prototype code get reviewed, and who owns it?
+
+**2. Decide where the design system's source of truth lives.** Guidelines and Code sources let Figma read your repository, which is the right direction. But if a team writes the rules in Figma guidelines, a repo README and agent config files at the same time, the three copies will drift quickly.
+
+## 4. Practical advice
+
+### Agencies and freelance teams
+
+- **Separate prototypes from production code in your quotes.** If you show a client a code-layer prototype, the contract should say it is not the delivered production code, so nobody assumes "it already works."
+- **Treat AI credits as a project cost.** The free period is over and usage cannot be estimated up front. Measure one small project first, then decide how to price it.
+
+### Designers
+
+- **Start with Specs before deciding on code layers.** Putting written intent next to the visuals is useful even without an agent.
+- When you validate interactions in a code layer, remember that nobody vouches for that code. Do not make it engineering's starting point.
+
+### Frontend and engineering
+
+- **Check your GitHub connection settings.** Connections created after November 3 allow cloning by default. Which repositories may enter Figma should be an engineering lead's call, not whoever connects first.
+- Pull requests opened from a code layer go through the same review as any other. The source being a design tool is not a reason to relax.
+
+### Product and admins
+
+- Review your organization's AI controls. Since Enterprise can only switch AI features off as a whole, you need a policy for AI features overall, not just for code layers.
+
+## 5. What it means for this site
+
+8plus treats code as the design system's source of truth. Tokens live in `styles/globals.css`, and an `8plus Design System/` folder holds a `SKILL.md` for agents plus guideline cards for color, type and spacing. Contrast is checked against WCAG AA by `scripts/check-contrast.mjs`. In other words, the "agents can read the design rules" idea Figma is pushing is something this site already does with Markdown in the repo.
+
+So I will not move the source of truth into Figma. If I adopt these features, the sensible setup is Code sources pointing at the repo, feeding Figma one way, rather than maintaining rules in two places. The design handoff brief already lists a Figma design system file as one deliverable; I will revisit that once Guidelines and Code sources leave beta.
+
+---
+
+When design tools start handling code directly, the biggest change is not in the tool but in contracts and acceptance criteria. If your team is deciding where its design system should live, or wants to redesign the handoff between design and engineering, [book a 30-minute intro call](/booking) or have a look at [services](/services).

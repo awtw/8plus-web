@@ -1,0 +1,68 @@
+---
+title: "Scroll-driven animations 成為 Baseline：捲動動效回到 CSS，動效規格也該換寫法"
+date: "2026-11-07"
+summary: "10/27 Firefox 159 預設啟用 scroll-driven animations，web.dev 宣布這項功能成為 Baseline Newly available；W3C 也在 10/20 發布 Animation Triggers 首份公開草案。整理官方說了什麼、還沒定案的部分，以及設計與前端團隊怎麼重寫動效規格、處理減少動態偏好。"
+slug: "scroll-driven-animations-baseline"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["CSS", "動效設計", "無障礙", "Baseline"]
+locale: "zh-TW"
+---
+
+# Scroll-driven animations 成為 Baseline
+
+10 月 27 日，[Firefox 159](https://developer.mozilla.org/docs/Mozilla/Firefox/Releases/159) 預設啟用 scroll-driven animations。兩天後，Rachel Andrew 在 web.dev 的月報 [New to the web platform in October](https://web.dev/blog/web-platform-10-2026) 寫道：隨著 Chrome、Safari 與 Firefox 159 都支援，**scroll-driven animations 成為 Baseline Newly available。**
+
+這個功能讓 CSS 動畫的進度跟著捲動走，而不是跟著時間走。「捲到這裡時淡入」「頁首隨捲動縮小」「閱讀進度條」這類效果，過去幾乎都要靠 JavaScript 監聽捲動或用 GSAP 這類函式庫，現在可以只寫 CSS。從 Chrome 115 首先出貨到三大引擎都支援，中間隔了三年多。
+
+## 一、這次發生了什麼
+
+- **Firefox 159 預設啟用。** MDN 的版本說明列出，可以用捲動容器的時間軸取代預設的時間軸來驅動屬性動畫。web.dev 的支援表列為 Chrome 115、Edge 115、Firefox 159、Safari 26。
+- **兩種時間軸。** `scroll()` 與 `scroll-timeline` 讓動畫跟著某個捲動容器的位置走；`view()` 與 `view-timeline` 讓動畫跟著元素在可視範圍內的進出走，再用 `animation-timeline` 指定，`animation-range` 決定動畫在哪一段捲動距離裡播完。
+- **周邊也在動。** [Safari 27.2](https://developer.apple.com/documentation/safari-release-notes/safari-27_2-release-notes)（10 月 26 日）修正了套用 `zoom` 時 `animation-range` 算錯的問題。W3C CSS 工作小組在 10 月 20 日發布 [Animation Triggers 首份公開工作草案](https://www.w3.org/news/2026/first-public-working-draft-animation-triggers/)，定義用使用者互動事件、或元素進出時間軸範圍來控制動畫播放的機制。
+
+同一份月報裡，還有幾項設計師會有興趣的更新：Chrome 156 加入 `random()` 函式，Chrome 155 加入 `margin-trim`，Chrome 157 Beta 則有同時設定 `border-radius` 與 `corner-shape` 的簡寫。這些都還沒有三家引擎支援，現在先知道就好。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **Newly available 不等於大家都能用。** 依 Baseline 的定義，要再過 30 個月才會變成 Widely available。還沒更新瀏覽器的使用者、企業鎖版的環境都還看不到效果，所以降級時的畫面仍然要設計。
+- **Animation Triggers 只是第一份草案。** 「進入畫面時播放一次」這類觸發式動畫，最終語法還沒定案，也沒有出貨時程。
+- **效能不是自動保證。** 把動畫綁在捲動上，不代表每個屬性都便宜。只動 `transform` 與 `opacity` 比較穩，`filter` 這類屬性要自己量。
+- **減少動態偏好要自己處理。** 規格不會替你判斷使用者是否開了「減少動態效果」。
+
+## 三、這對設計流程代表什麼
+
+**1. 動效規格的單位從「毫秒」變成「捲動範圍」。** 過去動效稿寫「300ms、ease-out」。scroll-driven 的動畫沒有時長，只有範圍，例如「元素進入畫面的前 40% 內完成」。交接時如果還只給時長與緩動曲線，工程師就得自己猜。
+
+**2. 捲動效果的成本下降，濫用的風險上升。** 不用載入函式庫就能做視差與淡入，代表「每個區塊都動一下」變得很便宜。設計審查要多問一句：這個動效幫使用者理解了什麼？
+
+**3. 無障礙標準早就預告了這件事。** WCAG 2.1 起的 [2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)（AAA 級）要求由互動觸發的動態效果可以被關閉，捲動就是最典型的互動。即使你的合約只要求 AA，減少動態偏好也應該是預設處理，而不是加分項目。
+
+## 四、實務建議
+
+### 設計師
+
+- 動效規格加一欄「觸發方式」：時間、捲動容器、元素可視範圍，三選一，並標出範圍的起點與終點。
+- 每個捲動動效都附一個「靜態版本」：關閉動態時、或瀏覽器不支援時，畫面該長什麼樣子。
+
+### 前端工程
+
+- 用 `@supports (animation-timeline: view())` 包住依賴捲動時間軸的寫法，並放在 `@media (prefers-reduced-motion: no-preference)` 裡，預設就是不動。
+- 盤點現有的捲動監聽程式碼。單純的淡入、進度條可以改成 CSS；需要釘選（pin）、多段敘事的場景，函式庫仍然比較好維護。
+
+### 接案團隊與 PM
+
+- 報價時把「動效」拆成兩級：CSS 可完成的輕量效果，與需要函式庫的敘事型捲動。兩者的開發與測試成本差很多。
+- 驗收清單加上兩項：在開啟減少動態效果的裝置上檢查一次，在不支援的瀏覽器上檢查一次。
+
+## 五、對這個站的影響
+
+8plus 已經在用這個功能，但範圍不大。`/path` 頁的時間軸卡片在 1024px 以下用 `view()` 搭配 `entry 0% entry 40%` 的範圍做進場，而且只在 `prefers-reduced-motion: no-preference` 時套用；桌面寬度改用另一套聚焦效果，把這段動畫關掉。專案裡另有一個 hero 原型，用 `@supports (animation-timeline: view())` 包住離場效果，但首頁目前沒有掛載它。GSAP ScrollTrigger 也已經安裝，並寫好了釘選與 scrub 的骨架元件，不過我在頁面裡沒有找到使用它們的地方。
+
+Firefox 159 帶來的實際影響是：**在 Firefox 的窄螢幕上，`/path` 的卡片第一次跟著捲動進場。**之前 Firefox 會忽略 `animation-timeline`，動畫就退化成載入時播一次的時間動畫，所以要補一輪 Firefox 的視覺檢查。另外，部落格文章頁的閱讀進度條目前是 JavaScript 監聽捲動再更新 `transform`，這是改用 `animation-timeline: scroll()` 的好候選。至於還沒用上的 GSAP 釘選骨架，單純的進場與進度效果我會優先用 CSS，等真的要做釘選敘事時再拿出來。
+
+---
+
+瀏覽器把捲動動效收進 CSS，省下的是程式碼；但動效該不該存在、關掉之後長什麼樣子，仍然是設計決策。如果你的團隊想整理一套兼顧品牌感與無障礙的動效規範，或評估哪些 JavaScript 動效可以換成 CSS，可以[預約 30 分鐘初談](/booking)。

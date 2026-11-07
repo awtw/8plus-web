@@ -1,0 +1,84 @@
+---
+title: "Three SSL VPNs in KEV in ten days: a remote-access checklist for small companies after Ivanti, Cisco and SonicWall"
+date: "2026-11-07"
+summary: "Between October 29 and November 6, CISA added SSL VPN flaws in Cisco ASA/FTD, Ivanti Connect Secure and SonicWall SonicOS to its known-exploited list. The SonicWall one can bypass SAML and MFA. What each vendor disclosed, what is still unclear, and what a team with a single VPN appliance should do this week."
+slug: "ssl-vpn-kev-ivanti-cisco-sonicwall-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["security", "VPN", "KEV", "operations", "trends"]
+locale: "en"
+---
+
+# Three SSL VPNs in KEV in ten days
+
+From October 29 to November 6, CISA's [Known Exploited Vulnerabilities catalog (KEV)](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) picked up SSL VPN flaws from three vendors in a row: Cisco Secure Firewall ASA/FTD (10/29), Ivanti Connect Secure (10/30, two CVEs) and SonicWall SonicOS SSLVPN (11/6). KEV only lists vulnerabilities that are being exploited, so none of this is theoretical.
+
+For a lot of small and mid-sized companies in Taiwan, an SSL VPN is the only door into the office network, and the box is often managed by a reseller or an outsourced IT provider. Nobody can quite say how often its firmware gets updated. This post sets out the facts for each vendor and what a team with one VPN appliance should do this week.
+
+## 1. What happened at each vendor
+
+Dates and versions below come from CISA's KEV data, vendor advisories and the CVE records.
+
+**Cisco ASA/FTD: CVE-2026-76418 (advisory 10/28, KEV 10/29)**
+
+- The [Cisco advisory](https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-tunnel-dos-s6mgkb75) rates it CVSS 8.6. The bug is in Remote Access SSL VPN: when a tunnel group has secondary authentication configured, an unauthenticated remote attacker can make the device reload, which takes the service down (DoS).
+- Cisco PSIRT says it became aware of active exploitation in October. Cisco says there are "no workarounds," only two temporary mitigations that weaken security, and recommends upgrading. Fixed releases depend on the train, for example ASA 9.20 needs 9.20.4.50 and FTD 7.4 needs 7.4.9. Check the advisory for the full table.
+
+**Ivanti Connect Secure: CVE-2026-111357 and CVE-2026-118527 (KEV 10/30)**
+
+- These are the second half of an October attack chain. The first half was CVE-2026-104935, an authentication bypass that allows unauthenticated command execution, disclosed and added to KEV on 10/13. [Volexity's analysis](https://www.volexity.com/blog/2026/10/13/a-series-of-unauthenticated-events-chained-exploitation-of-ivanti-connect-secure-zero-days/) says exploitation started on October 3. After getting in, the attacker focused on stealing LDAP domain credentials, looking up LAPS passwords and BitLocker recovery keys, and editing logs.
+- [CISA's alert](https://www.cisa.gov/news-events/alerts/2026/10/13/cisa-urges-patching-newly-exploited-vulnerability-ivanti-connect-secure) (issued 10/13, revised 10/30) lists 25.1.1.2 and prior, 25.1.2.2 and prior, and 22.8R2.5 and prior as affected, and notes that the 22.8 line reaches end of life on January 31, 2027. The CVE record says CVE-2026-118527 affects versions before 25.1.1.3 and 22.8R2.6. In other words, **if you patched in the October 13 round, you need to patch again.**
+- CISA warns that Ivanti's Integrity Checker may not detect this, because the commands run in memory. If you suspect compromise: back up the configuration, factory reset and upgrade (rebuild virtual instances), reset every account password including domain accounts, and revoke and reissue the certificates and API keys stored on the device.
+
+**SonicWall SonicOS SSLVPN: CVE-2026-19868 (disclosed and added to KEV 11/6)**
+
+- According to [NVD](https://nvd.nist.gov/vuln/detail/CVE-2026-19868) and the CVE record, a user with valid credentials for an alternate authentication method can bypass SAML authentication controls, **and possibly SAML-enforced MFA along with them.**
+- Affected: Gen7 7.3.3-7015 and older, Gen8 8.2.2-8015 and older. CISA's CVSS assessment is 7.5. The vendor advisory is SNWLID-2026-0014.
+
+## 2. What was not said, or is still open
+
+- **SonicWall's fixed versions and mitigations.** I could not read the vendor advisory directly (the PSIRT page needs JavaScript), and the CVE record lists only affected versions. Go by [SNWLID-2026-0014](https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0014).
+- **Ivanti's version numbers do not line up cleanly.** The CISA alert and the individual CVE records describe versions in ways that do not quite match, and I could not open Ivanti's own advisory (it needs a login or JavaScript). Confirm the exact target version with Ivanti's advisory and your support contact.
+- **Who the attackers are and how many devices were hit.** None of the three vendors published numbers. The Cisco bug is a DoS, and Cisco has not said what the exploitation was in service of.
+- **Which "alternate authentication method" combinations** trigger the SonicWall bug (local accounts, LDAP alongside SAML, and so on). The CVE description does not spell it out.
+
+## 3. How I read this wave
+
+The three bugs are completely different: one crashes the device, one is part of a chain to root, one bypasses MFA. They share one thing: **they all sit on the internet-facing box that concentrates credentials and that almost nobody watches the logs for.**
+
+CISA's approach has also shifted. [BOD 26-04](https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk), issued on June 10 this year, replaced BOD 22-01 (the directive that created KEV). It sets remediation urgency by four factors: internet exposure, KEV status, whether exploitation can be automated, and technical impact. Each KEV entry also says whether forensic triage is required. In this wave, Ivanti CVE-2026-111357 is flagged as requiring it, with a federal deadline of three days (added 10/30, due 11/2); the Cisco and SonicWall entries are not. These are rules for US federal agencies, but the signal is clear: **for some vulnerabilities, "patched" does not mean "fine."**
+
+A common blind spot in smaller companies is the comfort MFA provides. The SonicWall bug is a reminder that MFA protects only the login path where it is enforced. If the same device still allows local accounts or an old LDAP login, that is a side door.
+
+## 4. What to do this week
+
+### Companies that own a VPN appliance (owners, IT leads)
+
+1. **Find out the model and version.** Open the admin console and write down the model, firmware version and last update date. If you have to call your reseller to learn this, that is the first process to fix.
+2. **Compare against the affected versions above.** If your vendor is not one of these three, do not relax. Search KEV for your brand.
+3. **Ivanti customers:** check your version again even if you upgraded after 10/13. If anything looks off, follow CISA's recovery steps and rotate domain passwords as well.
+4. **SonicWall customers using SAML/MFA:** list every authentication method still enabled on the SSL VPN, and turn off local accounts or legacy LDAP logins you do not need.
+
+### Agencies and outsourced IT that manage client devices
+
+- Keep a list of each client's internet-facing devices (model, version, admin, and who the contract says is responsible for updates), and notify clients when KEV lists something from the same vendor. It is not hard, but most contracts do not mention it.
+- Put patching into the service level: how many days for critical flaws, who approves downtime, and how the update is verified.
+
+### Engineering leads
+
+- VPN credentials are usually domain credentials. Make sure VPN logins land in central logging, and that someone can see logins at odd hours or from unexpected countries.
+- Longer term, ask whether you still need VPN access to the whole internal network, or whether per-application access control would do. That is not this week's job, but every VPN wave makes the question weigh more.
+
+One more date for the calendar: Node.js has announced [security releases for 26.x, 24.x and 22.x on or shortly after November 11](https://nodejs.org/en/blog/vulnerability/november-2026-security-releases), with a highest severity of High. It fits in the same week as your appliance updates. I covered how I handled the last round in [the Node.js October security release](/blog/nodejs-october-2026-security-release-en).
+
+## 5. What it means for this site
+
+8plus runs on Cloudflare Workers and has no VPN or firewall appliance of its own, so these three bugs do not affect it directly.
+
+The principle carries over, though. This site's "front doors" are its Cloudflare, GitHub and domain registrar accounts. The SonicWall lesson is the one I would apply there: make sure that, beyond MFA, there is no forgotten alternate login method or long-lived API token. That is a direction for review, not a completed audit.
+
+---
+
+The VPN appliance is the least glamorous box in the company and one of the most attacked. You do not need to replace your architecture at once, but you should know what version it runs, who updates it, and who would notice if something went wrong. If you want to inventory your internet-facing devices and accounts, or write patching into your operations contract, [book a 30-minute intro call](/booking).

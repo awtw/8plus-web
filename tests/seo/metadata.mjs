@@ -29,7 +29,9 @@ for (const path of ["/", "/about", "/services", "/blog", "/lab"]) {
   const title = meta(html, /<title>([^<]*)<\/title>/);
   const ogImage = meta(html, /<meta property="og:image" content="([^"]+)"/);
   const description = meta(html, /<meta name="description" content="([^"]+)"/);
-  check(Boolean(title), `${path} has <title> (${title})`);
+  const canonical = meta(html, /<link rel="canonical" href="([^"]+)"/);
+  check(Boolean(title) && title !== "8plus", `${path} has a descriptive <title> (${title})`);
+  check(canonical === (path === "/" ? SITE_URL : SITE_URL + path), `${path} canonical → ${canonical}`);
   check(Boolean(description), `${path} has meta description`);
   check(!ogImage || ogImage.startsWith(SITE_URL), `${path} og:image uses ${SITE_URL}`);
   check(!html.includes("http://localhost"), `${path} has no localhost URLs`);

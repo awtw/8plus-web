@@ -30,11 +30,20 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: SITE.name,
+    default: SITE.title,
     template: `%s · ${SITE.name}`
   },
   description: SITE.description,
   metadataBase: new URL(SITE.url),
+  // No canonical here: it would be inherited by every page. Routes set it via pageMetadata().
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    locale: "zh_TW",
+    title: SITE.title,
+    description: SITE.description,
+    images: [SITE.ogImage],
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

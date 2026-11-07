@@ -12,7 +12,7 @@ import Link from "next/link";
 import { blogContent } from "@/lib/content/blog";
 import { ReadingProgress } from "@/components/reading-progress";
 import { extractToc, readingMinutes } from "@/lib/reading";
-import { SITE } from "@/lib/seo";
+import { SITE, pageMetadata } from "@/lib/seo";
 import "@/styles/pages/blog.css";
 
 interface PostPageProps {
@@ -35,10 +35,14 @@ export async function generateMetadata({ params }: PostPageProps) {
     return {};
   }
 
-  return {
+  return pageMetadata({
     title: post.title,
-    description: post.summary
-  };
+    description: post.summary,
+    path: post.url,
+    type: "article",
+    locale: post.locale,
+    publishedTime: post.date,
+  });
 }
 
 export default async function PostPage({ params }: PostPageProps) {

@@ -2,6 +2,7 @@ import { EpisodeDetail } from "@/components/show/episode-detail";
 import { notFound } from "next/navigation";
 import { findPublicEpisode, getPublicEpisodes } from "@/lib/episodes";
 import { posts } from ".velite";
+import { pageMetadata } from "@/lib/seo";
 import "@/styles/pages/show.css";
 type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() {
@@ -10,11 +11,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const episode = findPublicEpisode((await params).slug);
   return episode
-    ? {
+    ? pageMetadata({
         title: episode.title,
         description: episode.summary,
-        openGraph: { images: [episode.cover] },
-      }
+        path: episode.url,
+        images: [episode.cover],
+        type: "article",
+        publishedTime: episode.publishedAt,
+      })
     : {};
 }
 export default async function Page({ params }: Props) {

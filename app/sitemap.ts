@@ -19,14 +19,40 @@ const staticRoutes = [
   "/show/ask",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+type Entry = { url: string; date?: string };
 
-  const routes = new Set([...staticRoutes, ...publicContent(posts).map(p => p.url), ...publicContent(projects).map(p => p.url), ...publicContent(episodes).map(p => p.url)]);
-  return [...routes].map((route) => ({
-    url: `${SITE.url}${route}`,
-    lastModified,
-    changeFrequency: route === "" || route === "/blog" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : route === "/booking" ? 0.9 : 0.7,
+const latest = (dates: (string | undefined)[]) =>
+  dates.filter((d): d is string => Boolean(d)).sort().at(-1);
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const publicPosts = publicContent(posts);
+  const publicProjects = publicContent(projects);
+  const publicEpisodes = publicContent(episodes);
+
+  // lastmod must reflect real content changes; Google ignores it when it is always "now".
+  const listingDates: Record<string, string | undefined> = {
+    "": latest(publicPosts.map((p) => p.date)),
+    "/blog": latest(publicPosts.map((p) => p.date)),
+    "/lab": latest(publicProjects.map((p) => p.date)),
+    "/show": latest(publicEpisodes.map((e) => e.publishedAt)),
+  };
+
+  const entries: Entry[] = [
+    ...staticRoutes.map((url) => ({ url, date: listingDates[url] })),
+    ...publicPosts.map((p) => ({ url: p.url, date: p.date })),
+    ...publicProjects.map((p) => ({ url: p.url, date: p.date })),
+    ...publicEpisodes.map((e) => ({ url: e.url, date: e.publishedAt })),
+  ];
+
+  const byUrl = new Map<string, Entry>();
+  for (const entry of entries) {
+    if (!byUrl.has(entry.url)) byUrl.set(entry.url, entry);
+  }
+
+  return [...byUrl.values()].map(({ url, date }) => ({
+    url: `${SITE.url}${url}`,
+    ...(date ? { lastModified: new Date(date) } : {}),
+    changeFrequency: url === "" || url === "/blog" ? "weekly" : "monthly",
+    priority: url === "" ? 1 : url === "/booking" ? 0.9 : 0.7,
   }));
 }

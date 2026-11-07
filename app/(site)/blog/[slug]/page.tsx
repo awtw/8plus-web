@@ -12,7 +12,7 @@ import Link from "next/link";
 import { blogContent } from "@/lib/content/blog";
 import { ReadingProgress } from "@/components/reading-progress";
 import { extractToc, readingMinutes } from "@/lib/reading";
-import { SITE, pageMetadata } from "@/lib/seo";
+import { SITE, pageMetadata, postLanguages, breadcrumbLd } from "@/lib/seo";
 import "@/styles/pages/blog.css";
 
 interface PostPageProps {
@@ -42,6 +42,8 @@ export async function generateMetadata({ params }: PostPageProps) {
     type: "article",
     locale: post.locale,
     publishedTime: post.date,
+    images: post.thumbnail ? [post.thumbnail] : undefined,
+    languages: postLanguages(post, getPosts()),
   });
 }
 
@@ -63,6 +65,9 @@ export default async function PostPage({ params }: PostPageProps) {
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3);
 
+  const languages = postLanguages(post, getPosts());
+  const translationUrl = languages ? (isEn ? languages["zh-TW"] : languages.en) : undefined;
+
   const articleLd = {
     "@context": "https://schema.org",
     "@type": post.kind === "note" ? "BlogPosting" : "Article",
@@ -72,13 +77,26 @@ export default async function PostPage({ params }: PostPageProps) {
     inLanguage: post.locale === "en" ? "en" : "zh-TW",
     keywords: (post.tags ?? []).join(", "),
     mainEntityOfPage: `${SITE.url}${post.url}`,
-    author: { "@type": "Person", name: "August Wang", url: SITE.url },
-    publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
+    image: `${SITE.url}${post.thumbnail || SITE.ogImage}`,
+    author: { "@type": "Person", "@id": `${SITE.url}/#person`, name: "August Wang", url: `${SITE.url}/about` },
+    publisher: {
+      "@type": "Organization",
+      name: SITE.name,
+      url: SITE.url,
+      logo: { "@type": "ImageObject", url: `${SITE.url}/logo-new-512.png` },
+    },
   };
+
+  const crumbsLd = breadcrumbLd([
+    [SITE.name, "/"],
+    [isEn ? "Blog" : "技術博客", "/blog"],
+    [post.title, post.url],
+  ]);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbsLd) }} />
       <ReadingProgress />
       <PageSection field="blue" innerClassName="blog-article-inner">
         <article className="blog-article">
@@ -97,6 +115,14 @@ export default async function PostPage({ params }: PostPageProps) {
             <Link href={`/blog?category=${post.category}`} className="blog-article-category">
               {c.categories[post.category].label}
             </Link>
+            {translationUrl && (
+              <>
+                {" · "}
+                <Link href={translationUrl} hrefLang={isEn ? "zh-TW" : "en"} className="blog-article-category">
+                  {isEn ? "閱讀中文版" : "Read in English"}
+                </Link>
+              </>
+            )}
           </p>
           <h1 className="blog-article-title">{post.title}</h1>
           {post.summary && <p className="page-lead">{post.summary}</p>}

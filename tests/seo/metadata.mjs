@@ -37,5 +37,14 @@ for (const path of ["/", "/about", "/services", "/blog", "/lab"]) {
   check(!html.includes("http://localhost"), `${path} has no localhost URLs`);
 }
 
+// zh/en post twins point at each other via hreflang
+const postHtml = await (await fetch(`${BASE_URL}/blog/hello-8plus`)).text();
+const alternates = postHtml.match(/<link rel="alternate"[^>]*>/g) ?? [];
+check(
+  alternates.some((tag) => /hreflang="en"/i.test(tag) && /href="[^"]*\/blog\/hello-8plus-en"/.test(tag)),
+  "/blog/hello-8plus has hreflang en alternate",
+);
+check(/"@type":"BreadcrumbList"/.test(postHtml), "/blog/hello-8plus has BreadcrumbList JSON-LD");
+
 console.log(`\n${failures.length ? `${failures.length} failed` : "all passed"} (${BASE_URL})`);
 process.exit(failures.length ? 1 : 0);

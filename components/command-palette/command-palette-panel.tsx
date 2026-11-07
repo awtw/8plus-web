@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import * as Dialog from '@radix-ui/react-dialog'
-import { MagnifyingGlass } from '@phosphor-icons/react'
+import { ArrowDown, MagnifyingGlass } from '@phosphor-icons/react'
 import { posts } from '.velite'
 import { useLanguage } from '@/components/language-provider'
 import { getLocalizedProjects } from '@/lib/projects'
@@ -14,8 +14,8 @@ import '@/styles/command-palette.css'
 type Entry = { id: string; group: 'page' | 'lab' | 'post'; title: string; hint: string; href: string; haystack: string }
 
 const GROUP_LABEL = {
-  'zh-TW': { page: '頁面', lab: 'Lab 專案', post: '文章', empty: '找不到相關內容', placeholder: '搜尋頁面、專案、文章…', hint: '↑↓ 選擇 · Enter 開啟 · Esc 關閉' },
-  en: { page: 'Pages', lab: 'Lab', post: 'Posts', empty: 'Nothing found', placeholder: 'Search pages, projects, posts…', hint: '↑↓ select · Enter open · Esc close' },
+  'zh-TW': { page: '頁面', lab: 'Lab 專案', post: '文章', empty: '找不到相關內容', placeholder: '搜尋頁面、專案、文章…', hint: '↑↓ 選擇 · Enter 開啟 · Esc 關閉', more: (n: number) => `共 ${n} 筆 · 往下滑看更多` },
+  en: { page: 'Pages', lab: 'Lab', post: 'Posts', empty: 'Nothing found', placeholder: 'Search pages, projects, posts…', hint: '↑↓ select · Enter open · Esc close', more: (n: number) => `${n} results · scroll for more` },
 } as const
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKC')
@@ -27,6 +27,15 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
   const listRef = useRef<HTMLUListElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  // Scroll affordance: on phones the list overflows behind the fold with no visible cue.
+  const [edges, setEdges] = useState({ above: false, below: false })
+  // Radix portals the content after this component's effects run, so track the list node via a callback ref.
+  const [listMounted, setListMounted] = useState(false)
+  const setListNode = useCallback((node: HTMLUListElement | null) => {
+    listRef.current = node
+    setListMounted(node !== null)
+  }, [])
 
   const entries = useMemo<Entry[]>(() => {
     const pages: Entry[] = [
@@ -64,6 +73,54 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
       .slice(0, 30)
   }, [entries, query])
 
+  const measure = () => {
+    const el = listRef.current
+    if (!el) return
+    const above = el.scrollTop > 4
+    const below = el.scrollHeight - el.scrollTop - el.clientHeight > 4
+    setEdges((prev) => (prev.above === above && prev.below === below ? prev : { above, below }))
+  }
+
+  // Re-measure when results change or the list box resizes (keyboard, rotation).
+  useEffect(() => {
+    const el = listRef.current
+    if (!listMounted || !el) return
+    el.scrollTop = 0
+    // New results can change scrollHeight without resizing the box, so measure after layout too.
+    const raf = requestAnimationFrame(measure)
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => { cancelAnimationFrame(raf); ro.disconnect() }
+  }, [listMounted, results])
+
+  // iOS keeps 100dvh at full height while the on-screen keyboard is up, so the list bottom hides
+  // behind the keyboard. Track the visual viewport instead.
+  useEffect(() => {
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null
+    if (!open || !vv) return
+    const root = document.documentElement
+    const update = () => root.style.setProperty('--cmdk-vvh', `${Math.round(vv.height)}px`)
+    update()
+    vv.addEventListener('resize', update)
+    return () => {
+      vv.removeEventListener('resize', update)
+      root.style.removeProperty('--cmdk-vvh')
+    }
+  }, [open])
+
+  // Dragging the list on a touch screen dismisses the keyboard so more results fit.
+  const onListTouchMove = () => {
+    if (document.activeElement === inputRef.current) inputRef.current?.blur()
+  }
+
+  const scrollMore = () => {
+    const el = listRef.current
+    if (!el) return
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollBy({ top: el.clientHeight * 0.7, behavior: smooth ? 'smooth' : 'auto' })
+    track('search_scroll_hint')
+  }
+
   useEffect(() => { setIndex(0) }, [query])
   useEffect(() => { if (!open) setQuery('') }, [open])
   useEffect(() => {
@@ -92,6 +149,7 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
           <div className="cmdk-input-row">
             <MagnifyingGlass size={20} aria-hidden="true" />
             <input
+              ref={inputRef}
               autoFocus
               className="cmdk-input"
               placeholder={L.placeholder}
@@ -105,7 +163,8 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
               enterKeyHint="go"
             />
           </div>
-          <ul id="cmdk-list" role="listbox" ref={listRef} className="cmdk-list">
+          <div className="cmdk-list-wrap" data-above={edges.above || undefined} data-below={edges.below || undefined}>
+          <ul id="cmdk-list" role="listbox" ref={setListNode} className="cmdk-list" onScroll={measure} onTouchMove={onListTouchMove}>
             {results.length === 0 && <li className="cmdk-empty">{L.empty}</li>}
             {results.map((r, i) => {
               const header = showHeader[i] ? L[r.group] : null
@@ -127,6 +186,13 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
               )
             })}
           </ul>
+          {edges.below && (
+            <button type="button" className="cmdk-more" onClick={scrollMore} tabIndex={-1}>
+              <ArrowDown size={14} weight="bold" aria-hidden="true" className="cmdk-more-icon" />
+              {L.more(results.length)}
+            </button>
+          )}
+          </div>
           <div className="cmdk-foot">{L.hint}</div>
         </Dialog.Content>
       </Dialog.Portal>

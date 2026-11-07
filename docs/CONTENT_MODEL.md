@@ -17,7 +17,7 @@ Velite `prepare` 在寫出 `.velite` 之前使用 `lib/publication.ts` 過濾所
 
 ## Post
 
-`content/posts/**/*.mdx`：title、date、summary、slug、published（預設 true）、protected（預設 false）、locale、kind（article/note）、category（必填：ai / web / ops / delivery / career / studio，標籤與說明在 `lib/content/blog.ts`）、tags、thumbnail、html。
+`content/posts/**/*.mdx`：title、date、summary、slug、published（預設 true）、protected（預設 false）、locale、kind（article/note）、category（必填：ai / web / design / ops / delivery / career / studio，標籤與說明在 `lib/content/blog.ts`）、tags、thumbnail、html。
 
 locale 使用 `zh-TW` / `en`，舊 `zh-Hant` 正規化為 `zh-TW`。公開入口 `/blog`（可用 `?category=` 篩選）、`/blog/[slug]`、`/feed.xml`（中文）、`/feed-en.xml`（英文）；電子報由外部服務以 RSS 寄送，表單網址設定於 `NEXT_PUBLIC_NEWSLETTER_FORM_ACTION`；未知或未公開 slug 回 404，metadata 不洩漏標題。
 

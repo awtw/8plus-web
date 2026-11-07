@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 
-export const BLOG_CATEGORIES = ["ai", "web", "ops", "delivery", "career", "studio"] as const;
+export const BLOG_CATEGORIES = ["ai", "web", "design", "ops", "delivery", "career", "studio"] as const;
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
 export type BlogContent = {
@@ -68,6 +68,7 @@ export const blogContent: Record<Locale, BlogContent> = {
     categories: {
       ai: { label: "AI 與 Agent", description: "AI 導入、coding agent 與自動化流程：哪些能交給機器，哪些要留給人。" },
       web: { label: "Web 與框架", description: "Next.js、前端架構、部署平台的實作紀錄與選型判斷。" },
+      design: { label: "UI/UX 設計", description: "介面設計、使用者體驗與無障礙：從設計工具、設計系統到上線後的真實使用情境。" },
       ops: { label: "資安與維運", description: "安全更新、升級節奏與上線後的維運清單。" },
       delivery: { label: "工程與交付", description: "架構、Code Review 與接案合作：讓專案能驗收、能維護。" },
       career: { label: "職涯歷程", description: "從生醫研究所到 AI 架構師：跨領域轉職、自學與每一段工作學到的事。" },
@@ -113,6 +114,7 @@ export const blogContent: Record<Locale, BlogContent> = {
     categories: {
       ai: { label: "AI & agents", description: "Adopting AI, coding agents and automation: what to hand to machines and what to keep for people." },
       web: { label: "Web & frameworks", description: "Notes and judgment calls on Next.js, front-end architecture and deployment platforms." },
+      design: { label: "UI/UX design", description: "Interface design, user experience and accessibility: from design tools and design systems to how people actually use what ships." },
       ops: { label: "Security & ops", description: "Security releases, upgrade routines and checklists for life after launch." },
       delivery: { label: "Engineering & delivery", description: "Architecture, code review and client work: projects you can accept and maintain." },
       career: { label: "Career journey", description: "From a biomedical lab to AI architecture: switching fields, teaching myself, and what each job taught me." },

@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-07 21:48 +0800 — SEO 強化（各頁 metadata／canonical／OG、hreflang、結構化資料、sitemap lastmod）上線正式站（Worker 851c671d，回滾目標 7ca97498）
+Last activity: 2026-11-08 18:44 +0800 — 標題改以「8plus AI 顧問」為品牌詞上線正式站（Worker d591d603，回滾目標 851c671d）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-08 18:44 +0800 — 標題品牌詞「8plus AI 顧問」上線正式站（Worker d591d603）**：搜尋測試顯示「8plus」「8plus 架構」全被 iPhone 8 Plus 佔據，「8plus.app」也搜不到本站（尚未被收錄），因此不採用「8plus 架構」（架構會被解讀成手機硬體架構，客戶也不會搜這個字）。改以「8plus AI 顧問」為固定品牌詞（`SITE.brandPhrase`）：首頁標題「8plus AI 顧問工作室｜企業 AI 導入、RAG 與 UIX」，服務、內訓、預約、診斷、博客、Lab、關於、職涯標題加入需求關鍵字；首頁與預設描述以品牌詞開頭；WebSite／ProfessionalService alternateName 加入品牌詞；標題分隔改為「｜」。commit `d8ec4cd` 已 push。帶 `.env.local` 的 newsletter 變數 `pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過，再 `npx vinext-cloudflare deploy --skip-build`，Version `d591d603-3d8f-4071-a8ae-4a7a139496e7`，回滾目標 `851c671d`。部署後 www smoke／SEO 全過、workers.dev smoke 全過，Kit 表單仍在。待辦：Search Console 驗證與要求建立索引（使用者操作）；社群簡介統一為「8plus AI 顧問」。專案資料夾已移至 `/Volumes/external/資料總庫/個人/自行開發/01-awtw/8plus-web`。Vercel（apex 轉址源站）未更新。
 
 - ✅ **2026-11-07 21:48 +0800 — SEO 強化上線正式站（Worker 851c671d）**：commit `d21734b`（各頁 title／description／canonical／OG／Twitter：`lib/seo.ts` 的 `pageMetadata()`，client 頁面改由各路由 `layout.tsx` 提供 metadata；root layout 不放 canonical 以免被全站繼承；預設標題改為「8plus｜AI 應用與 UIX 顧問 · August Wang」；sitemap lastmod 改用內容日期）、`093a16a`（中英文章 hreflang 與「Read in English／閱讀中文版」連結、Person／WebSite／ProfessionalService 補 sameAs、image、alternateName，文章與 Lab 加 BreadcrumbList，預設 OG 圖改為 1200×630 `public/brand/og-8plus.png`）已 push。帶 `.env.local` 的 newsletter 變數 `pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過，再 `npx vinext-cloudflare deploy --skip-build`，Version `851c671d-2173-408f-97fb-6c734341a9ce`，回滾目標 `7ca97498`。部署後 www smoke／SEO（含新加的 title、canonical、hreflang、BreadcrumbList 檢查）全過、workers.dev smoke 全過；OG PNG 200、sitemap 112 筆中 82 筆有 lastmod、Kit 表單仍在；正式站文章頁無 console error。待辦：Google Search Console 驗證網域、提交 sitemap、要求建立索引（需使用者操作）；sameAs 尚缺 LinkedIn。Vercel（apex 轉址源站）未更新。
 

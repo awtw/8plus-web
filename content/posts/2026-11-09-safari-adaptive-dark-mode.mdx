@@ -1,0 +1,97 @@
+---
+title: "Safari 推出 Adaptive Dark Mode：沒做深色模式的網站，瀏覽器會替你轉暗"
+date: "2026-11-09"
+summary: "11/3 WebKit 宣布 Safari 27.3 beta 加入 Adaptive Dark Mode，使用者開啟後，Safari 會把沒有支援深色模式的亮色網頁自動轉成深色，網站無法偵測。整理它怎麼轉換、哪些網站不會被動、官方還沒定案的地方，以及設計與前端團隊現在該做的決定。"
+slug: "safari-adaptive-dark-mode"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["深色模式", "Safari", "設計系統", "無障礙", "趨勢"]
+locale: "zh-TW"
+---
+
+# Safari 推出 Adaptive Dark Mode
+
+11 月 3 日，WebKit 團隊發表 [Introducing Adaptive Dark Mode](https://webkit.org/blog/18541/introducing-adaptive-dark-mode/)：Safari 27.3 beta 加入一個新功能，使用者開啟後，Safari 會把**沒有支援深色模式的亮色網頁，自動轉成深色**。
+
+文章給了一組數字：大約 40% 的網頁載入來自使用深色模式的使用者，但只有 10% 的網頁載入支援深色模式。換句話說，大部分網站一直把亮白畫面推給選擇深色的人。這次 Safari 決定由瀏覽器補上這段落差。對設計團隊來說，「沒做深色模式」從此不再是中性選擇：你不做，Safari 會用它的演算法替你做。
+
+## 一、發生什麼事
+
+- **怎麼啟用。** 使用者的系統外觀要設成深色，瀏覽到亮色背景的網站時，Safari 會提供預覽，點「Try」就會套用。
+- **哪些網站不會被改。** 用 `<meta name="color-scheme" content="light dark">` 或 CSS `color-scheme: light dark` 宣告支援深色模式的網站，完全不受影響。其他網站 Safari 會先分析顏色，**本來就是深色底、淺色字的頁面也不會動**，只有判斷為亮色的頁面才會轉換。
+- **怎麼轉換。**
+  - 用一個色彩矩陣**反轉明度、保留色相**：淺色背景變深、深色文字變淺。
+  - 轉換文字顏色時，目標是 WCAG 的 4.5:1 對比。淺色的 CSS 漸層也會轉成深色。
+  - 圖片多半不動。SVG 會被檢查並在需要時調色；點陣圖會分析像素分布，**簡單的黑白 logo 會被反轉**。
+  - 遮罩（mask）與 `mix-blend-mode` 在轉換後效果不好時，可能會被關掉。`<canvas>` 的內容不會改。
+- **怎麼退出。** 不想被轉換，可以用 `<meta name="color-scheme" content="light only">`，或 CSS 的 `color-scheme: light only`，後者可以只套在特定元素上。但官方註明：**Safari 27.3 beta 1 還不支援 `only` 這個關鍵字。**
+- **網站偵測不到。** 為了避免增加指紋追蹤的資訊，Safari 不讓網站知道是否套用了 Adaptive Dark Mode：JavaScript 讀到的是原本寫的顏色，畫進 canvas 的圖片也是原圖。
+- **出現在 release notes。** [Safari 27.3 Beta Release Notes](https://developer.apple.com/documentation/safari-release-notes/safari-27_3-release-notes) 把它列在 Rendering 的新功能裡。這個 beta 提供給 iOS 27.3、iPadOS 27.3、visionOS 27.3、macOS 27.3 的 beta，以及 macOS 26 與 macOS Sequoia。
+
+這件事在規格上有依據。W3C 的 [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/) 本來就允許瀏覽器在使用者偏好深色時，對沒有明確支援深色的頁面自動調整顏色；`only` 關鍵字的定義則是「禁止瀏覽器覆寫該元素的色彩配置」。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **正式版時間。** 文章沒有給 Safari 27.3 正式版日期，還說功能會在 beta 過程中持續調整。
+- **各平台的細節。** 文章沒有逐一說明哪些平台、預設是否開啟、使用者如何針對單一網站開關。媒體報導有寫設定位置，但我沒有在一手來源核對到，這裡不採用。
+- **只宣告 `dark`、或只在元素上宣告 `light` 會怎樣。** 文章只提到 `light dark`（不改）與 `light only`（退出），其他寫法要實測。
+- **品牌色怎麼轉。** 「反轉明度、保留色相」對品牌主色、圖表裡的紅綠語意色、狀態色會產生什麼結果，文章沒有細講。
+- **QR code 這類黑白點陣圖。** 文章說簡單黑白 logo 會被反轉，沒有特別提到 QR code。反轉後的 QR code 能不能被所有掃描器讀取，我沒有資料，屬於要實測的風險。
+
+## 三、對設計流程的意義
+
+**1. 深色模式從「加分功能」變成「一定要做的決定」。** 以前沒有深色版，使用者看到的就是你設計的亮色版。現在在 Safari 上，選擇深色的使用者可能看到的是演算法轉出來的版本。你可以自己設計深色版、接受 Safari 的轉換、或明確退出，但不能再假裝這個選項不存在。
+
+**2. 退出是合理選項，但要有理由。** 開深色模式的人通常是為了舒適或在暗處閱讀，Adaptive Dark Mode 本身就是在照顧這群人。整站用 `light only` 退出，等於把他們推回亮白畫面。比較好的做法是只對真的不能轉的區塊退出，例如以照片呈現的商品、色彩有語意的圖表或地圖。
+
+**3. 語意化的色彩 token 是最便宜的解法。** 如果設計系統已經用「表面色、主要文字、次要文字」這類語意 token，而不是直接寫色碼，做一套深色版主要是補第二組數值。Safari 轉換時以 4.5:1 為目標，你自己的深色版也應該達到同樣標準，這也是 [WCAG 1.4.3 對比（最低）](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) 的 AA 要求。
+
+**4. 你看不到使用者看到的畫面。** 網站偵測不到轉換，分析工具也就量不到有多少人在用。客服收到「顏色怪怪的」截圖時，要先想到可能是這個功能。
+
+## 四、實務建議
+
+### 設計師
+
+- 挑出最重要的 5 到 10 個頁面，在 Safari 27.3 beta、系統深色外觀下逐頁檢查：logo 是否為點陣圖、品牌色轉換後是否還認得出來、圖表紅綠語意是否還在、商品照是否帶著白底、QR code 是否被反轉。
+- 在設計系統文件寫下每類頁面的決定：自己做深色版、交給 Safari、或退出。
+- 素材面：logo 與 icon 改用 SVG；內容圖片用透明背景，不要把頁面底色畫進圖裡；需要時用 `<picture>` 準備深色版圖片。
+
+### 前端工程師
+
+- 色彩配置要寫在 HTML `<head>` 或 `:root` 的 CSS 裡，**不要等 JavaScript 載入後才注入**，官方也特別提醒這點。
+- 已有深色主題的網站，確認有正確宣告。以下是寫法示意（未在 Safari 27.3 beta 上實測，`only` 在 beta 1 不支援）：
+
+```css
+:root {
+  color-scheme: light dark;
+  --surface: light-dark(#ffffff, #121212);
+  --text: light-dark(#1a1a1a, #f2f2f2);
+}
+
+/* 只讓真的不能轉的區塊維持亮色 */
+.product-photo-panel {
+  color-scheme: light only;
+}
+```
+
+- 檢查舊寫法：圖片拼接（sprite）、平鋪的背景圖、關鍵 UI 上的 `mask` 與 `mix-blend-mode`，這些最容易在轉換後出問題。
+- 不要嘗試偵測這個功能，它在設計上就是偵測不到的。
+
+### 接案團隊與 PM
+
+- 驗收清單加一項：在系統深色外觀下，用 Safari 檢查一次。
+- 報價時把「深色模式」獨立成一個項目。對有品牌規範的客戶，先讓客戶決定要自己做、交給瀏覽器、還是退出，再估工時。
+
+## 五、對這個站的影響
+
+8plus 本來就只有深色版：`<html>` 與 `:root` 都設定了 `color-scheme: dark`，主題也鎖在深色。依官方說法，本來就是深色底的頁面不會被轉換，所以主站應該不受影響。但要注意，這個站宣告的是 `dark` 而不是 `light dark`，走的是「分析後判定為深色」那條路，而不是「明確宣告後直接略過」。這是我依文章推論的結果，還沒實測。
+
+比較需要確認的是分享頁 `/sb` 與 `/sc`：它們用飽和的橘色（`#FE5000`）與藍色（`#002FA7`）當底，外框為了修正捲軸顏色設了 `color-scheme: light`，頁面上也有放在白底上的 QR code 圖片。橘底會不會被判定為亮色、元素層級的 `light` 會不會被處理、QR code 會不會被反轉，官方都沒說。我會在 Safari 27.3 beta 上實測，有問題再考慮用 `color-scheme: light only` 保護 QR code 區塊，並等 `only` 支援後再驗證一次。
+
+如果你在意的是捲動動效的無障礙處理，可以接著看 [scroll-driven animations 成為 Baseline](/blog/scroll-driven-animations-baseline)。
+
+---
+
+Safari 這一步，把深色模式從「有空再做」推到「一定要決定」。好消息是，現代 CSS 已經讓深色主題的成本低很多。如果你想盤點網站在深色模式下的表現，或建立一套同時支援亮色與深色的色彩 token，可以[預約 30 分鐘初談](/booking)。

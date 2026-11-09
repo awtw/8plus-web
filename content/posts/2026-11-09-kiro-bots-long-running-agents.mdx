@@ -1,0 +1,96 @@
+---
+title: "AWS Kiro bots 正式推出：AI agent 從「跑一次任務」變成「負責一份工作」"
+date: "2026-11-09"
+summary: "AWS 11 月 5 日讓 Kiro Crew 的 bots 正式推出：每個 bot 是有名字、有記憶、照排程自己跑的常駐 agent。GitHub 10 月底也把 Copilot 雲端 session 做成跨裝置接續，雲端沙箱 11 月開始計費。整理兩家說了什麼、還沒說清楚的地方，以及導入常駐 agent 前該先寫好的「職務說明」。"
+slug: "kiro-bots-long-running-agents"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI Agent", "AWS", "自動化", "AI 治理", "趨勢"]
+locale: "zh-TW"
+---
+
+# AWS Kiro bots 正式推出
+
+11 月 5 日，AWS 的 Kiro 團隊發表 [Introducing bots in Kiro Crew](https://kiro.dev/blog/crew-bots/)，宣布 Kiro Crew 裡的 bots 正式推出（GA）。官方的定義很直接：每個 bot 是「有名字、長時間運作、負責你工作中某一塊」的 agent。它有自己的記憶、自己的排程，會自己開 session 做事，有需要你決定的事才回來問。
+
+過去一年大家用 coding agent 的方式，多半是「開一個 session、交代一件事、看結果」。bots 代表另一種用法：**不是交代一件事，而是交代一份工作。**這對團隊的影響不在工具本身，而在管理方式：一份工作要有範圍、權限、預算和負責人，agent 也一樣。
+
+## 一、發生什麼事
+
+**Kiro bots（11/5，正式推出）**
+
+依 [Kiro 官方部落格](https://kiro.dev/blog/crew-bots/)：
+
+- **每個 bot 有自己的記憶。** bot 會記下決策與待辦，你可以檢視、編輯或刪除它記得的任何東西；不同 bot 之間的經驗是分開的。
+- **bot 會自己開工作 session。** 它可以平行啟動多個 worker session、監看進度、把偏掉的工作拉回來，最後把結果整理回自己的對話裡，另外維護一個顯示目前狀態的 dashboard。
+- **排程在對話裡設定。** 官方舉的例子是每 30 分鐘檢查一次 CI 的 build-health bot，也可以設成每 4 小時一次的 heartbeat。排程跑出來的東西進工作紀錄，需要你處理的才回到對話。
+- **每個 bot 可以選不同模型**，worker 也可以用另一個模型，例如規劃用強一點的、例行檢查用便宜快速的。
+- **權限是逐一給的。** bot 只拿到它工作需要的工具；要更多工具得經你核准。官方的例子：負責收 issue 的 bot 可以留言但不能關 issue；做 code review 的 bot 可以留言、要求修改，但不能核准或 merge；負責部署的 bot 每次變更前都先問你。
+- **官方列的用途**：issue 分類、CI 失敗分流（區分新問題與已知的 flaky test）、對照過去決策做 code review、發版前檢查、定期報告與 release notes。
+- **跑在哪裡**：你自己的筆電、Mac Mini 或 EC2。
+
+**Kiro Crew 本身（8/4 開源）**
+
+- 依 [Kiro Crew 發表文](https://kiro.dev/blog/introducing-kiro-crew/)與[產品頁](https://kiro.dev/crew/)，Kiro Crew 以 Apache 2.0 開源，透過 Agent Client Protocol（ACP）調度 agent，發表時是跑在 Kiro CLI 上、需要 Kiro 帳號登入。
+- 產品頁寫明 Kiro Crew 本身免費，**沒有另外計量**，用量算在你的 Kiro 方案裡；不呼叫模型的排程工作不消耗請求。
+- 安全機制包含 OS 層級沙箱、預設拒絕的指令清單、輸出時遮蔽憑證，以及有簽章的稽核紀錄。
+- AWS 在 8 月的發表文說，Amazon 內部在不到六個月內有超過 39,000 名開發者採用。這是 AWS 自己公布的數字。
+
+**同一個方向：GitHub 的雲端 Copilot（10/28）**
+
+- [GitHub changelog](https://github.blog/changelog/2026-10-28-work-from-anywhere-with-a-new-connected-copilot-cloud-experience/) 宣布 Copilot 成為「一個相連的雲端體驗」：可以從 github.com、GitHub Mobile、Copilot CLI、Copilot app、VS Code、Slack 或 Microsoft Teams 開始雲端任務，session 可以在不同介面之間接續。付費方案正式提供。
+- 每個 session 預設跑在雲端沙箱，關掉時存 snapshot，之後可以接著做。
+- **雲端沙箱的用量從 2026 年 11 月開始計費**。Actions 的內含額度改成「以金額計算的共用池」，涵蓋 hosted runner、雲端沙箱與 larger runner，各自依公開費率扣除。
+- 管理者可以用 Copilot 設定裡的「Copilot in the cloud」政策控制；沒有 repo 寫入權限的人，在那個 repo 用 Copilot 會自動變成唯讀。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **bot 的實際成本。** Kiro 的文章沒寫一個 bot 一個月大概花多少，只說用量算在 Kiro 方案裡。排程越密、模型越大，花費越多，但沒有可以直接套用的數字。
+- **記憶怎麼存、存多久、能不能搬走。** 官方說記憶可以檢視與編輯，但沒說明格式、保存期限，或換工具時能不能匯出。
+- **能接哪些非 Kiro 的 agent。** 產品頁說開發者可以支援相容 ACP 的 agent，但沒列出目前確定能用的清單。發表時的前提仍是 Kiro CLI 與 Kiro 帳號。
+- **bot 判斷錯誤的比例。** 官方沒有提供任何準確率或誤判資料，例如 CI 分流把真問題標成 flaky 的情況。
+- **GitHub 雲端沙箱的費率。** changelog 只說依各產品公開費率扣除，沒有在文中寫出數字；我沒有另外核對費率頁。
+
+## 三、我怎麼看
+
+**1. 管理的單位從「一次對話」變成「一個職務」。** 以前要管的是「這次 agent 做了什麼」，PR 進來審就好。常駐 bot 每 30 分鐘自己動一次，沒人看著的時候也在做事。這時候要先回答的是：它負責什麼、不負責什麼、能動哪些系統、做錯了誰發現。這其實就是一份職務說明。
+
+**2. 記憶是新的資產，也是新的風險。** bot 會把「上次你糾正我的事」記下來，下次照做。這很方便，但也等於有一份沒人寫、也沒人審過的作業規範在累積。如果它記錯了，錯誤會被穩定地重複。所以官方特別強調記憶可以檢視、編輯、刪除，這個功能要真的被用起來。
+
+**3. 權限設計比模型選擇重要。** Kiro 舉的例子都是「能留言、不能 merge」「部署前要問」，這個方向是對的。常駐 agent 的風險不是單次出錯，而是在沒人注意的時間重複出錯。跟我們之前寫過的 [AI agent 身分治理](/blog/ai-agent-identity-governance) 是同一件事：每個 bot 都該有自己的身分與最小權限，而不是借某個工程師的 token。
+
+**4. 成本會在背景長出來。** GitHub 雲端沙箱 11 月開始計費、Kiro 用量算進方案，兩家都在提醒同一件事：agent 不在你眼前跑，不代表它不花錢。計費方式的細節可以參考 [GitHub Enterprise 內含 Copilot 改按用量計費](/blog/github-copilot-access-usage-billing)。
+
+## 四、實務建議
+
+### 老闆／PM
+
+- **先選一份窄、重複、做錯也不致命的工作。** Kiro 官方也建議從單一、可重複的職責開始。週報、release notes 草稿、issue 初步分類都適合；直接碰正式環境的不適合當第一個。
+- **寫一頁「bot 職務說明」**：負責什麼、輸出給誰、多久跑一次、每月預算上限、負責人是誰。寫不出來，就代表還不該上線。
+- **兩到四週後檢查一次**：它省下的時間，有沒有被「檢查它的產出」吃掉。
+
+### 工程主管
+
+- **權限先給唯讀與留言**，不給 approve、merge、部署、關單。要放寬時，留下誰核准、為什麼的紀錄。
+- **每個 bot 獨立身分、獨立憑證**，不要共用個人 token，方便追蹤和撤銷。
+- **排程頻率要算過。** 每 30 分鐘一次就是一天 48 次。不需要推理的檢查（例如 CI 狀態查詢）用一般腳本就好，不必叫模型；Kiro 產品頁也說不呼叫模型的排程不耗請求。
+- **定期審 bot 的記憶**，把該保留的規則移到 repo 裡的文件（例如 `AGENTS.md`），讓它可以被 code review。
+- **用 GitHub Copilot 雲端功能的團隊**：這個月先確認「Copilot in the cloud」政策與 Actions 共用額度的用量，避免月底才發現雲端沙箱吃掉了 CI 的額度。
+
+### 工程師／接案團隊
+
+- **確認 bot 跑在哪台機器上。** 跑在筆電上的常駐 agent，筆電闔上、休眠或換網路時排程會怎樣，要自己測過，不要假設。
+- **幫客戶設 bot 之前，先在合約或交接文件寫清楚**：用誰的帳號與額度、記憶和工作紀錄歸誰、專案結束時怎麼移交或刪除。
+- **bot 的產出照一般 PR 標準驗收。** 驗收的做法可以參考 [AI 程式碼驗收缺口](/blog/ai-code-verification-gap)。
+
+## 五、對這個站的影響
+
+不直接影響。8plus 沒有用 Kiro，repo 裡也沒有 GitHub Actions 工作流程，部署到 Cloudflare Workers 是用 `pnpm run deploy:vinext` 手動執行，每次部署再記到 `docs/deployment-inventory.md`，repo 裡也沒有排程工作，所以 GitHub 雲端沙箱計費也碰不到。
+
+不過權限的思路是一樣的。這個專案的 `opencode.json` 已經設定：讀取 `.env*` 一律拒絕、改檔要詢問、shell 指令預設要詢問，只放行 `git status`、`pnpm build` 等少數指令。如果之後要加常駐 bot，我會優先考慮「每週整理 Next.js、Node.js 安全公告並開 issue」這種只讀、只留言的工作，這是想法，還沒有實作。
+
+---
+
+常駐 agent 會讓「交代一份工作給 AI」變得很容易，但工作範圍、權限和預算還是要人來定。如果你的團隊正在評估要讓哪些例行工作交給 agent、該怎麼設權限與驗收，可以[預約 30 分鐘初談](/booking)。

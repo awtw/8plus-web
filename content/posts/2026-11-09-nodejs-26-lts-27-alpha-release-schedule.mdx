@@ -1,0 +1,104 @@
+---
+title: "Node.js 26 進入 LTS、27 首個 Alpha 出爐：一年一版的新節奏，升級計畫要怎麼排"
+date: "2026-11-09"
+summary: "10/28 Node.js 26 正式進入 LTS（支援到 2029 年 4 月底），隔天 27 推出第一個 Alpha，這是改成「一年一個大版本、每版都是 LTS」後的第一條版本線。整理新時程、27 Alpha 裡會影響現有程式的變更、官方還沒定案的部分，以及團隊該怎麼排升級。"
+slug: "nodejs-26-lts-27-alpha-release-schedule"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Node.js", "升級", "版本策略", "趨勢"]
+locale: "zh-TW"
+---
+
+# Node.js 26 進入 LTS、27 首個 Alpha 出爐
+
+10 月 28 日，[Node.js 26.13.0](https://nodejs.org/en/blog/release/v26.13.0) 發布，26 這條線正式進入 LTS，代號 Lithium，支援到 2029 年 4 月底。隔天 10 月 29 日，[Node.js 27 的第一個 Alpha](https://nodejs.org/en/blog/release/v27.0.0-alpha.0.0.0) 出爐；11 月 5 日，Joyee Cheung 又寫了一篇 [Node 26 到 27 的 V8 變更整理](https://nodejs.org/en/blog/announcements/notable-v8-changes-from-node-js-26-to-27-alpha)。
+
+這兩件事單看都是例行發布，放在一起才看得出意義：**27 是 Node.js 改成「一年一個大版本」之後的第一條版本線**。過去「偶數版才用、奇數版跳過」的規則不再適用，團隊排升級的方式也要跟著調整。
+
+## 一、發生什麼事
+
+**Node.js 26 進入 LTS（10/28）**
+
+- 26.13.0 除了把 `process.release` 等資訊改成 LTS，和 26.12.1 沒有其他差異。官方寫明會支援到 2029 年 4 月底。
+- 從 22 或 24 升上來要注意一件事：從 Node 25 開始，官方的 Linux 執行檔會連結 `libatomic`，有些發行版需要另外安裝。
+- 依官方的 [schedule.json](https://github.com/nodejs/Release/blob/main/schedule.json)，24 已在 10 月 20 日轉入維護期（EOL 為 2028-04-30），22 的 EOL 是 **2027-04-30**。
+
+**新的發布時程（3 月公告，27 起實施）**
+
+官方在 [Evolving the Node.js Release Schedule](https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule) 說明了新規則：
+
+- 一年一個大版本，4 月發布 Current，10 月轉 LTS。**每一版都會變成 LTS**，不再區分奇偶數。
+- 新增 Alpha 階段（10 月到隔年 3 月，約 6 個月），允許破壞性變更；之後是 6 個月的 Current、30 個月的 LTS，從第一個 Current 到 EOL 共 36 個月。
+- 版本號對齊首次發布的年份：27.0.0 在 2027 年、28.0.0 在 2028 年。
+- 27 的時程：Alpha 2026 年 10 月開始、27.0.0 在 2027 年 4 月、2027 年 10 月轉 LTS、2030 年 4 月 EOL。26 是最後一條沿用舊制的版本線。
+- 官方說 Alpha 給套件作者與 CI 做相容性測試，**不建議用在正式環境**；Alpha 版本之間 API 仍可能變動。
+
+**27 Alpha 裡有什麼（10/29）**
+
+- V8 從 14.6 升到 15.6.75.13。預設開啟的新語言功能包括 `Math.sumPrecise()`、`Iterator.prototype.join()`、`Iterator.prototype.includes()`、`Iterator.zip()`、`Iterator.zipKeyed()` 與 `Intl.Locale.prototype.variants`。
+- 相依套件：OpenSSL 升到 4.1.0，建置需要 OpenSSL 3 以上，移除內建的 FIPS provider 建置與 OpenSSL engine 支援；npm 升到 12.1.0。Intel 版 macOS 的支援降為實驗性。
+- 其他破壞性變更，挑幾個常見情境會碰到的：`http` 的 `keepAliveTimeout` 預設改為 65 秒、`req.headers` 改成 null prototype、`domain` 模組在執行時發出棄用警告、新增 `--allow-env` 權限、`fs` 原生實作 glob。
+- V8 文章列出幾個「行為會變」的地方：
+  - **預設記憶體上限變大。** 沒有指定 `--max-old-space-size` 時，上限改為實體記憶體（或 cgroup 限制）的一半，夾在 256 MB 到 4 GB 之間；8 GB 的機器會從 2 GB 變 4 GB。`Buffer`／`ArrayBuffer` 佔用的記憶體也開始計入。
+  - **序列化格式改變。** `v8.serialize()`、`structuredClone()`、`postMessage()` 用新格式，**舊版 Node 讀不了 27 寫出的資料**（27 可以讀舊格式）。
+  - `Math` 部分函式改用 LLVM 的 libm，最後一位數可能不同；大陣列的 `sort()` 改用 PowerSort（仍然穩定）；`error.stack` 不再沿著原型鏈查找。
+
+同時別忘了：Node.js 已預告 [11 月 11 日或之後發布 26.x、24.x、22.x 的安全更新](https://nodejs.org/en/blog/vulnerability/november-2026-security-releases)，三條線的最高嚴重度都是 High。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **時程本身不是最終版。** 官方寫明「not final and may be amended」，以 schedule.json 為準。
+- **Alpha 的節奏與規則。** 官方只說 Alpha 的發布時間與頻率由 Release Team 依變更量決定；Alpha 能放進哪些破壞性變更的規則「會再定義並記錄」，我沒有找到已發布的版本。
+- **版本號的寫法。** 公告舉的例子是 `27.0.0-alpha.1`，實際發布的是 `27.0.0-alpha.0.0.0`，官方沒有解釋差異。寫 CI 腳本時不要寫死格式。
+- **哪些變更會留到 27.0.0。** Alpha 裡的東西可能在 4 月前被調整或撤回。
+- **效能數字只適用於官方列的基準測試。** V8 文章自己也這樣註明，不要拿來估你的服務。
+- **各託管平台何時支援 27**，目前沒有公告可查。
+
+## 三、我怎麼看
+
+**1. 只用 LTS 的團隊，改變比想像中小，但「每年 10 月」變成固定節點。** 以前的心法是「跳過奇數版」，現在每一版都會變 LTS，你要記的是：每年 10 月會多一條 LTS、每年 4 月底會有一條到期。把升級排成年度例行工作，比每次臨時找時間容易得多。
+
+**2. Alpha 是給你的提早預警，不是給你上線用的。** 過去奇數版就是在扮演這個角色，但很少人真的拿來測。這次 27 的序列化格式改變就是很好的例子：如果你有跨程序傳遞、或把 `v8.serialize()` 結果存起來的設計，新舊版本混跑時會讀不到。這種問題在 Alpha 階段發現，成本最低。
+
+**3. 預設值改變比 API 移除更容易被忽略。** 記憶體上限變大、`keepAliveTimeout` 改 65 秒，程式不會報錯，但行為會不一樣。在容器環境裡，記憶體上限改變會影響垃圾回收的時機，最好的做法是明確設定，而不是依賴預設值。
+
+## 四、實務建議
+
+### 前端工程師與技術主管
+
+1. **正式環境目標設為 26 LTS。** 11 月 11 日的安全更新出來後直接升到修補版。還在 24 的不急著搶，但要排進計畫；還在 22 的，離 EOL 只剩不到 6 個月。
+2. **把版本寫成規則。** 加上 `.nvmrc` 與 `package.json` 的 `engines`，CI 與本機才有依據。範例如下（未在實際專案中測試）：
+
+```json
+{
+  "engines": {
+    "node": ">=26 <27"
+  }
+}
+```
+
+3. **CI 加一個不阻擋合併的 27 Alpha 工作。** 官方在 [nodejs.org/dist](https://nodejs.org/dist/) 有發布 27 Alpha 的執行檔。重點檢查：比對浮點數結果的快照測試、依賴 `error.stack` 的錯誤處理、跨程序的 `structuredClone`／`postMessage`。
+4. **用 Linux 執行檔或自建映像的，先確認 `libatomic`。**
+
+### 套件作者與有內部共用套件的團隊
+
+- 官方明確要求套件作者把 Alpha 加進 CI。有原生模組（native addon）的，注意 `NODE_MODULE_VERSION` 的變動，預編譯檔要跟上。
+
+### 接案團隊與 PM
+
+- 交付文件寫清楚 Node 版本與 EOL 日期。2024 年交付、跑在 22 的專案，2027 年 4 月底就到期，現在正好是跟客戶談維護合約的時機。
+- 維護報價可以改成「每年一次 LTS 升級」的固定項目，而不是出事才處理。
+
+## 五、對這個站的影響
+
+8plus 正式環境跑在 Cloudflare Workers（vinext 1.2.1，`nodejs_compat`），執行的是 Workers 的 runtime，不是 Node.js，所以 27 的 V8 與 API 變更不直接影響線上網站。
+
+但建置流程（Velite、`vite build`、`next build`）都跑在 Node 上。檢查專案後發現幾件事：沒有 `.nvmrc`，`package.json` 沒有 `engines`，`@types/node` 還停在 `20.12.12`，而 Node 20 已經在 4 月 30 日 EOL。寫這篇時開發環境的 `node -v` 仍然是 [上次提到](/blog/nodejs-october-2026-security-release)的 v23.11.0。
+
+所以這個站要做的不是追 27，而是把基本功補上：開發與建置環境換到 26 LTS、加上 `.nvmrc` 與 `engines`、把 `@types/node` 對齊 26。27 Alpha 可以等 26 穩定跑一陣子後，再拿來跑一次建置看看。其他工具的到期日，可以對照 [年底 EOL 行事曆](/blog/eol-calendar-late-2026)。
+
+---
+
+一年一版聽起來只是版本號的變化，實際上是把「升級」從臨時任務變成固定節奏。只要每年 10 月固定檢查一次，大部分的版本風險都能提早處理。如果你想幫團隊建立版本盤點與升級的例行流程，可以[預約 30 分鐘初談](/booking)。

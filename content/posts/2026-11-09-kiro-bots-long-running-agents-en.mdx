@@ -1,0 +1,96 @@
+---
+title: "AWS Kiro bots go GA: AI agents move from running a task to owning a job"
+date: "2026-11-09"
+summary: "On November 5, AWS made bots in Kiro Crew generally available: named, long-running agents with their own memory and schedules. In late October GitHub also turned Copilot cloud sessions into one connected experience, with cloud sandbox billing starting in November. What both announced, what is still unclear, and the job description you should write before deploying a long-running agent."
+slug: "kiro-bots-long-running-agents-en"
+published: true
+protected: false
+kind: "article"
+category: "ai"
+tags: ["AI agents", "AWS", "automation", "AI governance", "trends"]
+locale: "en"
+---
+
+# AWS Kiro bots go GA
+
+On November 5, the Kiro team at AWS published [Introducing bots in Kiro Crew](https://kiro.dev/blog/crew-bots/) and made bots in Kiro Crew generally available. The definition is simple: each bot is a named, long-running agent that owns a specific part of your work. It has its own memory and its own schedule, starts its own sessions, and comes back to you only when it needs a decision.
+
+For the past year, most teams have used coding agents in one pattern: open a session, hand over one task, review the result. Bots are a different pattern. **You are not handing over a task, you are handing over a job.** The real impact on teams is less about the tool and more about management: a job needs a scope, permissions, a budget and an owner, and that applies to agents too.
+
+## 1. What happened
+
+**Kiro bots (November 5, generally available)**
+
+According to the [Kiro blog](https://kiro.dev/blog/crew-bots/):
+
+- **Each bot has its own memory.** It keeps notes on decisions and open items. You can view, edit or delete anything it remembers, and lessons stay separate between bots.
+- **Bots run their own sessions.** A bot can start parallel worker sessions, monitor them, redirect work that drifts, and bring results back into its chat. It also maintains a dashboard showing the current state of its work.
+- **Schedules are set in chat.** The example given is a build-health bot that checks CI every 30 minutes; heartbeat-style schedules, such as every four hours, also work. Scheduled activity goes to a work log, and only items that need you come back to chat.
+- **Each bot can use a different model**, and its workers can use another one, for example a stronger model for planning and a faster, cheaper one for routine checks.
+- **Permissions are granted one by one.** A bot gets only the tools its job requires, and asking for more needs your approval. Examples from the post: an intake bot can comment on tickets but not close them; a code review bot can comment and request changes but not approve or merge; a deployment bot asks for approval before each change.
+- **Listed use cases:** issue intake, sorting CI failures from known flaky tests, code review against past decisions, release readiness checks, and recurring reports and release notes.
+- **Where they run:** your laptop, a Mac Mini or an EC2 instance.
+
+**Kiro Crew itself (open sourced August 4)**
+
+- According to the [Kiro Crew launch post](https://kiro.dev/blog/introducing-kiro-crew/) and the [product page](https://kiro.dev/crew/), Kiro Crew is open source under Apache 2.0 and orchestrates agents over the Agent Client Protocol (ACP). At launch it runs on the Kiro CLI and requires signing in with a Kiro account.
+- The product page says Kiro Crew is free, with **no separate metering**: usage counts against your Kiro plan, and scheduled jobs that don't call a model use no requests.
+- Security features include an OS-level sandbox, denied-by-default command patterns, credential redaction in output, and a signed audit log.
+- The August post says more than 39,000 Amazon builders adopted it internally in under six months. That is AWS's own figure.
+
+**Same direction: GitHub's cloud Copilot (October 28)**
+
+- The [GitHub changelog](https://github.blog/changelog/2026-10-28-work-from-anywhere-with-a-new-connected-copilot-cloud-experience/) describes Copilot as "one connected experience in the cloud." Cloud tasks can start from github.com, GitHub Mobile, the Copilot CLI, the Copilot app, VS Code, Slack or Microsoft Teams, and sessions carry over between them. It is generally available on paid plans.
+- Every session runs in a cloud sandbox by default, which saves a snapshot on shutdown so work can resume later.
+- **Billing for cloud sandbox usage begins in November 2026.** The Actions entitlement is now one shared, dollar-based pool covering hosted runners, cloud sandboxes and larger runners, deducted at each product's published rate.
+- Admins control access through the "Copilot in the cloud" policy. Users without write access to a repository automatically get read-only Copilot there.
+
+## 2. What was not said, or is still open
+
+- **What a bot actually costs.** The Kiro post gives no monthly estimate per bot, only that usage counts against your Kiro plan. Denser schedules and bigger models cost more, but there is no number you can plug in.
+- **How memory is stored, for how long, and whether it is portable.** Memory can be viewed and edited, but the format, retention and export options are not described.
+- **Which non-Kiro agents work.** The product page says developers can support ACP-compatible agents, but there is no list of what works today. At launch, the Kiro CLI and a Kiro account are still required.
+- **How often bots get it wrong.** There is no accuracy or error data, for example how often CI triage labels a real failure as flaky.
+- **GitHub's cloud sandbox rate.** The changelog says usage is deducted at published rates but does not state them, and I did not check the pricing page separately.
+
+## 3. My take
+
+**1. The unit of management moves from a conversation to a job.** You used to manage "what the agent did this time" by reviewing its PR. A long-running bot acts every 30 minutes, including when nobody is watching. The first questions become: what does it own, what does it not own, which systems can it touch, and who notices when it is wrong? That is a job description.
+
+**2. Memory is a new asset and a new risk.** A bot remembers that you corrected it and applies the correction next time. Useful, but it also means an operating procedure is accumulating that nobody wrote and nobody reviewed. If it learns the wrong lesson, it will repeat the mistake reliably. The fact that memory can be viewed, edited and deleted only helps if someone actually does it.
+
+**3. Permission design matters more than model choice.** Kiro's examples are all along the lines of "can comment, cannot merge" and "asks before deploying," and that is the right direction. The risk of a long-running agent is not one mistake, but the same mistake repeated while nobody is looking. It is the same topic as our earlier post on [AI agent identity governance](/blog/ai-agent-identity-governance-en): each bot should have its own identity and least privilege, not a borrowed engineer's token.
+
+**4. Costs grow in the background.** GitHub's cloud sandboxes start billing in November and Kiro usage counts against the plan. Both point to the same thing: an agent that runs out of sight still costs money. For the billing details on the GitHub side, see [GitHub Enterprise includes Copilot, billed by usage](/blog/github-copilot-access-usage-billing-en).
+
+## 4. Practical advice
+
+### Owners and PMs
+
+- **Start with a job that is narrow, repetitive and not fatal when wrong.** Kiro itself recommends starting with one narrow, repeatable responsibility. Weekly reports, release note drafts and first-pass issue triage are good candidates. Anything that touches production is not a good first bot.
+- **Write a one-page bot job description:** what it owns, who receives its output, how often it runs, the monthly budget cap and the human owner. If you can't write it, it isn't ready.
+- **Review it after two to four weeks:** is the time it saves being eaten by the time spent checking its output?
+
+### Engineering leads
+
+- **Start with read and comment permissions only.** No approving, merging, deploying or closing tickets. When you widen permissions, record who approved it and why.
+- **Give each bot its own identity and credentials** instead of personal tokens, so you can trace and revoke them.
+- **Do the math on schedules.** Every 30 minutes is 48 runs a day. Checks that need no reasoning, such as polling CI status, can be plain scripts; Kiro's product page notes that scheduled jobs without model calls use no requests.
+- **Review bot memory regularly** and move rules worth keeping into documents in the repo, such as `AGENTS.md`, where they go through code review.
+- **Teams on GitHub Copilot's cloud features:** check the "Copilot in the cloud" policy and the shared Actions entitlement this month, so you don't discover at month end that cloud sandboxes used up your CI allowance.
+
+### Engineers and agencies
+
+- **Know which machine the bot runs on.** If a long-running agent lives on a laptop, test what happens to its schedule when the lid closes, the machine sleeps or the network changes. Don't assume.
+- **Before setting up a bot for a client, write it into the contract or handover document:** whose account and credits it uses, who owns its memory and work log, and how they are handed over or deleted when the project ends.
+- **Accept bot output to the same standard as any PR.** For how to approach acceptance, see [the AI code verification gap](/blog/ai-code-verification-gap-en).
+
+## 5. What it means for this site
+
+No direct impact. 8plus doesn't use Kiro, and the repo has no GitHub Actions workflows. Deploying to Cloudflare Workers is a manual `pnpm run deploy:vinext`, with each deployment recorded in `docs/deployment-inventory.md`, and there are no scheduled jobs in the repo, so GitHub's cloud sandbox billing doesn't reach it either.
+
+The permission thinking still applies. The project's `opencode.json` already denies reading `.env*` files, asks before editing, and asks before shell commands except a short allowlist such as `git status` and `pnpm build`. If I add a long-running bot later, the first candidate would be a read-and-comment job like "collect Next.js and Node.js security advisories weekly and open an issue." That is an idea, not something already built.
+
+---
+
+Long-running agents make it easy to hand a job to AI, but the scope, permissions and budget of that job are still for people to decide. If your team is working out which routine work to give to agents, and how to set permissions and acceptance for it, [book a 30-minute intro call](/booking).

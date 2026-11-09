@@ -1,0 +1,106 @@
+---
+title: "Four GitLab security releases in five weeks: a regex RCE lands in KEV, and what self-managed teams and Ruby projects should do"
+date: "2026-11-09"
+summary: "Between September 23 and October 29, GitLab shipped three rounds of fixes for the same class of bugs in Ruby's regex engine, Onigmo, plus a fourth round distrusting eMudhra certificates. On October 29, CISA added CVE-2026-97229 to its Known Exploited Vulnerabilities catalog, and Ruby shipped its own fixes on October 23. A timeline, what is still unknown, and what self-managed GitLab and Ruby teams should check this week."
+slug: "gitlab-regex-rce-ruby-onigmo-en"
+published: true
+protected: false
+kind: "article"
+category: "ops"
+tags: ["security", "GitLab", "Ruby", "KEV", "CI/CD", "operations", "trends"]
+locale: "en"
+---
+
+# Four GitLab security releases in five weeks
+
+On October 29, CISA added GitLab's [CVE-2026-97229](https://nvd.nist.gov/vuln/detail/CVE-2026-97229) to its [Known Exploited Vulnerabilities (KEV) catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). It is a CVSS 10.0 bug: **no login required**. A crafted regular expression can be enough to run arbitrary code on the GitLab server.
+
+That is not the only problem. Between September 23 and October 29, GitLab shipped four security releases, and three of them trace back to the same root: Onigmo, the regex engine built into Ruby, can corrupt memory while compiling a crafted pattern. Ruby itself shipped fixed versions on October 23. Plenty of companies and agencies in Taiwan run their own GitLab, often on whatever version was current the last time someone had a free afternoon. Here is the timeline and what to check this week.
+
+## 1. What happened
+
+Dates, versions and CVSS scores below come from GitLab's release notes, Ruby's announcement, CISA's KEV data and NVD.
+
+**Sep 23: GitLab 19.4.1, 19.3.3, 19.2.7**
+
+- The [release notes](https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-1-released/) fixed two Critical issues (CVSS 9.9): CVE-2026-89078, a double free in the regex parser, and CVE-2026-93577, an integer overflow in the regex compiler.
+- Both required an **authenticated** user to put a crafted regex in a CI/CD configuration. The 19.2 through 19.4 release lines were affected.
+
+**Oct 12: GitLab 19.4.2, 19.3.5, 19.2.8**
+
+- The first item in the [release notes](https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-2-released/) is CVE-2026-97229: an integer overflow in the CI/CD regex compiler, CVSS 10.0, with `PR:N` in the vector, meaning **no authentication**. Affected: 19.2 before 19.2.8, 19.3 before 19.3.5, 19.4 before 19.4.2.
+- The release fixed 24 CVEs in total, including five more rated High, such as an XSS in syntax highlighting (8.7) and a way for Developer-role users to run pipelines on protected branches (8.5).
+- GitLab also published six detection rules for self-managed instances, with names such as "Onigmo native worker crash," for spotting exploitation attempts in logs.
+
+**Oct 21: GitLab 19.5.1, backported to 18.11.13**
+
+- The [release notes](https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/) fixed CVE-2026-110264: another integer overflow while compiling a regex, also CVSS 10.0 and unauthenticated. The difference is scope: **every version from 7.0 onward is affected**, so the fix went all the way back to 19.5.1, 19.4.3, 19.3.6, 19.2.9, 19.1.9, 19.0.10 and 18.11.13.
+- The notes call out one thing explicitly: **if you run GitLab on your own Ruby runtime rather than the official Linux packages or container images, you must also upgrade Ruby to 3.3.13, 3.4.12, 4.0.9 or later**, because the fix lives in Ruby.
+- The same release had two High fixes: CVE-2026-15723 (with OmniAuth SAML and LDAP auto-linking both enabled, an existing LDAP-backed account could be taken over, 8.2) and CVE-2026-112212 (cache poisoning of OAuth/OIDC discovery endpoints, 7.5).
+
+**Oct 23: Ruby 4.0.9, 3.4.12, 3.3.13**
+
+- [Ruby's announcement](https://www.ruby-lang.org/en/news/2026/10/23/regexp-fixes-for-gitlab-cves) says these releases fix the Onigmo bugs behind the four GitLab CVEs above. Ruby 3.3 is normally in security-only maintenance; this is an exception.
+- Who is affected: **only code that compiles regexes from attacker-controlled strings**, through `Regexp.new`, `Regexp.union`, `Regexp.compile`, or interpolation such as `/#{input}/`. Code that only uses developer-written patterns is not affected.
+- Two protections that do not work here: `Regexp.timeout` **does not help**, and limiting pattern length **is not reliable**, because some of the bugs trigger with short patterns.
+- Ruby has **not yet** requested its own CVE IDs for these fixes. The announcement says to track them by GitLab's CVEs for now.
+
+**Oct 29: KEV and GitLab 19.5.3 on the same day**
+
+- [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) added CVE-2026-97229 with a federal due date of November 1, and marked it as **requiring forensic triage**. The KEV note adds that other products could be affected by the same Ruby/Onigmo issue.
+- The same day, GitLab shipped [19.5.3 and related versions](https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-3-released/), removing eight compromised eMudhra intermediate CA certificates from its bundled trust stores (CVE-2026-111943). I covered the background in [the eMudhra intermediate CA compromise](/blog/emudhra-ca-compromise-trust-store-check-en). Note that **GitLab Runner and AI Gateway must be upgraded separately**, and CI images that bundle their own `ca-certificates` need rebuilding.
+
+## 2. What was not said, or is still open
+
+- **Who is exploiting CVE-2026-97229, and how widely,** has not been disclosed by CISA or GitLab. GitLab's October 29 notes do not mention exploitation at all.
+- **CVE-2026-110264 is not in KEV** as of the November 6 version of the catalog I checked, and Singapore CSA's [alert](https://www.csa.gov.sg/alerts-and-advisories/alerts/al-2026-152/) does not say it is being exploited. But its scope is much wider than 97229's, and it is also unauthenticated. "Not in KEV yet" is not the same as "nobody is using it."
+- **The exact attack path is not public.** GitLab normally publishes issue details 90 days after a fix. One of the 19.5.1 detection rules is called "Org mode render error burst," and some secondary coverage reads that as pointing to `.org` file rendering, but the official CVE description says nothing of the kind and I could not verify it.
+- **Why 19.5.2 and 19.4.4 were skipped** is not explained. GitLab only says those version numbers do not exist.
+- **A side effect of Ruby having no CVE IDs (my inference):** many vulnerability scanners match versions against CVEs. Until Ruby requests IDs, a self-compiled Ruby may not get flagged, so someone has to check versions by hand.
+
+## 3. My take
+
+**One root cause, three fixes in a month.** The September 23 bugs needed a login. The October 12 one did not. The October 21 one reached all the way back to 7.0. That is a familiar pattern: once researchers find a fragile component, they keep looking for more ways in. "We upgraded at the end of September" counts for nothing here.
+
+**CI/CD configuration is input.** We tend to treat `.gitlab-ci.yml` as a file our own people write. But GitLab parses it and compiles the regexes inside it, and that parser runs on the server. Anywhere a user, or an anonymous visitor, can push a string into a regex engine is attack surface.
+
+**This is not only about GitLab.** Ruby's announcement is clear: any Ruby code that passes user input to `Regexp.new` is in the same risk class. Site search, custom filter rules in admin panels, and "advanced match" fields are all worth a second look.
+
+**KEV marked it for forensic triage.** As with [last week's SSL VPN wave](/blog/ssl-vpn-kev-ivanti-cisco-sonicwall-en), that is CISA saying an upgrade does not undo a compromise that happened before it. GitLab servers hold source code, CI variables, deploy keys and tokens, so root on that box is expensive.
+
+## 4. Practical advice
+
+### Companies running self-managed GitLab (IT leads, DevOps)
+
+1. **Check the version first.** On an Omnibus install, `sudo gitlab-rake gitlab:env:info` shows the GitLab and Ruby versions; on Docker, run the same command inside the container. (Listed per the usual documented commands; not tested in this article's environment.)
+2. **Aim for the October 29 releases:** 19.5.3, 19.4.5, 19.3.7, 19.2.10, 19.1.10, 19.0.11 or 18.11.14. They include fixes for both 10.0 bugs and the eMudhra certificates. If you are older than 18.11, you are outside the backport range and need an upgrade path.
+3. **Plan downtime for single-node installs.** These releases include database migrations. GitLab says single-node upgrades involve downtime; multi-node setups can use the zero-downtime procedure.
+4. **Treat any internet-facing 19.2 to 19.4 instance that was unpatched before October 12 as possibly compromised.** Run GitLab's detection rules over the logs, and if in doubt rotate CI/CD variables, deploy keys, runner registration tokens and personal access tokens.
+5. **Do not forget runners and CI images.** Per the 19.5.3 notes, upgrading GitLab does not update Runner, and CI images that bundle `ca-certificates` need rebuilding.
+6. **If you use SAML with LDAP auto-linking,** make sure you are on or past the 19.5.1 round (CVE-2026-15723).
+
+### Teams building services in Ruby
+
+- Upgrade Ruby to 4.0.9, 3.4.12, 3.3.13 or later. On Docker, confirm the base image actually moved to the new version, not just that you rebuilt.
+- Find places where external input gets compiled into a regex: search for `Regexp.new`, `Regexp.union`, `Regexp.compile` and `/#{`. Where you can, switch to fixed patterns or `Regexp.escape`.
+- Do not count on `Regexp.timeout` or length limits as protection for this.
+
+### Agencies and outsourced IT managing client GitLab
+
+- Put each client's GitLab version in your asset list. There were four reasons to touch it in five weeks, and without a list it is hard to say which instances are done.
+- For clients on GitLab.com or GitLab Dedicated, GitLab says they are already patched. Self-hosted runners are still yours to maintain.
+
+### Engineering managers
+
+- Check whether GitLab is directly exposed to the internet. If only internal staff use it, putting it behind a VPN or zero-trust access greatly reduces the risk from unauthenticated bugs like these.
+- Treat your CI platform as a critical asset on the same tier as your VPN. It often holds more privilege than any single application server.
+
+## 5. What it means for this site
+
+8plus keeps its source on GitHub and deploys to Cloudflare Workers. The project is Next.js 16.4.5 with pnpm, has no Ruby dependencies, and does not use a self-managed GitLab, so these bugs do not affect the site directly.
+
+The lesson worth borrowing is that CI configuration is input. The repo currently has no GitHub Actions workflows, but if one is added, any step that passes external strings such as PR titles or branch names into a script deserves the same scrutiny. That is a direction for review, not the result of a completed audit.
+
+---
+
+The lesson from GitLab's five weeks is simple: when a component breaks, it rarely gets fixed only once, and "we upgraded last time" does not mean "we are on a safe version now." If you want to take stock of your CI/CD platform and internet-facing services, or write a patching rhythm into your operations process, [book a 30-minute intro call](/booking).

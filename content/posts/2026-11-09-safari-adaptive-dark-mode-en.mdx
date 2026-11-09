@@ -1,0 +1,97 @@
+---
+title: "Safari introduces Adaptive Dark Mode: if your site has no dark theme, the browser will darken it for you"
+date: "2026-11-09"
+summary: "On November 3, WebKit announced Adaptive Dark Mode in Safari 27.3 beta. When a user turns it on, Safari converts light pages that do not support dark mode into dark ones, and sites cannot detect it. How the conversion works, which sites are left alone, what is still open, and the decisions design and frontend teams should make now."
+slug: "safari-adaptive-dark-mode-en"
+published: true
+protected: false
+kind: "article"
+category: "design"
+tags: ["dark mode", "Safari", "design systems", "accessibility", "trends"]
+locale: "en"
+---
+
+# Safari introduces Adaptive Dark Mode
+
+On November 3, the WebKit team published [Introducing Adaptive Dark Mode](https://webkit.org/blog/18541/introducing-adaptive-dark-mode/). Safari 27.3 beta adds a feature that, when the user turns it on, **automatically converts light web pages that do not support dark mode into dark ones.**
+
+The post comes with a striking pair of numbers: almost 40% of web page loads come from users in dark mode, yet only 10% of page loads support it. In other words, most sites have been serving bright white screens to people who asked for dark. Safari has decided to close that gap in the browser. For design teams, this means "we don't have a dark mode" is no longer a neutral choice: if you don't make one, Safari's algorithm will make one for you.
+
+## 1. What happened
+
+- **How it is turned on.** The user's system appearance must be set to dark. When they visit a site with a bright background, Safari offers a preview; tapping "Try" applies it.
+- **Which sites are left alone.** Sites that declare dark mode support with `<meta name="color-scheme" content="light dark">` or the CSS `color-scheme: light dark` are not changed at all. For everything else, Safari analyzes the page's colors first. **Pages that already have a dark background with light text are also left alone**; only pages judged to be light get converted.
+- **How the conversion works.**
+  - A color matrix **inverts luminosity while preserving hue**: light backgrounds become dark and dark text becomes light.
+  - When transforming text color, it aims for the WCAG 4.5:1 contrast ratio. Light CSS gradients are converted to dark too.
+  - Most images are left unchanged. SVG images are inspected and recolored when needed. For bitmaps, Safari analyzes the pixel histogram and **inverts simple black-and-white logos**.
+  - Masks and `mix-blend-mode` may be turned off on transformed elements where they would look bad. `<canvas>` content is not changed.
+- **How to opt out.** If you do not want a page transformed, use `<meta name="color-scheme" content="light only">` or the CSS `color-scheme: light only`; the CSS version can target specific elements. The post notes, however, that **the `only` keyword is not supported in Safari 27.3 beta 1.**
+- **Sites cannot detect it.** To avoid adding fingerprinting signals, Safari does not let sites know whether Adaptive Dark Mode is applied. JavaScript that reads CSS colors gets the originally authored values, and images drawn into canvas render in their original form.
+- **It is in the release notes.** The [Safari 27.3 Beta Release Notes](https://developer.apple.com/documentation/safari-release-notes/safari-27_3-release-notes) list it under new Rendering features. The beta is available for the iOS 27.3, iPadOS 27.3, visionOS 27.3 and macOS 27.3 betas, as well as macOS 26 and macOS Sequoia.
+
+There is a spec basis for this. The W3C [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/) already allows browsers to auto-adjust the colors of pages that do not explicitly support a dark scheme when the user prefers dark, and it defines the `only` keyword as forbidding the user agent from overriding the element's color scheme.
+
+## 2. What was not said, or is still open
+
+- **The final release date.** The post gives no date for Safari 27.3 and says the feature will keep evolving through the beta.
+- **Platform details.** The post does not spell out platform by platform where the feature is available, whether it ends up on by default, or how users toggle it per site. News coverage describes where the setting lives, but I could not confirm that against a primary source, so I have left it out.
+- **What happens with only `dark`, or `light` on a single element.** The post covers `light dark` (no change) and `light only` (opt out). Other declarations need testing.
+- **How brand colors fare.** The post does not go into what "invert luminosity, keep hue" does to a brand's primary color, to red/green meaning in charts, or to status colors.
+- **QR codes and similar black-and-white bitmaps.** The post says simple black-and-white logos get inverted, but does not mention QR codes. Whether an inverted QR code scans reliably on every reader is something I have no data on; treat it as a risk to test.
+
+## 3. What it means for the design process
+
+**1. Dark mode moves from "nice to have" to "a decision you must make."** Before, if you had no dark version, users saw the light design you shipped. Now, in Safari, people who chose dark may see a version produced by an algorithm. You can design your own dark theme, accept Safari's conversion, or opt out explicitly, but you can no longer pretend the choice does not exist.
+
+**2. Opting out is legitimate, but it needs a reason.** People turn on dark mode for comfort or to read in the dark, and Adaptive Dark Mode exists for them. Opting out the whole site with `light only` pushes them back to a bright white screen. A better approach is to opt out only the parts that really cannot be converted, such as product photography or charts and maps where color carries meaning.
+
+**3. Semantic color tokens are the cheapest fix.** If your design system already uses semantic tokens like "surface," "primary text" and "secondary text" instead of raw hex values, a dark theme is mostly a second set of values. Safari aims for 4.5:1 when converting, and your own dark theme should meet the same bar; it is also the AA requirement in [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
+
+**4. You cannot see what users see.** Because sites cannot detect the conversion, analytics cannot tell you how many people use it either. When support receives a screenshot where "the colors look weird," this feature should be one of the first suspects.
+
+## 4. Practical advice
+
+### Designers
+
+- Pick your 5 to 10 most important pages and check each one in Safari 27.3 beta with the system set to dark: is the logo a bitmap, is the brand color still recognizable after conversion, do charts keep their red/green meaning, do product photos carry a baked-in white background, does the QR code get inverted?
+- Record a decision for each page type in your design system docs: build a dark version, leave it to Safari, or opt out.
+- On assets: switch logos and icons to SVG, use transparent backgrounds for content images instead of baking in the page color, and provide dark variants with `<picture>` where needed.
+
+### Frontend engineers
+
+- Declare the color scheme in the HTML `<head>` or in CSS on `:root`. **Do not inject it later with JavaScript**; the post makes a point of this.
+- If you already have a dark theme, make sure it is declared correctly. The sketch below is illustrative (not tested on Safari 27.3 beta, and `only` is unsupported in beta 1):
+
+```css
+:root {
+  color-scheme: light dark;
+  --surface: light-dark(#ffffff, #121212);
+  --text: light-dark(#1a1a1a, #f2f2f2);
+}
+
+/* Keep only the parts that truly cannot be converted in light mode */
+.product-photo-panel {
+  color-scheme: light only;
+}
+```
+
+- Audit older techniques: image sprites, tiled background images, and `mask` or `mix-blend-mode` on key UI are the most likely to break after conversion.
+- Do not try to detect the feature. It is undetectable by design.
+
+### Agencies and PMs
+
+- Add one acceptance check: a pass in Safari with the system appearance set to dark.
+- Quote "dark mode" as its own line item. For clients with brand guidelines, have them decide first whether to build it, leave it to the browser or opt out, then estimate.
+
+## 5. What it means for this site
+
+8plus only has a dark design: both `<html>` and `:root` set `color-scheme: dark`, and the theme is locked to dark. According to the post, pages that already have a dark background are not converted, so the main site should be unaffected. One caveat: this site declares `dark`, not `light dark`, so it goes down the "analyzed and judged dark" path rather than the "declared support, skip entirely" path. That is my reading of the post, not something I have tested yet.
+
+The pages that need checking are the share pages `/sb` and `/sc`. They use saturated orange (`#FE5000`) and blue (`#002FA7`) backgrounds, the outer shell sets `color-scheme: light` to fix scrollbar colors, and they show QR code images on a white backing. Whether the orange background is judged light, whether an element-level `light` declaration is respected, and whether the QR codes get inverted are all things the post does not answer. I plan to test them on Safari 27.3 beta and, if needed, protect the QR code block with `color-scheme: light only`, then verify again once `only` is supported.
+
+If you are interested in the accessibility side of scroll motion, see [scroll-driven animations reach Baseline](/blog/scroll-driven-animations-baseline-en).
+
+---
+
+With this step, Safari moves dark mode from "we'll get to it" to "you have to decide." The good news is that modern CSS makes a dark theme far cheaper than it used to be. If you want to review how your site holds up in dark mode, or set up color tokens that support both light and dark, [book a 30-minute intro call](/booking).

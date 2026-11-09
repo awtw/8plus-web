@@ -1,0 +1,90 @@
+---
+title: "Conductor joins Meta and its cloud shuts down on November 20: an exit checklist for when your AI dev tool gets acquired"
+date: "2026-11-09"
+summary: "On November 4, Conductor announced it is joining Meta. Conductor Cloud goes read-only on November 13 and shuts down on November 20, when data deletion begins. The same day, OpenAI announced it will acquire Pierre, the company behind Code Storage. The official timeline, what is still unclear, and how teams and agencies can plan for a tool disappearing as part of their delivery process."
+slug: "ai-dev-tool-acquisition-exit-plan-en"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["AI tools", "vendor risk", "client work", "maintenance", "trends"]
+locale: "en"
+---
+
+# Conductor joins Meta, and its cloud shuts down on November 20
+
+On November 4, Conductor, a tool for running several coding agents at once, announced that it is [joining Meta](https://www.conductor.build/announcement). New sign-ups stopped the same day. Conductor Cloud goes read-only on November 13 and shuts down on November 20, when deletion of user data begins. Sixteen days from announcement to shutdown.
+
+On the same day, OpenAI announced it will acquire Pierre, the developer tools company behind the Git storage layer Code Storage, and fold its features into Codex. A month earlier we wrote about [the Deno team joining Cloudflare, with Deno Deploy given six months](/blog/deno-joins-cloudflare-en). The AI developer tooling layer is consolidating fast. The useful question for a team is not "will my tool be next?" but "if it disappeared tomorrow, what would we lose?"
+
+## 1. What happened
+
+**Conductor (announced November 4)**
+
+According to [Conductor's announcement](https://www.conductor.build/announcement) and the [0.93.0 changelog](https://www.conductor.build/changelog/0.93.0-conductor-is-joining-meta):
+
+- **November 4:** No new sign-ups or downloads. Free users can no longer upgrade; pro users keep pro features for free. Active subscribers will get a refund.
+- **November 13:** Conductor Cloud becomes read-only. You can read old chats and export data, but not send new messages.
+- **November 20:** Conductor Cloud shuts down and **deletion of cloud user data begins**. The announcement asks users to export before this date.
+- **Local Conductor:** Keeps working for now and will get new models and critical bug fixes until early 2027, when it begins winding down. All user data is deleted when the app shuts down.
+- **How to move out:** Right-click a cloud workspace and choose "Transfer to local" to move it and its chats to your Mac, or download everything via Settings → Account → Export data.
+- The team says it has big plans for "the next interface" and expects to have something new early next year, without details.
+
+According to [InfoWorld](https://www.infoworld.com/article/4245065/meta-acquires-conductor-as-ai-coding-shifts-toward-multi-agent-development.html), Conductor launched in July 2025 and could run several agents, including Claude Code and Codex, side by side. Terms were not disclosed.
+
+**OpenAI to acquire Pierre (announced November 4)**
+
+- Pierre makes [Code Storage](https://code.storage/), a Git-based storage layer for machine-generated code. Its open-source Trees and Diffs libraries are already used in the Codex app.
+- According to [InfoWorld's report on OpenAI's announcement](https://www.infoworld.com/article/4245719/openai-buys-tiny-software-developer-to-improve-codex.html), Code Storage customers can keep using the product until its features are brought into Codex, Trees and Diffs will stay open source with OpenAI continuing to contribute, and the price was not disclosed.
+- I could not read OpenAI's [original announcement](https://openai.com/index/openai-to-acquire-pierre/) (it returned 403), so these details come from secondary reporting. Check the original.
+
+## 2. What was not said, or is still open
+
+- **What format the export is in, and whether another tool can use it.** Conductor says you can export but does not describe the format. Whether the export is readable or importable elsewhere is something to test yourself.
+- **What Meta will build, and whether existing users carry over.** There is only "something new early next year," with no product, pricing or migration path.
+- **How refunds work.** The announcement only says active subscribers will be refunded, with no amount or timing.
+- **When the Pierre deal closes and how long Code Storage stays.** Per secondary reports, the deal still faces customary closing conditions. "Until features come into Codex" has no date, and it is not said whether Code Storage remains a standalone product afterwards.
+
+## 3. My take
+
+**1. The layer above the agent is the easiest to acquire.** AI developer tooling has roughly three layers: models (Claude, GPT, Gemini), agents (Claude Code, Codex and others), and the orchestration and workspace tools that sit on top of agents, which is where Conductor lived. The top layer is the thinnest, the easiest to absorb, and the most likely to change overnight. Treat it as replaceable from day one.
+
+**2. You won't lose the code, you'll lose everything around it.** If you use Git, committed code is safe. What disappears is unpushed branches, conversations with agents, the discussion of why something was changed, and settings and prompts that built up inside the tool. For agencies the last part hurts most: if "why it was designed this way" lives only in a tool's chat history, the handover breaks when the tool goes away.
+
+**3. Exit windows are getting shorter.** Deno Deploy got six months. Conductor Cloud got sixteen days from announcement to data deletion. When a small tool is acquired, the team usually moves wholesale into the bigger company and may not have room to maintain the old product. "Could we move off this within a week if it shut down?" should be a formal evaluation question.
+
+## 4. Practical advice
+
+### Conductor Cloud users (this week)
+
+1. **Before November 13**, check your cloud workspaces for uncommitted or unpushed work and push it to Git.
+2. Move important workspaces with "Transfer to local," or download everything with Export data, and **open the export to confirm you can actually read it**.
+3. Cloud data deletion begins after November 20. Don't wait for the last day.
+4. The local app works until early 2027, but it is also counting down. Use that time to switch tools, and don't build new workflows on it.
+
+### Owners and PMs
+
+- **Keep a list of AI tools:** which ones, who uses them, what is in them (code, client data, chat history), and how they are paid for.
+- Ask one more question per tool: **if it shut down in two weeks, what would we lose?** Anything where the answer is "a lot" goes to the top of the list.
+
+### Engineering leads
+
+- **Keep decision records in the repo:** PR descriptions, ADRs, `docs/`, not only in agent chats. Agent conversations are drafts; the repo is the record.
+- **Put agent configuration in the repo too:** instruction files such as `AGENTS.md`, skills and permission settings, in open formats that go through code review. For why skills are becoming a cross-tool standard, see [Agent Skills moves to the Agentic AI Foundation](/blog/agent-skills-agentic-ai-foundation-en).
+- When evaluating a new tool, make "can we export everything, and in what format?" a required question.
+
+### Agencies
+
+- **State in the contract or proposal which third-party AI tools you use**, which services the client's code and data pass through, and what happens if a tool is discontinued. For engagement structures, see [Consulting models: retainer vs project vs workshop](/blog/consulting-engagement-models-en).
+- **Don't let client deliverables live only in a tool workspace on a personal account.** The handover list should include decision records and agent configuration, not just code.
+- Maintenance contracts can add one clause: when a key dependency, including dev tools and deployment platforms, announces end of service, how quickly the client is notified and offered an alternative. For dependencies expiring at year end, see [the year-end EOL calendar](/blog/eol-calendar-late-2026-en).
+
+## 5. What it means for this site
+
+No direct impact. 8plus uses neither Conductor nor Code Storage.
+
+But the repo is a handy self-check. Most of the project's agent configuration already lives in Git: `AGENTS.md`, `CLAUDE.md`, `.agents/skills` and `.claude/skills` (each with over two hundred tracked files), `.cursor/rules` and `opencode.json`, with progress and plans in `.planning/`. Swap out any one agent tool and most of the instructions and workflow stay. The weak spot is that conversation history inside each tool is not in the repo, so important decisions still need to be written back into `.planning/` or commit messages.
+
+---
+
+Acquisitions are not accidents at this stage of the market, they are normal. That is no reason to avoid new tools, but it is a reason to keep your code, decisions and configuration in your own hands. If you want to inventory the AI tools your team or project depends on, and write an exit plan into your delivery and maintenance contracts, [book a 30-minute intro call](/booking).

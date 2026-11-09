@@ -1,0 +1,90 @@
+---
+title: "Conductor 加入 Meta、雲端 11/20 關閉：AI 開發工具被收購時，團隊的退場清單"
+date: "2026-11-09"
+summary: "11 月 4 日 Conductor 宣布加入 Meta，雲端版 11/13 變唯讀、11/20 關閉並開始刪資料；同一天 OpenAI 也宣布要收購 Code Storage 的開發商 Pierre。整理官方時程、還沒說清楚的地方，以及團隊和接案方該怎麼把「工具會消失」寫進交付流程。"
+slug: "ai-dev-tool-acquisition-exit-plan"
+published: true
+protected: false
+kind: "article"
+category: "delivery"
+tags: ["AI 工具", "供應商風險", "接案合作", "維護", "趨勢"]
+locale: "zh-TW"
+---
+
+# Conductor 加入 Meta，雲端版 11/20 關閉
+
+11 月 4 日，讓開發者同時跑多個 coding agent 的工具 Conductor 宣布[加入 Meta](https://www.conductor.build/announcement)。當天就停止新用戶註冊；雲端版 Conductor Cloud 11 月 13 日變唯讀，11 月 20 日關閉並開始刪除使用者資料。從宣布到關閉，16 天。
+
+同一天，OpenAI 也宣布要收購 Pierre，一家做 Git 儲存層 Code Storage 的開發工具公司，打算把它的功能併進 Codex。再往前一個月，我們才寫過 [Deno 團隊加入 Cloudflare、Deno Deploy 剩六個月](/blog/deno-joins-cloudflare)。AI 開發工具這一層正在快速整併，對團隊來說，該問的不是「下一個會不會是我用的工具」，而是「它明天消失，我們會失去什麼」。
+
+## 一、發生什麼事
+
+**Conductor（11/4 宣布）**
+
+依 [Conductor 官方公告](https://www.conductor.build/announcement)與 [0.93.0 版 changelog](https://www.conductor.build/changelog/0.93.0-conductor-is-joining-meta)：
+
+- **11/4**：停止新用戶註冊與下載。免費用戶不能再升級；付費（pro）用戶免費保留 pro 功能。有效訂閱者會退款。
+- **11/13**：Conductor Cloud 變唯讀。可以看舊對話、匯出資料，但不能送新訊息。
+- **11/20**：Conductor Cloud 關閉，**開始刪除雲端使用者資料**。官方原話是請在這天之前匯出。
+- **本機版 Conductor**：暫時照常運作，2027 年初之前會持續加入新模型與修正重大 bug，2027 年初開始收尾；app 關閉時所有使用者資料都會刪除。
+- **怎麼搬**：在雲端 workspace 上按右鍵選「Transfer to local」，可以把單一 workspace 和對話搬到本機；要下載全部資料，到 Settings → Account → Export data。
+- 公告說團隊對「下一個介面」有很大的計畫，預計明年初推出新東西，但沒有細節。
+
+依 [InfoWorld 報導](https://www.infoworld.com/article/4245065/meta-acquires-conductor-as-ai-coding-shifts-toward-multi-agent-development.html)，Conductor 2025 年 7 月推出，可以同時跑 Claude Code、Codex 等多個 agent；交易金額沒有公開。
+
+**OpenAI 收購 Pierre（11/4 宣布）**
+
+- Pierre 是 [Code Storage](https://code.storage/) 的開發商，這是一個用 Git 儲存機器產生程式碼的儲存層；它開源的 Trees、Diffs 兩個函式庫，Codex app 已經在用。
+- 依 [InfoWorld 引述 OpenAI 公告](https://www.infoworld.com/article/4245719/openai-buys-tiny-software-developer-to-improve-codex.html)：Code Storage 的客戶可以繼續使用，直到相關功能併進 Codex；Trees、Diffs 會維持開源，OpenAI 會繼續貢獻；金額未公開。
+- OpenAI 的[原始公告](https://openai.com/index/openai-to-acquire-pierre/)我讀不到（回應 403），以上細節來自二手報導，請以原文為準。
+
+## 二、官方沒說、或還沒定案的部分
+
+- **匯出的資料是什麼格式、能拿到別的工具用嗎。** Conductor 的公告只說可以匯出，沒說格式。匯出來能不能讀、能不能接到別的工具，要自己試。
+- **Meta 之後要做什麼、舊用戶能不能延續。** 只有「明年初有新東西」，沒有產品、價格或遷移路徑。
+- **退款怎麼算。** 公告只說有效訂閱者會退款，沒寫計算方式與時間。
+- **Pierre 的交易何時完成、Code Storage 會留多久。** 依二手報導，交易還要經過一般的成交條件；Code Storage「繼續用到功能併入 Codex」沒有給日期，之後是獨立產品還是只剩 Codex 裡的功能，也沒說。
+
+## 三、我怎麼看
+
+**1. 最容易被收購的，是 agent 上面那一層。** AI 開發工具大致可以分三層：模型（Claude、GPT、Gemini）、agent（Claude Code、Codex 等）、以及在 agent 上面做調度與工作區的工具（Conductor 就是）。最上面這層最薄、最好被吸收，也最容易一夕改變。選工具時要把這一層當成「隨時可換」來用。
+
+**2. 程式碼不會丟，丟的是程式碼以外的東西。** 有用 Git 的話，commit 過的程式碼都在。真正會消失的是：還沒推上去的分支、跟 agent 的對話、為什麼這樣改的討論、累積在工具裡的設定與提示。對接案團隊來說，最後一項特別麻煩：如果「為什麼這樣設計」只記在某個工具的對話裡，工具關了，交接就斷了。
+
+**3. 退場時間會越來越短。** Deno Deploy 給了六個月，Conductor Cloud 從宣布到刪資料只有 16 天。小型工具被收購時，團隊通常是整個被併進大公司，不一定有餘力長期維護舊產品。評估工具時，「它關掉時我能在一週內搬走嗎」應該是正式的評估項目。
+
+## 四、實務建議
+
+### 正在用 Conductor Cloud 的人（這週就做）
+
+1. **11/13 之前**先檢查雲端 workspace 裡有沒有還沒 commit、沒 push 的工作，先推到 Git。
+2. 重要的 workspace 用「Transfer to local」搬回本機，或用 Export data 全部下載，**打開匯出檔確認看得懂**。
+3. 11/20 之後雲端資料開始刪除，不要等最後一天。
+4. 本機版能用到 2027 年初，但它也在倒數，利用這段時間換到其他工具，不要再把新流程建在上面。
+
+### 老闆／PM
+
+- **列一張 AI 工具清單**：用了哪些工具、誰在用、裡面放了什麼（程式碼、客戶資料、對話紀錄）、付費方式。
+- 每個工具多問一題：**如果兩週後關閉，我們會失去什麼？**答案是「很多」的，就是優先要處理的。
+
+### 工程主管
+
+- **決策紀錄留在 repo 裡**：PR 描述、ADR、`docs/`，而不是只留在 agent 對話裡。agent 的對話是草稿，repo 才是正本。
+- **agent 的設定也進 repo**：指令檔（如 `AGENTS.md`）、skills、權限設定，用開放格式、能被 code review。Skills 變成跨工具標準的背景，可以看 [Agent Skills 捐給 AAIF](/blog/agent-skills-agentic-ai-foundation)。
+- 評估新工具時把「能不能完整匯出、匯出是什麼格式」列為必答題。
+
+### 接案團隊
+
+- **合約或提案裡寫清楚用了哪些第三方 AI 工具**，客戶的程式碼與資料會經過哪些服務，以及工具停止服務時怎麼處理。合作模式的寫法可以參考 [接案合作模式](/blog/consulting-engagement-models)。
+- **客戶的交付物不要只存在個人帳號的工具工作區裡。** 交接清單除了程式碼，也包含決策紀錄與 agent 設定。
+- 維護合約可以加一條：重要依賴（含開發工具與部署平台）宣布停止服務時，多久內通知客戶並提出替代方案。年底到期的依賴可以參考 [年底 EOL 行事曆](/blog/eol-calendar-late-2026)。
+
+## 五、對這個站的影響
+
+不直接影響。8plus 沒有用 Conductor，也沒有用 Code Storage。
+
+但這個 repo 剛好可以拿來檢查自己。專案的 agent 設定大多已經放在 Git 裡：`AGENTS.md`、`CLAUDE.md`、`.agents/skills` 與 `.claude/skills`（各有兩百多個追蹤中的檔案）、`.cursor/rules`、`opencode.json`，開發進度與計畫放在 `.planning/`。換掉其中任何一個 agent 工具，指令和流程大多還在。比較弱的是各工具裡的對話紀錄沒有進 repo，重要的決定還是要記得寫回 `.planning/` 或 commit 訊息。
+
+---
+
+工具被收購不是意外，是這個階段的常態。不用因此不敢用新工具，但要讓程式碼、決策和設定都留在自己手上。如果你想盤點團隊或專案用到的 AI 工具，並把退場計畫寫進交付與維護合約，可以[預約 30 分鐘初談](/booking)。

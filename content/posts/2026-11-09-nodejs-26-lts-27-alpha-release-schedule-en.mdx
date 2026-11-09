@@ -1,0 +1,104 @@
+---
+title: "Node.js 26 goes LTS and 27 ships its first Alpha: how to plan upgrades under the one-release-a-year schedule"
+date: "2026-11-09"
+summary: "Node.js 26 entered LTS on October 28 with support through the end of April 2029, and the next day Node.js 27 shipped its first Alpha, the first release line under the new one-major-a-year, every-release-is-LTS schedule. The new timeline, the changes in 27 Alpha that can affect existing code, what is still open, and how teams should plan upgrades."
+slug: "nodejs-26-lts-27-alpha-release-schedule-en"
+published: true
+protected: false
+kind: "article"
+category: "web"
+tags: ["Node.js", "upgrades", "versioning", "trends"]
+locale: "en"
+---
+
+# Node.js 26 goes LTS and 27 ships its first Alpha
+
+On October 28, [Node.js 26.13.0](https://nodejs.org/en/blog/release/v26.13.0) moved the 26 line into LTS under the codename Lithium, with support through the end of April 2029. A day later, on October 29, [the first Node.js 27 Alpha](https://nodejs.org/en/blog/release/v27.0.0-alpha.0.0.0) came out, and on November 5 Joyee Cheung published a write-up of [the notable V8 changes from Node 26 to 27](https://nodejs.org/en/blog/announcements/notable-v8-changes-from-node-js-26-to-27-alpha).
+
+Each of these is a routine release on its own. Together they mark something bigger: **27 is the first release line since Node.js switched to one major release a year.** The old rule of "use even versions, skip odd ones" no longer applies, and the way teams plan upgrades should change with it.
+
+## 1. What happened
+
+**Node.js 26 enters LTS (October 28)**
+
+- Apart from updating metadata such as `process.release` to mark the release as LTS, 26.13.0 contains no changes from 26.12.1. The project says the line will be supported through the end of April 2029.
+- If you are coming from 22 or 24, note that since Node 25 the official Linux binaries link against `libatomic`, which some distributions need you to install separately.
+- According to the official [schedule.json](https://github.com/nodejs/Release/blob/main/schedule.json), 24 moved into maintenance on October 20 (end of life 2028-04-30), and 22 reaches end of life on **2027-04-30**.
+
+**The new release schedule (announced in March, starting with 27)**
+
+The project laid out the new rules in [Evolving the Node.js Release Schedule](https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule):
+
+- One major release per year: Current in April, promoted to LTS in October. **Every release becomes LTS**; the odd/even distinction is gone.
+- A new Alpha phase (October to March, about six months) where breaking changes are allowed, followed by six months of Current and 30 months of LTS: 36 months in total from the first Current release to end of life.
+- Version numbers follow the year of the first Current release: 27.0.0 in 2027, 28.0.0 in 2028.
+- For 27: Alpha starts October 2026, 27.0.0 ships April 2027, LTS in October 2027, end of life April 2030. Node 26 is the last line under the old model.
+- Alpha is meant for library authors and CI compatibility testing and is **not intended for production**. APIs may still change between Alpha releases.
+
+**What is in 27 Alpha (October 29)**
+
+- V8 goes from 14.6 to 15.6.75.13. New language features enabled by default include `Math.sumPrecise()`, `Iterator.prototype.join()`, `Iterator.prototype.includes()`, `Iterator.zip()`, `Iterator.zipKeyed()` and `Intl.Locale.prototype.variants`.
+- Dependencies: OpenSSL moves to 4.1.0, builds require OpenSSL 3 or later, and the bundled FIPS provider build and OpenSSL engine support are removed. npm moves to 12.1.0. Intel macOS support is downgraded to experimental.
+- A few other breaking changes that common setups will run into: the `http` `keepAliveTimeout` default goes up to 65 seconds, `req.headers` now has a null prototype, the `domain` module is runtime-deprecated, a new `--allow-env` permission is added, and `fs` gets a native glob implementation.
+- The V8 post calls out several behavior changes:
+  - **Larger default memory limit.** Without `--max-old-space-size`, the limit becomes half of physical memory (or the cgroup limit), clamped between 256 MB and 4 GB. On an 8 GB machine that means 4 GB instead of 2 GB. Memory held by `Buffer` and `ArrayBuffer` now counts toward the limit as well.
+  - **New serialization format.** `v8.serialize()`, `structuredClone()` and `postMessage()` use a new format, and **older Node releases cannot read data written by 27** (27 can still read the old format).
+  - Some `Math` functions now use LLVM's libm and may differ in the last bit; `sort()` on large arrays now uses PowerSort (still stable); `error.stack` is no longer looked up through the prototype chain.
+
+Also on the calendar: Node.js has announced [security releases for 26.x, 24.x and 22.x on or shortly after November 11](https://nodejs.org/en/blog/vulnerability/november-2026-security-releases), with High as the highest severity on all three lines.
+
+## 2. What was not said, or is still open
+
+- **The schedule itself is not final.** The project says it is "not final and may be amended" and points to schedule.json as the source of truth.
+- **Alpha cadence and rules.** The project only says the Release Team will decide the timing and frequency of Alpha releases based on the volume of changes. The rules for which breaking changes can ship in an Alpha "will be defined" and documented; I could not find a published version.
+- **The version string.** The announcement used `27.0.0-alpha.1` as its example, but the actual release is `27.0.0-alpha.0.0.0`. The project has not explained the difference, so do not hard-code the format in CI scripts.
+- **What survives to 27.0.0.** Anything in Alpha may be adjusted or reverted before April.
+- **Performance numbers apply only to the listed benchmarks.** The V8 post says so itself; do not use them to estimate your own service.
+- **When hosting platforms will support 27** has not been announced anywhere I could check.
+
+## 3. My take
+
+**1. For LTS-only teams the change is smaller than it sounds, but every October becomes a fixed milestone.** The old rule of thumb was "skip odd versions." Now every version becomes LTS, so the thing to remember is this: each October a new LTS line arrives, and each April an old one ends. Treating upgrades as a yearly routine is much easier than squeezing them in whenever something breaks.
+
+**2. Alpha is your early warning, not something to ship.** Odd-numbered releases used to play this role, but few teams actually tested on them. The serialization change in 27 is a good example of why it matters: if you pass serialized data between processes, or store the output of `v8.serialize()`, mixing old and new versions will fail to read it. That is cheapest to find during Alpha.
+
+**3. Changed defaults are easier to miss than removed APIs.** A larger memory limit and a 65-second `keepAliveTimeout` will not throw errors, but they change behavior. In containers, a different memory limit changes when garbage collection kicks in. Set these values explicitly rather than relying on defaults.
+
+## 4. Practical advice
+
+### Frontend engineers and tech leads
+
+1. **Target 26 LTS in production.** Move to the patched release once the November 11 security update lands. If you are on 24, there is no rush, but put it on the plan. If you are on 22, end of life is less than six months away.
+2. **Turn the version into a rule.** Add `.nvmrc` and an `engines` field in `package.json` so CI and local machines have something to check against. Example (not tested in a real project):
+
+```json
+{
+  "engines": {
+    "node": ">=26 <27"
+  }
+}
+```
+
+3. **Add a non-blocking 27 Alpha job to CI.** The project publishes 27 Alpha binaries on [nodejs.org/dist](https://nodejs.org/dist/). Things to watch: snapshot tests that compare floating-point output, error handling that relies on `error.stack`, and `structuredClone`/`postMessage` across processes.
+4. **If you use the Linux binaries or build your own images, check for `libatomic` first.**
+
+### Library authors and teams with shared internal packages
+
+- The project explicitly asks library authors to add Alpha releases to CI. If you ship native addons, watch for `NODE_MODULE_VERSION` changes and keep prebuilt binaries in step.
+
+### Agencies and PMs
+
+- Put the Node version and its end-of-life date in handover documents. A project delivered in 2024 on Node 22 reaches end of life at the end of April 2027, which makes now a good time to talk to clients about maintenance contracts.
+- Consider pricing maintenance as a fixed "one LTS upgrade per year" item instead of handling it only when something breaks.
+
+## 5. What it means for this site
+
+8plus runs in production on Cloudflare Workers (vinext 1.2.1 with `nodejs_compat`). That is the Workers runtime, not Node.js, so the V8 and API changes in 27 do not affect the live site directly.
+
+The build pipeline (Velite, `vite build`, `next build`) does run on Node, though. Checking the project turned up a few things: there is no `.nvmrc`, `package.json` has no `engines` field, and `@types/node` is still pinned at `20.12.12`, even though Node 20 reached end of life on April 30. While writing this, `node -v` in the development environment still reported v23.11.0, the same version I [mentioned last time](/blog/nodejs-october-2026-security-release-en).
+
+So for this site the task is not chasing 27 but fixing the basics: move development and builds to 26 LTS, add `.nvmrc` and `engines`, and align `@types/node` with 26. Once 26 has been running smoothly for a while, I can try a build on 27 Alpha. For other tools' end-of-life dates, see the [year-end EOL calendar](/blog/eol-calendar-late-2026-en).
+
+---
+
+One major release a year sounds like a version-numbering detail. In practice it turns upgrading from an ad hoc chore into a fixed rhythm: check once every October, and most version risk gets handled early. If you want help setting up a routine for version audits and upgrades on your team, [book a 30-minute intro call](/booking).

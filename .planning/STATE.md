@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-09 15:44 +0800 — 11/9 趨勢文章 6 主題（中英 12 篇）完成，build 通過；未 commit、未部署
+Last activity: 2026-11-09 16:04 +0800 — 11/9 文章 12 篇上線正式站（Worker c4286b9e，回滾目標 d591d603）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-09 16:04 +0800 — 11/9 文章上線正式站（Worker c4286b9e）**：commit `0b28a67`。帶 `.env.local` 的 newsletter 變數 `pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、12 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `c4286b9e-3bd2-4126-8f4a-966fdf24c35c`，回滾目標 `d591d603`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；12 篇新文章 200、已進 sitemap 與中英 feed，Kit 表單仍在；正式站 GitLab 文章頁無 console error。Vercel（apex 轉址源站）未更新。
 
 - ✅ **2026-11-09 15:44 +0800 — 11/9 趨勢文章（6 主題、中英共 12 篇，ai／delivery／web／design／ops／career 各一）**：`content/posts/2026-11-09-*`。ai：①AWS Kiro bots GA（11/5，常駐、有記憶、排程執行的 agent；佐以 GitHub 10/28 雲端 Copilot 跨介面接續）。delivery：②Conductor 加入 Meta、雲端 11/20 關閉（11/4 changelog；OpenAI 收購 Pierre 原文 403，僅引 InfoWorld 二手並標註），談 AI 工具退場清單。web：③Node.js 26 轉 LTS（10/28，v26.13.0 Lithium，至 2029/4）＋27 首個 Alpha（10/29）＋新發版節奏與 V8 變更（11/5）。design：④Safari 27.3 beta Adaptive Dark Mode（WebKit 11/3；`light only` beta 1 尚不支援 `only`）。ops：⑤GitLab 五週四輪修補，CVE-2026-97229（CVSS 10）10/29 進 KEV、Ruby 10/23 修 Onigmo。career：⑥Dice 10 月職缺年增 20% 對照 BLS 10 月報告資訊業就業下滑（年變化百分比為代理自算）。三個研究代理依一手來源撰寫；主流程以 curl 抽查 Conductor 11/4／11/13／11/20、Kiro 11/5 GA 與排程例子、WebKit 40%／10%／4.5:1、Node 26.13.0 日期與 2029、KEV CVE-2026-97229 加入 10/29 到期 11/1 皆相符；BLS 頁面 curl 回 403，未由主流程複核（代理表示已讀原文）。站內連結全數有效；`pnpm build` 通過（92 篇），next dev 抽查 6 篇 200、無 console error；`next-env.d.ts` 已還原。待確認：Safari 篇稱本站會在 27.3 beta 實測屬計畫；Node 篇時程公告日期（3/10）未確認為發布日；GitLab 篇 .org 渲染觸發點為二手說法；指令與程式碼範例皆未實測。未 commit、未部署。
 

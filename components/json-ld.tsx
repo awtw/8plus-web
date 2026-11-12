@@ -38,7 +38,7 @@ export function JsonLd() {
         "@type": "ProfessionalService",
         "@id": `${SITE.url}/#studio`,
         name: "8plus",
-        alternateName: [SITE.brandPhrase, "8plus AI 顧問工作室"],
+        alternateName: [SITE.brandPhrase, "8plus AI 顧問工作室", ...SITE.pronunciations],
         url: SITE.url,
         logo: `${SITE.url}/logo-new-512.png`,
         image: `${SITE.url}${SITE.ogImage}`,

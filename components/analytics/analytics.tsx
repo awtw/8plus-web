@@ -26,8 +26,9 @@ export function Analytics() {
   if (!GA_ENABLED) return null;
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
-      <Script id="ga4-init" strategy="lazyOnload">
+      {/* afterInteractive, not lazyOnload: idle-time loading missed short visits (often organic search landings). */}
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+      <Script id="ga4-init" strategy="afterInteractive">
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA_ID}');`}
       </Script>
       <ClickTracker />

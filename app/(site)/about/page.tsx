@@ -24,6 +24,7 @@ export default function AboutPage() {
             <span key={chip} className="about-chip">{chip}</span>
           ))}
         </div>
+        <p className="about-brand-note about-rise" style={{ ['--d' as string]: '0.2s' }}>{c.brandNote}</p>
       </PageSection>
 
       <PageSection field="blue">

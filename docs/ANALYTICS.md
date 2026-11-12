@@ -70,6 +70,8 @@
 | `internal_click` | 內容區的站內連結（含 lab 專案、blog 文章） | location（= 所在 section id）, label, link_path |
 | `outbound_click` | 其他外部連結 | location, label, link_url, link_domain |
 | `lang_switch` | 語言切換 | from, to |
+| `search` | 站內搜尋（⌘K）停止輸入 1.2 秒後，同一詞只送一次。GA4 建議事件，`search_term` 會進內建的「搜尋字詞」維度 | search_term（小寫、最多 50 字；含 @ 或 6 碼以上數字時記為 `[redacted]`）, results_count |
+| `search_select` | 從搜尋結果點選 | group, query_length, search_term |
 
 ### 內容與診斷
 
@@ -99,8 +101,9 @@
 
 1. `?utm_source=` 或 `?src=`（有 `utm_medium` 時為 `source/medium`）
 2. 落地頁是 `/sb`、`/sc` → `share_hub/sb`、`share_hub/sc`
-3. 外部 referrer → `網域/referral`
-4. 其餘 → `direct`
+3. 搜尋引擎 referrer（Google、Bing、Yahoo、DuckDuckGo、Baidu、Naver）→ `google/organic` 等
+4. 其他外部 referrer → `網域/referral`
+5. 其餘 → `direct`
 
 名片、IG、LINE 上的連結建議加 `?src=`，例如 `https://www.8plus.app/sb?src=namecard`。
 
@@ -120,9 +123,14 @@
    - User-scoped：`entry_source`、`visitor_type`、`device_type`、`site_locale`
    - GA4 標準報表有 50 個自訂維度上限（免費版），上面約 20 個，仍有餘裕
 3. **Enhanced measurement** 保持開啟（page_view、outbound click、file download）。
-4. 內部流量：Admin → Data streams → Configure tag settings → Define internal traffic，排除自己的 IP。
+4. **連結 Search Console**（Admin → Product links → Search Console links）：GA4 才看得到 Google 搜尋字詞（例如「八普拉斯」「8plus AI 顧問」）與排名；連結後到 Reports → Library 發布 Search Console 報表集合。
+5. **`results_count`** 註冊為 Event-scoped 指標；`search_term` 若在「搜尋字詞」維度看不到，再註冊為 Event-scoped 維度。
+6. 內部流量：Admin → Data streams → Configure tag settings → Define internal traffic，排除自己的 IP。
 
 ## 已知限制
+
+- GA 以 `afterInteractive` 載入（2026-11-13 前為 `lazyOnload`）。舊設定在瀏覽器閒置後才載入，停留幾秒就離開的訪客（多數來自搜尋）不會被計入，所以切換後工作階段數、跳出率會跳一階，前後數字不能直接比。
+- 搜尋引擎通常不帶完整網址的 referrer，所以 `entry_source` 只知道來自哪個搜尋引擎、不知道搜了什麼字；搜尋字詞要看 Search Console。
 
 - 目前沒有 cookie consent banner，GA 預設直接收集。
 - `/booking` 的 Cal iframe 內部細節（選時段、填表）看不到，只有 `booking_view` 和 `booking_complete`。

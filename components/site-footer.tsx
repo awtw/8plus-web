@@ -24,6 +24,7 @@ export default function SiteFooter() {
             <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
               <Logo size={28} variant="default" className="h-7 w-7 shrink-0" />
               <span className="text-lg font-semibold tracking-[-0.02em] text-[color:var(--fg)]">8plus</span>
+              <span lang="zh-Hant" className="text-sm text-[color:var(--muted)]">{t("footer.pronounce")}</span>
               <span className="text-[color:var(--muted)]">·</span>
               <span className="min-w-0 text-sm text-[color:var(--fg-2)]">{t("footer.tagline")}</span>
             </div>

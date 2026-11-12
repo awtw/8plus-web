@@ -8,10 +8,16 @@ export const SITE = {
    * paired with "AI 顧問" — a phrase nobody else ranks for and that clients actually search.
    */
   title: "8plus AI 顧問工作室｜企業 AI 導入、RAG 與 UIX",
-  description: "8plus AI 顧問工作室：企業 AI 導入顧問、RAG 與地端模型應用、UIX 與數據分析。AI applications (RAG, on-prem models), UIX and analytics consulting.",
+  description: "8plus（八普拉斯）AI 顧問工作室：企業 AI 導入顧問、RAG 與地端模型應用、UIX 與數據分析。AI applications (RAG, on-prem models), UIX and analytics consulting.",
   /** Raster fallback for social cards (SVG is ignored by most crawlers). */
   /** Brand phrase used consistently across titles and structured data. */
   brandPhrase: "8plus AI 顧問",
+  /**
+   * How people write the brand after hearing it (podcast, referrals). Zero competition in search,
+   * but Google only ranks a page for these if they appear as visible text, so they are also shown
+   * in the footer and on /about — not just in structured data.
+   */
+  pronunciations: ["八普拉斯", "8普拉斯"],
   ogImage: "/brand/og-8plus.png",
   /** Owner profiles, used as schema.org sameAs so Google can connect the brand to the person. */
   sameAs: ["https://github.com/awtw", "https://www.instagram.com/august.yan.terra/", "https://mokyuu.com"],

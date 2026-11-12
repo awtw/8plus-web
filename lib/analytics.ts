@@ -27,6 +27,8 @@ export const EVENTS = {
   MOKYUU_CLICK: "mokyuu_click", // ★ outbound to mokyuu.com (games, creative site) from /sc etc.
   NEWSLETTER_SUBSCRIBE: "newsletter_subscribe", // ★ email form submitted to provider
   RSS_CLICK: "rss_click",
+  // Site search (GA4 recommended event: search_term feeds the built-in Search term dimension)
+  SEARCH: "search",
   // Navigation
   NAV_CLICK: "nav_click",
   INTERNAL_CLICK: "internal_click",
@@ -80,6 +82,16 @@ function safeSet(store: Storage | undefined, key: string, value: string) {
   }
 }
 
+/** Referrer hosts that are search engines → reported as "<engine>/organic" instead of a referral. */
+const SEARCH_ENGINES: [RegExp, string][] = [
+  [/(^|\.)google\./, "google"],
+  [/(^|\.)bing\.com$/, "bing"],
+  [/(^|\.)search\.yahoo\./, "yahoo"],
+  [/(^|\.)duckduckgo\.com$/, "duckduckgo"],
+  [/(^|\.)baidu\.com$/, "baidu"],
+  [/(^|\.)naver\.com$/, "naver"],
+];
+
 /** Derive a readable entry source from the landing URL + referrer. */
 function resolveEntrySource(): string {
   const url = new URL(window.location.href);
@@ -93,6 +105,8 @@ function resolveEntrySource(): string {
   if (document.referrer) {
     try {
       const host = new URL(document.referrer).hostname;
+      const engine = SEARCH_ENGINES.find(([re]) => re.test(host))?.[1];
+      if (engine) return `${engine}/organic`;
       if (host && host !== window.location.hostname) return `${host}/referral`;
     } catch {
       /* ignore malformed referrer */
@@ -247,6 +261,17 @@ export function track(name: EventName, params: EventParams = {}) {
     updateSession({ converted: true });
     flushSession();
   }
+}
+
+/**
+ * Site-search term safe to send to GA: trimmed, capped, and dropped when it looks like
+ * personal data (GA terms forbid PII) — e-mail addresses or long digit runs such as phone numbers.
+ */
+export function safeSearchTerm(query: string): string | undefined {
+  const term = query.trim().replace(/\s+/g, " ").slice(0, 50);
+  if (term.length < 2) return undefined;
+  if (/@/.test(term) || /\d{6,}/.test(term.replace(/[\s-]/g, ""))) return "[redacted]";
+  return term.toLowerCase();
 }
 
 /* ------------------------------------------------------------------ */

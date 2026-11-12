@@ -223,6 +223,7 @@ export const translations = {
     // 頁腳
     footer: {
       tagline: 'AI · UIX · 顧問',
+      pronounce: '八普拉斯',
       builtWith: '使用 Next.js 15 + Velite 構建',
       metaphysics: '視覺設計與創作作品',
       madeIn: '台灣製造',
@@ -465,6 +466,7 @@ export const translations = {
     },
     footer: {
       tagline: 'AI · UIX · Consulting',
+      pronounce: '八普拉斯',
       builtWith: 'Built with Next.js 15 + Velite',
       metaphysics: 'Visual design & creative work at',
       madeIn: 'Made in Taiwan',

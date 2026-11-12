@@ -8,7 +8,7 @@ import { posts } from '.velite'
 import { useLanguage } from '@/components/language-provider'
 import { getLocalizedProjects } from '@/lib/projects'
 import { siteNavigation } from '@/lib/navigation'
-import { track } from '@/lib/analytics'
+import { EVENTS, safeSearchTerm, track } from '@/lib/analytics'
 import '@/styles/command-palette.css'
 
 type Entry = { id: string; group: 'page' | 'lab' | 'post'; title: string; hint: string; href: string; haystack: string }
@@ -121,6 +121,19 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
     track('search_scroll_hint')
   }
 
+  // GA4 `search`: fire once the visitor pauses typing. Zero-result terms show content gaps.
+  const lastSearchRef = useRef<string | undefined>(undefined)
+  useEffect(() => {
+    const term = safeSearchTerm(query)
+    if (!open || !term || term === lastSearchRef.current) return
+    const id = window.setTimeout(() => {
+      lastSearchRef.current = term
+      track(EVENTS.SEARCH, { search_term: term, results_count: results.length })
+    }, 1200)
+    return () => window.clearTimeout(id)
+  }, [open, query, results.length])
+  useEffect(() => { if (!open) lastSearchRef.current = undefined }, [open])
+
   useEffect(() => { setIndex(0) }, [query])
   useEffect(() => { if (!open) setQuery('') }, [open])
   useEffect(() => {
@@ -128,7 +141,7 @@ export default function CommandPalettePanel({ open, onOpenChange }: { open: bool
   }, [index])
 
   const go = (entry: Entry) => {
-    track('search_select', { group: entry.group, query_length: query.length })
+    track('search_select', { group: entry.group, query_length: query.length, search_term: safeSearchTerm(query) })
     onOpenChange(false)
     router.push(entry.href)
   }

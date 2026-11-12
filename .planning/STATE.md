@@ -12,10 +12,12 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-09 16:04 +0800 — 11/9 文章 12 篇上線正式站（Worker c4286b9e，回滾目標 d591d603）
+Last activity: 2026-11-13 00:51 +0800 — 中文諧音品牌詞 SEO 與 GA4 調整（本機，未 commit）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
+
+- ✅ **2026-11-13 00:51 +0800 — 中文諧音品牌詞「八普拉斯／8普拉斯」SEO 與 GA4 調整**：調研：Google 搜「八普拉斯」「8普拉斯」只有 iPhone 8 Plus 與無關結果，零競爭；但只有聽過名字的人（《靈機8動》聽眾、口耳相傳）才會這樣搜，Google 只會把頁面排在「看得到的文字」上，所以除了 JSON-LD 也放可見文字，不寫進 title、也不用 meta keywords。改動：①`SITE.pronunciations`（`lib/seo.ts`），ProfessionalService alternateName 加入兩個諧音；WebSite alternateName 不動，避免 Google 改用諧音當網站名稱。②首頁、預設、/about 描述以「8plus（八普拉斯）」開頭。③頁尾品牌旁加「八普拉斯」（全站）；/about 標籤下加一行「工作室名稱 8plus，中文唸作『八普拉斯』，也有人寫成『8普拉斯』」（中英）。GA4：④gtag 由 `lazyOnload` 改 `afterInteractive`，舊設定讓停留幾秒就走的搜尋訪客沒被計入，切換後工作階段數、跳出率會跳一階。⑤站內搜尋送 GA4 建議事件 `search`（search_term、results_count，停止輸入 1.2 秒後送；含 @ 或 6 碼以上數字記為 `[redacted]`），`search_select` 加 search_term。⑥`entry_source` 把 Google／Bing／Yahoo／DuckDuckGo／Baidu／Naver referrer 歸為 `<engine>/organic`。`docs/ANALYTICS.md` 已更新（含 Search Console 連結步驟）。驗證：typecheck 過、lint 無新警告；`safeSearchTerm` 以 tsx 抽測；從另一工作階段已在跑的 `next dev :3000` 讀 / 與 /about 的 SSR，確認描述、JSON-LD、頁尾與 /about 文字都在。`pnpm build` 未完成：本機連不到 fonts.googleapis.com（curl 逾時，與改動無關）；GA 事件在 dev 不載入，`search` 事件未在 DebugView 實測。注意：同一資料夾另有工作階段在改 mokyuu／share hub（也改了 `components/analytics/analytics.tsx`、`lib/analytics.ts`），兩邊改動已確認都還在，commit 時要分開。待辦（使用者）：GA4 連結 Search Console、註冊 `results_count` 指標；社群簡介、Podcast 節目資訊統一寫「8plus（八普拉斯）」。未 commit、未部署。
 
 - ✅ **2026-11-09 16:04 +0800 — 11/9 文章上線正式站（Worker c4286b9e）**：commit `0b28a67`。帶 `.env.local` 的 newsletter 變數 `pnpm build:vinext` 後本機 `vite preview` smoke／SEO 全過、12 篇新文章皆 200，再 `npx vinext-cloudflare deploy --skip-build`，Version `c4286b9e-3bd2-4126-8f4a-966fdf24c35c`，回滾目標 `d591d603`。部署後 www smoke／SEO 全過、workers.dev smoke 全過；12 篇新文章 200、已進 sitemap 與中英 feed，Kit 表單仍在；正式站 GitLab 文章頁無 console error。Vercel（apex 轉址源站）未更新。
 

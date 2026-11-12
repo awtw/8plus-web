@@ -7,6 +7,8 @@ export type AboutContent = {
   headline: string;
   profile: string;
   chips: string[];
+  /** States how the brand is said/written in Chinese, so searches for the homophones land here. */
+  brandNote: string;
   highlights: string[];
   collaborationTitle: string;
   collaborationLead: string;
@@ -31,6 +33,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     profile:
       "我是 August Wang，以 AI 架構師的角度完善 AI 應用：從資料處理、檢索、評測到服務整合，確保資料正確性與服務穩定性。同時善用 AI 協助開發，打造貼近職場與使用者需求的應用。在體驗上，我認為好的介面是看過就會用、不必多說，並兼顧無障礙與易讀字體。",
     chips: ["8+ 年實戰", "台北", "AI 應用", "UIX 設計"],
+    brandNote: "工作室名稱 8plus，中文唸作「八普拉斯」，也有人寫成「8普拉斯」。",
     highlights: [
       "AI 架構：RAG、地端模型、資料正確性與服務穩定",
       "AI 輔助開發，快速驗證並貼近使用者需求",
@@ -121,6 +124,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     profile:
       "I am August Wang. As an AI architect, I help complete AI applications: from data processing, retrieval and evaluation to service integration, ensuring data accuracy and service stability. I use AI-assisted development to fit applications to real workplace and user needs. On experience, I believe a good interface is understood at a glance, with little need for explanation, and I pay attention to accessibility and readable type.",
     chips: ["8+ years", "Taipei", "AI applications", "UIX design"],
+    brandNote: "The studio is called 8plus, written 八普拉斯 or 8普拉斯 in Chinese.",
     highlights: [
       "AI architecture: RAG, on-prem models, data accuracy and service stability",
       "AI-assisted development for fast validation close to user needs",

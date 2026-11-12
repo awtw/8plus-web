@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight, ChatCircle, GithubLogo, InstagramLogo, Notebook } from "@phosphor-icons/react"
 import { MokyuuLogo } from "@/components/share/mokyuu-logo"
+import { usePrefersQr } from "@/components/share/use-prefers-qr"
 import {
   getMokyuuHubContent,
   mokyuuHref,
@@ -73,6 +74,7 @@ export function HubLinkRow({
   onQr: (kind: ScQrKind) => void
   onTab: (tab: ScTab) => void
 }) {
+  const prefersQr = usePrefersQr()
   const inner = (
     <>
       <span className="mky-row-icon">
@@ -91,10 +93,26 @@ export function HubLinkRow({
   )
 
   if (link.kind === "qr") {
+    // A real link, so phones open Instagram / LINE directly (and it works before hydration).
+    // Desktop: intercept and show the QR to scan with a phone; tracked as qr_open instead of
+    // the automatic line_click / outbound_click.
     return (
-      <button type="button" className="mky-row" onClick={() => onQr(link.qr)} data-track="qr_open" data-track-kind={link.qr}>
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mky-row"
+        onClick={(event) => {
+          if (!prefersQr) return
+          event.preventDefault()
+          onQr(link.qr)
+        }}
+        data-track={prefersQr ? "qr_open" : undefined}
+        data-track-kind={prefersQr ? link.qr : undefined}
+        data-track-item={link.id}
+      >
         {inner}
-      </button>
+      </a>
     )
   }
   if (link.kind === "tab") {

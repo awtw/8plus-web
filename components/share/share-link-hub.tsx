@@ -13,6 +13,7 @@ import {
 } from "@phosphor-icons/react"
 import { useLanguage } from "@/components/language-provider"
 import { ShareHubLogo } from "@/components/share/share-hub-logo"
+import { usePrefersQr } from "@/components/share/use-prefers-qr"
 import type { ShareHubLink } from "@/lib/content/share-links"
 import {
   getLineAddFriendUrl,
@@ -102,6 +103,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
   const [lineQr, setLineQr] = useState("")
   const [igQr, setIgQr] = useState("")
 
+  const prefersQr = usePrefersQr()
   const officialLineUrl = getLineAddFriendUrl()
   const personalLineUrl = getLinePersonalAddFriendUrl()
   const personalQrImage = getLinePersonalQrImage()
@@ -425,13 +427,20 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
 
             if (link.kind === "line-qr") {
               const target = link.lineTarget === "personal" ? "line-personal" : "line-official"
+              // Real link so phones open LINE directly; desktop shows the QR to scan instead.
               return (
-                <button
+                <a
                   key={link.id}
-                  type="button"
-                  onClick={() => setQrKind(target)}
-                  data-track="qr_open"
-                  data-track-kind={target}
+                  href={target === "line-personal" ? personalLineUrl : officialLineUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => {
+                    if (!prefersQr) return
+                    event.preventDefault()
+                    setQrKind(target)
+                  }}
+                  data-track={prefersQr ? "qr_open" : undefined}
+                  data-track-kind={prefersQr ? target : undefined}
                   className="flex w-full items-center gap-3 rounded-[1.2rem] border px-4 py-2.5 text-left transition-colors hover:border-[color:var(--share-card-hover)] sm:py-3"
                   style={cardStyle}
                 >
@@ -449,7 +458,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
                       </span>
                     ) : null}
                   </span>
-                </button>
+                </a>
               )
             }
 
@@ -593,8 +602,8 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
           subtitle={t("shareHub.personalLineLead")}
           qrSrc={personalQrImage}
           qrAlt="LINE personal QR"
-          actionHref={personalLineUrl ?? undefined}
-          actionLabel={personalLineUrl ? t("shareHub.openLine") : undefined}
+          actionHref={personalLineUrl}
+          actionLabel={t("shareHub.openLine")}
           closeLabel={t("common.close")}
         />
       </QrDialog>

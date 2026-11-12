@@ -619,3 +619,8 @@ Resume file: .planning/spec-brand-show-launch.md
 - SEO：title「August 與墨語 MOKYUU：社群連結與網頁小遊戲」，描述含兩個 IG；JSON-LD ProfilePage about Person＋Brand、Brand sameAs @mokyuu.ig；OG 圖加「AUGUST × MOKYUU」「IG @MOKYUU.IG」。GA4：新事件 `sc_tab`（tab、via），點擊 location 改為 `sc_august` / `sc_mokyuu`。
 - 驗證：原始碼 tsc 無錯誤（`.next/types` 有 dev 中斷殘留的產生檔錯誤，與本次無關）；`next dev` 因本機抓不到 Google Fonts 一直整頁重載，改用 `build:vinext`＋`vite preview`（字型 DNS 預載）驗證：smoke、SEO 全過，分頁切換、深連結、@mokyuu.ig QR、回 August 連結、無水平捲動皆正常。
 - 2026-11-13 01:28 +0800：commit `d3d49e6` 已 push 並部署，Worker Version `9c15413d-cda6-42d2-9b75-97020408e873`，回滾目標 `624882d4`；部署前本機 preview 與部署後正式站 smoke／SEO 全過，workers.dev smoke 全過。
+
+### 2026-11-13 01:40 CST — 修正手機版 /sc /sb 的 LINE、IG 按鈕「按了沒反應」（Claude）
+- 使用者回報手機上 LINE、IG 按鈕不動。重現：按鈕只會開 QR 視窗——手機無法掃自己螢幕的 QR，私人 LINE 視窗也沒有「開啟 LINE」（正式站未設 `NEXT_PUBLIC_LINE_PERSONAL_ADD_FRIEND_URL`），看起來像沒反應。
+- 修正：LINE／IG 列改成真正的 `<a href>`；手機直接開 App，桌機（hover + 精準指標）才攔截顯示 QR（`components/share/use-prefers-qr.ts`）。私人 LINE 連結從 `public/lineQRcode.jpg` 解碼為 `https://line.me/ti/p/SYT2wZ621C`，設為 `lib/line.ts` 預設值；`/sb` LINE 官方帳號列同樣處理。
+- 驗證：tsc 無錯誤；本機 `build:vinext`＋`vite preview`：手機模式點 LINE 不攔截、走連結；桌機模式顯示 QR 並有「開啟 LINE」按鈕；/sb 同；smoke、SEO 全過。未 commit、未部署（待使用者確認）。

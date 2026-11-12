@@ -1,5 +1,7 @@
 const DEFAULT_LINE_BOT_BASIC_ID = "@482ykgdg";
 const DEFAULT_LINE_PERSONAL_QR = "/lineQRcode.jpg";
+/** Same URL as encoded in /lineQRcode.jpg — lets phones open LINE directly instead of showing a QR they cannot scan. */
+const DEFAULT_LINE_PERSONAL_ADD_FRIEND_URL = "https://line.me/ti/p/SYT2wZ621C";
 
 /** Public OA basic ID — safe for client bundle */
 export function getLineBasicId(): string {
@@ -15,9 +17,9 @@ export function getLineAddFriendUrl(): string {
 }
 
 /** Personal LINE add-friend URL (social / sc) */
-export function getLinePersonalAddFriendUrl(): string | null {
+export function getLinePersonalAddFriendUrl(): string {
   const fromEnv = process.env.NEXT_PUBLIC_LINE_PERSONAL_ADD_FRIEND_URL?.trim();
-  return fromEnv || null;
+  return fromEnv || DEFAULT_LINE_PERSONAL_ADD_FRIEND_URL;
 }
 
 /** Static QR image for personal LINE when no deep link is configured */

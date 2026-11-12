@@ -4,6 +4,7 @@
 // 8plus is the professional identity.
 // Visual language mirrors mokyuu.com: Ink #08080A × Klein Blue #002FA7 × Seal #FF401F.
 import type { Locale } from "@/lib/i18n";
+import { getLinePersonalAddFriendUrl } from "@/lib/line";
 
 export const MOKYUU_URL = "https://mokyuu.com";
 export const AUGUST_IG_URL = "https://www.instagram.com/august.yan.terra/";
@@ -39,7 +40,8 @@ export type MokyuuGame = {
 
 export type ScHubLink =
   | { kind: "external"; id: string; name: string; description: string; href: string }
-  | { kind: "qr"; id: string; name: string; description: string; qr: ScQrKind }
+  /** Opens `href` directly on phones; shows the QR dialog on desktop (see usePrefersQr). */
+  | { kind: "qr"; id: string; name: string; description: string; qr: ScQrKind; href: string }
   | { kind: "tab"; id: string; name: string; description: string; tab: ScTab };
 
 export type AugustHubContent = {
@@ -55,13 +57,14 @@ export function getAugustHubContent(locale: Locale): AugustHubContent {
     name: "August",
     lead: zh ? "生活裡的片段、正在做的事。" : "Life snippets and work in progress.",
     links: [
-      { kind: "qr", id: "instagram", name: "Instagram", description: "@august.yan.terra", qr: "ig-august" },
+      { kind: "qr", id: "instagram", name: "Instagram", description: "@august.yan.terra", qr: "ig-august", href: AUGUST_IG_URL },
       {
         kind: "qr",
         id: "line",
         name: "LINE",
         description: zh ? "私人帳號 · 輕鬆聊聊" : "Personal · say hi",
         qr: "line-personal",
+        href: getLinePersonalAddFriendUrl(),
       },
       {
         kind: "external",
@@ -181,7 +184,7 @@ export function getMokyuuHubContent(locale: Locale): MokyuuHubContent {
     socialIndex: "(Ø3) Follow — " + (zh ? "追蹤墨語" : "Follow MOKYUU"),
     socialTitle: zh ? "墨語的社群" : "MOKYUU on social",
     social: [
-      { kind: "qr", id: "instagram-mokyuu", name: "Instagram", description: "@mokyuu.ig", qr: "ig-mokyuu" },
+      { kind: "qr", id: "instagram-mokyuu", name: "Instagram", description: "@mokyuu.ig", qr: "ig-mokyuu", href: MOKYUU_IG_URL },
       {
         kind: "external",
         id: "journal",

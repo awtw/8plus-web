@@ -19,6 +19,7 @@
   - **墨語 MOKYUU**：下方內容；社群區改為墨語自己的 Instagram **@mokyuu.ig**（QR）、mokyuu.com 手記、回 August 分頁、8plus。
 - 直接連到墨語分頁：`https://www.8plus.app/sc?tab=mokyuu`（建議放在 @mokyuu.ig 的簡介）；@august.yan.terra 簡介用 `/sc` 即可。切換分頁會用 `history.replaceState` 更新網址，不新增瀏覽紀錄。
 - 兩個分頁都在 SSR HTML 中（非作用中的用 `hidden`），搜尋引擎可讀到兩邊內容；頁面唯一 h1 是「August」。
+- **LINE／Instagram 列（2026-11-13 01:40 CST 修正）**：一律是真正的 `<a href>`。手機／平板（無 hover 或非精準指標）直接開 IG／LINE App；桌機（`(hover: hover) and (pointer: fine)`，`components/share/use-prefers-qr.ts`）攔截點擊改顯示 QR 讓人用手機掃。原因：手機上只跳 QR 無法掃自己的螢幕，私人 LINE 又沒有連結，看起來像「按了沒反應」。私人 LINE 連結預設為 `/lineQRcode.jpg` 內含的 `https://line.me/ti/p/SYT2wZ621C`（`lib/line.ts`，可用 `NEXT_PUBLIC_LINE_PERSONAL_ADD_FRIEND_URL` 覆蓋）。`/sb` 的 LINE 官方帳號列同樣處理。GA：手機點擊自動記為 `line_click`／`outbound_click`，桌機記為 `qr_open`。
 
 ## /sc 墨語分頁內容（2026-11-13）
 - Logo 與視覺沿用 mokyuu.com（M● monogram、Instrument Serif、JetBrains Mono 編號 `(Ø1)`、朱印「墨」、跑馬燈）。

@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-13 01:10 +0800 — /sc MOKYUU 改版＋/sb /sc SEO＋八普拉斯 SEO 上線正式站（Worker 624882d4，回滾目標 c4286b9e）
+Last activity: 2026-11-13 01:28 +0800 — /sc August／墨語 MOKYUU 雙分頁上線正式站（Worker 9c15413d，回滾目標 624882d4）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
@@ -617,4 +617,5 @@ Resume file: .planning/spec-brand-show-launch.md
 - `components/share/sc-hub.tsx`：分頁外殼（role=tablist、方向鍵切換、sticky），預設 August 分頁（原始 IG @august.yan.terra、私人 LINE、GitHub、官方網站，頭像改 `me_3.jpeg` 線框人像，無貓咪合照）；`?tab=mokyuu` 直接開墨語分頁，切換以 `replaceState` 更新網址；只在使用者切換時才有背景轉場。
 - 墨語分頁社群改為 @mokyuu.ig（QR）、mokyuu.com 手記、回 August、8plus；兩個分頁可互相切換。
 - SEO：title「August 與墨語 MOKYUU：社群連結與網頁小遊戲」，描述含兩個 IG；JSON-LD ProfilePage about Person＋Brand、Brand sameAs @mokyuu.ig；OG 圖加「AUGUST × MOKYUU」「IG @MOKYUU.IG」。GA4：新事件 `sc_tab`（tab、via），點擊 location 改為 `sc_august` / `sc_mokyuu`。
-- 驗證：原始碼 tsc 無錯誤（`.next/types` 有 dev 中斷殘留的產生檔錯誤，與本次無關）；`next dev` 因本機抓不到 Google Fonts 一直整頁重載，改用 `build:vinext`＋`vite preview`（字型 DNS 預載）驗證：smoke、SEO 全過，分頁切換、深連結、@mokyuu.ig QR、回 August 連結、無水平捲動皆正常。未 commit、未部署。
+- 驗證：原始碼 tsc 無錯誤（`.next/types` 有 dev 中斷殘留的產生檔錯誤，與本次無關）；`next dev` 因本機抓不到 Google Fonts 一直整頁重載，改用 `build:vinext`＋`vite preview`（字型 DNS 預載）驗證：smoke、SEO 全過，分頁切換、深連結、@mokyuu.ig QR、回 August 連結、無水平捲動皆正常。
+- 2026-11-13 01:28 +0800：commit `d3d49e6` 已 push 並部署，Worker Version `9c15413d-cda6-42d2-9b75-97020408e873`，回滾目標 `624882d4`；部署前本機 preview 與部署後正式站 smoke／SEO 全過，workers.dev smoke 全過。

@@ -17,6 +17,8 @@ const staticRoutes = [
   "/booking",
   "/show",
   "/show/ask",
+  "/sb",
+  "/sc",
 ];
 
 type Entry = { url: string; date?: string };

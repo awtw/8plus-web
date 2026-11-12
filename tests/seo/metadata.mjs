@@ -24,7 +24,7 @@ check(locs.every((loc) => loc.startsWith(SITE_URL)), `all sitemap URLs use ${SIT
 
 const meta = (html, pattern) => html.match(pattern)?.[1];
 
-for (const path of ["/", "/about", "/services", "/blog", "/lab"]) {
+for (const path of ["/", "/about", "/services", "/blog", "/lab", "/sb", "/sc"]) {
   const html = await (await fetch(BASE_URL + path)).text();
   const title = meta(html, /<title>([^<]*)<\/title>/);
   const ogImage = meta(html, /<meta property="og:image" content="([^"]+)"/);
@@ -45,6 +45,10 @@ check(
   "/blog/hello-8plus has hreflang en alternate",
 );
 check(/"@type":"BreadcrumbList"/.test(postHtml), "/blog/hello-8plus has BreadcrumbList JSON-LD");
+
+// Share hubs are indexable (since 2026-11-13): not disallowed, listed in the sitemap.
+check(!/Disallow: \/s[bc]\b/.test(robotsText), "robots.txt allows /sb and /sc");
+check(locs.includes(`${SITE_URL}/sb`) && locs.includes(`${SITE_URL}/sc`), "sitemap lists /sb and /sc");
 
 console.log(`\n${failures.length ? `${failures.length} failed` : "all passed"} (${BASE_URL})`);
 process.exit(failures.length ? 1 : 0);

@@ -14,7 +14,7 @@ export const SITE = {
   brandPhrase: "8plus AI 顧問",
   ogImage: "/brand/og-8plus.png",
   /** Owner profiles, used as schema.org sameAs so Google can connect the brand to the person. */
-  sameAs: ["https://github.com/awtw", "https://www.instagram.com/august.yan.terra/"],
+  sameAs: ["https://github.com/awtw", "https://www.instagram.com/august.yan.terra/", "https://mokyuu.com"],
 };
 
 /** zh-TW posts use `slug`, their English twins `slug-en`. Returns both URLs when both exist. */

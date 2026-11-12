@@ -55,6 +55,10 @@
 | `line_click` ★ | 點 line.me / lin.ee 連結 | location, label, link_url |
 | `qr_open` | 分享頁打開 QR（LINE / IG） | kind = `line-official` / `line-personal` / `ig` |
 | `email_click`、`tel_click` | mailto / tel 連結 | location, label |
+| `email_copy` | `/sb` 點「複製」Email 按鈕（2026-11-13 新增） | location |
+| `mokyuu_click` ★ | 點 mokyuu.com 連結（`/sc` 的官網 CTA、兩款遊戲、墨滴；2026-11-13 新增） | location = `sc_hub`, label, link_url, link_domain, item = `mokyuu_home` / `office-watch` / `office-survival` / `ink-drop` |
+
+自動點擊事件會把連結上的 `data-track-*` 屬性一併帶成參數（例：`data-track-item="office-watch"` → `item`）。`/sc` 的區塊曝光用 `section_view`，section = `sc_hero` / `sc_play` / `sc_social`。
 
 ★ = 要在 GA4 標成 Key event（見下方設定）。
 
@@ -109,7 +113,7 @@
 
 ## GA4 後台一次性設定（手動）
 
-1. **Key events**：Admin → Data display → Events，把 `booking_complete`、`github_click`、`line_click` 標成 Key event。
+1. **Key events**：Admin → Data display → Events，把 `booking_complete`、`github_click`、`line_click`、`mokyuu_click` 標成 Key event。
 2. **Custom dimensions**（Admin → Data display → Custom definitions），否則自訂參數不會出現在報表：
    - Event-scoped（建議先註冊這些）：`entry_source`、`page_type`、`content_slug`、`content_type`、`device_type`、`site_locale`、`visitor_type`、`location`、`label`、`source`、`section`、`percent`、`seconds`、`kind`、`cta_location`、`link_domain`、`metric_name`、`rating`
    - Event-scoped（指標 Metric）：`visit_count`、`session_pages`、`session_seconds`、`pages_before_conversion`、`seconds_to_convert`、`engaged_seconds`、`max_scroll`、`duration_seconds`、`value`

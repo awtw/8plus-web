@@ -100,13 +100,15 @@ function handleClick(event: MouseEvent) {
 
   const external = url.hostname !== window.location.hostname;
   if (external) {
-    const params = { location, label, link_url: url.href, link_domain: url.hostname };
+    // data-track-* on the anchor (e.g. data-track-item="office-watch") enrich the automatic event.
+    const params = { location, label, link_url: url.href, link_domain: url.hostname, ...dataParams(el) };
     if (url.hostname === "github.com") return track(EVENTS.GITHUB_CLICK, params);
+    if (url.hostname === "mokyuu.com" || url.hostname.endsWith(".mokyuu.com")) return track(EVENTS.MOKYUU_CLICK, params);
     if (url.hostname === "line.me" || url.hostname === "lin.ee") return track(EVENTS.LINE_CLICK, params);
     return track(EVENTS.OUTBOUND_CLICK, params);
   }
 
-  const params = { location, label, link_path: url.pathname };
+  const params = { location, label, link_path: url.pathname, ...dataParams(el) };
   if (url.pathname.startsWith("/booking")) {
     updateSession({ lastCtaLocation: location, lastCtaPath: window.location.pathname });
     flushSession();

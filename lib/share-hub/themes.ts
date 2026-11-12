@@ -1,3 +1,4 @@
+/** /sc moved to its own MOKYUU hub (components/share/mokyuu-hub.tsx); ShareLinkHub now serves /sb only. */
 export type ShareHubVariant = "sb" | "sc"
 
 export type ShareHubTheme = {
@@ -43,31 +44,4 @@ export const shareBusinessTheme: ShareHubTheme = {
   ctaBg: "#FFFFFF",
   ctaText: "#E04600",
   meshOpacity: 0.28,
-}
-
-/** Social — International Klein Blue, solid field */
-export const shareSocialTheme: ShareHubTheme = {
-  id: "sc",
-  pageBg: "#002FA7",
-  glowA: "rgba(77, 124, 255, 0.32)",
-  glowB: "rgba(0, 35, 120, 0.45)",
-  glowC: "rgba(140, 175, 255, 0.22)",
-  gridLine: "rgba(255, 255, 255, 0.09)",
-  fg: "#FFFFFF",
-  fgMuted: "rgba(255, 255, 255, 0.8)",
-  logoMark: "#FFFFFF",
-  accent: "#FFFFFF",
-  accentSoft: "rgba(255, 255, 255, 0.16)",
-  cardBg: "rgba(255, 255, 255, 0.14)",
-  cardBorder: "rgba(255, 255, 255, 0.34)",
-  cardHoverBorder: "rgba(255, 255, 255, 0.68)",
-  pillBg: "rgba(255, 255, 255, 0.2)",
-  pillText: "#FFFFFF",
-  ctaBg: "#FFFFFF",
-  ctaText: "#002FA7",
-  meshOpacity: 0.3,
-}
-
-export function getShareHubTheme(variant: ShareHubVariant): ShareHubTheme {
-  return variant === "sb" ? shareBusinessTheme : shareSocialTheme
 }

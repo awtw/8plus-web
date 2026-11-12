@@ -23,8 +23,6 @@ import { QrDialog } from "@/components/qr-dialog"
 import LanguageSwitcher from "@/components/language-switcher"
 import { SharePathExpandable } from "@/components/share/share-path-expandable"
 import { ShareBookingExpandable } from "@/components/share/share-booking-expandable"
-import { ShareSocialAvatar } from "@/components/share/share-social-avatar"
-import { ShareHavenbirdStage } from "@/components/share/share-havenbird-stage"
 import { ShareBusinessStage } from "@/components/share/share-business-stage"
 import { cn } from "@/lib/utils"
 import type { ShareHubTheme, ShareHubVariant } from "@/lib/share-hub/themes"
@@ -283,7 +281,6 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
             maskImage: "radial-gradient(ellipse 90% 70% at 50% 25%, black, transparent)",
           }}
         />
-        {variant === "sc" ? <ShareHavenbirdStage /> : null}
         {variant === "sb" ? <ShareBusinessStage subdued={compressForPanel} /> : null}
       </div>
 
@@ -333,8 +330,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
               compressForPanel && "mb-1",
             )}
           >
-          {variant === "sb" ? (
-            <div
+          <div
               className={cn(
                 "relative mx-auto mb-3 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] sm:mb-4",
                 compressForPanel
@@ -349,9 +345,6 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
               />
               <ShareHubLogo className="h-full w-full" />
             </div>
-          ) : (
-            <ShareSocialAvatar />
-          )}
           <h1
             className={cn(
               "font-semibold tracking-[-0.04em] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
@@ -385,6 +378,7 @@ export function ShareLinkHub({ variant, theme, links, showPath = false }: ShareL
               key={emailLink.id}
               type="button"
               onClick={() => copyEmail(emailLink.email)}
+              data-track="email_copy"
               className="flex w-full items-center gap-3 rounded-[1.2rem] border px-4 py-2.5 text-left transition-colors hover:border-[color:var(--share-card-hover)] sm:py-3"
               style={cardStyle}
             >

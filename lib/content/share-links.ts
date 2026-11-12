@@ -1,4 +1,5 @@
-// Content for the /sb and /sc short-link share hubs (social-media link-in-bio pages).
+// Content for the /sb short-link share hub (business link-in-bio page).
+// /sc (MOKYUU creative hub) lives in lib/content/mokyuu.ts.
 // These pages are the ONLY place where email / LINE / IG contact channels are exposed on purpose;
 // the main site (/booking etc.) prefers the Cal.com calendar and hides them. See docs/SHARE_HUBS.md
 import type { Locale } from "@/lib/i18n";
@@ -42,39 +43,6 @@ export function getShareBusinessLinks(locale: Locale): ShareHubLink[] {
       name: "LINE",
       description: isZh ? "官方帳號 @482ykgdg" : "Official @482ykgdg",
       lineTarget: "official",
-    },
-    {
-      kind: "external",
-      id: "main",
-      name: isZh ? "官方網站" : "Official site",
-      description: isZh ? "8plus.app 完整介紹" : "Full story on 8plus.app",
-      href: "/",
-    },
-  ];
-}
-
-export function getShareSocialLinks(locale: Locale): ShareHubLink[] {
-  const isZh = locale === "zh-TW";
-  return [
-    {
-      kind: "ig-qr",
-      id: "instagram",
-      name: "Instagram",
-      description: "@august.yan.terra",
-    },
-    {
-      kind: "line-qr",
-      id: "line",
-      name: "LINE",
-      description: isZh ? "私人帳號 · 輕鬆聊聊" : "Personal · say hi",
-      lineTarget: "personal",
-    },
-    {
-      kind: "external",
-      id: "github",
-      name: "GitHub",
-      description: isZh ? "程式與 side projects" : "Code & side projects",
-      href: "https://github.com/awtw",
     },
     {
       kind: "external",

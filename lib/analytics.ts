@@ -23,6 +23,8 @@ export const EVENTS = {
   EMAIL_CLICK: "email_click",
   TEL_CLICK: "tel_click",
   QR_OPEN: "qr_open",
+  EMAIL_COPY: "email_copy", // /sb copy-email button
+  MOKYUU_CLICK: "mokyuu_click", // ★ outbound to mokyuu.com (games, creative site) from /sc etc.
   NEWSLETTER_SUBSCRIBE: "newsletter_subscribe", // ★ email form submitted to provider
   RSS_CLICK: "rss_click",
   // Navigation
@@ -230,6 +232,7 @@ const CONVERSION_EVENTS = new Set<string>([
   EVENTS.BOOKING_COMPLETE,
   EVENTS.GITHUB_CLICK,
   EVENTS.LINE_CLICK,
+  EVENTS.MOKYUU_CLICK,
 ]);
 
 export function track(name: EventName, params: EventParams = {}) {

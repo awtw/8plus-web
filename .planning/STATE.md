@@ -596,3 +596,11 @@ Resume file: .planning/spec-brand-show-launch.md
 - 失效連結：frontmatter 新增 `deadLinks`／`linksCheckedAt`，卡片與詳情頁顯示斷鏈 chip、失效按鈕不可點；首頁 Lab 預覽把離線專案排最後。2026-11-02 檢查失效：b18（11-03 已搬到 b18-seven.vercel.app 並恢復）、crmdev／on-boarding-system、experimentlab、resume-2025、hopenet-gf、ecommerce-dashboard 範例連結。
 - 補充內容：power-bi、shuyan-art、r-analysis（加 CKD 腸道菌相分析）、resume-2024（記錄 augustwang.com 現況）；8plus 換新截圖。
 - 待決定：ecommerce-dashboard 為範例內容，建議下架。
+
+### 2026-11-13 00:55 CST — /sc 改墨語 MOKYUU 品牌、/sb /sc SEO 與 GA4（Claude）
+- 分支：`feature/august/2026-11-update`（線上部署來源，main 落後 15 commit）。
+- `/sc`：改為 MOKYUU 風格獨立 hub（`components/share/mokyuu-hub.tsx`、`lib/content/mokyuu.ts`、`styles/pages/mokyuu-hub.css`），logo 同 mokyuu.com M● monogram；主 CTA mokyuu.com，兩款遊戲〈辦公室觀察日誌〉〈職場求生記〉+ 墨滴次要列；移除貓咪合照頭像與植物背景元件。
+- SEO：`/sb`、`/sc` 新增 layout metadata（title/description/canonical/OG/Twitter）、JSON-LD（ProfilePage、Brand、ItemList Game、Breadcrumb；/sb 加 ContactPage + ReserveAction）；robots 解除 disallow、sitemap 加入；`/sc` 專屬 OG 圖 `public/og/sc-mokyuu.png`；Person.sameAs 加 mokyuu.com；`test:seo` 加 /sb /sc 檢查。
+- GA4：新增 `mokyuu_click`（★ Key event，需到 GA4 後台標記）與 `email_copy`；自動點擊事件合併 `data-track-*` 參數；外連 mokyuu.com 帶 UTM。
+- 驗證：`tsc --noEmit` 通過；`next dev` 實測 /sc /sb 畫面、QR 彈窗、JSON-LD、無 console error；`pnpm build` 因本機連不上 fonts.googleapis.com 失敗（既有 Outfit 字型同樣失敗，非本次變更造成），需在可連網環境重跑。
+- 注意：同時段另一 session〈8plus SEO 和 GA4 優化調研〉在同目錄修改 lib/seo.ts、lib/analytics.ts、analytics.tsx、docs/ANALYTICS.md 等，commit 時須分開。

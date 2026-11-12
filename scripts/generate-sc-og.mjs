@@ -23,8 +23,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
       <path fill="#F4F2EE" d="M8 86L8 16L50 63L92 16L92 86L75 86L75 59.04L50 87.01L25 59.04L25 86Z"/>
       <path fill="#FF401F" d="M35.1 30.1a14.9 14.9 0 1 0 29.8 0a14.9 14.9 0 1 0 -29.8 0Z"/>
     </g>
-    <text x="124" y="40" font-family="${mono}" font-size="20" letter-spacing="3" fill="#BECAF0">(Ø1) DIGITAL PERSONA — TAIPEI</text>
-    <text x="124" y="80" font-family="${mono}" font-size="20" letter-spacing="3" fill="#BECAF0">8PLUS.APP/SC</text>
+    <text x="124" y="40" font-family="${mono}" font-size="20" letter-spacing="3" fill="#BECAF0">AUGUST × MOKYUU — TAIPEI</text>
+    <text x="124" y="80" font-family="${mono}" font-size="20" letter-spacing="3" fill="#BECAF0">8PLUS.APP/SC · IG @MOKYUU.IG</text>
   </g>
   <text x="80" y="330" font-family="${serif}" font-weight="700" font-size="128" fill="#EEECE6">墨語 <tspan font-family="${latinSerif}" font-style="italic" font-weight="400">MOKYUU</tspan></text>
   <text x="80" y="420" font-family="${serif}" font-size="46" fill="#EEECE6">把想法磨成墨，寫成一個世界。</text>

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Instrument_Serif } from "next/font/google";
 import { breadcrumbLd, pageMetadata, SITE } from "@/lib/seo";
-import { getMokyuuHubContent, MOKYUU_URL } from "@/lib/content/mokyuu";
+import { getMokyuuHubContent, MOKYUU_IG_URL, MOKYUU_URL } from "@/lib/content/mokyuu";
 
 // mokyuu.com's display face; scoped to /sc so the rest of the site does not pay for it.
 const instrumentSerif = Instrument_Serif({
@@ -12,9 +12,9 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const TITLE = "墨語 MOKYUU：網頁小遊戲與創作者社群連結";
+const TITLE = "August 與墨語 MOKYUU：社群連結與網頁小遊戲";
 const DESCRIPTION =
-  "墨語 MOKYUU 是 August 的創作身份。免下載就能玩的網頁小遊戲〈辦公室觀察日誌〉與〈職場求生記〉、線上水墨畫布〈墨滴〉，以及 Instagram、LINE、GitHub 社群連結。";
+  "August 的社群連結（Instagram @august.yan.terra、LINE、GitHub），以及創作身份墨語 MOKYUU（Instagram @mokyuu.ig）：免下載就能玩的網頁小遊戲〈辦公室觀察日誌〉與〈職場求生記〉、線上水墨畫布〈墨滴〉。";
 const OG_IMAGE = "/og/sc-mokyuu.png";
 
 export const metadata = {
@@ -29,6 +29,9 @@ export const metadata = {
     "抓同事摸魚",
     "墨滴 Ink Drop",
     "August Wang",
+    "August",
+    "mokyuu.ig",
+    "社群連結",
     "創作者",
   ],
 };
@@ -50,7 +53,7 @@ function structuredData() {
         isPartOf: { "@id": `${SITE.url}/#website` },
         primaryImageOfPage: `${SITE.url}${OG_IMAGE}`,
         mainEntity: { "@id": `${SITE.url}/#person` },
-        about: { "@id": brandId },
+        about: [{ "@id": `${SITE.url}/#person` }, { "@id": brandId }],
         hasPart: { "@id": `${pageUrl}#games` },
       },
       {
@@ -61,6 +64,7 @@ function structuredData() {
         url: MOKYUU_URL,
         logo: `${MOKYUU_URL}/apple-touch-icon.png`,
         slogan: "把想法磨成墨，寫成一個世界。",
+        sameAs: [MOKYUU_IG_URL],
       },
       {
         "@type": "ItemList",
@@ -99,7 +103,7 @@ function structuredData() {
       },
       breadcrumbLd([
         ["8plus", "/"],
-        ["墨語 MOKYUU", "/sc"],
+        ["August × 墨語 MOKYUU", "/sc"],
       ]),
     ],
   };

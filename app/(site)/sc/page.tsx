@@ -1,7 +1,7 @@
 'use client'
 
-import { MokyuuHub } from "@/components/share/mokyuu-hub"
+import { ScHub } from "@/components/share/sc-hub"
 
 export default function ShareSocialPage() {
-  return <MokyuuHub />
+  return <ScHub />
 }

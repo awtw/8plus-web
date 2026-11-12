@@ -505,6 +505,95 @@
 .mky-qr-primary { background: #002fa7; color: #eeece6; }
 .mky-qr-secondary { margin-top: 0.5rem; border: 1px solid rgba(238, 236, 230, 0.28); color: #eeece6; }
 
+/* ---------- Tabs: August (personal) / 墨語 MOKYUU ---------- */
+.mky[data-animate] { transition: background-color 0.5s var(--mky-ease); }
+.mky[data-tab="august"] { background: var(--mky-klein); }
+.mky[data-tab="august"]::before {
+  background: radial-gradient(ellipse 50% 50% at 50% 30%, rgba(140, 175, 255, 0.35), transparent 70%);
+}
+.mky[data-tab="august"] .mky-clock { color: var(--mky-frost); }
+
+.sc-tabs {
+  position: sticky;
+  top: max(0.5rem, env(safe-area-inset-top));
+  z-index: 15;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  margin: 0.25rem 0 1rem;
+  padding: 0.25rem;
+  border: 1px solid var(--mky-line-strong);
+  border-radius: 999px;
+  background: rgba(8, 8, 10, 0.55);
+  backdrop-filter: blur(14px);
+}
+.mky[data-tab="august"] .sc-tabs { background: rgba(0, 26, 102, 0.55); }
+.sc-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(238, 236, 230, 0.78);
+}
+.mky[data-animate] .sc-tab { transition: background-color 0.35s var(--mky-ease), color 0.35s var(--mky-ease); }
+.sc-tab:hover { color: var(--mky-bone); }
+.sc-tab[aria-selected="true"] { background: var(--mky-bone); color: var(--mky-void); }
+.sc-tab:focus-visible { outline: 2px solid var(--mky-azure); outline-offset: 2px; }
+.sc-tab-avatar,
+.mky-row-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #000 url("/me/me_3.jpeg") center / cover;
+  box-shadow: 0 0 0 1px rgba(238, 236, 230, 0.4);
+}
+.mky-row-avatar { width: 1.75rem; height: 1.75rem; }
+.sc-tab-logo { width: 1.5rem; height: 1.5rem; border-radius: 0.35rem; }
+.sc-mokyuu .mky-hero { margin-top: 0; }
+
+/* August — the original personal link-in-bio, on a Klein Blue field */
+.sc-august { padding-bottom: 1.5rem; }
+.sc-august-head { margin-top: 1.25rem; text-align: center; }
+.sc-august-avatar {
+  position: relative;
+  width: clamp(5.5rem, 18vh, 7rem);
+  height: clamp(5.5rem, 18vh, 7rem);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+.sc-august-name {
+  margin-top: 1rem;
+  font-size: clamp(1.75rem, 6vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.sc-august-lead {
+  margin: 0.4rem auto 0;
+  max-width: 22rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+.sc-august-links { margin-top: 1.5rem; display: grid; gap: 0.6rem; }
+.sc-august .mky-row {
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+.sc-august .mky-row:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.68); padding-inline: 1rem; }
+.sc-august .mky-row-icon { border-color: rgba(255, 255, 255, 0.34); color: #fff; }
+.sc-august .mky-row-desc { color: rgba(255, 255, 255, 0.8); }
+
 /* ---------- Wider screens ---------- */
 @media (min-width: 640px) {
   .mky-hero { padding: 2rem 2rem 1.75rem; }

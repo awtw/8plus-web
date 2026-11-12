@@ -611,3 +611,10 @@ Resume file: .planning/spec-brand-show-launch.md
 - GA4：新增 `mokyuu_click`（★ Key event，需到 GA4 後台標記）與 `email_copy`；自動點擊事件合併 `data-track-*` 參數；外連 mokyuu.com 帶 UTM。
 - 驗證：`tsc --noEmit` 通過；`next dev` 實測 /sc /sb 畫面、QR 彈窗、JSON-LD、無 console error；`pnpm build` 因本機連不上 fonts.googleapis.com 失敗（既有 Outfit 字型同樣失敗，非本次變更造成），需在可連網環境重跑。
 - 注意：同時段另一 session〈8plus SEO 和 GA4 優化調研〉在同目錄修改 lib/seo.ts、lib/analytics.ts、analytics.tsx、docs/ANALYTICS.md 等，commit 時須分開。
+
+### 2026-11-13 01:30 CST — /sc 改為 August／墨語 MOKYUU 雙分頁（Claude）
+- 使用者決策：/sc 保留原始個人資料，墨語另開分頁；墨語 IG 為 @mokyuu.ig。
+- `components/share/sc-hub.tsx`：分頁外殼（role=tablist、方向鍵切換、sticky），預設 August 分頁（原始 IG @august.yan.terra、私人 LINE、GitHub、官方網站，頭像改 `me_3.jpeg` 線框人像，無貓咪合照）；`?tab=mokyuu` 直接開墨語分頁，切換以 `replaceState` 更新網址；只在使用者切換時才有背景轉場。
+- 墨語分頁社群改為 @mokyuu.ig（QR）、mokyuu.com 手記、回 August、8plus；兩個分頁可互相切換。
+- SEO：title「August 與墨語 MOKYUU：社群連結與網頁小遊戲」，描述含兩個 IG；JSON-LD ProfilePage about Person＋Brand、Brand sameAs @mokyuu.ig；OG 圖加「AUGUST × MOKYUU」「IG @MOKYUU.IG」。GA4：新事件 `sc_tab`（tab、via），點擊 location 改為 `sc_august` / `sc_mokyuu`。
+- 驗證：原始碼 tsc 無錯誤（`.next/types` 有 dev 中斷殘留的產生檔錯誤，與本次無關）；`next dev` 因本機抓不到 Google Fonts 一直整頁重載，改用 `build:vinext`＋`vite preview`（字型 DNS 預載）驗證：smoke、SEO 全過，分頁切換、深連結、@mokyuu.ig QR、回 August 連結、無水平捲動皆正常。未 commit、未部署。

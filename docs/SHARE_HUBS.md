@@ -11,9 +11,16 @@
 | 頁面 | 品牌 | 內容 | 版面 | Metadata / JSON-LD |
 |---|---|---|---|---|
 | `/sb` | 8plus（Pantone Orange 021 C） | `lib/content/share-links.ts` | `components/share/share-link-hub.tsx`（主題 `lib/share-hub/themes.ts`） | `app/(site)/sb/layout.tsx`：ProfilePage + ContactPage、ReserveAction → /booking、Breadcrumb |
-| `/sc` | 墨語 MOKYUU（Ink #08080A × IKB #002FA7 × Seal #FF401F） | `lib/content/mokyuu.ts` | `components/share/mokyuu-hub.tsx`、`mokyuu-logo.tsx`、`styles/pages/mokyuu-hub.css` | `app/(site)/sc/layout.tsx`：ProfilePage、Brand（MOKYUU）、ItemList（Game ×2 + 墨滴）、Breadcrumb；OG 圖 `public/og/sc-mokyuu.png`（`node scripts/generate-sc-og.mjs` 產生） |
+| `/sc` | 分頁：August（Klein Blue）／墨語 MOKYUU（Ink #08080A × IKB #002FA7 × Seal #FF401F） | `lib/content/mokyuu.ts`（`getAugustHubContent`、`getMokyuuHubContent`） | `components/share/sc-hub.tsx`（分頁外殼＋August）、`mokyuu-hub.tsx`（墨語分頁）、`mokyuu-logo.tsx`、`styles/pages/mokyuu-hub.css` | `app/(site)/sc/layout.tsx`：ProfilePage（about Person＋Brand）、Brand（MOKYUU，sameAs @mokyuu.ig）、ItemList（Game ×2 + 墨滴）、Breadcrumb；OG 圖 `public/og/sc-mokyuu.png`（`node scripts/generate-sc-og.mjs` 產生） |
 
-## /sc 內容（2026-11-13）
+## /sc 分頁（2026-11-13 01:30 CST，使用者決策）
+- `/sc` 分兩個分頁（`components/share/sc-hub.tsx`）：
+  - **August**（預設）：原始個人資料——Instagram @august.yan.terra（QR）、私人 LINE（QR）、GitHub、8plus 官方網站，加一列切到墨語分頁。Klein Blue 底、Outfit 字體，即原本 /sc 的樣子；頭像改用 `public/me/me_3.jpeg`（線框人像），不再用貓咪合照。
+  - **墨語 MOKYUU**：下方內容；社群區改為墨語自己的 Instagram **@mokyuu.ig**（QR）、mokyuu.com 手記、回 August 分頁、8plus。
+- 直接連到墨語分頁：`https://www.8plus.app/sc?tab=mokyuu`（建議放在 @mokyuu.ig 的簡介）；@august.yan.terra 簡介用 `/sc` 即可。切換分頁會用 `history.replaceState` 更新網址，不新增瀏覽紀錄。
+- 兩個分頁都在 SSR HTML 中（非作用中的用 `hidden`），搜尋引擎可讀到兩邊內容；頁面唯一 h1 是「August」。
+
+## /sc 墨語分頁內容（2026-11-13）
 - Logo 與視覺沿用 mokyuu.com（M● monogram、Instrument Serif、JetBrains Mono 編號 `(Ø1)`、朱印「墨」、跑馬燈）。
 - 主 CTA：mokyuu.com。兩款遊戲：〈辦公室觀察日誌 Office Watch〉`/lab/game/coworker/`、〈職場求生記〉`/lab/game/coworker/v2/`；次要列〈墨滴 Ink Drop〉`/play`。
 - 外連 mokyuu.com 一律帶 `utm_source=8plus&utm_medium=referral&utm_campaign=sc_hub&utm_content=<item>`（`mokyuuHref()`），讓 mokyuu.com 的 GA4 能歸因。

@@ -1,9 +1,16 @@
-// Content for /sc — the MOKYUU (墨語) creative-identity share hub.
-// MOKYUU is August's creative persona (mokyuu.com); 8plus is the professional one.
+// Content for /sc — August's share hub with two tabs:
+//   "august"  — the original personal link-in-bio (IG @august.yan.terra, personal LINE, GitHub, 8plus)
+//   "mokyuu"  — 墨語 MOKYUU, August's creative persona (mokyuu.com, web games, IG @mokyuu.ig)
+// 8plus is the professional identity.
 // Visual language mirrors mokyuu.com: Ink #08080A × Klein Blue #002FA7 × Seal #FF401F.
 import type { Locale } from "@/lib/i18n";
 
 export const MOKYUU_URL = "https://mokyuu.com";
+export const AUGUST_IG_URL = "https://www.instagram.com/august.yan.terra/";
+export const MOKYUU_IG_URL = "https://www.instagram.com/mokyuu.ig/";
+
+export type ScTab = "august" | "mokyuu";
+export type ScQrKind = "ig-august" | "ig-mokyuu" | "line-personal";
 
 /** Outbound links carry UTM so mokyuu.com's own GA4 can attribute traffic from this hub. */
 export function mokyuuHref(path = "/", content?: string) {
@@ -30,10 +37,56 @@ export type MokyuuGame = {
   art: "watch" | "survival";
 };
 
-export type MokyuuSocialLink =
+export type ScHubLink =
   | { kind: "external"; id: string; name: string; description: string; href: string }
-  | { kind: "ig-qr"; id: string; name: string; description: string }
-  | { kind: "line-qr"; id: string; name: string; description: string };
+  | { kind: "qr"; id: string; name: string; description: string; qr: ScQrKind }
+  | { kind: "tab"; id: string; name: string; description: string; tab: ScTab };
+
+export type AugustHubContent = {
+  name: string;
+  lead: string;
+  links: ScHubLink[];
+};
+
+/** Original /sc personal profile (before the MOKYUU tab existed). */
+export function getAugustHubContent(locale: Locale): AugustHubContent {
+  const zh = locale === "zh-TW";
+  return {
+    name: "August",
+    lead: zh ? "生活裡的片段、正在做的事。" : "Life snippets and work in progress.",
+    links: [
+      { kind: "qr", id: "instagram", name: "Instagram", description: "@august.yan.terra", qr: "ig-august" },
+      {
+        kind: "qr",
+        id: "line",
+        name: "LINE",
+        description: zh ? "私人帳號 · 輕鬆聊聊" : "Personal · say hi",
+        qr: "line-personal",
+      },
+      {
+        kind: "external",
+        id: "github",
+        name: "GitHub",
+        description: zh ? "程式與 side projects" : "Code & side projects",
+        href: "https://github.com/awtw",
+      },
+      {
+        kind: "external",
+        id: "main",
+        name: zh ? "官方網站" : "Official site",
+        description: zh ? "8plus.app 完整介紹" : "Full story on 8plus.app",
+        href: "/",
+      },
+      {
+        kind: "tab",
+        id: "to-mokyuu",
+        name: zh ? "墨語 MOKYUU" : "MOKYUU 墨語",
+        description: zh ? "我的創作身份 · 網頁小遊戲" : "My creative persona · web games",
+        tab: "mokyuu",
+      },
+    ],
+  };
+}
 
 export type MokyuuHubContent = {
   eyebrow: string;
@@ -52,7 +105,7 @@ export type MokyuuHubContent = {
   inkDrop: { title: string; description: string; href: string; url: string };
   socialIndex: string;
   socialTitle: string;
-  social: MokyuuSocialLink[];
+  social: ScHubLink[];
   footerLine: string;
   footerProfessional: string;
   footerNote: string;
@@ -125,27 +178,23 @@ export function getMokyuuHubContent(locale: Locale): MokyuuHubContent {
       href: mokyuuHref("/play", "ink-drop"),
       url: INK_DROP_URL,
     },
-    socialIndex: "(Ø3) Social — " + (zh ? "找到我" : "Find me"),
-    socialTitle: zh ? "社群與聯絡" : "Social & contact",
+    socialIndex: "(Ø3) Follow — " + (zh ? "追蹤墨語" : "Follow MOKYUU"),
+    socialTitle: zh ? "墨語的社群" : "MOKYUU on social",
     social: [
-      {
-        kind: "ig-qr",
-        id: "instagram",
-        name: "Instagram",
-        description: "@august.yan.terra",
-      },
-      {
-        kind: "line-qr",
-        id: "line",
-        name: "LINE",
-        description: zh ? "私人帳號 · 輕鬆聊聊" : "Personal · say hi",
-      },
+      { kind: "qr", id: "instagram-mokyuu", name: "Instagram", description: "@mokyuu.ig", qr: "ig-mokyuu" },
       {
         kind: "external",
-        id: "github",
-        name: "GitHub",
-        description: zh ? "程式與 side projects" : "Code & side projects",
-        href: "https://github.com/awtw",
+        id: "journal",
+        name: zh ? "手記 Journal" : "Journal",
+        description: zh ? "故事、幕後，和還沒想完的事" : "Stories, behind the scenes, unfinished thoughts",
+        href: mokyuuHref("/journal", "journal"),
+      },
+      {
+        kind: "tab",
+        id: "to-august",
+        name: "August",
+        description: zh ? "個人社群 · LINE · GitHub" : "Personal social · LINE · GitHub",
+        tab: "august",
       },
       {
         kind: "external",

@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-06-15)
 Phase: 品牌與節目入口第一階段
 Plan: `.planning/spec-home-focus-studio.md`
 Status: DONE — 本機實作、審查與驗證完成；尚未部署
-Last activity: 2026-11-13 01:28 +0800 — /sc August／墨語 MOKYUU 雙分頁上線正式站（Worker 9c15413d，回滾目標 624882d4）
+Last activity: 2026-11-13 01:45 +0800 — 手機版 /sc /sb LINE、IG 按鈕修正上線（Worker 8ce4ef89，回滾目標 9c15413d）
 Progress: [██████████] 本階段完成；後續內容與跨站工作見策略 roadmap
 
 ## What Was Done
@@ -623,4 +623,5 @@ Resume file: .planning/spec-brand-show-launch.md
 ### 2026-11-13 01:40 CST — 修正手機版 /sc /sb 的 LINE、IG 按鈕「按了沒反應」（Claude）
 - 使用者回報手機上 LINE、IG 按鈕不動。重現：按鈕只會開 QR 視窗——手機無法掃自己螢幕的 QR，私人 LINE 視窗也沒有「開啟 LINE」（正式站未設 `NEXT_PUBLIC_LINE_PERSONAL_ADD_FRIEND_URL`），看起來像沒反應。
 - 修正：LINE／IG 列改成真正的 `<a href>`；手機直接開 App，桌機（hover + 精準指標）才攔截顯示 QR（`components/share/use-prefers-qr.ts`）。私人 LINE 連結從 `public/lineQRcode.jpg` 解碼為 `https://line.me/ti/p/SYT2wZ621C`，設為 `lib/line.ts` 預設值；`/sb` LINE 官方帳號列同樣處理。
-- 驗證：tsc 無錯誤；本機 `build:vinext`＋`vite preview`：手機模式點 LINE 不攔截、走連結；桌機模式顯示 QR 並有「開啟 LINE」按鈕；/sb 同；smoke、SEO 全過。未 commit、未部署（待使用者確認）。
+- 驗證：tsc 無錯誤；本機 `build:vinext`＋`vite preview`：手機模式點 LINE 不攔截、走連結；桌機模式顯示 QR 並有「開啟 LINE」按鈕；/sb 同；smoke、SEO 全過。
+- 2026-11-13 01:45 +0800：commit `d60d718` 已 push 並部署，Worker Version `8ce4ef89-b513-4d0d-80ad-17062b80ec27`，回滾目標 `9c15413d`；部署後正式站 smoke／SEO 全過、workers.dev smoke 全過，手機模式點 LINE／IG 直接走連結。
